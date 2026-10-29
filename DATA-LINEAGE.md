@@ -4,6 +4,12 @@ A release can name the correct model and pass its metric threshold while using a
 
 The root entry exports `createDataLineageReceipt`, `readDataLineageReceipt`, and `checkDataLineage`. These are pure JSON functions with no filesystem, hashing, Python, or FootPrint dependency. They do not change `EvaluationReceipt` or `checkRelease` semantics.
 
+## Call the same guard from Python
+
+A started `WorkflowCapture` exposes `create_data_lineage_receipt(input)`, `read_data_lineage_receipt(input)` and `check_data_lineage(input)`. Their single JSON inputs retain the field names shown below; the Node helper delegates to the same existing TypeScript functions. No Python implementation of row-membership or guard logic is added.
+
+Read backend observations and the independently authorized training policy through tracked scope, then write the receipt and decision if they belong in the saved history. Helpers can be called outside a stage, but that alone creates no scope dependency edges. Missing observations remain missing; neither MLflow metadata nor a matching metric proves that preprocessing respected a held-out partition. Python owns the workflow and composes this result with its quality and selection checks. See [Python usage](PYTHON.md) and the separate retained cases in the [Python guard example](examples/python-guards/README.md).
+
 ## Backend observations and caller policy
 
 The backend reports the inputs it actually used, rather than copying the requested preprocessing plan. It keeps large row memberships in an artifact and returns small references and counts:

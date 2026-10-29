@@ -8,16 +8,16 @@ Prerequisites: Python 3.11+ and Node.js 22+ with npm. The current CI targets Pyt
 
 ```sh
 python3 -m venv .venv
-.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.4/footprintjs_ml-0.6.0b4-py3-none-any.whl
+.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.6/footprintjs_ml-0.6.0b6-py3-none-any.whl
 .venv/bin/python -m footprint_ml_workflow setup
 .venv/bin/python -m footprint_ml_workflow doctor
 ```
 
-Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b4` corresponds to npm version `0.6.0-beta.4`.
+Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b6` corresponds to npm version `0.6.0-beta.6`.
 
 The wheel has no required Python packages. It does not install MLflow, NumPy, scikit-learn or JAX. Importing the module and constructing a capture object do not install dependencies or launch a process. The optional numerical trainer adapter still needs NumPy when explicitly used.
 
-`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.8.0`, `agentfootprint@11.0.0` and `footprintjs@10.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.4` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
+`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.8.0`, `agentfootprint@11.0.0` and `footprintjs@10.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.6` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
 
 The helper is checked in a temporary sibling directory before it is made available. A failed setup preserves the prior runtime. A completed matching installation can be checked again. `doctor` is read-only: it checks versions and imports without starting a trainer or connecting to MLflow. It is an environment check, not an authenticity or security certificate. Release `SHA256SUMS` identifies the distributed files.
 
@@ -39,6 +39,45 @@ with WorkflowCapture("./recording.json") as capture:
 
 The references should identify the bytes actually consumed, including fitted preprocessing where relevant. Tensors and model objects stay in the numerical code or artifacts. Capture is explicit; unrecorded Python variables and arbitrary control dependencies are not automatically observed. See [the MLflow guide](https://github.com/footprintjs/footprintjs-ml/blob/main/MLFLOW.md) for checked artifact reads and the existing evaluation/release contracts.
 
+## Use the existing evidence guards from Python
+
+A started `WorkflowCapture` exposes the same JSON contracts used by the TypeScript API. Python method names use snake_case; request and response fields retain camelCase names such as `modelRef`, `datasetRef` and `splitManifest`.
+
+| Task | Python methods |
+| --- | --- |
+| Evaluation evidence | `create_evaluation_receipt`, `read_evaluation_receipt`, `check_release` |
+| Data-use evidence | `create_data_lineage_receipt`, `read_data_lineage_receipt`, `check_data_lineage` |
+| Candidate comparison | `read_selection_manifest`, `create_selection_receipt`, `read_selection_receipt`, `check_selection` |
+
+Each method takes one plain JSON object and calls the existing TypeScript implementation in the explicit Node helper. The receipt readers validate saved claims; they do not rerun numerical evaluation. No additional Python framework or copy of the guard algorithms is installed.
+
+These helpers do not automatically record their operands or returned values. Inside a stage, read actual observations and independent expected authority through scope, then write the returned receipt or decision when it belongs in the history. For example, given caller-populated scope keys:
+
+```python
+with capture.stage("check-selected-model") as scope:
+    decision = capture.check_selection({
+        "receipt": scope["offeredSelectionReceipt"],
+        "manifest": scope["expectedSelectionManifest"],
+        "results": scope["expectedCandidateResults"],
+        "modelRef": scope["modelRef"],
+        "now": scope["decisionTime"],
+    })
+    scope["selectionDecision"] = decision
+```
+
+The expected manifest/results must be retained independently of the offered receipt. For lineage, observed memberships, overlap counts and fitted-preprocessing inputs come from the backend; missing evidence remains unknown. A guard authorizes only when `allowed` is explicitly true. Compose the quality, selection and data-use checks required by the application.
+
+Python keeps its training code, candidate loop, branches and retries. `runExperiment` and checked publication remain TypeScript APIs. Calling a helper requires an open capture connection, but no active stage; calls outside stages have no automatic scope provenance. See the [data-lineage guide](https://github.com/footprintjs/footprintjs-ml/blob/main/DATA-LINEAGE.md), [selection guide](https://github.com/footprintjs/footprintjs-ml/blob/main/SELECTION.md) and [retained-observation Python proof](https://github.com/footprintjs/footprintjs-ml/blob/main/examples/python-guards/README.md).
+
+Try the retained-observation guard proof after setup, using only the Python standard library and the explicit Node helper:
+
+```sh
+.venv/bin/python -m footprint_ml_workflow example-guards --out ./python-guard-run
+.venv/bin/python -m footprint_ml_workflow investigate --run ./python-guard-run --variable wrongSelectionDecision
+```
+
+This checks recorded JAX candidate results and separate digit-lineage evidence. It does not train or numerically re-evaluate a model, and it does not publish one. The second command reopens saved scope history after the example's capture worker exits. Use a new output directory for each run.
+
 ## Try the MLflow example
 
 Install the example's numerical dependencies yourself, then run the packaged example:
@@ -52,6 +91,16 @@ Install the example's numerical dependencies yourself, then run the packaged exa
 The example performs real training and evaluation against a local MLflow store. The investigation command runs the existing saved-recording tools in a separate Node process without permission to start a trainer. It reads JSON; it does not repeat numerical work. Use a new output path for every run and preserve the saved evidence.
 
 For an adoption check without training another model, [the Python integration pilot](https://github.com/footprintjs/footprintjs-ml/blob/main/examples/python-adoption/README.md) compares an unchanged evaluator with and without capture against an existing retained MLflow run. Its code counts and recording size describe that controlled local integration, not independent developer productivity.
+
+## Use the bundled coding skill
+
+The wheel includes the same [feature guides](https://github.com/footprintjs/footprintjs-ml/blob/main/features/README.md) and [FootPrint ML skill](https://github.com/footprintjs/footprintjs-ml/blob/main/skills/footprintjs-ml/SKILL.md) as the repository. They install under the environment's `share/footprintjs-ml/` directory. Find the skill without starting the Node helper:
+
+```sh
+python -c "from pathlib import Path; import sysconfig; print(Path(sysconfig.get_path('data')) / 'share/footprintjs-ml/skills/footprintjs-ml/SKILL.md')"
+```
+
+Ask your coding agent to read that file and your existing workflow, or copy its containing skill directory into the agent's configured skill location. Library installation leaves agent configuration unchanged. The skill links to the relevant feature and actual APIs; the Python facade's supported contracts remain those documented above and in [MLFLOW.md](https://github.com/footprintjs/footprintjs-ml/blob/main/MLFLOW.md).
 
 ## Build the wheel from this repository
 

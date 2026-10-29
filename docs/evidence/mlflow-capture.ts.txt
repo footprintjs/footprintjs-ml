@@ -5,7 +5,9 @@ import type {Readable,Writable} from 'node:stream';
 import {StringDecoder} from 'node:string_decoder';
 import {cloneJson,isRecord,jsonObject} from '../contracts.js';
 import {checkRelease} from '../guard.js';
-import {createEvaluationReceipt} from '../receipts.js';
+import {createDataLineageReceipt,readDataLineageReceipt,checkDataLineage} from '../lineage.js';
+import {createEvaluationReceipt,readEvaluationReceipt} from '../receipts.js';
+import {readSelectionManifest,createSelectionReceipt,readSelectionReceipt,checkSelection} from '../selection.js';
 
 export interface PythonCaptureServeOptions {
   readonly input?: Readable;
@@ -88,7 +90,9 @@ export async function servePythonCapture(options: PythonCaptureServeOptions={}):
   const execute=async(request:Record<string,unknown>):Promise<unknown>=>{
     if(persistenceFailed&&request.op!=='snapshot')throw new CaptureError('storage','Capture persistence failed; no further operations are accepted. Prior saved evidence is preserved.');
     const fields:Record<string,readonly string[]>={open:['path','runId','initialState'],begin:['stageId','name','attempt','retryOf'],
-      get:['key'],set:['key','value'],commit:[],discard:['error'],snapshot:[],close:[],check_release:['input'],create_evaluation_receipt:['input']};
+      get:['key'],set:['key','value'],commit:[],discard:['error'],snapshot:[],close:[],check_release:['input'],create_evaluation_receipt:['input'],
+      read_evaluation_receipt:['input'],create_data_lineage_receipt:['input'],read_data_lineage_receipt:['input'],check_data_lineage:['input'],
+      read_selection_manifest:['input'],create_selection_receipt:['input'],read_selection_receipt:['input'],check_selection:['input']};
     const allowed=Object.hasOwn(fields,String(request.op))?fields[String(request.op)]:undefined;
     if(!allowed)throw new CaptureError('protocol','Unknown capture operation.');
     if(Object.keys(request).some(key=>key!=='id'&&key!=='op'&&!allowed.includes(key)))throw new CaptureError('protocol','Capture request has an unsupported field.');
@@ -147,6 +151,22 @@ export async function servePythonCapture(options: PythonCaptureServeOptions={}):
         opened();return checkRelease(jsonObject(boundedJson(request.input,limits.maxPacketBytes,'release input')) as unknown as Parameters<typeof checkRelease>[0]);
       case 'create_evaluation_receipt':
         opened();return createEvaluationReceipt(jsonObject(boundedJson(request.input,limits.maxPacketBytes,'evaluation input')) as unknown as Parameters<typeof createEvaluationReceipt>[0]);
+      case 'read_evaluation_receipt':
+        opened();return readEvaluationReceipt(boundedJson(request.input,limits.maxPacketBytes,'evaluation receipt'));
+      case 'create_data_lineage_receipt':
+        opened();return createDataLineageReceipt(boundedJson(request.input,limits.maxPacketBytes,'data lineage input') as unknown as Parameters<typeof createDataLineageReceipt>[0]);
+      case 'read_data_lineage_receipt':
+        opened();return readDataLineageReceipt(boundedJson(request.input,limits.maxPacketBytes,'data lineage receipt'));
+      case 'check_data_lineage':
+        opened();return checkDataLineage(boundedJson(request.input,limits.maxPacketBytes,'data lineage request') as unknown as Parameters<typeof checkDataLineage>[0]);
+      case 'read_selection_manifest':
+        opened();return readSelectionManifest(boundedJson(request.input,limits.maxPacketBytes,'selection manifest'));
+      case 'create_selection_receipt':
+        opened();return createSelectionReceipt(boundedJson(request.input,limits.maxPacketBytes,'selection input') as unknown as Parameters<typeof createSelectionReceipt>[0]);
+      case 'read_selection_receipt':
+        opened();return readSelectionReceipt(boundedJson(request.input,limits.maxPacketBytes,'selection receipt'));
+      case 'check_selection':
+        opened();return checkSelection(boundedJson(request.input,limits.maxPacketBytes,'selection request') as unknown as Parameters<typeof checkSelection>[0]);
       case 'close':{
         const s=opened();if(active)throw new CaptureError('state','Commit or discard the active stage before close.');
         s.log.close('ok');s.lifecycle='closed';await save();ended=true;

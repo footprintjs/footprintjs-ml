@@ -127,6 +127,14 @@ Do not pass `receipt.manifest` and `receipt.results` back as the expected author
 
 The pure guard does not contact the backend and cannot prove that a supplied handle is live. It compares durable content identities and deliberately ignores runtime handle/session changes. Live verification is the adapter's responsibility. For v2 evaluations, the proposed model must match the winning **inference identity**; an optimizer-only checkpoint change can still qualify. This does not assert identical training state or faithful resume. V1 evidence retains exact checkpoint coverage and cannot silently gain v2 inference-only coverage. SHA hex case and artifact location are not content differences; digest, byte count, format, profile, role, dimensions and identity presence retain their existing meanings.
 
+## Call the same checks from a Python-owned workflow
+
+A started `WorkflowCapture` exposes `read_selection_manifest(input)`, `create_selection_receipt(input)`, `read_selection_receipt(input)` and `check_selection(input)`. Each takes the corresponding single JSON object and delegates to the existing TypeScript contract. Keep its camelCase field names, including `selectionId`, `createdAt`, `modelRef` and `selectedCandidateId`.
+
+Python owns its candidate execution loop, retries and collection of observed results. There is no Python `run_experiment` callback driver. An offered receipt still cannot supply its own independent expected authority. For a captured check, read the actual proposed model, offered receipt, independently declared manifest and retained results through scope, then store the returned decision through scope. Helper calls outside a stage are supported but do not automatically record those inputs or results.
+
+The [Python usage guide](PYTHON.md) shows the call boundary. The [Python guard example](examples/python-guards/README.md) compares retained JAX observations, rejects a wrong candidate, then checks the correct winner without new training or numerical evaluation. Its separate digit-lineage cases do not establish lineage for those JAX candidates. Checked publication remains the TypeScript release API.
+
 ## Reopen saved evidence in Lens
 
 The optional saved-run binding can identify the selection manifest, results, receipt, decision and chosen candidate scope keys. It reuses existing Lens/foottrace tools:

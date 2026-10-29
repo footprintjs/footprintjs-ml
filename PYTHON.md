@@ -8,16 +8,16 @@ Prerequisites: Python 3.11+ and Node.js 22+ with npm. The current CI targets Pyt
 
 ```sh
 python3 -m venv .venv
-.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.5/footprintjs_ml-0.6.0b5-py3-none-any.whl
+.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.6/footprintjs_ml-0.6.0b6-py3-none-any.whl
 .venv/bin/python -m footprint_ml_workflow setup
 .venv/bin/python -m footprint_ml_workflow doctor
 ```
 
-Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b5` corresponds to npm version `0.6.0-beta.5`.
+Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b6` corresponds to npm version `0.6.0-beta.6`.
 
 The wheel has no required Python packages. It does not install MLflow, NumPy, scikit-learn or JAX. Importing the module and constructing a capture object do not install dependencies or launch a process. The optional numerical trainer adapter still needs NumPy when explicitly used.
 
-`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.8.0`, `agentfootprint@11.0.0` and `footprintjs@10.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.5` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
+`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.8.0`, `agentfootprint@11.0.0` and `footprintjs@10.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.6` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
 
 The helper is checked in a temporary sibling directory before it is made available. A failed setup preserves the prior runtime. A completed matching installation can be checked again. `doctor` is read-only: it checks versions and imports without starting a trainer or connecting to MLflow. It is an environment check, not an authenticity or security certificate. Release `SHA256SUMS` identifies the distributed files.
 
@@ -38,6 +38,45 @@ with WorkflowCapture("./recording.json") as capture:
 ```
 
 The references should identify the bytes actually consumed, including fitted preprocessing where relevant. Tensors and model objects stay in the numerical code or artifacts. Capture is explicit; unrecorded Python variables and arbitrary control dependencies are not automatically observed. See [the MLflow guide](MLFLOW.md) for checked artifact reads and the existing evaluation/release contracts.
+
+## Use the existing evidence guards from Python
+
+A started `WorkflowCapture` exposes the same JSON contracts used by the TypeScript API. Python method names use snake_case; request and response fields retain camelCase names such as `modelRef`, `datasetRef` and `splitManifest`.
+
+| Task | Python methods |
+| --- | --- |
+| Evaluation evidence | `create_evaluation_receipt`, `read_evaluation_receipt`, `check_release` |
+| Data-use evidence | `create_data_lineage_receipt`, `read_data_lineage_receipt`, `check_data_lineage` |
+| Candidate comparison | `read_selection_manifest`, `create_selection_receipt`, `read_selection_receipt`, `check_selection` |
+
+Each method takes one plain JSON object and calls the existing TypeScript implementation in the explicit Node helper. The receipt readers validate saved claims; they do not rerun numerical evaluation. No additional Python framework or copy of the guard algorithms is installed.
+
+These helpers do not automatically record their operands or returned values. Inside a stage, read actual observations and independent expected authority through scope, then write the returned receipt or decision when it belongs in the history. For example, given caller-populated scope keys:
+
+```python
+with capture.stage("check-selected-model") as scope:
+    decision = capture.check_selection({
+        "receipt": scope["offeredSelectionReceipt"],
+        "manifest": scope["expectedSelectionManifest"],
+        "results": scope["expectedCandidateResults"],
+        "modelRef": scope["modelRef"],
+        "now": scope["decisionTime"],
+    })
+    scope["selectionDecision"] = decision
+```
+
+The expected manifest/results must be retained independently of the offered receipt. For lineage, observed memberships, overlap counts and fitted-preprocessing inputs come from the backend; missing evidence remains unknown. A guard authorizes only when `allowed` is explicitly true. Compose the quality, selection and data-use checks required by the application.
+
+Python keeps its training code, candidate loop, branches and retries. `runExperiment` and checked publication remain TypeScript APIs. Calling a helper requires an open capture connection, but no active stage; calls outside stages have no automatic scope provenance. See the [data-lineage guide](DATA-LINEAGE.md), [selection guide](SELECTION.md) and [retained-observation Python proof](examples/python-guards/README.md).
+
+Try the retained-observation guard proof after setup, using only the Python standard library and the explicit Node helper:
+
+```sh
+.venv/bin/python -m footprint_ml_workflow example-guards --out ./python-guard-run
+.venv/bin/python -m footprint_ml_workflow investigate --run ./python-guard-run --variable wrongSelectionDecision
+```
+
+This checks recorded JAX candidate results and separate digit-lineage evidence. It does not train or numerically re-evaluate a model, and it does not publish one. The second command reopens saved scope history after the example's capture worker exits. Use a new output directory for each run.
 
 ## Try the MLflow example
 

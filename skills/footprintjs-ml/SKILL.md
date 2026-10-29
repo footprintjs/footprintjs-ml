@@ -11,7 +11,7 @@ Keep the application's numerical framework and workflow ownership. Add the small
 
 Read the application's installed SDK version and existing integration before editing. The public exports, TypeScript declarations and Python module are the API authority. Read only the feature guides needed for the task.
 
-These relative links work in the repository, npm package and Python wheel's documentation tree. If this skill was copied into a separate agent skill directory, locate the SDK's bundled guides or use the [versioned feature index](https://github.com/footprintjs/footprintjs-ml/blob/v0.6.0-beta.5/features/README.md). For another installed SDK version, use its matching release tag and API declarations.
+These relative links work in the repository, npm package and Python wheel's documentation tree. If this skill was copied into a separate agent skill directory, locate the SDK's bundled guides or use the [versioned feature index](https://github.com/footprintjs/footprintjs-ml/blob/v0.6.0-beta.6/features/README.md). For another installed SDK version, use its matching release tag and API declarations.
 
 | Task | Read first | Then, if needed |
 | --- | --- | --- |
@@ -30,7 +30,9 @@ These relative links work in the repository, npm package and Python wheel's docu
 
 **Python owns the workflow:** use `WorkflowCapture` and, for an application-supplied MLflow client, `MlflowArtifacts`. Python retains training, evaluation, branches and retry logic. Entering capture explicitly starts the native Node recording helper. `scope[key]` reads and assignments record selected JSON state. Keep tensors, fitted objects and dataframes in the trainer or artifacts.
 
-The Python facade currently exposes `create_evaluation_receipt` and `check_release`. Data-lineage, selection and publication contracts are TypeScript APIs. For those tasks, use an explicit component calling the existing TypeScript API or explain the unsupported Python boundary. Do not invent `capture.check_selection`, Python publication methods or a second implementation of a guard.
+The started Python facade exposes evaluation receipt creation/reading, `check_release`, lineage receipt creation/reading and `check_data_lineage`, plus `read_selection_manifest`, selection receipt creation/reading and `check_selection`. These call the existing TypeScript contracts; keep JSON field names such as `modelRef` and `datasetRef` in camelCase. Read actual request inputs through scope and assign returned receipts/decisions to scope when their history is required; helper calls do not capture those edges automatically. See the [Python guard example](../../examples/python-guards/README.md).
+
+Python owns its candidate loop, branching and retry policy. `runExperiment` and checked publication remain TypeScript APIs; do not invent `capture.run_experiment` or Python publication methods, or reimplement guards in Python.
 
 **TypeScript owns orchestration:** use the existing FootPrint stages and optional `footprintjs-ml/adapter` for the numerical worker. Import optional paths when the application uses them. Connect adapter callbacks to the currently executing stage; do not keep an initialization stage's scope alive as the event target. Close the owned worker in `finally`.
 

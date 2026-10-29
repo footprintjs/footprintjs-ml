@@ -1,0 +1,222 @@
+{
+  "schema": "footprint-ml-python-guards-investigation/v1",
+  "passed": true,
+  "checks": {
+    "capturedOutcomeMatchesSidecar": true,
+    "wrongQualityPasses": true,
+    "wrongCandidateDenied": true,
+    "reversedPolicyDenied": true,
+    "correctWinnerAllowed": true,
+    "wrongDecisionReachesProposal": true,
+    "wrongDecisionReachesObservations": true,
+    "wrongDecisionReachesIndependentPlan": true,
+    "laterCorrectionExcluded": true,
+    "unrelatedNoteExcluded": true,
+    "correctDecisionReachesItsProposal": true,
+    "candidateAndPlanWritersFound": true,
+    "cleanQualityAndLineagePass": true,
+    "faultyQualityPassesButLineageDenies": true,
+    "faultyDecisionReachesActualMembershipAudit": true,
+    "faultyDecisionReachesRetainedObservation": true,
+    "cleanDecisionReachesActualMembershipAudit": true,
+    "measuredOverlapVisible": true,
+    "missingReceiptRemainsUnknown": true,
+    "missingOverlapRemainsUnknown": true,
+    "separateModelsNotCrossValidated": true,
+    "nativeMissingControlWarningPreserved": true,
+    "captureLimitRemainsVisible": true,
+    "recordingUnchanged": true,
+    "outcomeUnchanged": true
+  },
+  "sources": {
+    "recording": {
+      "sha256": "d3369de8e96408d10483976ee77c9266301085eb3422d3b10df6fa1672461e0f",
+      "bytes": 1010583
+    },
+    "outcome": {
+      "sha256": "1c7a860aa0c5c7cd93eb9072d3935850b5607430e8aabbaf86b13b450f05be83",
+      "bytes": 46983,
+      "capturedOutcomeMatches": true
+    }
+  },
+  "nativeQueries": 16,
+  "transcript": [
+    {
+      "ordinal": 1,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "wrongSelectionDecision"
+      },
+      "result": "SLICE for 'wrongSelectionDecision' — reads via: custom-fn\nCheck quality and selection independently for wrong (check-wrong-selection#4) [wrote: wrongQualityDecision, wrongSelectionDecision, wrongAttempt]\n  Construct the wrong selection proposal (offer-wrong-selection#3) ← via wrongProposedResult [wrote: wrongSelectionReceipt, wrongProposedResult]\n    Pin the independent comparison and data-use declarations (declare-guard-plans#0) ← via selectionManifest [wrote: selectionManifest, selectionQualityPolicy, selectionCheckTime, comparisonCases, cleanLineageDeclaration, cleanLineageQualityPolicy, faultyLineageDeclaration, faultyLineageQualityPolicy, sourceObservationArtifact]\n    Retain the three actual JAX evaluations (retain-candidate-observations#1) ← via candidateResults [wrote: candidateResults, selectionSource]\n  ↳ declare-guard-plans#0 (see above)\n  ↳ retain-candidate-observations#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 2,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "reversedSelectionDecision"
+      },
+      "result": "SLICE for 'reversedSelectionDecision' — reads via: custom-fn\nCheck quality and selection independently for reversed (check-reversed-selection#6) [wrote: reversedQualityDecision, reversedSelectionDecision, reversedAttempt]\n  Construct the reversed selection proposal (offer-reversed-selection#5) ← via reversedProposedResult [wrote: reversedSelectionReceipt, reversedProposedResult]\n    Pin the independent comparison and data-use declarations (declare-guard-plans#0) ← via selectionManifest [wrote: selectionManifest, selectionQualityPolicy, selectionCheckTime, comparisonCases, cleanLineageDeclaration, cleanLineageQualityPolicy, faultyLineageDeclaration, faultyLineageQualityPolicy, sourceObservationArtifact]\n    Retain the three actual JAX evaluations (retain-candidate-observations#1) ← via candidateResults [wrote: candidateResults, selectionSource]\n  ↳ declare-guard-plans#0 (see above)\n  ↳ retain-candidate-observations#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 3,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "selectionDecision"
+      },
+      "result": "SLICE for 'selectionDecision' — reads via: custom-fn\nCheck quality and selection independently for correct (check-correct-selection#8) [wrote: qualityDecision, selectionDecision, correctAttempt]\n  Construct the correct selection proposal (offer-correct-selection#7) ← via correctProposedResult [wrote: correctSelectionReceipt, correctProposedResult]\n    Pin the independent comparison and data-use declarations (declare-guard-plans#0) ← via selectionManifest [wrote: selectionManifest, selectionQualityPolicy, selectionCheckTime, comparisonCases, cleanLineageDeclaration, cleanLineageQualityPolicy, faultyLineageDeclaration, faultyLineageQualityPolicy, sourceObservationArtifact]\n    Retain the three actual JAX evaluations (retain-candidate-observations#1) ← via candidateResults [wrote: candidateResults, selectionSource]\n  ↳ declare-guard-plans#0 (see above)\n  ↳ retain-candidate-observations#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 4,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "cleanLineageDecision"
+      },
+      "result": "SLICE for 'cleanLineageDecision' — reads via: custom-fn\nApply the native data-use guard to clean observations (check-clean-lineage#11) [wrote: cleanLineageReceipt, cleanLineageDecision, cleanMetricDecision]\n  Retain the actual clean digits data-use observation (retain-clean-lineage#9) ← via cleanLineageObservation [wrote: cleanLineageObservation, cleanEvaluationReceipt, cleanMembershipEvidence, cleanLineageSource]\n  Check original retained clean row memberships (audit-clean-memberships#10) ← via cleanMembershipAudit [wrote: cleanMembershipAudit]\n    ↳ retain-clean-lineage#9 (see above)\n  Pin the independent comparison and data-use declarations (declare-guard-plans#0) ← via cleanLineageDeclaration [wrote: selectionManifest, selectionQualityPolicy, selectionCheckTime, comparisonCases, cleanLineageDeclaration, cleanLineageQualityPolicy, faultyLineageDeclaration, faultyLineageQualityPolicy, sourceObservationArtifact]\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 5,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "faultyLineageDecision"
+      },
+      "result": "SLICE for 'faultyLineageDecision' — reads via: custom-fn\nApply the native data-use guard to faulty observations (check-faulty-lineage#14) [wrote: faultyLineageReceipt, faultyLineageDecision, faultyMetricDecision]\n  Retain the actual faulty digits data-use observation (retain-faulty-lineage#12) ← via faultyLineageObservation [wrote: faultyLineageObservation, faultyEvaluationReceipt, faultyMembershipEvidence, faultyLineageSource]\n  Check original retained faulty row memberships (audit-faulty-memberships#13) ← via faultyMembershipAudit [wrote: faultyMembershipAudit]\n    ↳ retain-faulty-lineage#12 (see above)\n  Pin the independent comparison and data-use declarations (declare-guard-plans#0) ← via faultyLineageDeclaration [wrote: selectionManifest, selectionQualityPolicy, selectionCheckTime, comparisonCases, cleanLineageDeclaration, cleanLineageQualityPolicy, faultyLineageDeclaration, faultyLineageQualityPolicy, sourceObservationArtifact]\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 6,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "missingLineageDecision"
+      },
+      "result": "SLICE for 'missingLineageDecision' — reads via: custom-fn\nKeep removed lineage evidence unknown (check-missing-lineage#15) [wrote: missingLineageDecision, missingOverlapLineageReceipt, missingOverlapLineageDecision, missingEvidenceControl]\n  Pin the independent comparison and data-use declarations (declare-guard-plans#0) ← via cleanLineageDeclaration [wrote: selectionManifest, selectionQualityPolicy, selectionCheckTime, comparisonCases, cleanLineageDeclaration, cleanLineageQualityPolicy, faultyLineageDeclaration, faultyLineageQualityPolicy, sourceObservationArtifact]\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 7,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "missingOverlapLineageDecision"
+      },
+      "result": "SLICE for 'missingOverlapLineageDecision' — reads via: custom-fn\nKeep removed lineage evidence unknown (check-missing-lineage#15) [wrote: missingLineageDecision, missingOverlapLineageReceipt, missingOverlapLineageDecision, missingEvidenceControl]\n  Pin the independent comparison and data-use declarations (declare-guard-plans#0) ← via cleanLineageDeclaration [wrote: selectionManifest, selectionQualityPolicy, selectionCheckTime, comparisonCases, cleanLineageDeclaration, cleanLineageQualityPolicy, faultyLineageDeclaration, faultyLineageQualityPolicy, sourceObservationArtifact]\n  Retain the actual clean digits data-use observation (retain-clean-lineage#9) ← via cleanLineageObservation [wrote: cleanLineageObservation, cleanEvaluationReceipt, cleanMembershipEvidence, cleanLineageSource]\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 8,
+      "tool": "who_wrote",
+      "args": {
+        "key": "candidateResults",
+        "beforeStageId": "check-wrong-selection#4"
+      },
+      "result": "'candidateResults' was last written by retain-candidate-observations#1 — \"Retain the three actual JAX evaluations\" (verb: set): [{\"candidateId\":\"steps-100\",\"configuration\":{\"initialization\":\"fresh-identical-parameters\",\"learningRate\":0.01,\"steps\":100,\"trainDatasetSha256\":\"dd0ba10eee85f66… (7657 chars total — get_value('retain-candidate-observations#1', 'candidateResults') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 9,
+      "tool": "who_wrote",
+      "args": {
+        "key": "selectionManifest",
+        "beforeStageId": "check-wrong-selection#4"
+      },
+      "result": "'selectionManifest' was last written by declare-guard-plans#0 — \"Pin the independent comparison and data-use declarations\" (verb: set): {\"kind\":\"selection-manifest\",\"schemaVersion\":1,\"experimentId\":\"jax-gp-compute-budget/v1\",\"candidates\":[{\"candidateId\":\"steps-100\",\"configuration\":{\"initializati… (1411 chars total — get_value('declare-guard-plans#0', 'selectionManifest') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 10,
+      "tool": "who_wrote",
+      "args": {
+        "key": "faultyMembershipAudit",
+        "beforeStageId": "check-faulty-lineage#14"
+      },
+      "result": "'faultyMembershipAudit' was last written by audit-faulty-memberships#13 — \"Check original retained faulty row memberships\" (verb: set): {\"schema\":\"footprint-ml-retained-membership-audit/v1\",\"passed\":true,\"trainingRows\":1149,\"validationRows\":288,\"fitRows\":1437,\"trainEvaluationRows\":0,\"preprocessi… (1073 chars total — get_value('audit-faulty-memberships#13', 'faultyMembershipAudit') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 11,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "check-faulty-lineage#14",
+        "key": "faultyMembershipAudit\u001fpreprocessingEvaluationRows"
+      },
+      "result": "VALUE of 'faultyMembershipAudit.preprocessingEvaluationRows' as of check-faulty-lineage#14:\n288",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 12,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "check-clean-lineage#11",
+        "key": "cleanMembershipAudit\u001fpreprocessingEvaluationRows"
+      },
+      "result": "VALUE of 'cleanMembershipAudit.preprocessingEvaluationRows' as of check-clean-lineage#11:\n0",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 13,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "check-correct-selection#8",
+        "key": "correctSelectionReceipt\u001fselectedCandidateId"
+      },
+      "result": "VALUE of 'correctSelectionReceipt.selectedCandidateId' as of check-correct-selection#8:\n\"steps-100\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 14,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "check-wrong-selection#4",
+        "key": "wrongQualityDecision\u001fallowed"
+      },
+      "result": "VALUE of 'wrongQualityDecision.allowed' as of check-wrong-selection#4:\ntrue",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 15,
+      "tool": "trace_node",
+      "args": {
+        "runtimeStageId": "audit-faulty-memberships#13"
+      },
+      "result": "STEP audit-faulty-memberships#13 — \"Check original retained faulty row memberships\"\nwrote (1):\n- faultyMembershipAudit (set): {\"schema\":\"footprint-ml-retained-membership-audit/v1\",\"passed\":true,\"trainingRows\":1149,\"validationRows\":288,\"fitRows\":1437,\"trainEvaluationRows\":0,\"preprocessi… (1073 chars total — get_value('audit-faulty-memberships#13', 'faultyMembershipAudit') for full)\nread (2): faultyMembershipEvidence, faultyLineageObservation\nparents:\n- data: faultyMembershipEvidence ← retain-faulty-lineage#12 \"Retain the actual faulty digits data-use observation\"\n- data: faultyLineageObservation ← retain-faulty-lineage#12 \"Retain the actual faulty digits data-use observation\"\n⚠ control-dependence lookup not provided — the decision that routed here is unknown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 16,
+      "tool": "attention_list",
+      "args": {},
+      "result": "{\"tool\":\"attention_list\",\"mode\":\"recorded-evidence\",\"confidence\":\"incomplete\",\"gaps\":[{\"code\":\"truncated\",\"evidence\":[]}],\"capture\":{\"status\":\"incomplete\",\"reason\":\"missing-attestation\",\"scope\":\"root-log\",\"persistence\":\"memory-only\",\"readSources\":\"not-collected\"},\"interpretation\":\"Not sure: the requested evidence is incomplete. No root cause is asserted. Snapshot-only records have no engine-written capture/end attestation. This reader cannot prove a root cause from them, even after a normally finished run.\"}",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    }
+  ],
+  "execution": {
+    "savedJsonOnly": true,
+    "trainingStarted": false,
+    "numericalEvaluationRepeated": false,
+    "guardRecomputed": false,
+    "publicationPerformed": false
+  },
+  "boundaries": [
+    "Python owns stage order, retries and numerical operations. The optional host records live scope requests with the native foottrace writer.",
+    "Stage reads describe actual capture.get requests, not arbitrary Python variable or backend tensor reads. No FootPrint executor capture attestation is claimed.",
+    "Discarded stages have no committed writes. Attempt and retry labels are supplied by the Python caller; no native retry policy is inferred.",
+    "The file is replaced after commits, discards and close. This is not a write-ahead log or a promise of crash durability.",
+    "No control-dependency lookup is supplied. Numerical correctness and unobserved backend dependencies remain outside this record."
+  ]
+}

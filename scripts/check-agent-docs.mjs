@@ -16,7 +16,7 @@ export async function documentationResources(root){
     for(const entry of await readdir(join(root,folder),{withFileTypes:true})){
       const file=`${folder}/${entry.name}`;
       if(entry.isDirectory())await visit(file);
-      else if(entry.isFile()&&(folder.startsWith('src')?/\.ts$/.test(file):/\.(?:py|mjs|md|txt)$/.test(file)))found.add(file);
+      else if(entry.isFile()&&(folder.startsWith('src')?/\.ts$/.test(file):(/\.(?:py|mjs|md|txt)$/.test(file)||(folder.startsWith('examples/python-guards')&&/\.json$/.test(file)))))found.add(file);
     }
   };
   await visit('src');await visit('examples');
@@ -57,7 +57,7 @@ export async function checkAgentDocs(root){
   assert(/default_prompt:.*\$footprintjs-ml/.test(metadata),'Skill UI prompt does not invoke the shipped skill');
   const exports=await readFile(join(root,'src/index.ts'),'utf8');
   const rootFunctions=['artifactRef','checkpointRef','inferenceIdentity','createEvaluationReceipt','checkRelease',
-    'createDataLineageReceipt','checkDataLineage','runExperiment','createSelectionReceipt','checkSelection',
+    'readEvaluationReceipt','createDataLineageReceipt','readDataLineageReceipt','checkDataLineage','runExperiment','readSelectionManifest','createSelectionReceipt','readSelectionReceipt','checkSelection',
     'prepareModelRelease','publishModelRelease','releaseModel'];
   for(const name of rootFunctions)assert(new RegExp(`\\b${name}\\b`).test(exports),`Guide API is no longer exported: ${name}`);
   const adapter=await readFile(join(root,'src/adapter/index.ts'),'utf8');
@@ -66,7 +66,7 @@ export async function checkAgentDocs(root){
   assert(/export function openWorkflowRecording\b/.test(lens),'Documented saved-recording reader is no longer exported');
   const python=await readFile(join(root,'python/footprint_ml_workflow.py'),'utf8');
   for(const name of ['WorkflowCapture','MlflowArtifacts'])assert(new RegExp(`class ${name}\\b`).test(python),`Documented Python API is missing: ${name}`);
-  for(const name of ['create_evaluation_receipt','check_release'])assert(new RegExp(`def ${name}\\(`).test(python),`Documented Python contract is missing: ${name}`);
+  for(const name of ['create_evaluation_receipt','read_evaluation_receipt','check_release','create_data_lineage_receipt','read_data_lineage_receipt','check_data_lineage','read_selection_manifest','create_selection_receipt','read_selection_receipt','check_selection'])assert(new RegExp(`def ${name}\\(`).test(python),`Documented Python contract is missing: ${name}`);
   return {schema:'footprint-ml-agent-guidance/v1',passed:true,
     checks:{skillHasIdentityAndDescription:true,skillPromptInvokesSkill:true,localGuidanceLinksResolve:true,
       guideApisExist:true,documentationResourceFilesPresent:true},

@@ -1,0 +1,1067 @@
+{
+  "lineageCases": {
+    "clean": {
+      "declaration": {
+        "datasetRef": {
+          "artifact": {
+            "bytes": 153778,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-8af33e341fad44a0b27ebfcd83f83d18.npz",
+            "sha256": "fa86bdb5baae9e85a67de5f03cf31509e8ce182d2c13891ba716a5b737b8f533"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "5ee54b55-e437-43c3-b7e9-552573ce4619",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "modelRef": {
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-sklearn-digits-lineage-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 633310,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/15b2200fef534c73894bc6e4ef7e7715.npz",
+            "sha256": "fbe22a65da3ab4696dc5f11a8892bcff8668054567025a5d9a07e01344e65f96"
+          },
+          "sessionId": "5ee54b55-e437-43c3-b7e9-552573ce4619"
+        },
+        "policy": {
+          "trainingDatasetRef": {
+            "artifact": {
+              "bytes": 608381,
+              "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+              "kind": "artifact",
+              "path": "datasets/001-116f54c41d04-4b0b76de3a864d3bb8e89683cfdfcd4b.npz",
+              "sha256": "676e39e012d67218b67340dc4c1fbc816ff32185a592c138b4787aac01c3b02a"
+            },
+            "handle": 2,
+            "kind": "dataset",
+            "role": "train",
+            "rows": 1149,
+            "sessionId": "5ee54b55-e437-43c3-b7e9-552573ce4619",
+            "shape": [
+              1149,
+              64
+            ]
+          }
+        },
+        "splitManifest": {
+          "bytes": 8463,
+          "format": "footprint-lineage/split-membership-json/v1",
+          "kind": "artifact",
+          "path": "backend-artifacts/split-membership.json",
+          "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5"
+        }
+      },
+      "evaluation": {
+        "checkpointForAudit": {
+          "artifact": {
+            "bytes": 633310,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/15b2200fef534c73894bc6e4ef7e7715.npz",
+            "sha256": "fbe22a65da3ab4696dc5f11a8892bcff8668054567025a5d9a07e01344e65f96"
+          },
+          "kind": "checkpoint"
+        },
+        "createdAt": 1793215969414,
+        "datasetRef": {
+          "artifact": {
+            "bytes": 153778,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-8af33e341fad44a0b27ebfcd83f83d18.npz",
+            "sha256": "fa86bdb5baae9e85a67de5f03cf31509e8ce182d2c13891ba716a5b737b8f533"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "5ee54b55-e437-43c3-b7e9-552573ce4619",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "evaluationId": "099a3ed7-c12f-44c4-9da0-86074310ac47",
+        "evaluationMethodVersion": "digits-accuracy-and-logloss/numpy/v1;plugin=637bec9421cc769f2ad59f22945a1bc8c1bf75b43174d452f7d2b0bc5d2453b6",
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "footprint-sklearn-digits-lineage-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+        },
+        "kind": "evaluation-receipt",
+        "metrics": {
+          "accuracy": 0.9618055555555556,
+          "logLoss": 0.13544977804017577
+        },
+        "modelRef": {
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-sklearn-digits-lineage-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 633310,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/15b2200fef534c73894bc6e4ef7e7715.npz",
+            "sha256": "fbe22a65da3ab4696dc5f11a8892bcff8668054567025a5d9a07e01344e65f96"
+          },
+          "sessionId": "5ee54b55-e437-43c3-b7e9-552573ce4619"
+        },
+        "parameters": {},
+        "preprocessingVersion": "sklearn-standardscaler/digits-lineage/v1;plugin=637bec9421cc769f2ad59f22945a1bc8c1bf75b43174d452f7d2b0bc5d2453b6",
+        "schemaVersion": 2
+      },
+      "membershipEvidence": {
+        "memberships": {
+          "artifact": {
+            "bytes": 6032,
+            "format": "footprint-lineage/fit-membership-json/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/preparation/6763668130564ddc808b5789a1b2a3fa-memberships.json",
+            "sha256": "87a303d4f270b42892456d0512ddde806536b1a1a3a68d98b9ef450a2f15de82"
+          },
+          "retainedFile": "evidence/lineage-clean-memberships.json"
+        },
+        "overlap": {
+          "artifact": {
+            "bytes": 1469,
+            "format": "footprint-lineage/overlap-json/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/preparation/6763668130564ddc808b5789a1b2a3fa-overlap.json",
+            "sha256": "b57a9d2e60dcd6c4899dffed5bbeb5b70c8bf73578ffc39653318d8dd1f9bbff"
+          },
+          "retainedFile": "evidence/lineage-clean-overlap.json"
+        },
+        "split": {
+          "artifact": {
+            "bytes": 8463,
+            "format": "footprint-lineage/split-membership-json/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/split-membership.json",
+            "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5"
+          },
+          "retainedFile": "evidence/lineage-clean-split.json"
+        }
+      },
+      "observed": {
+        "createdAt": 1793215969415,
+        "datasetRef": {
+          "artifact": {
+            "bytes": 153778,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-8af33e341fad44a0b27ebfcd83f83d18.npz",
+            "sha256": "fa86bdb5baae9e85a67de5f03cf31509e8ce182d2c13891ba716a5b737b8f533"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "5ee54b55-e437-43c3-b7e9-552573ce4619",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "kind": "data-lineage-receipt",
+        "lineageId": "clean-validation-lineage",
+        "modelRef": {
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-sklearn-digits-lineage-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 633310,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/15b2200fef534c73894bc6e4ef7e7715.npz",
+            "sha256": "fbe22a65da3ab4696dc5f11a8892bcff8668054567025a5d9a07e01344e65f96"
+          },
+          "sessionId": "5ee54b55-e437-43c3-b7e9-552573ce4619"
+        },
+        "overlap": {
+          "evidenceArtifact": {
+            "bytes": 1469,
+            "format": "footprint-lineage/overlap-json/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/preparation/6763668130564ddc808b5789a1b2a3fa-overlap.json",
+            "sha256": "b57a9d2e60dcd6c4899dffed5bbeb5b70c8bf73578ffc39653318d8dd1f9bbff"
+          },
+          "preprocessingEvaluationRows": 0,
+          "trainEvaluationRows": 0
+        },
+        "preprocessing": {
+          "artifact": {
+            "bytes": 3922,
+            "format": "footprint-lineage/standardscaler-state-npz/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/preparation/6763668130564ddc808b5789a1b2a3fa-scaler.npz",
+            "sha256": "6c6a6f7501609e96754f176cac765f17d326f1a8881a3dcecc261f5fa27308c0"
+          },
+          "fitDatasetRefs": [
+            {
+              "artifact": {
+                "bytes": 608381,
+                "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+                "kind": "artifact",
+                "path": "datasets/001-116f54c41d04-4b0b76de3a864d3bb8e89683cfdfcd4b.npz",
+                "sha256": "676e39e012d67218b67340dc4c1fbc816ff32185a592c138b4787aac01c3b02a"
+              },
+              "handle": 2,
+              "kind": "dataset",
+              "role": "train",
+              "rows": 1149,
+              "sessionId": "5ee54b55-e437-43c3-b7e9-552573ce4619",
+              "shape": [
+                1149,
+                64
+              ]
+            }
+          ]
+        },
+        "schemaVersion": 1,
+        "splitManifest": {
+          "bytes": 8463,
+          "format": "footprint-lineage/split-membership-json/v1",
+          "kind": "artifact",
+          "path": "backend-artifacts/split-membership.json",
+          "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5"
+        },
+        "trainingDatasetRef": {
+          "artifact": {
+            "bytes": 608381,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/001-116f54c41d04-4b0b76de3a864d3bb8e89683cfdfcd4b.npz",
+            "sha256": "676e39e012d67218b67340dc4c1fbc816ff32185a592c138b4787aac01c3b02a"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "train",
+          "rows": 1149,
+          "sessionId": "5ee54b55-e437-43c3-b7e9-552573ce4619",
+          "shape": [
+            1149,
+            64
+          ]
+        }
+      },
+      "qualityPolicy": {
+        "metric": "accuracy",
+        "operator": "gte",
+        "threshold": 0.9
+      },
+      "source": {
+        "bytes": 582629,
+        "declarationPointers": [
+          "/footprint/sharedState/partitions",
+          "/footprint/sharedState/splitManifest"
+        ],
+        "label": "footprint-ml-data-lineage/run/clean/trace.json",
+        "observationPointer": "/footprint/sharedState/dataLineage",
+        "schema": "footprint-data-lineage-recording/v1",
+        "sha256": "36e4b4373e2f9695c8ae310585fa62435e769b046dcb99ccc30ddcca986b5e26",
+        "verifiedOriginalArtifacts": [
+          {
+            "bytes": 633310,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/15b2200fef534c73894bc6e4ef7e7715.npz",
+            "sha256": "fbe22a65da3ab4696dc5f11a8892bcff8668054567025a5d9a07e01344e65f96"
+          },
+          {
+            "bytes": 608381,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/001-116f54c41d04-4b0b76de3a864d3bb8e89683cfdfcd4b.npz",
+            "sha256": "676e39e012d67218b67340dc4c1fbc816ff32185a592c138b4787aac01c3b02a"
+          },
+          {
+            "bytes": 153778,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-8af33e341fad44a0b27ebfcd83f83d18.npz",
+            "sha256": "fa86bdb5baae9e85a67de5f03cf31509e8ce182d2c13891ba716a5b737b8f533"
+          },
+          {
+            "bytes": 3922,
+            "format": "footprint-lineage/standardscaler-state-npz/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/preparation/6763668130564ddc808b5789a1b2a3fa-scaler.npz",
+            "sha256": "6c6a6f7501609e96754f176cac765f17d326f1a8881a3dcecc261f5fa27308c0"
+          }
+        ]
+      }
+    },
+    "faulty": {
+      "declaration": {
+        "datasetRef": {
+          "artifact": {
+            "bytes": 153778,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-2d938e7696594f63bb0ada0779b40e2f.npz",
+            "sha256": "fa86bdb5baae9e85a67de5f03cf31509e8ce182d2c13891ba716a5b737b8f533"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "dc86641f-da57-4bdf-a7fa-f7fb45e24819",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "modelRef": {
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-sklearn-digits-lineage-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "f57e040f9b215a81d993d3d12e127a5120c4b9d1e80023f8302dbc4b600749ea"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 636007,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/44ccaebb383346629833c503efe2a159.npz",
+            "sha256": "7057c52b02520a13901e735575d71e81a4eda14c3c6ed14a0899005303713ae8"
+          },
+          "sessionId": "dc86641f-da57-4bdf-a7fa-f7fb45e24819"
+        },
+        "policy": {
+          "trainingDatasetRef": {
+            "artifact": {
+              "bytes": 608381,
+              "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+              "kind": "artifact",
+              "path": "datasets/001-116f54c41d04-d87b1d8b3ad64303aff84b618f8c03e9.npz",
+              "sha256": "676e39e012d67218b67340dc4c1fbc816ff32185a592c138b4787aac01c3b02a"
+            },
+            "handle": 2,
+            "kind": "dataset",
+            "role": "train",
+            "rows": 1149,
+            "sessionId": "dc86641f-da57-4bdf-a7fa-f7fb45e24819",
+            "shape": [
+              1149,
+              64
+            ]
+          }
+        },
+        "splitManifest": {
+          "bytes": 8463,
+          "format": "footprint-lineage/split-membership-json/v1",
+          "kind": "artifact",
+          "path": "backend-artifacts/split-membership.json",
+          "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5"
+        }
+      },
+      "evaluation": {
+        "checkpointForAudit": {
+          "artifact": {
+            "bytes": 636007,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/44ccaebb383346629833c503efe2a159.npz",
+            "sha256": "7057c52b02520a13901e735575d71e81a4eda14c3c6ed14a0899005303713ae8"
+          },
+          "kind": "checkpoint"
+        },
+        "createdAt": 1793215969949,
+        "datasetRef": {
+          "artifact": {
+            "bytes": 153778,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-2d938e7696594f63bb0ada0779b40e2f.npz",
+            "sha256": "fa86bdb5baae9e85a67de5f03cf31509e8ce182d2c13891ba716a5b737b8f533"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "dc86641f-da57-4bdf-a7fa-f7fb45e24819",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "evaluationId": "fffd8f6c-ff2c-4f15-9835-2251c3b8b80c",
+        "evaluationMethodVersion": "digits-accuracy-and-logloss/numpy/v1;plugin=637bec9421cc769f2ad59f22945a1bc8c1bf75b43174d452f7d2b0bc5d2453b6",
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "footprint-sklearn-digits-lineage-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "f57e040f9b215a81d993d3d12e127a5120c4b9d1e80023f8302dbc4b600749ea"
+        },
+        "kind": "evaluation-receipt",
+        "metrics": {
+          "accuracy": 0.9618055555555556,
+          "logLoss": 0.13583211536130252
+        },
+        "modelRef": {
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-sklearn-digits-lineage-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "f57e040f9b215a81d993d3d12e127a5120c4b9d1e80023f8302dbc4b600749ea"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 636007,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/44ccaebb383346629833c503efe2a159.npz",
+            "sha256": "7057c52b02520a13901e735575d71e81a4eda14c3c6ed14a0899005303713ae8"
+          },
+          "sessionId": "dc86641f-da57-4bdf-a7fa-f7fb45e24819"
+        },
+        "parameters": {},
+        "preprocessingVersion": "sklearn-standardscaler/digits-lineage/v1;plugin=637bec9421cc769f2ad59f22945a1bc8c1bf75b43174d452f7d2b0bc5d2453b6",
+        "schemaVersion": 2
+      },
+      "membershipEvidence": {
+        "memberships": {
+          "artifact": {
+            "bytes": 7676,
+            "format": "footprint-lineage/fit-membership-json/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/preparation/baee759e8f6d409b8b84013fff1e158a-memberships.json",
+            "sha256": "0260d2fcd2600dcc376e7aa3be256295c079acad9c16fc617476ae7a354f348c"
+          },
+          "retainedFile": "evidence/lineage-faulty-memberships.json"
+        },
+        "overlap": {
+          "artifact": {
+            "bytes": 2727,
+            "format": "footprint-lineage/overlap-json/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/preparation/baee759e8f6d409b8b84013fff1e158a-overlap.json",
+            "sha256": "50c0e9b1be3038d357a8c7d7d03697239e057abf857912ea95dfe5c717ac44d0"
+          },
+          "retainedFile": "evidence/lineage-faulty-overlap.json"
+        },
+        "split": {
+          "artifact": {
+            "bytes": 8463,
+            "format": "footprint-lineage/split-membership-json/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/split-membership.json",
+            "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5"
+          },
+          "retainedFile": "evidence/lineage-faulty-split.json"
+        }
+      },
+      "observed": {
+        "createdAt": 1793215969950,
+        "datasetRef": {
+          "artifact": {
+            "bytes": 153778,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-2d938e7696594f63bb0ada0779b40e2f.npz",
+            "sha256": "fa86bdb5baae9e85a67de5f03cf31509e8ce182d2c13891ba716a5b737b8f533"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "dc86641f-da57-4bdf-a7fa-f7fb45e24819",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "kind": "data-lineage-receipt",
+        "lineageId": "faulty-validation-lineage",
+        "modelRef": {
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-sklearn-digits-lineage-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "f57e040f9b215a81d993d3d12e127a5120c4b9d1e80023f8302dbc4b600749ea"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 636007,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/44ccaebb383346629833c503efe2a159.npz",
+            "sha256": "7057c52b02520a13901e735575d71e81a4eda14c3c6ed14a0899005303713ae8"
+          },
+          "sessionId": "dc86641f-da57-4bdf-a7fa-f7fb45e24819"
+        },
+        "overlap": {
+          "evidenceArtifact": {
+            "bytes": 2727,
+            "format": "footprint-lineage/overlap-json/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/preparation/baee759e8f6d409b8b84013fff1e158a-overlap.json",
+            "sha256": "50c0e9b1be3038d357a8c7d7d03697239e057abf857912ea95dfe5c717ac44d0"
+          },
+          "preprocessingEvaluationRows": 288,
+          "trainEvaluationRows": 0
+        },
+        "preprocessing": {
+          "artifact": {
+            "bytes": 4309,
+            "format": "footprint-lineage/standardscaler-state-npz/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/preparation/baee759e8f6d409b8b84013fff1e158a-scaler.npz",
+            "sha256": "7cf307b7ef48c6a2b90b770b3392572a4f047a43730feae02b6782ad2b57f8c9"
+          },
+          "fitDatasetRefs": [
+            {
+              "artifact": {
+                "bytes": 608381,
+                "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+                "kind": "artifact",
+                "path": "datasets/001-116f54c41d04-d87b1d8b3ad64303aff84b618f8c03e9.npz",
+                "sha256": "676e39e012d67218b67340dc4c1fbc816ff32185a592c138b4787aac01c3b02a"
+              },
+              "handle": 2,
+              "kind": "dataset",
+              "role": "train",
+              "rows": 1149,
+              "sessionId": "dc86641f-da57-4bdf-a7fa-f7fb45e24819",
+              "shape": [
+                1149,
+                64
+              ]
+            },
+            {
+              "artifact": {
+                "bytes": 153778,
+                "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+                "kind": "artifact",
+                "path": "datasets/002-98c41dcd20b8-2d938e7696594f63bb0ada0779b40e2f.npz",
+                "sha256": "fa86bdb5baae9e85a67de5f03cf31509e8ce182d2c13891ba716a5b737b8f533"
+              },
+              "handle": 3,
+              "kind": "dataset",
+              "role": "validation",
+              "rows": 288,
+              "sessionId": "dc86641f-da57-4bdf-a7fa-f7fb45e24819",
+              "shape": [
+                288,
+                64
+              ]
+            }
+          ]
+        },
+        "schemaVersion": 1,
+        "splitManifest": {
+          "bytes": 8463,
+          "format": "footprint-lineage/split-membership-json/v1",
+          "kind": "artifact",
+          "path": "backend-artifacts/split-membership.json",
+          "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5"
+        },
+        "trainingDatasetRef": {
+          "artifact": {
+            "bytes": 608381,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/001-116f54c41d04-d87b1d8b3ad64303aff84b618f8c03e9.npz",
+            "sha256": "676e39e012d67218b67340dc4c1fbc816ff32185a592c138b4787aac01c3b02a"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "train",
+          "rows": 1149,
+          "sessionId": "dc86641f-da57-4bdf-a7fa-f7fb45e24819",
+          "shape": [
+            1149,
+            64
+          ]
+        }
+      },
+      "qualityPolicy": {
+        "metric": "accuracy",
+        "operator": "gte",
+        "threshold": 0.9
+      },
+      "source": {
+        "bytes": 492712,
+        "declarationPointers": [
+          "/footprint/sharedState/partitions",
+          "/footprint/sharedState/splitManifest"
+        ],
+        "label": "footprint-ml-data-lineage/run/faulty/trace.json",
+        "observationPointer": "/footprint/sharedState/dataLineage",
+        "schema": "footprint-data-lineage-recording/v1",
+        "sha256": "9c605455cb83f414ee8645b5009d7985ee2d598398df9d96aaeca3e52dc17d9b",
+        "verifiedOriginalArtifacts": [
+          {
+            "bytes": 636007,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/44ccaebb383346629833c503efe2a159.npz",
+            "sha256": "7057c52b02520a13901e735575d71e81a4eda14c3c6ed14a0899005303713ae8"
+          },
+          {
+            "bytes": 608381,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/001-116f54c41d04-d87b1d8b3ad64303aff84b618f8c03e9.npz",
+            "sha256": "676e39e012d67218b67340dc4c1fbc816ff32185a592c138b4787aac01c3b02a"
+          },
+          {
+            "bytes": 153778,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-2d938e7696594f63bb0ada0779b40e2f.npz",
+            "sha256": "fa86bdb5baae9e85a67de5f03cf31509e8ce182d2c13891ba716a5b737b8f533"
+          },
+          {
+            "bytes": 4309,
+            "format": "footprint-lineage/standardscaler-state-npz/v1",
+            "kind": "artifact",
+            "path": "backend-artifacts/preparation/baee759e8f6d409b8b84013fff1e158a-scaler.npz",
+            "sha256": "7cf307b7ef48c6a2b90b770b3392572a4f047a43730feae02b6782ad2b57f8c9"
+          }
+        ]
+      }
+    }
+  },
+  "projection": {
+    "binaryArtifactsBundled": false,
+    "binaryArtifactsVerifiedDuringExtraction": true,
+    "description": "Core typed references and original recorded metrics/data-use facts. Original relative artifact labels, hashes, sizes and IDs retained; trainer display metadata omitted.",
+    "schemaVersion": 1,
+    "sha256": "4ae6d005f18ae0d9fa8b8599eb957f737ba95838c1f4eb5e0d8a675ad5d2fee8"
+  },
+  "schema": "footprint-ml-python-guard-observations/v1",
+  "selection": {
+    "candidateResults": [
+      {
+        "candidateId": "steps-100",
+        "configuration": {
+          "initialization": "fresh-identical-parameters",
+          "learningRate": 0.01,
+          "steps": 100,
+          "trainDatasetSha256": "dd0ba10eee85f6677d26788fed1a8947b38acd4e8c440d496ef8f714711d7138"
+        },
+        "evaluation": {
+          "checkpointForAudit": {
+            "artifact": {
+              "bytes": 7479,
+              "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+              "kind": "artifact",
+              "path": "checkpoints/f508e9cc840e416490bfbb6bc9a1d292.npz",
+              "sha256": "22f3acbed72ce24f2f5e146cbfcb4efa843709ecc88a84edcd489df7fd0e3da7"
+            },
+            "kind": "checkpoint"
+          },
+          "createdAt": 1793239071155,
+          "datasetRef": {
+            "artifact": {
+              "bytes": 1543,
+              "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+              "kind": "artifact",
+              "path": "datasets/002-98c41dcd20b8-a1b534e27b7e4dadbde792fc23397f9e.npz",
+              "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+            },
+            "handle": 3,
+            "kind": "dataset",
+            "role": "validation",
+            "rows": 32,
+            "sessionId": "66a1c791-c122-472f-a962-d5631a743a6a",
+            "shape": [
+              32,
+              1
+            ]
+          },
+          "evaluationId": "ec8d789f-a569-4afd-9731-74d0aad68a2a",
+          "evaluationMethodVersion": "gp-posterior-mean-regression/v1;plugin=cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+          },
+          "kind": "evaluation-receipt",
+          "metrics": {
+            "mae": 0.026755881001008675,
+            "mse": 0.001700233258309988,
+            "rmse": 0.04123388483165257
+          },
+          "modelRef": {
+            "handle": 4,
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "profile": "external-jax-gaussian-process-inference/v1",
+              "schemaVersion": 1,
+              "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+            },
+            "kind": "model",
+            "originArtifact": {
+              "bytes": 7479,
+              "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+              "kind": "artifact",
+              "path": "checkpoints/f508e9cc840e416490bfbb6bc9a1d292.npz",
+              "sha256": "22f3acbed72ce24f2f5e146cbfcb4efa843709ecc88a84edcd489df7fd0e3da7"
+            },
+            "sessionId": "66a1c791-c122-472f-a962-d5631a743a6a"
+          },
+          "parameters": {},
+          "preprocessingVersion": "none/raw-scalar-input/v1",
+          "schemaVersion": 2
+        },
+        "modelRef": {
+          "handle": 4,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 7479,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/f508e9cc840e416490bfbb6bc9a1d292.npz",
+            "sha256": "22f3acbed72ce24f2f5e146cbfcb4efa843709ecc88a84edcd489df7fd0e3da7"
+          },
+          "sessionId": "66a1c791-c122-472f-a962-d5631a743a6a"
+        }
+      },
+      {
+        "candidateId": "steps-30",
+        "configuration": {
+          "initialization": "fresh-identical-parameters",
+          "learningRate": 0.01,
+          "steps": 30,
+          "trainDatasetSha256": "dd0ba10eee85f6677d26788fed1a8947b38acd4e8c440d496ef8f714711d7138"
+        },
+        "evaluation": {
+          "checkpointForAudit": {
+            "artifact": {
+              "bytes": 7477,
+              "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+              "kind": "artifact",
+              "path": "checkpoints/227dfa028c5a4873842c1cb80c430938.npz",
+              "sha256": "f8c10f30d9ce53913171c68e01941643db66d0188be03a5afe18bffbe870c526"
+            },
+            "kind": "checkpoint"
+          },
+          "createdAt": 1793239071174,
+          "datasetRef": {
+            "artifact": {
+              "bytes": 1543,
+              "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+              "kind": "artifact",
+              "path": "datasets/002-98c41dcd20b8-a1b534e27b7e4dadbde792fc23397f9e.npz",
+              "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+            },
+            "handle": 3,
+            "kind": "dataset",
+            "role": "validation",
+            "rows": 32,
+            "sessionId": "66a1c791-c122-472f-a962-d5631a743a6a",
+            "shape": [
+              32,
+              1
+            ]
+          },
+          "evaluationId": "39d3f1c7-d289-4021-9b1a-3f64daaff1db",
+          "evaluationMethodVersion": "gp-posterior-mean-regression/v1;plugin=cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "7873207d716e6336645965e1c46b7b23c8f0787c8a2cffab273c6e4fb61fae92"
+          },
+          "kind": "evaluation-receipt",
+          "metrics": {
+            "mae": 0.05457692264462821,
+            "mse": 0.004259598336456735,
+            "rmse": 0.0652655984149133
+          },
+          "modelRef": {
+            "handle": 5,
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "profile": "external-jax-gaussian-process-inference/v1",
+              "schemaVersion": 1,
+              "sha256": "7873207d716e6336645965e1c46b7b23c8f0787c8a2cffab273c6e4fb61fae92"
+            },
+            "kind": "model",
+            "originArtifact": {
+              "bytes": 7477,
+              "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+              "kind": "artifact",
+              "path": "checkpoints/227dfa028c5a4873842c1cb80c430938.npz",
+              "sha256": "f8c10f30d9ce53913171c68e01941643db66d0188be03a5afe18bffbe870c526"
+            },
+            "sessionId": "66a1c791-c122-472f-a962-d5631a743a6a"
+          },
+          "parameters": {},
+          "preprocessingVersion": "none/raw-scalar-input/v1",
+          "schemaVersion": 2
+        },
+        "modelRef": {
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "7873207d716e6336645965e1c46b7b23c8f0787c8a2cffab273c6e4fb61fae92"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 7477,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/227dfa028c5a4873842c1cb80c430938.npz",
+            "sha256": "f8c10f30d9ce53913171c68e01941643db66d0188be03a5afe18bffbe870c526"
+          },
+          "sessionId": "66a1c791-c122-472f-a962-d5631a743a6a"
+        }
+      },
+      {
+        "candidateId": "steps-60",
+        "configuration": {
+          "initialization": "fresh-identical-parameters",
+          "learningRate": 0.01,
+          "steps": 60,
+          "trainDatasetSha256": "dd0ba10eee85f6677d26788fed1a8947b38acd4e8c440d496ef8f714711d7138"
+        },
+        "evaluation": {
+          "checkpointForAudit": {
+            "artifact": {
+              "bytes": 7477,
+              "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+              "kind": "artifact",
+              "path": "checkpoints/32ded5a6c3114f92be38d0b62905562a.npz",
+              "sha256": "5d5bc365c9936543e479856f96863974153ec0a2ae067c87d664b1b904f6519d"
+            },
+            "kind": "checkpoint"
+          },
+          "createdAt": 1793239071201,
+          "datasetRef": {
+            "artifact": {
+              "bytes": 1543,
+              "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+              "kind": "artifact",
+              "path": "datasets/002-98c41dcd20b8-a1b534e27b7e4dadbde792fc23397f9e.npz",
+              "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+            },
+            "handle": 3,
+            "kind": "dataset",
+            "role": "validation",
+            "rows": 32,
+            "sessionId": "66a1c791-c122-472f-a962-d5631a743a6a",
+            "shape": [
+              32,
+              1
+            ]
+          },
+          "evaluationId": "87670aea-d2fb-4c0d-8ff1-fa4efe53c1b7",
+          "evaluationMethodVersion": "gp-posterior-mean-regression/v1;plugin=cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "d3a13db2ee1e8aeb321726ee8af6a1b4e0668ce23e7441b7f0f204980d54b5da"
+          },
+          "kind": "evaluation-receipt",
+          "metrics": {
+            "mae": 0.03372801325167529,
+            "mse": 0.0023385982112158693,
+            "rmse": 0.04835905511086697
+          },
+          "modelRef": {
+            "handle": 6,
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "profile": "external-jax-gaussian-process-inference/v1",
+              "schemaVersion": 1,
+              "sha256": "d3a13db2ee1e8aeb321726ee8af6a1b4e0668ce23e7441b7f0f204980d54b5da"
+            },
+            "kind": "model",
+            "originArtifact": {
+              "bytes": 7477,
+              "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+              "kind": "artifact",
+              "path": "checkpoints/32ded5a6c3114f92be38d0b62905562a.npz",
+              "sha256": "5d5bc365c9936543e479856f96863974153ec0a2ae067c87d664b1b904f6519d"
+            },
+            "sessionId": "66a1c791-c122-472f-a962-d5631a743a6a"
+          },
+          "parameters": {},
+          "preprocessingVersion": "none/raw-scalar-input/v1",
+          "schemaVersion": 2
+        },
+        "modelRef": {
+          "handle": 6,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "d3a13db2ee1e8aeb321726ee8af6a1b4e0668ce23e7441b7f0f204980d54b5da"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 7477,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/32ded5a6c3114f92be38d0b62905562a.npz",
+            "sha256": "5d5bc365c9936543e479856f96863974153ec0a2ae067c87d664b1b904f6519d"
+          },
+          "sessionId": "66a1c791-c122-472f-a962-d5631a743a6a"
+        }
+      }
+    ],
+    "checkTime": 1793239071202,
+    "manifest": {
+      "candidates": [
+        {
+          "candidateId": "steps-100",
+          "configuration": {
+            "initialization": "fresh-identical-parameters",
+            "learningRate": 0.01,
+            "steps": 100,
+            "trainDatasetSha256": "dd0ba10eee85f6677d26788fed1a8947b38acd4e8c440d496ef8f714711d7138"
+          }
+        },
+        {
+          "candidateId": "steps-30",
+          "configuration": {
+            "initialization": "fresh-identical-parameters",
+            "learningRate": 0.01,
+            "steps": 30,
+            "trainDatasetSha256": "dd0ba10eee85f6677d26788fed1a8947b38acd4e8c440d496ef8f714711d7138"
+          }
+        },
+        {
+          "candidateId": "steps-60",
+          "configuration": {
+            "initialization": "fresh-identical-parameters",
+            "learningRate": 0.01,
+            "steps": 60,
+            "trainDatasetSha256": "dd0ba10eee85f6677d26788fed1a8947b38acd4e8c440d496ef8f714711d7138"
+          }
+        }
+      ],
+      "comparison": {
+        "datasetRef": {
+          "artifact": {
+            "bytes": 1543,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-a1b534e27b7e4dadbde792fc23397f9e.npz",
+            "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 32,
+          "sessionId": "66a1c791-c122-472f-a962-d5631a743a6a",
+          "shape": [
+            32,
+            1
+          ]
+        },
+        "evaluationMethodVersion": "gp-posterior-mean-regression/v1;plugin=cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+        "parameters": {},
+        "preprocessingVersion": "none/raw-scalar-input/v1"
+      },
+      "experimentId": "jax-gp-compute-budget/v1",
+      "kind": "selection-manifest",
+      "policy": {
+        "direction": "min",
+        "metric": "mse",
+        "tieBreak": "candidate-id-ascending"
+      },
+      "schemaVersion": 1
+    },
+    "qualityPolicy": {
+      "metric": "mse",
+      "operator": "lte",
+      "threshold": 0.01
+    },
+    "source": {
+      "bytes": 1414507,
+      "declarationPointer": "/footprint/sharedState/experimentManifest",
+      "label": "footprint-ml-model-selection/run/trace.json",
+      "observationsPointer": "/footprint/sharedState/candidateResults",
+      "schema": "footprint-model-selection/v1",
+      "sha256": "22b370b278ad8f5c87d1fc056dcbb4056f576e34029799a1d9bb0872037600fb",
+      "verifiedOriginalArtifacts": [
+        {
+          "bytes": 7479,
+          "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/f508e9cc840e416490bfbb6bc9a1d292.npz",
+          "sha256": "22f3acbed72ce24f2f5e146cbfcb4efa843709ecc88a84edcd489df7fd0e3da7"
+        },
+        {
+          "bytes": 1543,
+          "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+          "kind": "artifact",
+          "path": "datasets/002-98c41dcd20b8-a1b534e27b7e4dadbde792fc23397f9e.npz",
+          "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+        },
+        {
+          "bytes": 7477,
+          "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/227dfa028c5a4873842c1cb80c430938.npz",
+          "sha256": "f8c10f30d9ce53913171c68e01941643db66d0188be03a5afe18bffbe870c526"
+        },
+        {
+          "bytes": 1543,
+          "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+          "kind": "artifact",
+          "path": "datasets/002-98c41dcd20b8-a1b534e27b7e4dadbde792fc23397f9e.npz",
+          "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+        },
+        {
+          "bytes": 7477,
+          "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/32ded5a6c3114f92be38d0b62905562a.npz",
+          "sha256": "5d5bc365c9936543e479856f96863974153ec0a2ae067c87d664b1b904f6519d"
+        },
+        {
+          "bytes": 1543,
+          "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+          "kind": "artifact",
+          "path": "datasets/002-98c41dcd20b8-a1b534e27b7e4dadbde792fc23397f9e.npz",
+          "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+        }
+      ]
+    }
+  }
+}

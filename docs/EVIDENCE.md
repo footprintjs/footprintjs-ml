@@ -561,9 +561,9 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **backtracking-guide** — Generic saved-result reader, native tool reuse and capture limits
   - Public copy: [evidence/backtracking-guide.md](evidence/backtracking-guide.md)
-  - Original retained source SHA-256: 7ceaa0e53b2f39220dcca3a46c7f4b625b0380fceeef72ef79352b6c07b9fb4b
+  - Original retained source SHA-256: 618e88f4ba543b86dcb7348705aba689687c8339852cf205bf1340182de7b092
   - Original retained source bytes: 6502
-  - Published copy SHA-256: cbb78fa33e188782e7b2e75326a2e85409068cc351c3364e9343cee1c77ed40c
+  - Published copy SHA-256: 7f5169c4135991dcbc1ad32f24653b9b779d162cd0105610d49b0a182ea1f300
   - Published copy bytes: 6670
   - Path projection: 0 string(s); published bytes differ from retained source.
 - **backtracking-reader** — Optional generic recording reader delegating to the existing Lens toolpack
@@ -659,17 +659,17 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-capture** — Optional Node host over native foottrace write APIs and existing ML contracts
   - Public copy: [evidence/mlflow-capture.ts.txt](evidence/mlflow-capture.ts.txt)
-  - Original retained source SHA-256: 5e4beb3387cb51344460e25c2ccc8f501e422b144e3b34238e1d36e72b69ee1e
-  - Original retained source bytes: 14410
-  - Published copy SHA-256: 5e4beb3387cb51344460e25c2ccc8f501e422b144e3b34238e1d36e72b69ee1e
-  - Published copy bytes: 14410
+  - Original retained source SHA-256: fdf2755f387bf40be117accadc53a349927d0f06cadf920dbb039534061b7d54
+  - Original retained source bytes: 16377
+  - Published copy SHA-256: fdf2755f387bf40be117accadc53a349927d0f06cadf920dbb039534061b7d54
+  - Published copy bytes: 16377
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-python** — Standard-library Python capture facade and injected MLflow artifact binding
   - Public copy: [evidence/mlflow-python.py.txt](evidence/mlflow-python.py.txt)
-  - Original retained source SHA-256: ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d
-  - Original retained source bytes: 23847
-  - Published copy SHA-256: ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d
-  - Published copy bytes: 23847
+  - Original retained source SHA-256: 3ee0ea7886428dbc20707ec2adcee14bcc4dd0fd510db7b2887361c282fdbf37
+  - Original retained source bytes: 25589
+  - Published copy SHA-256: 3ee0ea7886428dbc20707ec2adcee14bcc4dd0fd510db7b2887361c282fdbf37
+  - Published copy bytes: 25589
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-python-tests** — Isolated Python imports, native capture lifecycle and checked artifact binding tests
   - Public copy: [evidence/mlflow-python-tests.py.txt](evidence/mlflow-python-tests.py.txt)
@@ -694,10 +694,10 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-guide** — Python and MLflow integration responsibilities, dependencies and limits
   - Public copy: [evidence/mlflow-guide.md](evidence/mlflow-guide.md)
-  - Original retained source SHA-256: f037b47224d5ed4597164a0f03cb4314b21d95d9616b22fd0990d34dbdd0f554
-  - Original retained source bytes: 9769
-  - Published copy SHA-256: 26074b426c20c3d8405d8da1b95e22d7208da6106aecf24891e7ed241875e219
-  - Published copy bytes: 10105
+  - Original retained source SHA-256: a64fe3d53e33c06c4bb21680fb5359c38a3b52e0b61358524424d428c52acf22
+  - Original retained source bytes: 10602
+  - Published copy SHA-256: 845ebaab1520c37cd80782dc8fe232b873044468088b20d2ab70ac682b4cbd44
+  - Published copy bytes: 11050
   - Path projection: 0 string(s); published bytes differ from retained source.
 - **mlflow-requirements** — Explicit pinned MLflow and numerical dependencies for this example
   - Public copy: [evidence/mlflow-requirements.txt](evidence/mlflow-requirements.txt)
@@ -708,10 +708,10 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-package** — Current beta SDK entry points and zero npm root runtime dependencies
   - Public copy: [evidence/mlflow-package.json](evidence/mlflow-package.json)
-  - Original retained source SHA-256: e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595
-  - Original retained source bytes: 3350
-  - Published copy SHA-256: e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595
-  - Published copy bytes: 3350
+  - Original retained source SHA-256: d84791095f96f86867abce3fd6682212fb54b170fa70b24198af554c40bf9b62
+  - Original retained source bytes: 3665
+  - Published copy SHA-256: d84791095f96f86867abce3fd6682212fb54b170fa70b24198af554c40bf9b62
+  - Published copy bytes: 3665
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-capture-tests** — Native writer lifecycle, discarded attempts and protocol-boundary tests
   - Public copy: [evidence/mlflow-capture-tests.mjs.txt](evidence/mlflow-capture-tests.mjs.txt)
@@ -757,17 +757,17 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 26 string(s); published bytes differ from retained source.
 - **python-install-guide** — Python package installation and explicit optional Node runtime guide
   - Public copy: [evidence/python-install-guide.md](evidence/python-install-guide.md)
-  - Original retained source SHA-256: 9ded128193d0c2e5d942ad0be4a6395a1cb9d9d6ecc58fe3ae7e6bd0090d15d2
-  - Original retained source bytes: 5223
-  - Published copy SHA-256: fb4d6a1150d47d09ef6e6c1b9842a0dee6379120ebf1e2641c17ab44bacc4ad3
-  - Published copy bytes: 5335
+  - Original retained source SHA-256: 9a4bf1782134b60f46e0b98718bede47af8d1e36da1a1e764b4d6d9f71d995a3
+  - Original retained source bytes: 9079
+  - Published copy SHA-256: f25a28c1e4ff2960c8ab6ad694f045dbf6546d2275e4298fc75a800d29518e70
+  - Published copy bytes: 9527
   - Path projection: 0 string(s); published bytes differ from retained source.
 - **python-setup** — Explicit pinned helper installation and read-only doctor implementation
   - Public copy: [evidence/python-setup.py.txt](evidence/python-setup.py.txt)
-  - Original retained source SHA-256: c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8
-  - Original retained source bytes: 15503
-  - Published copy SHA-256: c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8
-  - Published copy bytes: 15503
+  - Original retained source SHA-256: 36bda0bd7b735f42cac4895320266a0469cbd6afbe4b42ba780ea0a8c65fb7cc
+  - Original retained source bytes: 15665
+  - Published copy SHA-256: 36bda0bd7b735f42cac4895320266a0469cbd6afbe4b42ba780ea0a8c65fb7cc
+  - Published copy bytes: 15665
   - Path projection: 0 string(s); byte-identical to retained source.
 - **python-baseline** — Ordinary Python evaluator driver without capture
   - Public copy: [evidence/python-baseline.py.txt](evidence/python-baseline.py.txt)
@@ -796,6 +796,132 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Original retained source bytes: 11299
   - Published copy SHA-256: a57ff39bdb8622baec5967c72ca4223e37dd0f73d5ae2763360b5e75454a820a
   - Published copy bytes: 11299
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-outcome** — Python-called native selection and lineage decisions over two separate retained experiments
+  - Public copy: [evidence/python-guards-outcome.json](evidence/python-guards-outcome.json)
+  - Original retained source SHA-256: 1c7a860aa0c5c7cd93eb9072d3935850b5607430e8aabbaf86b13b450f05be83
+  - Original retained source bytes: 46983
+  - Published copy SHA-256: 1c7a860aa0c5c7cd93eb9072d3935850b5607430e8aabbaf86b13b450f05be83
+  - Published copy bytes: 46983
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-recording** — Live Python scope reads, receipt construction and guard decisions recorded by native foottrace
+  - Public copy: [evidence/python-guards-recording.json](evidence/python-guards-recording.json)
+  - Original retained source SHA-256: d3369de8e96408d10483976ee77c9266301085eb3422d3b10df6fa1672461e0f
+  - Original retained source bytes: 1010583
+  - Published copy SHA-256: d3369de8e96408d10483976ee77c9266301085eb3422d3b10df6fa1672461e0f
+  - Published copy bytes: 1010583
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-native** — Saved-only native investigation and evidence agreement for Python ML guards
+  - Public copy: [evidence/python-guards-native.json](evidence/python-guards-native.json)
+  - Original retained source SHA-256: 7fb6ece28421e774dc12024afd3dcafd96557ea06d3831f29822f0c3d0bda6b0
+  - Original retained source bytes: 17405
+  - Published copy SHA-256: 7fb6ece28421e774dc12024afd3dcafd96557ea06d3831f29822f0c3d0bda6b0
+  - Published copy bytes: 17405
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-workflow** — Python orchestration over retained candidate observations and separately retained digits lineage
+  - Public copy: [evidence/python-guards-workflow.py.txt](evidence/python-guards-workflow.py.txt)
+  - Original retained source SHA-256: f806c8a65247f18eb5a4d671c136d9841908c18f4dc4f51c3938bea5f200cb37
+  - Original retained source bytes: 17256
+  - Published copy SHA-256: f806c8a65247f18eb5a4d671c136d9841908c18f4dc4f51c3938bea5f200cb37
+  - Published copy bytes: 17256
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-observations** — Retained JAX candidate MSE and separate scikit-learn digits fit-input observations
+  - Public copy: [evidence/python-guards-observations.json](evidence/python-guards-observations.json)
+  - Original retained source SHA-256: ec5f57ba163c94a4e9a56a7ad3bfae7f70fef9031baade4fe7d65458afcee974
+  - Original retained source bytes: 41833
+  - Published copy SHA-256: ec5f57ba163c94a4e9a56a7ad3bfae7f70fef9031baade4fe7d65458afcee974
+  - Published copy bytes: 41833
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-guide** — Python selection and lineage proof responsibilities and limits
+  - Public copy: [evidence/python-guards-guide.md](evidence/python-guards-guide.md)
+  - Original retained source SHA-256: 92dc1999b2e23ddf23dc3a4e03d6e4879692be229c62624b9aeb48eabae2e00f
+  - Original retained source bytes: 3932
+  - Published copy SHA-256: a7bc2c62a9b8c90ff1ea76531afd8a35fa1759dea61a5ca043ba1bd7f48b02ee
+  - Published copy bytes: 4111
+  - Path projection: 0 string(s); published bytes differ from retained source.
+- **python-ml-contract-tests** — Real Python-to-native contract parity, independent evidence conflicts and recorded-input tests
+  - Public copy: [evidence/python-ml-contract-tests.mjs.txt](evidence/python-ml-contract-tests.mjs.txt)
+  - Original retained source SHA-256: 17d3fd1d873e7d3e993db6f5e5a99d1795e1507c09761cd628167ef368787b77
+  - Original retained source bytes: 15367
+  - Published copy SHA-256: 17d3fd1d873e7d3e993db6f5e5a99d1795e1507c09761cd628167ef368787b77
+  - Published copy bytes: 15367
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-ml-contract-python-tests** — Standard-library Python helper lifecycle, JSON and native-error/discard tests
+  - Public copy: [evidence/python-ml-contract-python-tests.py.txt](evidence/python-ml-contract-python-tests.py.txt)
+  - Original retained source SHA-256: d324ba2d1b5457e4bc1e25df0ee3cabcf90a1c459880f251b3d0c17b3e9043f3
+  - Original retained source bytes: 4996
+  - Published copy SHA-256: d324ba2d1b5457e4bc1e25df0ee3cabcf90a1c459880f251b3d0c17b3e9043f3
+  - Published copy bytes: 4996
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-saved-verification** — Read-only saved-result consistency checks for the Python guard proof
+  - Public copy: [evidence/python-guards-saved-verification.json](evidence/python-guards-saved-verification.json)
+  - Original retained source SHA-256: 70e2bc56918deed2cace750363945cc02f2264b64322f8845fe744bcb624154e
+  - Original retained source bytes: 678
+  - Published copy SHA-256: 70e2bc56918deed2cace750363945cc02f2264b64322f8845fe744bcb624154e
+  - Published copy bytes: 678
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-extraction** — Explicit projection and original artifact checks for the two independent retained experiments
+  - Public copy: [evidence/python-guards-extraction.py.txt](evidence/python-guards-extraction.py.txt)
+  - Original retained source SHA-256: e06c4db54d74a5fcada4e2af858cd7cd376c6b0329e5a0bf41f192e06534b8e6
+  - Original retained source bytes: 8460
+  - Published copy SHA-256: e06c4db54d74a5fcada4e2af858cd7cd376c6b0329e5a0bf41f192e06534b8e6
+  - Published copy bytes: 8460
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-verify-code** — Standard-library saved-result verifier; no native guard or numerical work repeated
+  - Public copy: [evidence/python-guards-verify-code.py.txt](evidence/python-guards-verify-code.py.txt)
+  - Original retained source SHA-256: 15487b8f3347b7c3d5edbda6faed2449ded757c4b8735f7b1fc58d6934e2f841
+  - Original retained source bytes: 2932
+  - Published copy SHA-256: 15487b8f3347b7c3d5edbda6faed2449ded757c4b8735f7b1fc58d6934e2f841
+  - Published copy bytes: 2932
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-investigator** — Existing native toolpack investigation over the saved Python guard record
+  - Public copy: [evidence/python-guards-investigator.mjs.txt](evidence/python-guards-investigator.mjs.txt)
+  - Original retained source SHA-256: fa1570da0e04ed1762c8151a7f957fe4a8304fa7f73a53cbcea6310c7fd32cf9
+  - Original retained source bytes: 6953
+  - Published copy SHA-256: fa1570da0e04ed1762c8151a7f957fe4a8304fa7f73a53cbcea6310c7fd32cf9
+  - Published copy bytes: 6953
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-clean-split** — Retained digits clean split row-membership evidence
+  - Public copy: [evidence/python-guards-clean-split.json](evidence/python-guards-clean-split.json)
+  - Original retained source SHA-256: a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5
+  - Original retained source bytes: 8463
+  - Published copy SHA-256: a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5
+  - Published copy bytes: 8463
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-clean-memberships** — Retained digits clean memberships row-membership evidence
+  - Public copy: [evidence/python-guards-clean-memberships.json](evidence/python-guards-clean-memberships.json)
+  - Original retained source SHA-256: 87a303d4f270b42892456d0512ddde806536b1a1a3a68d98b9ef450a2f15de82
+  - Original retained source bytes: 6032
+  - Published copy SHA-256: 87a303d4f270b42892456d0512ddde806536b1a1a3a68d98b9ef450a2f15de82
+  - Published copy bytes: 6032
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-clean-overlap** — Retained digits clean overlap row-membership evidence
+  - Public copy: [evidence/python-guards-clean-overlap.json](evidence/python-guards-clean-overlap.json)
+  - Original retained source SHA-256: b57a9d2e60dcd6c4899dffed5bbeb5b70c8bf73578ffc39653318d8dd1f9bbff
+  - Original retained source bytes: 1469
+  - Published copy SHA-256: b57a9d2e60dcd6c4899dffed5bbeb5b70c8bf73578ffc39653318d8dd1f9bbff
+  - Published copy bytes: 1469
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-faulty-split** — Retained digits faulty split row-membership evidence
+  - Public copy: [evidence/python-guards-faulty-split.json](evidence/python-guards-faulty-split.json)
+  - Original retained source SHA-256: a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5
+  - Original retained source bytes: 8463
+  - Published copy SHA-256: a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5
+  - Published copy bytes: 8463
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-faulty-memberships** — Retained digits faulty memberships row-membership evidence
+  - Public copy: [evidence/python-guards-faulty-memberships.json](evidence/python-guards-faulty-memberships.json)
+  - Original retained source SHA-256: 0260d2fcd2600dcc376e7aa3be256295c079acad9c16fc617476ae7a354f348c
+  - Original retained source bytes: 7676
+  - Published copy SHA-256: 0260d2fcd2600dcc376e7aa3be256295c079acad9c16fc617476ae7a354f348c
+  - Published copy bytes: 7676
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-guards-faulty-overlap** — Retained digits faulty overlap row-membership evidence
+  - Public copy: [evidence/python-guards-faulty-overlap.json](evidence/python-guards-faulty-overlap.json)
+  - Original retained source SHA-256: 50c0e9b1be3038d357a8c7d7d03697239e057abf857912ea95dfe5c717ac44d0
+  - Original retained source bytes: 2727
+  - Published copy SHA-256: 50c0e9b1be3038d357a8c7d7d03697239e057abf857912ea95dfe5c717ac44d0
+  - Published copy bytes: 2727
   - Path projection: 0 string(s); byte-identical to retained source.
 
 ## Claims by scene
@@ -1002,7 +1128,16 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **DERIVED** — The Python wheel, explicit helper setup and measured wrapper strengthen the existing adapter and investigation path. The eight ML capabilities and existing history foundation remain the same; no new ML execution engine is claimed. [python-install-guide, python-setup, adoption-report, python-wrapper]
 - **OPEN** — This is a controlled local integration around an evaluator extracted from the preceding example. It establishes neither independent developer adoption nor faster diagnosis, development time saved or a runtime-overhead percentage. Explicit Node setup, chosen JSON capture and application-specific predictor completeness remain integration requirements. [adoption-report, python-install-guide, python-adoption-runner]
 
-### 29. FootPrint explained ML release mistakes through saved workflow state
+### 29. Python checked the winner and the data it used
+
+- **VERIFIED** — Python calls the existing TypeScript lineage and selection constructors, readers and guards through the explicitly started native helper. Contract algorithms remain in one implementation. The workflow reads actual operands through scope and records returned receipts and decisions; helper calls alone do not create captured dependencies. [python-guards-workflow, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
+- **VERIFIED** — The candidate-selection proof reuses retained observations from three JAX regression candidates. The wrong candidate passes its own absolute MSE quality threshold, but the separately declared minimum-MSE comparison denies that choice. The declared winner is allowed. A self-consistent reversed-direction receipt cannot rewrite the independently retained manifest and observations. [python-guards-outcome, python-guards-observations, python-guards-workflow, selection-contracts]
+- **VERIFIED** — The separate scikit-learn digits lineage proof reuses clean and faulty evidence with the same accuracy, 0.9618055555555556. Clean preprocessing reports zero evaluation rows in its fit and is allowed. Faulty preprocessing actually used 288 validation rows and is denied. Missing receipt or overlap evidence remains unknown and does not become zero. [python-guards-outcome, python-guards-observations, python-guards-workflow, lineage-contracts, python-guards-saved-verification, python-guards-clean-split, python-guards-clean-memberships, python-guards-clean-overlap, python-guards-faulty-split, python-guards-faulty-memberships, python-guards-faulty-overlap]
+- **VERIFIED** — This run performs new Python-to-native receipt validation and guard checks over retained evidence. It repeats no numerical training, prediction or scoring. The JAX regression comparison and digits lineage are independent experiments, not one combined model or evaluation. [python-guards-outcome, python-guards-workflow, python-guards-observations, python-guards-extraction, python-guards-verify-code]
+- **VERIFIED** — Existing Lens and foottrace reopen the saved decision writers and scope operands without starting a numerical worker. The record retains native missing-control limitations. The Python facade strengthens existing selection, lineage and investigation capabilities and adds no new workflow engine or reusable capability node. [python-guards-native, python-guards-recording, mlflow-capture, mlflow-python, python-guards-investigator]
+- **OPEN** — The guards compare explicit retained observations with independent caller authority. They do not measure undisclosed data use, prove numerical correctness or authenticate a backend. Independent developer adoption, human investigation advantage and distributed production behavior remain untested. [python-guards-guide, lineage-contracts, selection-contracts, python-ml-contract-tests]
+
+### 30. FootPrint explained ML release mistakes through saved workflow state
 
 - **DERIVED** — The retained experiments support using FootPrint’s flowchart stages, reference state and provenance around ML computation. They do not establish a new numerical/autodiff framework. [wasm-summary, workflow, jax-digits-verification, gp-conformance, lineage-results, lineage-verification, crash-summary, crash-audit]
 - **VERIFIED** — Complete structured logs solved the demonstrated diagnosis questions too; FootPrint’s value is a reusable connected recording/investigation pattern, not unique detectability. [legacy-checkpoint, legacy-retry, benchmark-investigation, lineage-verification, trial-pilot, trial-verify]
@@ -1012,6 +1147,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **OPEN** — Independent developers have not yet investigated an unfamiliar failure in the prepared trial. Its protocol is designed to measure findings, missing evidence and investigation effort without presuming an advantage over complete structured logs. [trial-protocol, trial-pilot, trial-verify]
 - **VERIFIED** — The three-candidate JAX proof now adds explicit complete-comparison evidence and a separately checked selection rule to the model/quality guard. It refuses reversed ranking despite valid own evaluation, then approves the declared minimum-error winner. The earlier equal-evidence automated trial still establishes no Lens superiority over complete logs. [selection-results, selection-verify, selection-native, trial-pilot]
 - **VERIFIED** — The release proof extends the general flowchart pattern with explicit ML handoff contracts. It denies a wrong live model and two byte substitutions, then recovers one local publication after a deliberately lost acknowledgement and a native retry in a fresh numerical session. The publisher, rather than the general retry mechanism alone, supplies the tested idempotency and target-revision behavior. [release-results, release-proof, release-contracts, release-workflow, release-publisher]
+- **VERIFIED** — The Python facade now calls the same selection and data-lineage contracts over two independently retained experiments. The wrong candidate can pass its own metric gate and still fail selection; equal digits accuracies do not excuse using validation rows in preprocessing fit. Missing lineage evidence remains unknown. [python-guards-outcome, python-guards-native, python-guards-observations, mlflow-capture, mlflow-python]
 
 ## Relationships
 
@@ -1310,7 +1446,15 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED · why** — A useful ML library must fit an existing Python workflow. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
 - **VERIFIED · how** — Explicit setup prepared a Node helper around unchanged numerical evaluation. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
 - **VERIFIED · learned** — Returned scores matched. We counted the integration code and saved recording. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
-- **DERIVED · next** — Measure the work needed by an unfamiliar ML team. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
+- **DERIVED · next** — Check whether Python can enforce the winner and held-out-data requirements. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
+
+### Python checked the winner and the data it used
+
+- **VERIFIED · what** — Python checked a saved model choice and a separate digits data-use case. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
+- **DERIVED · why** — A passing model score cannot establish the right winner or valid held-out data. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
+- **VERIFIED · how** — Python read actual scope inputs and called the existing TypeScript guards. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
+- **VERIFIED · learned** — The wrong winner and validation-data fit were refused; missing evidence stayed unknown. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
+- **DERIVED · next** — Test these checks in an unfamiliar team’s Python workflow. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
 
 ### FootPrint explained ML release mistakes through saved workflow state
 
@@ -1423,5 +1567,6 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED** — A hidden input left a missing connection. A saved value alone does not show which step consumed it. The input producer became reachable through the existing backward slice. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
 - **DERIVED** — Python kept control and linked MLflow artifacts. Teams should not rewrite their ML workflow merely to inspect its history. Python kept control. MLflow kept artifacts. A Node helper recorded explicit state. [mlflow-workflow, mlflow-capture, mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-guide]
 - **DERIVED** — A retry changed preprocessing and accuracy fell. Unchanged model weights can behave differently when preparation changes. Restoring the original scaler recovered 98%. Saved evidence exposed the changed input. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
-- **DERIVED** — Install Python capture around an existing evaluator. Can a Python user add recorded history without rewriting numerical evaluation? Review the installed path and measured integration, then test external developer use. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
+- **DERIVED** — Install Python capture around an existing evaluator. Can a Python user add recorded history without rewriting numerical evaluation? Keep the existing evaluator, then check selection and data use from Python. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
+- **DERIVED** — Check the winner and data use from Python. Is a passing score enough to select a model? Refuse the wrong choice and contaminated fit, then inspect their saved inputs. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
 - **DERIVED** — Review the ML debugging results. Which mistakes did these local model checks explain? Review the ML-specific checks and the still-open human comparison. [lineage-results, lineage-verification, crash-summary, crash-audit, build, trial-pilot, trial-protocol, selection-results, selection-contracts, release-results, release-contracts]

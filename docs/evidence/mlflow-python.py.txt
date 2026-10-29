@@ -365,6 +365,38 @@ class WorkflowCapture:
     def create_evaluation_receipt(self, input: dict[str, Any]) -> Any:
         return self._rpc("create_evaluation_receipt", input=input)
 
+    def read_evaluation_receipt(self, input: dict[str, Any]) -> Any:
+        """Validate persisted evaluation evidence through the existing SDK contract."""
+        return self._rpc("read_evaluation_receipt", input=input)
+
+    def create_data_lineage_receipt(self, input: dict[str, Any]) -> Any:
+        """Snapshot actual backend observations; this does not measure data use."""
+        return self._rpc("create_data_lineage_receipt", input=input)
+
+    def read_data_lineage_receipt(self, input: dict[str, Any]) -> Any:
+        """Validate persisted lineage evidence through the existing SDK contract."""
+        return self._rpc("read_data_lineage_receipt", input=input)
+
+    def check_data_lineage(self, input: dict[str, Any]) -> Any:
+        """Compare observations with independently supplied data-use policy."""
+        return self._rpc("check_data_lineage", input=input)
+
+    def read_selection_manifest(self, input: dict[str, Any]) -> Any:
+        """Validate the application's independently declared candidate comparison."""
+        return self._rpc("read_selection_manifest", input=input)
+
+    def create_selection_receipt(self, input: dict[str, Any]) -> Any:
+        """Rank a complete declared comparison using the existing SDK contract."""
+        return self._rpc("create_selection_receipt", input=input)
+
+    def read_selection_receipt(self, input: dict[str, Any]) -> Any:
+        """Validate persisted selection evidence and recompute its stated ranking."""
+        return self._rpc("read_selection_receipt", input=input)
+
+    def check_selection(self, input: dict[str, Any]) -> Any:
+        """Check offered evidence against independent manifest and observations."""
+        return self._rpc("check_selection", input=input)
+
     def snapshot(self) -> dict[str, Any]:
         return self._rpc("snapshot")
 

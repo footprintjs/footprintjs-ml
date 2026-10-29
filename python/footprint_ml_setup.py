@@ -256,9 +256,10 @@ def main(arguments: list[str] | None = None) -> int:
     install.add_argument("--runtime-dir")
     inspect = commands.add_parser("doctor")
     inspect.add_argument("--runtime-dir")
-    example = commands.add_parser("example-mlflow")
-    example.add_argument("--out", required=True)
-    example.add_argument("--runtime-dir")
+    for name in ("example-mlflow", "example-guards"):
+        example = commands.add_parser(name)
+        example.add_argument("--out", required=True)
+        example.add_argument("--runtime-dir")
     investigate = commands.add_parser("investigate")
     investigate.add_argument("--run", required=True)
     investigate.add_argument("--variable", required=True)
@@ -270,11 +271,12 @@ def main(arguments: list[str] | None = None) -> int:
             result = setup(args.runtime_dir, args.archive)
         elif args.command == "doctor":
             result = doctor(args.runtime_dir)
-        elif args.command == "example-mlflow":
+        elif args.command in ("example-mlflow", "example-guards"):
             root, ready = _ready(args.runtime_dir)
-            script = sdk_directory(root) / "examples" / "mlflow" / "run.py"
+            folder = "mlflow" if args.command == "example-mlflow" else "python-guards"
+            script = sdk_directory(root) / "examples" / folder / "run.py"
             if not script.is_file():
-                raise SetupError("The installed MLflow example is missing")
+                raise SetupError(f"The installed {folder} example is missing")
             output = _invoke([sys.executable, str(script), "--out", str(Path(args.out).expanduser().absolute()),
                               "--runtime-dir", str(root)], timeout=COMMAND_TIMEOUT, forward_stderr=True)
             result = {"schema": "footprint-ml-python-example/v1", "ok": True, "runtimeDir": str(root),

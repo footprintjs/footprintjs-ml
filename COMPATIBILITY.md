@@ -1,12 +1,14 @@
 # Beta compatibility
 
-The current SDK beta is `0.6.0-beta.5`. APIs and supported integration profiles may change during the beta.
+The current SDK beta is `0.6.0-beta.6`. APIs and supported integration profiles may change during the beta.
 
 Beta 2 adds a saved-record entry point without release bindings and explicit CLI investigation targets. It reuses the existing FootPrint/foottrace toolpack. Its selection proof recomputes ranking from retained JAX evaluations; it does not repeat numerical training. The reference quickstart separately trains its NumPy model. See [BACKTRACKING.md](BACKTRACKING.md) for capture requirements and limits.
 
 Beta 3 adds an optional standard-library Python workflow helper and injected MLflow artifact binding. Python controls its own stages and retries; an explicitly started Node helper records reference reads and writes through the native foottrace writer. This path uses no FootPrint executor and does not capture arbitrary Python locals. MLflow and numerical packages are application dependencies, not SDK runtime dependencies. The reference MLflow proof uses Python 3.12, MLflow 3.17.2, scikit-learn 1.7.2 and NumPy 2.2.6 with a local SQLite store. See [MLFLOW.md](MLFLOW.md).
 
 ## Runtime scope
+
+Beta 6 exposes the existing evaluation readers, data-lineage receipts/checks and selection manifest/receipt/checks through a started Python `WorkflowCapture`. Method names use snake_case; their JSON fields and returned decisions preserve the existing TypeScript contracts. Python owns numerical work, candidate loops and retries. No Python `run_experiment` or checked-publication facade is added. These calls add no required Python packages or separate guard implementation. The [Python guard example](examples/python-guards/README.md) uses retained observations; its separate lineage and candidate cases do not establish shared data lineage across those original runs.
 
 Beta 5 bundles a reusable coding skill, feature READMEs and inspectable API/example sources in both distributions. The Python documentation tree lives under the environment's `share/footprintjs-ml/`; it adds no required Python packages or compiled Node runtime. The recording helper remains an explicit setup operation. The main README routes developers and agents to the appropriate feature; installing the SDK does not register a skill in personal agent configuration.
 
@@ -15,6 +17,7 @@ Beta 4 adds a Python wheel (`0.6.0b4`, matching npm `0.6.0-beta.4`) from this sa
 | Component | Requirement or scope |
 | --- | --- |
 | SDK core | Node.js 22+ for the supported application path; no root runtime dependencies. |
+| Python workflow capture and guards | Python 3.11+ standard library; the explicit recording helper requires Node.js 22+ and pinned helper packages. |
 | Python adapter | Python 3.11+ and NumPy; numerical frameworks are supplied by the application. |
 | Reference quickstart | Python 3.11 or 3.12 with NumPy 2.2.6, CPU, local process and trusted local files. |
 | Workflow/investigation example | `footprintjs` 10.0.0, `agentfootprint` 11.0.0 and `foottrace` 1.8.0. |

@@ -1,6 +1,6 @@
 {
   "name": "footprintjs-ml",
-  "version": "0.6.0-beta.5",
+  "version": "0.6.0-beta.6",
   "description": "ML evidence, selection and release APIs with optional trainer, publisher and Lens subpaths",
   "license": "MIT",
   "type": "module",
@@ -74,7 +74,12 @@
     "TESTING.md",
     "features",
     "skills",
-    "AGENTS.md"
+    "AGENTS.md",
+    "examples/python-guards/*.py",
+    "examples/python-guards/*.mjs",
+    "examples/python-guards/*.json",
+    "examples/python-guards/*.md",
+    "examples/python-guards/evidence/*.json"
   ],
   "scripts": {
     "build": "node build.mjs",

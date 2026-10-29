@@ -587,6 +587,19 @@
         "lens": true
       },
       {
+        "id": "python-guards",
+        "kind": "strengthened",
+        "summary": "Python reused the existing winner and data-use checks over two separate saved experiments.",
+        "focus": [
+          "approval",
+          "selection",
+          "lineage",
+          "investigation"
+        ],
+        "added": [],
+        "lens": true
+      },
+      {
         "id": "verdict",
         "kind": "verdict",
         "summary": "Eight ML capabilities above the existing FootPrint foundation.",
@@ -819,8 +832,8 @@
     "Trusted adapter/profile; no authentication or atomic deployment guarantee.",
     "FootPrint records workflow state at instrumented boundaries; it does not record every tensor operation."
   ],
-  "sceneCount": 29,
-  "clickStateCount": 57,
+  "sceneCount": 30,
+  "clickStateCount": 59,
   "nodes": [
     {
       "id": "fp",
@@ -6940,7 +6953,7 @@
         "why": "A useful ML library must fit an existing Python workflow.",
         "how": "Explicit setup prepared a Node helper around unchanged numerical evaluation.",
         "learned": "Returned scores matched. We counted the integration code and saved recording.",
-        "next": "Measure the work needed by an unfamiliar ML team."
+        "next": "Check whether Python can enforce the winner and held-out-data requirements."
       },
       "storyTextEvidence": {
         "what": {
@@ -7024,7 +7037,7 @@
       "nextCard": {
         "title": "Install Python capture around an existing evaluator",
         "why": "Can a Python user add recorded history without rewriting numerical evaluation?",
-        "after": "Review the installed path and measured integration, then test external developer use.",
+        "after": "Keep the existing evaluator, then check selection and data use from Python.",
         "classification": "DERIVED",
         "sourceIds": [
           "adoption-report",
@@ -7041,6 +7054,316 @@
       },
       "index": 27,
       "clickIndex": 54,
+      "nodeIds": [
+        "fp",
+        "compute",
+        "references",
+        "trainer",
+        "history",
+        "retry",
+        "cost",
+        "view",
+        "lens",
+        "replay",
+        "library",
+        "evidence",
+        "guard",
+        "jax",
+        "identity",
+        "inspect",
+        "plugin",
+        "conformance",
+        "package",
+        "data-use",
+        "data-guard",
+        "audit",
+        "recovery",
+        "continuity",
+        "trial",
+        "selection",
+        "publication"
+      ],
+      "edgeIds": [
+        "fp-compute",
+        "compute-references",
+        "fp-references",
+        "compute-trainer",
+        "trainer-history",
+        "references-history",
+        "fp-retry",
+        "history-retry",
+        "fp-cost",
+        "retry-cost",
+        "history-view",
+        "retry-view",
+        "fp-lens",
+        "fp-replay",
+        "lens-replay",
+        "references-library",
+        "lens-library",
+        "library-evidence",
+        "evidence-guard",
+        "library-jax",
+        "guard-jax",
+        "jax-identity",
+        "evidence-identity",
+        "identity-inspect",
+        "library-inspect",
+        "library-plugin",
+        "plugin-conformance",
+        "library-package",
+        "package-lens",
+        "package-plugin",
+        "trainer-data-use",
+        "evidence-data-use",
+        "data-use-data-guard",
+        "guard-data-guard",
+        "data-use-audit",
+        "lens-audit",
+        "cost-audit",
+        "references-recovery",
+        "history-recovery",
+        "recovery-continuity",
+        "identity-continuity",
+        "audit-continuity",
+        "evidence-continuity",
+        "continuity-guard",
+        "recovery-lens",
+        "recovery-replay",
+        "lens-trial",
+        "history-trial",
+        "trial-selection",
+        "library-selection",
+        "evidence-selection",
+        "selection-guard",
+        "selection-lens",
+        "guard-publication",
+        "selection-publication",
+        "library-publication",
+        "retry-publication",
+        "publication-lens"
+      ],
+      "nodeCount": 27,
+      "edgeCount": 58
+    },
+    {
+      "id": "python-guards",
+      "title": "Python checked the winner and the data it used",
+      "category": "Python access to existing ML evidence contracts",
+      "caption": "Two separate saved experiments show why an acceptable score is insufficient: the chosen candidate must win the declared comparison, and evaluation data must stay out of preprocessing fit.",
+      "visual": {
+        "kind": "python-guards",
+        "journey": "python-guards",
+        "showMetricsInPrimaryView": false,
+        "showHashesInPrimaryView": false
+      },
+      "adds": {
+        "nodes": [],
+        "edges": []
+      },
+      "focus": [
+        "selection",
+        "data-guard",
+        "library",
+        "lens"
+      ],
+      "transition": {
+        "change": "Call selection and data-use guards from Python",
+        "why": "Python teams need more than a model identity and a passing score.",
+        "consequence": "The same TypeScript contracts refused the wrong candidate and contaminated data use."
+      },
+      "claims": [
+        {
+          "classification": "VERIFIED",
+          "text": "Python calls the existing TypeScript lineage and selection constructors, readers and guards through the explicitly started native helper. Contract algorithms remain in one implementation. The workflow reads actual operands through scope and records returned receipts and decisions; helper calls alone do not create captured dependencies.",
+          "sourceIds": [
+            "python-guards-workflow",
+            "python-ml-contract-tests",
+            "python-ml-contract-python-tests",
+            "mlflow-capture",
+            "mlflow-python",
+            "lineage-contracts",
+            "selection-contracts"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The candidate-selection proof reuses retained observations from three JAX regression candidates. The wrong candidate passes its own absolute MSE quality threshold, but the separately declared minimum-MSE comparison denies that choice. The declared winner is allowed. A self-consistent reversed-direction receipt cannot rewrite the independently retained manifest and observations.",
+          "sourceIds": [
+            "python-guards-outcome",
+            "python-guards-observations",
+            "python-guards-workflow",
+            "selection-contracts"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The separate scikit-learn digits lineage proof reuses clean and faulty evidence with the same accuracy, 0.9618055555555556. Clean preprocessing reports zero evaluation rows in its fit and is allowed. Faulty preprocessing actually used 288 validation rows and is denied. Missing receipt or overlap evidence remains unknown and does not become zero.",
+          "sourceIds": [
+            "python-guards-outcome",
+            "python-guards-observations",
+            "python-guards-workflow",
+            "lineage-contracts",
+            "python-guards-saved-verification",
+            "python-guards-clean-split",
+            "python-guards-clean-memberships",
+            "python-guards-clean-overlap",
+            "python-guards-faulty-split",
+            "python-guards-faulty-memberships",
+            "python-guards-faulty-overlap"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "This run performs new Python-to-native receipt validation and guard checks over retained evidence. It repeats no numerical training, prediction or scoring. The JAX regression comparison and digits lineage are independent experiments, not one combined model or evaluation.",
+          "sourceIds": [
+            "python-guards-outcome",
+            "python-guards-workflow",
+            "python-guards-observations",
+            "python-guards-extraction",
+            "python-guards-verify-code"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Existing Lens and foottrace reopen the saved decision writers and scope operands without starting a numerical worker. The record retains native missing-control limitations. The Python facade strengthens existing selection, lineage and investigation capabilities and adds no new workflow engine or reusable capability node.",
+          "sourceIds": [
+            "python-guards-native",
+            "python-guards-recording",
+            "mlflow-capture",
+            "mlflow-python",
+            "python-guards-investigator"
+          ]
+        },
+        {
+          "classification": "OPEN",
+          "text": "The guards compare explicit retained observations with independent caller authority. They do not measure undisclosed data use, prove numerical correctness or authenticate a backend. Independent developer adoption, human investigation advantage and distributed production behavior remain untested.",
+          "sourceIds": [
+            "python-guards-guide",
+            "lineage-contracts",
+            "selection-contracts",
+            "python-ml-contract-tests"
+          ]
+        }
+      ],
+      "storyText": {
+        "what": "Python checked a saved model choice and a separate digits data-use case.",
+        "why": "A passing model score cannot establish the right winner or valid held-out data.",
+        "how": "Python read actual scope inputs and called the existing TypeScript guards.",
+        "learned": "The wrong winner and validation-data fit were refused; missing evidence stayed unknown.",
+        "next": "Test these checks in an unfamiliar team’s Python workflow."
+      },
+      "storyTextEvidence": {
+        "what": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "python-guards-outcome",
+            "python-guards-recording",
+            "python-guards-native",
+            "python-guards-workflow",
+            "python-guards-observations",
+            "python-guards-guide",
+            "python-ml-contract-tests",
+            "python-ml-contract-python-tests",
+            "mlflow-capture",
+            "mlflow-python",
+            "lineage-contracts",
+            "selection-contracts"
+          ]
+        },
+        "why": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "python-guards-outcome",
+            "python-guards-recording",
+            "python-guards-native",
+            "python-guards-workflow",
+            "python-guards-observations",
+            "python-guards-guide",
+            "python-ml-contract-tests",
+            "python-ml-contract-python-tests",
+            "mlflow-capture",
+            "mlflow-python",
+            "lineage-contracts",
+            "selection-contracts"
+          ]
+        },
+        "how": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "python-guards-outcome",
+            "python-guards-recording",
+            "python-guards-native",
+            "python-guards-workflow",
+            "python-guards-observations",
+            "python-guards-guide",
+            "python-ml-contract-tests",
+            "python-ml-contract-python-tests",
+            "mlflow-capture",
+            "mlflow-python",
+            "lineage-contracts",
+            "selection-contracts"
+          ]
+        },
+        "learned": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "python-guards-outcome",
+            "python-guards-recording",
+            "python-guards-native",
+            "python-guards-workflow",
+            "python-guards-observations",
+            "python-guards-guide",
+            "python-ml-contract-tests",
+            "python-ml-contract-python-tests",
+            "mlflow-capture",
+            "mlflow-python",
+            "lineage-contracts",
+            "selection-contracts"
+          ]
+        },
+        "next": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "python-guards-outcome",
+            "python-guards-recording",
+            "python-guards-native",
+            "python-guards-workflow",
+            "python-guards-observations",
+            "python-guards-guide",
+            "python-ml-contract-tests",
+            "python-ml-contract-python-tests",
+            "mlflow-capture",
+            "mlflow-python",
+            "lineage-contracts",
+            "selection-contracts"
+          ]
+        }
+      },
+      "teachingClassification": "DERIVED",
+      "narrativeNote": "Two independent retained experiments: JAX regression candidate MSE and scikit-learn digits data lineage. This run repeats contract checks, not numerical training or evaluation. The facade reuses existing TypeScript contracts and native capture/backtracking.",
+      "nextCard": {
+        "title": "Check the winner and data use from Python",
+        "why": "Is a passing score enough to select a model?",
+        "after": "Refuse the wrong choice and contaminated fit, then inspect their saved inputs.",
+        "classification": "DERIVED",
+        "sourceIds": [
+          "python-guards-outcome",
+          "python-guards-recording",
+          "python-guards-native",
+          "python-guards-workflow",
+          "python-guards-observations",
+          "python-guards-guide",
+          "python-ml-contract-tests",
+          "python-ml-contract-python-tests",
+          "mlflow-capture",
+          "mlflow-python",
+          "lineage-contracts",
+          "selection-contracts"
+        ]
+      },
+      "index": 28,
+      "clickIndex": 56,
       "nodeIds": [
         "fp",
         "compute",
@@ -7246,6 +7569,17 @@
             "release-workflow",
             "release-publisher"
           ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The Python facade now calls the same selection and data-lineage contracts over two independently retained experiments. The wrong candidate can pass its own metric gate and still fail selection; equal digits accuracies do not excuse using validation rows in preprocessing fit. Missing lineage evidence remains unknown.",
+          "sourceIds": [
+            "python-guards-outcome",
+            "python-guards-native",
+            "python-guards-observations",
+            "mlflow-capture",
+            "mlflow-python"
+          ]
         }
       ],
       "storyText": {
@@ -7369,8 +7703,8 @@
           "release-contracts"
         ]
       },
-      "index": 28,
-      "clickIndex": 56,
+      "index": 29,
+      "clickIndex": 58,
       "nodeIds": [
         "fp",
         "compute",
@@ -8983,14 +9317,14 @@
       "note": "Generic saved-result reader, native tool reuse and capture limits",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/backtracking-guide.md",
-      "sha256": "7ceaa0e53b2f39220dcca3a46c7f4b625b0380fceeef72ef79352b6c07b9fb4b",
+      "sha256": "618e88f4ba543b86dcb7348705aba689687c8339852cf205bf1340182de7b092",
       "bytes": 6502,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/backtracking-guide.md",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/backtracking-guide.md",
-        "sha256": "cbb78fa33e188782e7b2e75326a2e85409068cc351c3364e9343cee1c77ed40c",
+        "sha256": "7f5169c4135991dcbc1ad32f24653b9b779d162cd0105610d49b0a182ea1f300",
         "bytes": 6670,
         "pathsProjected": 0,
         "linksProjected": 3,
@@ -9264,15 +9598,15 @@
       "note": "Optional Node host over native foottrace write APIs and existing ML contracts",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/mlflow-capture.ts.txt",
-      "sha256": "5e4beb3387cb51344460e25c2ccc8f501e422b144e3b34238e1d36e72b69ee1e",
-      "bytes": 14410,
+      "sha256": "fdf2755f387bf40be117accadc53a349927d0f06cadf920dbb039534061b7d54",
+      "bytes": 16377,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/mlflow-capture.ts.txt",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/mlflow-capture.ts.txt",
-        "sha256": "5e4beb3387cb51344460e25c2ccc8f501e422b144e3b34238e1d36e72b69ee1e",
-        "bytes": 14410,
+        "sha256": "fdf2755f387bf40be117accadc53a349927d0f06cadf920dbb039534061b7d54",
+        "bytes": 16377,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
@@ -9284,15 +9618,15 @@
       "note": "Standard-library Python capture facade and injected MLflow artifact binding",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/mlflow-python.py.txt",
-      "sha256": "ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d",
-      "bytes": 23847,
+      "sha256": "3ee0ea7886428dbc20707ec2adcee14bcc4dd0fd510db7b2887361c282fdbf37",
+      "bytes": 25589,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/mlflow-python.py.txt",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/mlflow-python.py.txt",
-        "sha256": "ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d",
-        "bytes": 23847,
+        "sha256": "3ee0ea7886428dbc20707ec2adcee14bcc4dd0fd510db7b2887361c282fdbf37",
+        "bytes": 25589,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
@@ -9364,17 +9698,17 @@
       "note": "Python and MLflow integration responsibilities, dependencies and limits",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/mlflow-guide.md",
-      "sha256": "f037b47224d5ed4597164a0f03cb4314b21d95d9616b22fd0990d34dbdd0f554",
-      "bytes": 9769,
+      "sha256": "a64fe3d53e33c06c4bb21680fb5359c38a3b52e0b61358524424d428c52acf22",
+      "bytes": 10602,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/mlflow-guide.md",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/mlflow-guide.md",
-        "sha256": "26074b426c20c3d8405d8da1b95e22d7208da6106aecf24891e7ed241875e219",
-        "bytes": 10105,
+        "sha256": "845ebaab1520c37cd80782dc8fe232b873044468088b20d2ab70ac682b4cbd44",
+        "bytes": 11050,
         "pathsProjected": 0,
-        "linksProjected": 6,
+        "linksProjected": 8,
         "byteIdenticalToRetainedSource": false
       }
     },
@@ -9405,15 +9739,15 @@
       "note": "Current beta SDK entry points and zero npm root runtime dependencies",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/mlflow-package.json",
-      "sha256": "e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595",
-      "bytes": 3350,
+      "sha256": "d84791095f96f86867abce3fd6682212fb54b170fa70b24198af554c40bf9b62",
+      "bytes": 3665,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/mlflow-package.json",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/mlflow-package.json",
-        "sha256": "e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595",
-        "bytes": 3350,
+        "sha256": "d84791095f96f86867abce3fd6682212fb54b170fa70b24198af554c40bf9b62",
+        "bytes": 3665,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
@@ -9545,17 +9879,17 @@
       "note": "Python package installation and explicit optional Node runtime guide",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/python-install-guide.md",
-      "sha256": "9ded128193d0c2e5d942ad0be4a6395a1cb9d9d6ecc58fe3ae7e6bd0090d15d2",
-      "bytes": 5223,
+      "sha256": "9a4bf1782134b60f46e0b98718bede47af8d1e36da1a1e764b4d6d9f71d995a3",
+      "bytes": 9079,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/python-install-guide.md",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/python-install-guide.md",
-        "sha256": "fb4d6a1150d47d09ef6e6c1b9842a0dee6379120ebf1e2641c17ab44bacc4ad3",
-        "bytes": 5335,
+        "sha256": "f25a28c1e4ff2960c8ab6ad694f045dbf6546d2275e4298fc75a800d29518e70",
+        "bytes": 9527,
         "pathsProjected": 0,
-        "linksProjected": 2,
+        "linksProjected": 8,
         "byteIdenticalToRetainedSource": false
       }
     },
@@ -9566,15 +9900,15 @@
       "note": "Explicit pinned helper installation and read-only doctor implementation",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/python-setup.py.txt",
-      "sha256": "c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8",
-      "bytes": 15503,
+      "sha256": "36bda0bd7b735f42cac4895320266a0469cbd6afbe4b42ba780ea0a8c65fb7cc",
+      "bytes": 15665,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/python-setup.py.txt",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/python-setup.py.txt",
-        "sha256": "c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8",
-        "bytes": 15503,
+        "sha256": "36bda0bd7b735f42cac4895320266a0469cbd6afbe4b42ba780ea0a8c65fb7cc",
+        "bytes": 15665,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
@@ -9655,6 +9989,367 @@
         "path": "evidence/python-adoption-runner.py.txt",
         "sha256": "a57ff39bdb8622baec5967c72ca4223e37dd0f73d5ae2763360b5e75454a820a",
         "bytes": 11299,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-outcome",
+      "path": "evidence/python-guards-outcome.json",
+      "label": "Python-called native selection and lineage decisions over two separate retained experiments",
+      "note": "Python-called native selection and lineage decisions over two separate retained experiments",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-outcome.json",
+      "sha256": "1c7a860aa0c5c7cd93eb9072d3935850b5607430e8aabbaf86b13b450f05be83",
+      "bytes": 46983,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-outcome.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-outcome.json",
+        "sha256": "1c7a860aa0c5c7cd93eb9072d3935850b5607430e8aabbaf86b13b450f05be83",
+        "bytes": 46983,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-recording",
+      "path": "evidence/python-guards-recording.json",
+      "label": "Live Python scope reads, receipt construction and guard decisions recorded by native foottrace",
+      "note": "Live Python scope reads, receipt construction and guard decisions recorded by native foottrace",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-recording.json",
+      "sha256": "d3369de8e96408d10483976ee77c9266301085eb3422d3b10df6fa1672461e0f",
+      "bytes": 1010583,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-recording.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-recording.json",
+        "sha256": "d3369de8e96408d10483976ee77c9266301085eb3422d3b10df6fa1672461e0f",
+        "bytes": 1010583,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-native",
+      "path": "evidence/python-guards-native.json",
+      "label": "Saved-only native investigation and evidence agreement for Python ML guards",
+      "note": "Saved-only native investigation and evidence agreement for Python ML guards",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-native.json",
+      "sha256": "7fb6ece28421e774dc12024afd3dcafd96557ea06d3831f29822f0c3d0bda6b0",
+      "bytes": 17405,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-native.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-native.json",
+        "sha256": "7fb6ece28421e774dc12024afd3dcafd96557ea06d3831f29822f0c3d0bda6b0",
+        "bytes": 17405,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-workflow",
+      "path": "evidence/python-guards-workflow.py.txt",
+      "label": "Python orchestration over retained candidate observations and separately retained digits lineage",
+      "note": "Python orchestration over retained candidate observations and separately retained digits lineage",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-workflow.py.txt",
+      "sha256": "f806c8a65247f18eb5a4d671c136d9841908c18f4dc4f51c3938bea5f200cb37",
+      "bytes": 17256,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-workflow.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-workflow.py.txt",
+        "sha256": "f806c8a65247f18eb5a4d671c136d9841908c18f4dc4f51c3938bea5f200cb37",
+        "bytes": 17256,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-observations",
+      "path": "evidence/python-guards-observations.json",
+      "label": "Retained JAX candidate MSE and separate scikit-learn digits fit-input observations",
+      "note": "Retained JAX candidate MSE and separate scikit-learn digits fit-input observations",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-observations.json",
+      "sha256": "ec5f57ba163c94a4e9a56a7ad3bfae7f70fef9031baade4fe7d65458afcee974",
+      "bytes": 41833,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-observations.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-observations.json",
+        "sha256": "ec5f57ba163c94a4e9a56a7ad3bfae7f70fef9031baade4fe7d65458afcee974",
+        "bytes": 41833,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-guide",
+      "path": "evidence/python-guards-guide.md",
+      "label": "Python selection and lineage proof responsibilities and limits",
+      "note": "Python selection and lineage proof responsibilities and limits",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-guide.md",
+      "sha256": "92dc1999b2e23ddf23dc3a4e03d6e4879692be229c62624b9aeb48eabae2e00f",
+      "bytes": 3932,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-guide.md",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-guide.md",
+        "sha256": "a7bc2c62a9b8c90ff1ea76531afd8a35fa1759dea61a5ca043ba1bd7f48b02ee",
+        "bytes": 4111,
+        "pathsProjected": 0,
+        "linksProjected": 3,
+        "byteIdenticalToRetainedSource": false
+      }
+    },
+    {
+      "id": "python-ml-contract-tests",
+      "path": "evidence/python-ml-contract-tests.mjs.txt",
+      "label": "Real Python-to-native contract parity, independent evidence conflicts and recorded-input tests",
+      "note": "Real Python-to-native contract parity, independent evidence conflicts and recorded-input tests",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-ml-contract-tests.mjs.txt",
+      "sha256": "17d3fd1d873e7d3e993db6f5e5a99d1795e1507c09761cd628167ef368787b77",
+      "bytes": 15367,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-ml-contract-tests.mjs.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-ml-contract-tests.mjs.txt",
+        "sha256": "17d3fd1d873e7d3e993db6f5e5a99d1795e1507c09761cd628167ef368787b77",
+        "bytes": 15367,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-ml-contract-python-tests",
+      "path": "evidence/python-ml-contract-python-tests.py.txt",
+      "label": "Standard-library Python helper lifecycle, JSON and native-error/discard tests",
+      "note": "Standard-library Python helper lifecycle, JSON and native-error/discard tests",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-ml-contract-python-tests.py.txt",
+      "sha256": "d324ba2d1b5457e4bc1e25df0ee3cabcf90a1c459880f251b3d0c17b3e9043f3",
+      "bytes": 4996,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-ml-contract-python-tests.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-ml-contract-python-tests.py.txt",
+        "sha256": "d324ba2d1b5457e4bc1e25df0ee3cabcf90a1c459880f251b3d0c17b3e9043f3",
+        "bytes": 4996,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-saved-verification",
+      "path": "evidence/python-guards-saved-verification.json",
+      "label": "Read-only saved-result consistency checks for the Python guard proof",
+      "note": "Read-only saved-result consistency checks for the Python guard proof",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-saved-verification.json",
+      "sha256": "70e2bc56918deed2cace750363945cc02f2264b64322f8845fe744bcb624154e",
+      "bytes": 678,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-saved-verification.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-saved-verification.json",
+        "sha256": "70e2bc56918deed2cace750363945cc02f2264b64322f8845fe744bcb624154e",
+        "bytes": 678,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-extraction",
+      "path": "evidence/python-guards-extraction.py.txt",
+      "label": "Explicit projection and original artifact checks for the two independent retained experiments",
+      "note": "Explicit projection and original artifact checks for the two independent retained experiments",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-extraction.py.txt",
+      "sha256": "e06c4db54d74a5fcada4e2af858cd7cd376c6b0329e5a0bf41f192e06534b8e6",
+      "bytes": 8460,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-extraction.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-extraction.py.txt",
+        "sha256": "e06c4db54d74a5fcada4e2af858cd7cd376c6b0329e5a0bf41f192e06534b8e6",
+        "bytes": 8460,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-verify-code",
+      "path": "evidence/python-guards-verify-code.py.txt",
+      "label": "Standard-library saved-result verifier; no native guard or numerical work repeated",
+      "note": "Standard-library saved-result verifier; no native guard or numerical work repeated",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-verify-code.py.txt",
+      "sha256": "15487b8f3347b7c3d5edbda6faed2449ded757c4b8735f7b1fc58d6934e2f841",
+      "bytes": 2932,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-verify-code.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-verify-code.py.txt",
+        "sha256": "15487b8f3347b7c3d5edbda6faed2449ded757c4b8735f7b1fc58d6934e2f841",
+        "bytes": 2932,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-investigator",
+      "path": "evidence/python-guards-investigator.mjs.txt",
+      "label": "Existing native toolpack investigation over the saved Python guard record",
+      "note": "Existing native toolpack investigation over the saved Python guard record",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-investigator.mjs.txt",
+      "sha256": "fa1570da0e04ed1762c8151a7f957fe4a8304fa7f73a53cbcea6310c7fd32cf9",
+      "bytes": 6953,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-investigator.mjs.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-investigator.mjs.txt",
+        "sha256": "fa1570da0e04ed1762c8151a7f957fe4a8304fa7f73a53cbcea6310c7fd32cf9",
+        "bytes": 6953,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-clean-split",
+      "path": "evidence/python-guards-clean-split.json",
+      "label": "Retained digits clean split row-membership evidence",
+      "note": "Retained digits clean split row-membership evidence",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-clean-split.json",
+      "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5",
+      "bytes": 8463,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-clean-split.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-clean-split.json",
+        "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5",
+        "bytes": 8463,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-clean-memberships",
+      "path": "evidence/python-guards-clean-memberships.json",
+      "label": "Retained digits clean memberships row-membership evidence",
+      "note": "Retained digits clean memberships row-membership evidence",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-clean-memberships.json",
+      "sha256": "87a303d4f270b42892456d0512ddde806536b1a1a3a68d98b9ef450a2f15de82",
+      "bytes": 6032,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-clean-memberships.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-clean-memberships.json",
+        "sha256": "87a303d4f270b42892456d0512ddde806536b1a1a3a68d98b9ef450a2f15de82",
+        "bytes": 6032,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-clean-overlap",
+      "path": "evidence/python-guards-clean-overlap.json",
+      "label": "Retained digits clean overlap row-membership evidence",
+      "note": "Retained digits clean overlap row-membership evidence",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-clean-overlap.json",
+      "sha256": "b57a9d2e60dcd6c4899dffed5bbeb5b70c8bf73578ffc39653318d8dd1f9bbff",
+      "bytes": 1469,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-clean-overlap.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-clean-overlap.json",
+        "sha256": "b57a9d2e60dcd6c4899dffed5bbeb5b70c8bf73578ffc39653318d8dd1f9bbff",
+        "bytes": 1469,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-faulty-split",
+      "path": "evidence/python-guards-faulty-split.json",
+      "label": "Retained digits faulty split row-membership evidence",
+      "note": "Retained digits faulty split row-membership evidence",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-faulty-split.json",
+      "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5",
+      "bytes": 8463,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-faulty-split.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-faulty-split.json",
+        "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5",
+        "bytes": 8463,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-faulty-memberships",
+      "path": "evidence/python-guards-faulty-memberships.json",
+      "label": "Retained digits faulty memberships row-membership evidence",
+      "note": "Retained digits faulty memberships row-membership evidence",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-faulty-memberships.json",
+      "sha256": "0260d2fcd2600dcc376e7aa3be256295c079acad9c16fc617476ae7a354f348c",
+      "bytes": 7676,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-faulty-memberships.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-faulty-memberships.json",
+        "sha256": "0260d2fcd2600dcc376e7aa3be256295c079acad9c16fc617476ae7a354f348c",
+        "bytes": 7676,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-guards-faulty-overlap",
+      "path": "evidence/python-guards-faulty-overlap.json",
+      "label": "Retained digits faulty overlap row-membership evidence",
+      "note": "Retained digits faulty overlap row-membership evidence",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-guards-faulty-overlap.json",
+      "sha256": "50c0e9b1be3038d357a8c7d7d03697239e057abf857912ea95dfe5c717ac44d0",
+      "bytes": 2727,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-guards-faulty-overlap.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-guards-faulty-overlap.json",
+        "sha256": "50c0e9b1be3038d357a8c7d7d03697239e057abf857912ea95dfe5c717ac44d0",
+        "bytes": 2727,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
@@ -9862,6 +10557,13 @@
       },
       {
         "click": 57,
+        "type": "fade",
+        "seconds": 0.8,
+        "ease": "inOut",
+        "p": {}
+      },
+      {
+        "click": 59,
         "type": "fade",
         "seconds": 0.8,
         "ease": "inOut",

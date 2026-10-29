@@ -1,0 +1,23 @@
+{
+  "schema": "footprint-ml-python-guards-verification/v1",
+  "passed": true,
+  "checksPassed": 11,
+  "checks": [
+    "outcome-equals-captured-scope",
+    "wrong-quality-and-selection",
+    "reversed-quality-and-selection",
+    "correct-quality-and-selection",
+    "complete-independent-minimum-comparison",
+    "clean-actual-membership-and-lineage",
+    "faulty-actual-membership-and-lineage",
+    "receiptMissing-stays-unknown",
+    "overlapMissing-stays-unknown",
+    "no-repeated-numerical-or-publication-work",
+    "original-output-files-unchanged"
+  ],
+  "execution": {
+    "savedJsonOnly": true,
+    "nativeGuardRepeated": false,
+    "numericalWorkRepeated": false
+  }
+}

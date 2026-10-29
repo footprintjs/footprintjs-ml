@@ -7,16 +7,16 @@
   "hashScope": "files hashes cover published bytes. originalRetainedSource hashes cover private retained authoring inputs. The manifest itself is intentionally excluded from its own hash list. These checksums are integrity references, not signatures.",
   "projection": "Only local path strings, repository-document link targets and publication-specific source/checksum descriptions are changed. Logical recorded digests, model IDs and numerical claims are retained.",
   "evidence": {
-    "count": 113,
-    "byteIdentical": 97,
+    "count": 131,
+    "byteIdentical": 114,
     "pathProjected": 13,
-    "documentLinksProjected": 3
+    "documentLinksProjected": 4
   },
   "validation": {
     "passed": true,
-    "staticLinksChecked": 119,
+    "staticLinksChecked": 137,
     "classicScriptsParsed": 9,
-    "embeddedSourceMappingsChecked": 452,
+    "embeddedSourceMappingsChecked": 524,
     "personalFilesystemPaths": 0,
     "localServerDependencies": 0,
     "credentialPatternMatches": 0,
@@ -1161,12 +1161,12 @@
     {
       "path": "evidence/backtracking-guide.md",
       "published": {
-        "sha256": "cbb78fa33e188782e7b2e75326a2e85409068cc351c3364e9343cee1c77ed40c",
+        "sha256": "7f5169c4135991dcbc1ad32f24653b9b779d162cd0105610d49b0a182ea1f300",
         "bytes": 6670
       },
       "originalRetainedSource": {
         "path": "evidence/backtracking-guide.md",
-        "sha256": "7ceaa0e53b2f39220dcca3a46c7f4b625b0380fceeef72ef79352b6c07b9fb4b",
+        "sha256": "618e88f4ba543b86dcb7348705aba689687c8339852cf205bf1340182de7b092",
         "bytes": 6502
       },
       "projectionFlags": [
@@ -1365,13 +1365,13 @@
     {
       "path": "evidence/mlflow-capture.ts.txt",
       "published": {
-        "sha256": "5e4beb3387cb51344460e25c2ccc8f501e422b144e3b34238e1d36e72b69ee1e",
-        "bytes": 14410
+        "sha256": "fdf2755f387bf40be117accadc53a349927d0f06cadf920dbb039534061b7d54",
+        "bytes": 16377
       },
       "originalRetainedSource": {
         "path": "evidence/mlflow-capture.ts.txt",
-        "sha256": "5e4beb3387cb51344460e25c2ccc8f501e422b144e3b34238e1d36e72b69ee1e",
-        "bytes": 14410
+        "sha256": "fdf2755f387bf40be117accadc53a349927d0f06cadf920dbb039534061b7d54",
+        "bytes": 16377
       },
       "projectionFlags": [],
       "byteIdenticalToRetainedSource": true
@@ -1379,13 +1379,13 @@
     {
       "path": "evidence/mlflow-python.py.txt",
       "published": {
-        "sha256": "ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d",
-        "bytes": 23847
+        "sha256": "3ee0ea7886428dbc20707ec2adcee14bcc4dd0fd510db7b2887361c282fdbf37",
+        "bytes": 25589
       },
       "originalRetainedSource": {
         "path": "evidence/mlflow-python.py.txt",
-        "sha256": "ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d",
-        "bytes": 23847
+        "sha256": "3ee0ea7886428dbc20707ec2adcee14bcc4dd0fd510db7b2887361c282fdbf37",
+        "bytes": 25589
       },
       "projectionFlags": [],
       "byteIdenticalToRetainedSource": true
@@ -1435,13 +1435,13 @@
     {
       "path": "evidence/mlflow-guide.md",
       "published": {
-        "sha256": "26074b426c20c3d8405d8da1b95e22d7208da6106aecf24891e7ed241875e219",
-        "bytes": 10105
+        "sha256": "845ebaab1520c37cd80782dc8fe232b873044468088b20d2ab70ac682b4cbd44",
+        "bytes": 11050
       },
       "originalRetainedSource": {
         "path": "evidence/mlflow-guide.md",
-        "sha256": "f037b47224d5ed4597164a0f03cb4314b21d95d9616b22fd0990d34dbdd0f554",
-        "bytes": 9769
+        "sha256": "a64fe3d53e33c06c4bb21680fb5359c38a3b52e0b61358524424d428c52acf22",
+        "bytes": 10602
       },
       "projectionFlags": [
         "repository-document-links"
@@ -1465,13 +1465,13 @@
     {
       "path": "evidence/mlflow-package.json",
       "published": {
-        "sha256": "e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595",
-        "bytes": 3350
+        "sha256": "d84791095f96f86867abce3fd6682212fb54b170fa70b24198af554c40bf9b62",
+        "bytes": 3665
       },
       "originalRetainedSource": {
         "path": "evidence/mlflow-package.json",
-        "sha256": "e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595",
-        "bytes": 3350
+        "sha256": "d84791095f96f86867abce3fd6682212fb54b170fa70b24198af554c40bf9b62",
+        "bytes": 3665
       },
       "projectionFlags": [],
       "byteIdenticalToRetainedSource": true
@@ -1569,13 +1569,13 @@
     {
       "path": "evidence/python-install-guide.md",
       "published": {
-        "sha256": "fb4d6a1150d47d09ef6e6c1b9842a0dee6379120ebf1e2641c17ab44bacc4ad3",
-        "bytes": 5335
+        "sha256": "f25a28c1e4ff2960c8ab6ad694f045dbf6546d2275e4298fc75a800d29518e70",
+        "bytes": 9527
       },
       "originalRetainedSource": {
         "path": "evidence/python-install-guide.md",
-        "sha256": "9ded128193d0c2e5d942ad0be4a6395a1cb9d9d6ecc58fe3ae7e6bd0090d15d2",
-        "bytes": 5223
+        "sha256": "9a4bf1782134b60f46e0b98718bede47af8d1e36da1a1e764b4d6d9f71d995a3",
+        "bytes": 9079
       },
       "projectionFlags": [
         "repository-document-links"
@@ -1585,13 +1585,13 @@
     {
       "path": "evidence/python-setup.py.txt",
       "published": {
-        "sha256": "c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8",
-        "bytes": 15503
+        "sha256": "36bda0bd7b735f42cac4895320266a0469cbd6afbe4b42ba780ea0a8c65fb7cc",
+        "bytes": 15665
       },
       "originalRetainedSource": {
         "path": "evidence/python-setup.py.txt",
-        "sha256": "c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8",
-        "bytes": 15503
+        "sha256": "36bda0bd7b735f42cac4895320266a0469cbd6afbe4b42ba780ea0a8c65fb7cc",
+        "bytes": 15665
       },
       "projectionFlags": [],
       "byteIdenticalToRetainedSource": true
@@ -1653,15 +1653,269 @@
       "byteIdenticalToRetainedSource": true
     },
     {
+      "path": "evidence/python-guards-outcome.json",
+      "published": {
+        "sha256": "1c7a860aa0c5c7cd93eb9072d3935850b5607430e8aabbaf86b13b450f05be83",
+        "bytes": 46983
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-outcome.json",
+        "sha256": "1c7a860aa0c5c7cd93eb9072d3935850b5607430e8aabbaf86b13b450f05be83",
+        "bytes": 46983
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-recording.json",
+      "published": {
+        "sha256": "d3369de8e96408d10483976ee77c9266301085eb3422d3b10df6fa1672461e0f",
+        "bytes": 1010583
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-recording.json",
+        "sha256": "d3369de8e96408d10483976ee77c9266301085eb3422d3b10df6fa1672461e0f",
+        "bytes": 1010583
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-native.json",
+      "published": {
+        "sha256": "7fb6ece28421e774dc12024afd3dcafd96557ea06d3831f29822f0c3d0bda6b0",
+        "bytes": 17405
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-native.json",
+        "sha256": "7fb6ece28421e774dc12024afd3dcafd96557ea06d3831f29822f0c3d0bda6b0",
+        "bytes": 17405
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-workflow.py.txt",
+      "published": {
+        "sha256": "f806c8a65247f18eb5a4d671c136d9841908c18f4dc4f51c3938bea5f200cb37",
+        "bytes": 17256
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-workflow.py.txt",
+        "sha256": "f806c8a65247f18eb5a4d671c136d9841908c18f4dc4f51c3938bea5f200cb37",
+        "bytes": 17256
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-observations.json",
+      "published": {
+        "sha256": "ec5f57ba163c94a4e9a56a7ad3bfae7f70fef9031baade4fe7d65458afcee974",
+        "bytes": 41833
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-observations.json",
+        "sha256": "ec5f57ba163c94a4e9a56a7ad3bfae7f70fef9031baade4fe7d65458afcee974",
+        "bytes": 41833
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-guide.md",
+      "published": {
+        "sha256": "a7bc2c62a9b8c90ff1ea76531afd8a35fa1759dea61a5ca043ba1bd7f48b02ee",
+        "bytes": 4111
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-guide.md",
+        "sha256": "92dc1999b2e23ddf23dc3a4e03d6e4879692be229c62624b9aeb48eabae2e00f",
+        "bytes": 3932
+      },
+      "projectionFlags": [
+        "repository-document-links"
+      ],
+      "byteIdenticalToRetainedSource": false
+    },
+    {
+      "path": "evidence/python-ml-contract-tests.mjs.txt",
+      "published": {
+        "sha256": "17d3fd1d873e7d3e993db6f5e5a99d1795e1507c09761cd628167ef368787b77",
+        "bytes": 15367
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-ml-contract-tests.mjs.txt",
+        "sha256": "17d3fd1d873e7d3e993db6f5e5a99d1795e1507c09761cd628167ef368787b77",
+        "bytes": 15367
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-ml-contract-python-tests.py.txt",
+      "published": {
+        "sha256": "d324ba2d1b5457e4bc1e25df0ee3cabcf90a1c459880f251b3d0c17b3e9043f3",
+        "bytes": 4996
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-ml-contract-python-tests.py.txt",
+        "sha256": "d324ba2d1b5457e4bc1e25df0ee3cabcf90a1c459880f251b3d0c17b3e9043f3",
+        "bytes": 4996
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-saved-verification.json",
+      "published": {
+        "sha256": "70e2bc56918deed2cace750363945cc02f2264b64322f8845fe744bcb624154e",
+        "bytes": 678
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-saved-verification.json",
+        "sha256": "70e2bc56918deed2cace750363945cc02f2264b64322f8845fe744bcb624154e",
+        "bytes": 678
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-extraction.py.txt",
+      "published": {
+        "sha256": "e06c4db54d74a5fcada4e2af858cd7cd376c6b0329e5a0bf41f192e06534b8e6",
+        "bytes": 8460
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-extraction.py.txt",
+        "sha256": "e06c4db54d74a5fcada4e2af858cd7cd376c6b0329e5a0bf41f192e06534b8e6",
+        "bytes": 8460
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-verify-code.py.txt",
+      "published": {
+        "sha256": "15487b8f3347b7c3d5edbda6faed2449ded757c4b8735f7b1fc58d6934e2f841",
+        "bytes": 2932
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-verify-code.py.txt",
+        "sha256": "15487b8f3347b7c3d5edbda6faed2449ded757c4b8735f7b1fc58d6934e2f841",
+        "bytes": 2932
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-investigator.mjs.txt",
+      "published": {
+        "sha256": "fa1570da0e04ed1762c8151a7f957fe4a8304fa7f73a53cbcea6310c7fd32cf9",
+        "bytes": 6953
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-investigator.mjs.txt",
+        "sha256": "fa1570da0e04ed1762c8151a7f957fe4a8304fa7f73a53cbcea6310c7fd32cf9",
+        "bytes": 6953
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-clean-split.json",
+      "published": {
+        "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5",
+        "bytes": 8463
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-clean-split.json",
+        "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5",
+        "bytes": 8463
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-clean-memberships.json",
+      "published": {
+        "sha256": "87a303d4f270b42892456d0512ddde806536b1a1a3a68d98b9ef450a2f15de82",
+        "bytes": 6032
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-clean-memberships.json",
+        "sha256": "87a303d4f270b42892456d0512ddde806536b1a1a3a68d98b9ef450a2f15de82",
+        "bytes": 6032
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-clean-overlap.json",
+      "published": {
+        "sha256": "b57a9d2e60dcd6c4899dffed5bbeb5b70c8bf73578ffc39653318d8dd1f9bbff",
+        "bytes": 1469
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-clean-overlap.json",
+        "sha256": "b57a9d2e60dcd6c4899dffed5bbeb5b70c8bf73578ffc39653318d8dd1f9bbff",
+        "bytes": 1469
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-faulty-split.json",
+      "published": {
+        "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5",
+        "bytes": 8463
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-faulty-split.json",
+        "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5",
+        "bytes": 8463
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-faulty-memberships.json",
+      "published": {
+        "sha256": "0260d2fcd2600dcc376e7aa3be256295c079acad9c16fc617476ae7a354f348c",
+        "bytes": 7676
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-faulty-memberships.json",
+        "sha256": "0260d2fcd2600dcc376e7aa3be256295c079acad9c16fc617476ae7a354f348c",
+        "bytes": 7676
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-guards-faulty-overlap.json",
+      "published": {
+        "sha256": "50c0e9b1be3038d357a8c7d7d03697239e057abf857912ea95dfe5c717ac44d0",
+        "bytes": 2727
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-guards-faulty-overlap.json",
+        "sha256": "50c0e9b1be3038d357a8c7d7d03697239e057abf857912ea95dfe5c717ac44d0",
+        "bytes": 2727
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
       "path": "index.html",
       "published": {
-        "sha256": "3b14e2d789b84e0b0f2be5c9b1692222a12026bb5ef06847861a4342dbd459dd",
-        "bytes": 623904
+        "sha256": "734b377ca2335cbfea2d354e08c058f7bcad4f702035462dec079d6d01bc0c2c",
+        "bytes": 673293
       },
       "originalRetainedSource": {
         "path": "index.html",
-        "sha256": "6e3113910e395ee1935b50f5f17a4708c5a052cd5004f689c79cbf8bd9165f60",
-        "bytes": 518169
+        "sha256": "1385a12b29b1922677662f96630ec910f1d46278eef0fa10764d3f301b522238",
+        "bytes": 549366
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -1672,13 +1926,13 @@
     {
       "path": "technical-story.html",
       "published": {
-        "sha256": "5a3d123c3c6de12606a69034d24bef0654e320d83af8f0b57f176eef52166686",
-        "bytes": 936221
+        "sha256": "8f2a1dec8ef3879b3c29c7510429e6b0ead56a8215c7910f72d67c15069c22c8",
+        "bytes": 991415
       },
       "originalRetainedSource": {
         "path": "technical-story.html",
-        "sha256": "7133e5caba2189a044d2c4a8fc6dff513ce1c5eacf8d324284a0a0ccbfed2234",
-        "bytes": 830747
+        "sha256": "dc51e268364447675f50ef0903756e556fc39cdb9b911ad542d25dae1d3e59a5",
+        "bytes": 867749
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -1690,13 +1944,13 @@
     {
       "path": "presentation-manifest.json",
       "published": {
-        "sha256": "b590ee8db56be7bf37c80c1f34d05f5f252b7c7538fd08c6cadb19700d55c047",
-        "bytes": 366476
+        "sha256": "5b7d1e8b90df60d2377934517a1e9046bc24c1655ed9b8c260afd384b6ce5315",
+        "bytes": 399401
       },
       "originalRetainedSource": {
         "path": "presentation-manifest.json",
-        "sha256": "31d71464f526b48967d805dd0c1910a4d3a125ec718c0db22dec5d2ed5e4e9b6",
-        "bytes": 318693
+        "sha256": "0502630428169ebfa40de96681e752f6531351d90e5ef47bf188967b0227eccd",
+        "bytes": 343644
       },
       "projectionFlags": [
         "public-source-mappings",
@@ -1708,13 +1962,13 @@
     {
       "path": "EVIDENCE.md",
       "published": {
-        "sha256": "4dee1a1a9d03f546363207ffbcf375e27ee6f659bac73a9bb5dd33bb8cc3026a",
-        "bytes": 153168
+        "sha256": "d36c650de2abc9a456a961b331a33d14c61547afd383808ce656156d5b4a416a",
+        "bytes": 168960
       },
       "originalRetainedSource": {
         "path": "EVIDENCE.md",
-        "sha256": "1323f2cc2568d98e672619e4241d7303efca0dbf8c4c9a615b9ae4180ceb180b",
-        "bytes": 140698
+        "sha256": "69f2a6b5eb81d60124b9afa626d1d9b893e59e1e795906c5daeb36beb3059866",
+        "bytes": 154768
       },
       "projectionFlags": [
         "public-evidence-links",
@@ -1749,7 +2003,7 @@
     {
       "path": "README.md",
       "published": {
-        "sha256": "4f70fdcaea7f29f27b3ba956623942ef9e278adbc0deba89082723a3b28a1966",
+        "sha256": "9d07f0afe9ed54ab66a8721a8d9050b3b14f4c7b5e6611f4aa280a581ee355aa",
         "bytes": 2028
       },
       "projectionFlags": [],

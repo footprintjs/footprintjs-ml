@@ -136,10 +136,58 @@ with WorkflowCapture(path) as capture:
         decision=capture.check_release({**observed,'receipt':receipt,'policy':{'metric':'accuracy','operator':'gte','threshold':1.0},'now':1})
         assert decision['allowed'] is True and receipt['schemaVersion']==2
         scope['syntheticContractCheckPassed']=True
+    # These synthetic contracts exercise the installed facade, not numerical
+    # correctness or automatic provenance. Calls intentionally need no stage.
+    assert capture.read_evaluation_receipt(receipt)==receipt
+    make_artifact=lambda digit,label: {'kind':'artifact','path':label+'.json','sha256':digit*64,'bytes':1,'format':'install-smoke/synthetic/v1'}
+    training={**dataset,'handle':2,'rows':2,'shape':[2],'role':'train','artifact':make_artifact('6','synthetic-train')}
+    split=make_artifact('7','synthetic-split')
+    observed_lineage={'lineageId':'synthetic-lineage','createdAt':1,'modelRef':model,'datasetRef':dataset,
+      'trainingDatasetRef':training,'splitManifest':split,
+      'overlap':{'evidenceArtifact':make_artifact('8','synthetic-membership'),'trainEvaluationRows':0,'preprocessingEvaluationRows':0},
+      'preprocessing':{'artifact':make_artifact('9','synthetic-scaler'),'fitDatasetRefs':[training]}}
+    lineage=capture.create_data_lineage_receipt(observed_lineage)
+    assert capture.read_data_lineage_receipt(lineage)==lineage
+    lineage_request={'receipt':lineage,'modelRef':model,'datasetRef':dataset,'splitManifest':split,
+      'policy':{'trainingDatasetRef':training}}
+    missing_input={key:value for key,value in observed_lineage.items() if key not in ('overlap','preprocessing')}
+    missing_lineage=capture.create_data_lineage_receipt(missing_input)
+    leaked_lineage=capture.create_data_lineage_receipt({**observed_lineage,
+      'preprocessing':{**observed_lineage['preprocessing'],'fitDatasetRefs':[dataset]}})
+    lineage_requests={'allowed':lineage_request,'unknown':{**lineage_request,'receipt':missing_lineage},
+      'leaked':{**lineage_request,'receipt':leaked_lineage}}
+    lineage_decisions={name:capture.check_data_lineage(request) for name,request in lineage_requests.items()}
+    assert lineage_decisions['allowed']['allowed'] is True
+    assert lineage_decisions['unknown']['allowed'] is False and lineage_decisions['unknown']['status']=='unknown'
+    assert lineage_decisions['leaked']['allowed'] is False and lineage_decisions['leaked']['status']=='deny'
+    model_b={**model,'handle':2,'originArtifact':make_artifact('4','synthetic-model-b'),
+      'inferenceIdentity':{**model['inferenceIdentity'],'sha256':'5'*64}}
+    receipt_b=capture.create_evaluation_receipt({**observed,'modelRef':model_b,'evaluationId':'synthetic-evaluation-b','metrics':{'accuracy':0.5}})
+    manifest_input={'kind':'selection-manifest','schemaVersion':1,'experimentId':'synthetic-comparison',
+      'candidates':[{'candidateId':'a','configuration':{'steps':1}},{'candidateId':'b','configuration':{'steps':2}}],
+      'comparison':{'datasetRef':dataset,'preprocessingVersion':'synthetic/v1','evaluationMethodVersion':'synthetic/v1','parameters':{}},
+      'policy':{'metric':'accuracy','direction':'max','tieBreak':'candidate-id-ascending'}}
+    declared=capture.read_selection_manifest(manifest_input)
+    independent_results=[{'candidateId':'a','configuration':{'steps':1},'modelRef':model,'evaluation':receipt},
+      {'candidateId':'b','configuration':{'steps':2},'modelRef':model_b,'evaluation':receipt_b}]
+    selection=capture.create_selection_receipt({'selectionId':'synthetic-selection','createdAt':1,
+      'manifest':declared,'results':independent_results})
+    assert capture.read_selection_receipt(selection)==selection and selection['selectedCandidateId']=='a'
+    selection_request={'receipt':selection,'manifest':declared,'results':independent_results,'now':1}
+    selection_requests={'wrong':{**selection_request,'modelRef':model_b},'correct':{**selection_request,'modelRef':model}}
+    selection_decisions={name:capture.check_selection(request) for name,request in selection_requests.items()}
+    assert selection_decisions['wrong']['allowed'] is False and selection_decisions['wrong']['status']=='deny'
+    assert selection_decisions['correct']['allowed'] is True
+    with capture.stage('installed-lineage-selection-contracts') as scope:
+        scope['syntheticLineageContractCheckPassed']=True
+        scope['syntheticSelectionContractCheckPassed']=True
 recording=json.loads(path.read_bytes())
-print(json.dumps({'recordingWritten':True,'schema':recording['schema'],'state':recording['snapshot']['sharedState']}))
+print(json.dumps({'recordingWritten':True,'schema':recording['schema'],'state':recording['snapshot']['sharedState'],
+  'guardRequests':{'lineage':lineage_requests,'selection':selection_requests},
+  'guardDecisions':{'lineage':lineage_decisions,'selection':selection_decisions}}))
 ''', recording], root))
-        if execution["state"]["result"] != 14 or execution["state"].get("syntheticContractCheckPassed") is not True:
+        if execution["state"]["result"] != 14 or not all(execution["state"].get(key) is True for key in
+                ("syntheticContractCheckPassed", "syntheticLineageContractCheckPassed", "syntheticSelectionContractCheckPassed")):
             raise ValueError("Installed Python capture did not preserve tracked state")
         original_recording = recording.read_bytes()
         # Exercise the installed SDK's real CLI under Node's permission model.
@@ -148,6 +196,16 @@ print(json.dumps({'recordingWritten':True,'schema':recording['schema'],'state':r
         node = shutil.which("node")
         if not node:
             raise ValueError("Node.js is needed for the explicit native investigation")
+        # Compare the facade's JSON decisions with direct public TypeScript
+        # guards from the installed SDK, using the same explicit inputs/time.
+        direct_guards = json.loads(run(node, ["--input-type=module", "-e", r"""
+import {checkDataLineage,checkSelection} from 'footprintjs-ml';
+const requests=JSON.parse(process.argv[1]);
+const apply=(values,guard)=>Object.fromEntries(Object.entries(values).map(([name,input])=>[name,guard(input)]));
+console.log(JSON.stringify({lineage:apply(requests.lineage,checkDataLineage),selection:apply(requests.selection,checkSelection)}));
+""", json.dumps(execution["guardRequests"])], runtime))
+        if direct_guards != execution["guardDecisions"]:
+            raise ValueError("Installed Python guard decisions differ from the direct TypeScript contracts")
         cli = runtime / "node_modules" / "footprintjs-ml" / "examples" / "quickstart" / "cli.mjs"
         permission = ("--experimental-permission" if doctor["node"]["major"] == 22
                       and doctor["node"]["minor"] < 13 else "--permission")
@@ -175,6 +233,9 @@ print(json.dumps({'recordingWritten':True,'schema':recording['schema'],'state':r
                            "doctorPassed": True, "idempotentSetup": True, "missingRuntimeActionable": True,
                            "defaultVenvRuntimeDiscovery": True, "installedLiveCapture": True,
                            "nativeSyntheticReceiptAndGuard": True,
+                           "nativePythonLineageAllowUnknownAndDeny": True,
+                           "nativePythonSelectionWrongDeniedWinnerAllowed": True,
+                           "pythonGuardDecisionsMatchPublicTypeScript": True,
                            "nativeCliBacktracking": True, "investigatorChildProcessesForbidden": True,
                            "installedPythonInvestigationCommand": True,
                            "recordingUnchangedAfterInvestigation": True,
@@ -187,6 +248,8 @@ print(json.dumps({'recordingWritten':True,'schema':recording['schema'],'state':r
                 "doctor": doctor, "missingRuntime": missing,
                 "investigation": {"report": native_report, "stdout": native_stdout,
                                   "pythonCommand": python_investigation},
+                "guardParity": {"sameJsonDecisions": True, "directTypeScript": direct_guards,
+                                "syntheticCases": {"lineage": 3, "selection": 2}},
                 "execution": execution, "boundaries": ["This install smoke starts no numerical trainer or MLflow service.",
                     "Explicit native setup may fetch the pinned Node runtime dependencies; importing the wheel never installs them."]}
 
