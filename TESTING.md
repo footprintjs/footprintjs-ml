@@ -4,6 +4,22 @@ Use Node.js 22 or 24 and Python 3.11 or newer. Install the pinned development de
 
 The optional import-graph observation uses Node registerHooks and explicitly skips on Node versions without that API. Python protocol tests explicitly skip when their configured Python executable is unavailable; CI installs Python so these run there. The fixture worker tests are not mathematical validation of a numerical framework.
 
+## Beta 9 reliability regressions
+
+The [evidence regressions](https://github.com/footprintjs/footprintjs-ml/blob/main/tests/review-evidence-hardening.test.mjs), [platform regressions](https://github.com/footprintjs/footprintjs-ml/blob/main/tests/review-platform-hardening.test.mjs) and [Python I/O regressions](https://github.com/footprintjs/footprintjs-ml/blob/main/python/tests/test_review_io_hardening.py) cover seven fixes:
+
+| Boundary | Regression scope |
+| --- | --- |
+| Investigation output | Every report mode preserves a colliding source recording; source hardlinks/symlinks and unrelated existing files are refused; normal repeat reports remain replaceable. Oversized prior report targets are refused without replacement. |
+| Approval policy | Misspelled or unsupported fields, including `maxAgeMS`, cannot silently drop a constraint; the supported `maxAgeMs` expiry check remains enforced. |
+| Legacy trainer handles | A successful evaluation remembers an externally created legacy handle; a later checkpoint change is refused. A failed evaluation does not register unvalidated output. |
+| Publisher lock cleanup | An injected owner-file write failure preserves its original error and removes the owned lock; a subsequent publication and idempotent acknowledgement succeed. |
+| File consumption | Oversized sparse files are refused before content reads; growth, shrinkage and FIFOs fail closed. Registry JSON accepts its 16 MiB boundary and rejects an oversized update without replacing committed state. Python checkpoint and bound MLflow-cache reads have separate descriptor/bounded-read checks. |
+| Saved envelopes | Both readers refuse conflicting `snapshot`/`footprint` aliases before opening tools, refuse accessors without invoking them, and accept equivalent aliases with reordered object keys. |
+| Conformance report | A returned report naming a different plan is rejected; equivalent plans with reordered object keys remain accepted. This checks correspondence, not whether an untrusted runner truthfully executed the plan. |
+
+These tests exercise existing evidence and I/O contracts without numerical training. They do not establish hostile-filesystem safety, power-loss durability, streaming model transfer or complete trainer semantics.
+
 ## Saved-result backtracking
 
 The generic reader delegates to the installed public Lens toolpack. Its contract tests check recording-envelope normalization, required snapshot data, native response preservation and exclusive commit-index bounds. The [selection backtracking proof](examples/selection-backtracking/README.md) separately checks an actual recorded read chain through the native toolpack.

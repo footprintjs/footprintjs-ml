@@ -59,7 +59,9 @@ with WorkflowCapture("./recording.json") as capture:
 }
 ```
 
-The values above illustrate the shape. `read_bytes(ref)` rechecks the bound digest and length, then returns that same checked buffer. It refuses altered cache contents and references that were not bound by that `MlflowArtifacts` instance. `local_path(ref)` verifies before returning a path, but a subsequent file open can observe a later change. Prefer `read_bytes` at the actual consumption boundary.
+The values above illustrate the shape. `read_bytes(ref)` checks the opened regular-file descriptor's size against the bound length before reading its contents. Its read is bounded to that size with a one-byte growth probe, and observed size/timestamp changes are refused. It rechecks the digest and returns that same checked buffer. It refuses altered cache contents and references that were not bound by that `MlflowArtifacts` instance. `local_path(ref)` verifies before returning a path, but a subsequent file open can observe a later change. Prefer `read_bytes` at the actual consumption boundary.
+
+Initial binding measures the downloaded file in bounded chunks; it does not impose an SDK-wide artifact-size cap. `read_bytes` assembles the complete checked artifact in memory. Downloads and their size/resource limits remain the application's responsibility, and this trusted-local-cache profile does not establish hostile-filesystem protection or streaming numerical decoding.
 
 Hashes identify the bytes compared. They do not authenticate the original trainer, prove that the model is correct or establish that a predictor profile includes every relevant dependency. An MLflow run ID or tag is not an approval authority. Network configuration, credentials and download timeouts remain responsibilities of the injected client.
 

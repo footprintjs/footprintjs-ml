@@ -20,7 +20,7 @@ import sys
 import tempfile
 import threading
 import time
-from typing import Any
+from typing import Any, Iterator
 
 from footprint_ml_versions import SDK_VERSION, PYTHON_VERSION, FOOTTRACE_VERSION
 
@@ -493,10 +493,29 @@ def _open_regular(path: Path, root: Path | None = None) -> Any:
     try:
         if not stat.S_ISREG(os.fstat(descriptor).st_mode):
             raise ValueError("Artifact must be a regular file")
-        return os.fdopen(descriptor, "rb")
+        return os.fdopen(descriptor, "rb", buffering=0)
     except Exception:
         os.close(descriptor)
         raise
+
+
+def _checked_chunks(source: Any, expected_bytes: int | None = None,
+                    message: str = "Artifact changed while reading") -> Iterator[bytes]:
+    before = os.fstat(source.fileno())
+    if expected_bytes is not None and before.st_size != expected_bytes:
+        raise ValueError(message)
+    remaining = before.st_size
+    while remaining:
+        chunk = source.read(min(1_048_576, remaining))
+        if not chunk:
+            raise ValueError(message)
+        remaining -= len(chunk)
+        yield chunk
+    if source.read(1):
+        raise ValueError(message)
+    after = os.fstat(source.fileno())
+    if (after.st_size, after.st_mtime_ns, after.st_ctime_ns) != (before.st_size, before.st_mtime_ns, before.st_ctime_ns):
+        raise ValueError(message)
 
 
 class MlflowArtifacts:
@@ -532,7 +551,7 @@ class MlflowArtifacts:
         downloaded = Path(self.client.download_artifacts(run_id, artifact_path, dst_path=str(cache))).absolute()
         digest, count = hashlib.sha256(), 0
         with _open_regular(downloaded, cache) as source:
-            for chunk in iter(lambda: source.read(1_048_576), b""):
+            for chunk in _checked_chunks(source):
                 count += len(chunk)
                 digest.update(chunk)
         reference = {"kind": "mlflow-artifact", "schemaVersion": 1, "runId": run_id,
@@ -550,9 +569,9 @@ class MlflowArtifacts:
 
     def read_bytes(self, reference: dict[str, Any]) -> bytes:
         path, cache = self._bound(reference)
-        with _open_regular(path, cache) as source:
-            content = source.read()
         expected = reference["artifact"]
+        with _open_regular(path, cache) as source:
+            content = b"".join(_checked_chunks(source, expected["bytes"], "Downloaded artifact bytes changed after binding"))
         if len(content) != expected["bytes"] or hashlib.sha256(content).hexdigest() != expected["sha256"]:
             raise ValueError("Downloaded artifact bytes changed after binding")
         return content

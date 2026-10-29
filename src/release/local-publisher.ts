@@ -19,6 +19,8 @@ export interface LocalModelPublisher extends ModelPublisher{
   readState():Promise<LocalModelRegistry>;
 }
 const hash=(bytes:Uint8Array)=>createHash('sha256').update(bytes).digest('hex');
+const MAX_LOCAL_REGISTRY_BYTES=16*1024*1024;
+const REGISTRY_MARKER='local-model-registry/v1\n';
 const empty=():LocalModelRegistry=>({kind:'local-model-registry',schemaVersion:1,publications:[],targets:[],idempotency:[]});
 function digest(value:unknown,label:string):string{
   if(typeof value!=='string'||!/^[a-f0-9]{64}$/.test(value))fail('invalid-local-registry',label+' must be a lowercase SHA-256 digest');return value;
@@ -74,15 +76,24 @@ export function createLocalModelPublisher(options:{readonly root:string}):LocalM
       let info;try{info=await lstat(lock);}catch(inspect){if((inspect as NodeJS.ErrnoException).code==='ENOENT')continue;throw inspect;}
       if(!info.isDirectory()||info.isSymbolicLink())fail('invalid-local-registry','The publication lock is not a real directory');
       if(Date.now()>=until)fail('registry-lock-unavailable','Publication lock is busy or requires operator recovery');await new Promise(resolve=>setTimeout(resolve,20));}}
-    const owner=join(lock,'owner.json');let ownerWritten=false;
-    try{const file=await open(owner,safeOpenNew,0o600);try{await file.writeFile(JSON.stringify({token,pid:process.pid}));ownerWritten=true;}finally{await file.close();}
+    const owner=join(lock,'owner.json');let ownerCreated=false,primaryFailed=false;
+    try{const file=await open(owner,safeOpenNew,0o600);ownerCreated=true;let writeFailed=false;
+      try{await file.writeFile(JSON.stringify({token,pid:process.pid}));}catch(error){writeFailed=true;throw error;}
+      finally{try{await file.close();}catch(error){if(!writeFailed)throw error;}}
       return await operation(root);
-    }finally{if(ownerWritten)await unlink(owner);await rmdir(lock);}
+    }catch(error){primaryFailed=true;throw error;}
+    finally{let cleanupError:unknown;
+      try{if(ownerCreated)await unlink(owner);}catch(error){cleanupError=error;}
+      try{await rmdir(lock);}catch(error){cleanupError??=error;}
+      if(!primaryFailed&&cleanupError!==undefined)throw cleanupError;}
   };
   const writeLedger=async(root:string,state:LocalModelRegistry,beforeCommit?:()=>void)=>{
+    const serialized=canonicalJson(state as unknown as JsonValue)+'\n';
+    if(serialized.length>MAX_LOCAL_REGISTRY_BYTES||Buffer.byteLength(serialized,'utf8')>MAX_LOCAL_REGISTRY_BYTES)
+      fail('local-record-too-large','The local registry exceeds its 16 MiB metadata limit');
     const temporary=join(root,'.registry-'+process.pid+'-'+randomUUID()+'.tmp');let owned=false;
     try{const file=await open(temporary,safeOpenNew,0o600);owned=true;
-      try{await file.writeFile(canonicalJson(state as unknown as JsonValue)+'\n');}finally{await file.close();}
+      try{await file.writeFile(serialized);}finally{await file.close();}
       beforeCommit?.();await rename(temporary,join(root,'registry.json'));owned=false;
     }finally{if(owned)await unlink(temporary).catch(error=>{if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;});}
   };
@@ -90,7 +101,7 @@ export function createLocalModelPublisher(options:{readonly root:string}):LocalM
   // safe without acquiring/creating a lock. In particular lookup performs no
   // initialization, target update, file write or publication.
   const existingLedger=async(root:string):Promise<LocalModelRegistry|null>=>{
-    let bytes:Uint8Array;try{bytes=await readPlainFile(join(root,'registry.json'));}
+    let bytes:Uint8Array;try{bytes=await readPlainFile(join(root,'registry.json'),{maxBytes:MAX_LOCAL_REGISTRY_BYTES});}
     catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;
       try{await lstat(join(root,'registry.initialized'));fail('invalid-local-registry','The initialized registry document is missing');}
       catch(marker){if((marker as NodeJS.ErrnoException).code!=='ENOENT')throw marker;}
@@ -98,10 +109,11 @@ export function createLocalModelPublisher(options:{readonly root:string}):LocalM
     }
     let parsed:unknown;try{parsed=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));}catch{fail('invalid-local-registry','The registry document is corrupt');}
     const state=validateLedger(parsed);
-    let marker:Uint8Array;try{marker=await readPlainFile(join(root,'registry.initialized'));}
-    catch(error){if((error as NodeJS.ErrnoException).code==='ENOENT')fail('invalid-local-registry','The registry initialization marker is missing; operator recovery is required');throw error;}
-    if(new TextDecoder().decode(marker)!=='local-model-registry/v1\n')fail('invalid-local-registry','The registry initialization marker is corrupt');
-    for(const publication of state.publications){const content=await readPlainFile(join(root,publication.artifact.path));
+    let marker:Uint8Array;try{marker=await readPlainFile(join(root,'registry.initialized'),{expectedBytes:Buffer.byteLength(REGISTRY_MARKER,'utf8')});}
+    catch(error){if((error as NodeJS.ErrnoException).code==='ENOENT')fail('invalid-local-registry','The registry initialization marker is missing; operator recovery is required');
+      if((error as {code?:string}).code==='artifact-bytes-mismatch')fail('invalid-local-registry','The registry initialization marker is corrupt');throw error;}
+    if(new TextDecoder().decode(marker)!==REGISTRY_MARKER)fail('invalid-local-registry','The registry initialization marker is corrupt');
+    for(const publication of state.publications){const content=await readPlainFile(join(root,publication.artifact.path),{expectedBytes:publication.artifact.bytes});
       if(content.length!==publication.artifact.bytes||hash(content)!==publication.artifact.sha256)fail('artifact-bytes-mismatch','A published artifact differs from its stored identity');}
     return state;
   };
@@ -109,7 +121,7 @@ export function createLocalModelPublisher(options:{readonly root:string}):LocalM
     const state=await existingLedger(root);if(state!==null)return state;
     const initial=empty();await writeLedger(root,initial);
     const marker=await open(join(root,'registry.initialized'),safeOpenNew,0o600);
-    try{await marker.writeFile('local-model-registry/v1\n');}finally{await marker.close();}return detached(initial);
+    try{await marker.writeFile(REGISTRY_MARKER);}finally{await marker.close();}return detached(initial);
   };
   const acknowledgement=(state:LocalModelRegistry,approved:ModelPublicationPayload,claimed:string):ModelPublisherResult|null=>{
     const existing=state.idempotency.find(row=>row.key===approved.idempotencyKey);if(!existing)return null;
@@ -130,7 +142,7 @@ export function createLocalModelPublisher(options:{readonly root:string}):LocalM
       if(!info.isDirectory()||info.isSymbolicLink())fail('unsafe-artifact-root','The managed root must be a real directory');
       const state=await existingLedger(await realpath(requestedRoot));return state===null?null:acknowledgement(state,payload,claimed);
     }catch(error){const code=(error as {code?:string}).code??'local-publication-unconfirmed';
-      const denied=['invalid-local-record','invalid-local-registry','unsafe-artifact-root','unsafe-artifact-path','artifact-bytes-mismatch'].includes(code);
+      const denied=['invalid-local-record','invalid-local-registry','local-record-too-large','unsafe-artifact-root','unsafe-artifact-path','artifact-bytes-mismatch'].includes(code);
       return reject(denied?'deny':'unknown',code,error instanceof Error?error.message:'Historical publication could not be confirmed');}
   };
   const readState=()=>withLock(root=>readLedger(root));
@@ -160,7 +172,7 @@ export function createLocalModelPublisher(options:{readonly root:string}):LocalM
         await writeLedger(root,next,fresh);
         return detached({allowed:true,status:'published' as const,reasons:[reason('publication-committed','One local registry document atomically records publication, target and idempotency binding')],receipt:published});
       });}catch(error){const code=(error as {code?:string}).code??'local-publication-unconfirmed';
-        const denied=['invalid-local-record','invalid-local-registry','unsafe-artifact-path','artifact-bytes-mismatch','publication-expired'].includes(code);
+        const denied=['invalid-local-record','invalid-local-registry','local-record-too-large','unsafe-artifact-path','artifact-bytes-mismatch','publication-expired'].includes(code);
         return reject(denied?'deny':'unknown',code,error instanceof Error?error.message:'Local publication could not be confirmed');}
     }};
 }

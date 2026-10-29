@@ -22,6 +22,8 @@ export function checkRelease(input: ReleaseRequest): ReleaseDecision {
     coverage = receipt.schemaVersion === 1 ? 'checkpoint' : 'inference';
     checkedAt = finiteNumber(copy.now === undefined ? Date.now() : copy.now, 'now', 0);
     const raw = jsonObject(copy.policy, 'policy');
+    for (const key of Object.keys(raw)) if (!['metric', 'operator', 'threshold', 'maxAgeMs'].includes(key))
+      fail('invalid-policy', `Unsupported policy field: ${key}`);
     const metric = nonempty(raw.metric, 'policy.metric');
     if (raw.operator !== 'gte' && raw.operator !== 'lte') fail('invalid-policy', 'Policy operator must be gte or lte');
     const threshold = finiteNumber(raw.threshold, 'policy.threshold');

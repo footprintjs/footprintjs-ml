@@ -52,7 +52,8 @@ export interface SavedWorkflowSnapshot {
   readonly executionTree: unknown;
   readonly sharedState?: Readonly<Record<string, unknown>>;
 }
-/** Any saved FootPrint snapshot, or its existing recording wrapper. No release bindings are required. */
+/** Any saved FootPrint snapshot, or its existing recording wrapper. No release bindings are required.
+ * When both aliases are supplied they must contain equivalent retained data; conflicting aliases are rejected. */
 export type WorkflowRecordingInput<S extends SavedWorkflowSnapshot = SavedWorkflowSnapshot> = S |
   ({ readonly snapshot: S; readonly footprint?: S } | { readonly footprint: S; readonly snapshot?: S }) & {
     readonly events?: readonly unknown[];

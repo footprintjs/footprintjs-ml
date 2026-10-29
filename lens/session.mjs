@@ -2,8 +2,49 @@
  * Saved workflow investigation over existing Lens and foottrace APIs.
  * No trainer, model implementation, graph engine, or model provider is loaded.
  */
+function ownAlias(input,key){
+  if(input===null||typeof input!=='object')return undefined;
+  const property=Object.getOwnPropertyDescriptor(input,key);
+  if(property&&!Object.hasOwn(property,'value'))throw new Error(`Recording ${key} must be a data property`);
+  return property?.value;
+}
+// Compare retained data without JSON.stringify/toJSON or accessor execution.
+// Iteration also supports the deep execution trees of long serial workflows.
+function equivalentSnapshots(first,second){
+  const pending=[[first,second]],seen=new WeakMap();
+  while(pending.length){
+    const [left,right]=pending.pop();
+    if(Object.is(left,right))continue;
+    if(left===null||right===null||typeof left!=='object'||typeof right!=='object')return false;
+    if(Array.isArray(left)!==Array.isArray(right))return false;
+    if(Array.isArray(left)&&left.length!==right.length)return false;
+    for(const value of [left,right]){
+      const prototype=Object.getPrototypeOf(value);
+      if(!Array.isArray(value)&&prototype!==Object.prototype&&prototype!==null)return false;
+    }
+    let partners=seen.get(left);
+    if(partners?.has(right))continue;
+    if(!partners){partners=new WeakSet();seen.set(left,partners);}partners.add(right);
+    const a=Object.getOwnPropertyDescriptors(left),b=Object.getOwnPropertyDescriptors(right);
+    const keys=Object.keys(a).filter(key=>a[key].enumerable),other=Object.keys(b).filter(key=>b[key].enumerable);
+    if(keys.length!==other.length)return false;
+    for(const key of keys){
+      if(!Object.hasOwn(b,key)||!b[key].enumerable)return false;
+      if(!Object.hasOwn(a[key],'value')||!Object.hasOwn(b[key],'value'))
+        throw new Error('Recording aliases must contain data properties');
+      pending.push([a[key].value,b[key].value]);
+    }
+  }
+  return true;
+}
+function recordingSnapshot(input,allowRaw){
+  const footprint=ownAlias(input,'footprint'),snapshot=ownAlias(input,'snapshot');
+  if(footprint!=null&&snapshot!=null&&!equivalentSnapshots(footprint,snapshot))
+    throw new Error('Conflicting footprint and snapshot recording aliases; select one saved snapshot explicitly.');
+  return footprint??snapshot??(allowRaw?input:undefined);
+}
 export function openWorkflowRecording(input, bridge, options = {}) {
-  const snapshot = input?.footprint ?? input?.snapshot ?? input;
+  const snapshot = recordingSnapshot(input,true);
   if (!snapshot || !Array.isArray(snapshot.commitLog) || snapshot.executionTree === undefined)
     throw new Error('A saved FootPrint snapshot with commitLog and executionTree is required.');
   for (const name of ['openRecording', 'traceToolpack', 'callTraceTool'])
@@ -26,7 +67,7 @@ export function openWorkflowRecording(input, bridge, options = {}) {
 }
 
 export function openAdapterWorkflowRun(input, bridge, options = {}) {
-  const snapshot = input?.footprint ?? input?.snapshot;
+  const snapshot = recordingSnapshot(input,false);
   if (!snapshot || !Array.isArray(snapshot.commitLog) || snapshot.executionTree === undefined)
     throw new Error('A saved FootPrint snapshot with commitLog and executionTree is required.');
   const descriptor = input?.mlInvestigation;

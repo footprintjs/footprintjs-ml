@@ -1,6 +1,8 @@
 # Beta compatibility
 
-The current SDK beta is `0.6.0-beta.8`. APIs and supported integration profiles may change during the beta.
+The current SDK beta is `0.6.0-beta.9`. APIs and supported integration profiles may change during the beta.
+
+Beta 9 hardens existing contracts: investigation reports preserve source recordings; saved readers reject conflicting recording aliases; approval policies reject unsupported fields; successful legacy evaluations retain handle identities; failed lock-owner writes clean up their owned files; Node/Python file consumers check descriptor sizes before bounded reads; and conformance reports must match the requested plan. Local registry metadata and CLI investigation reports each have a separate 16 MiB limit, while checkpoint profiles retain their own limits. This release adds no ML feature, numerical algorithm or recording engine. See [TESTING.md](TESTING.md) for the regression scope.
 
 Beta 2 adds a saved-record entry point without release bindings and explicit CLI investigation targets. It reuses the existing FootPrint/foottrace toolpack. Its selection proof recomputes ranking from retained JAX evaluations; it does not repeat numerical training. The reference quickstart separately trains its NumPy model. See [BACKTRACKING.md](BACKTRACKING.md) for capture requirements and limits.
 
@@ -52,6 +54,6 @@ Python, NumPy and JAX are not installed automatically. The reference quickstart 
 
 Evaluation receipts, model identities and exact training checkpoints have different purposes. See [README.md](README.md), [ADAPTER.md](ADAPTER.md) and [RELEASE.md](RELEASE.md) before implementing a custom profile or publisher.
 
-The Python identity protocol currently limits a numerical array to 64 MiB and total array payload to 128 MiB. Large-model streaming and general distributed training are outside this adapter profile. A saved reference is not a live model after its worker exits; restore a retained checkpoint into a fresh session when further computation is required.
+The Python identity protocol currently limits a numerical array to 64 MiB and total array payload to 128 MiB. Its checkpoint archive has a 132 MiB serialized-size cap, checked before reading its payload. The Node publisher's registry JSON has a separate 16 MiB metadata cap; it does not cap model artifacts at 16 MiB. Large-model streaming and general distributed training are outside this adapter profile. A saved reference is not a live model after its worker exits; restore a retained checkpoint into a fresh session when further computation is required.
 
 The reference trainer and hooks are trusted application code. Hashes establish the compared content identity; they do not authenticate an untrusted producer or prove numerical correctness. The application owns access control, retention and appropriate capture/redaction settings.

@@ -45,7 +45,7 @@ The npm package includes this same skill and guide tree. The Python wheel instal
 The beta is distributed as a versioned GitHub release tarball. These commands do not depend on an npm registry release of `footprintjs-ml`:
 
 ```sh
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.8/footprintjs-ml-0.6.0-beta.8.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.9/footprintjs-ml-0.6.0-beta.9.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy==2.2.6
 npx --no-install footprint-ml demo --out ./quickstart-run --python .venv/bin/python

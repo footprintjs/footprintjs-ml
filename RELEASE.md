@@ -128,17 +128,23 @@ The core hands the publisher detached checkpoint bytes, the payload, its semanti
 | --- | --- |
 | `put(bytes, { format })` | Snapshot bytes and exclusively install an immutable content-and-format-addressed file. Reuse an existing file only if its actual bytes agree. |
 | `putJson(value, format?)` | Persist a detached canonical JSON snapshot; default format is `application/json`. |
-| `read(ref)` | Accept a managed reference, check its path/format binding and verify actual digest and byte count before returning an owned byte array. |
+| `read(ref)` | Accept a managed reference, check its path/format binding, descriptor type and expected size before allocation, then verify actual digest and byte count before returning an owned byte array. |
 
 Import externally produced checkpoint/evidence bytes with `put` before using their managed references in a release plan. The helper does not read arbitrary backend-relative paths. Matching content identity permits the trainer's original path and managed storage path to differ.
 
+Reads are bounded to the opened descriptor's observed size, with a one-byte probe to detect growth. Nonregular files are refused without waiting for a FIFO writer. The helper still returns the complete checked byte array; this is not a streaming or constant-memory checkpoint API.
+
 `createLocalModelPublisher({ root })` returns `publish`, `lookup`, `readTarget(name)` and `readState()`. It snapshots incoming payload/model bytes, verifies both identities and installs the received model as an immutable managed artifact. It uses an interprocess directory lock around the complete registry read/check/update. One atomic registry document holds publication history, current targets and idempotency bindings. Atomic rename is used inside that lock; rename by itself is not concurrency control.
+
+The registry JSON is limited to 16 MiB of UTF-8 metadata, inclusive. An oversized existing registry is refused before its contents are allocated or read. An update that would exceed the limit returns `local-record-too-large` before replacing the committed registry, so its prior targets and history remain intact. The initialization marker has an exact byte length. These metadata limits do not impose a 16 MiB limit on checkpoint artifacts; their reads use the exact size in their references.
 
 For a new publication, the receiver requires the target's current revision to equal `expectedRevision`. `null` means the target must not already exist. The committed revision is the payload hash. It checks expiry before the new effect and immediately before replacing the registry document. A different payload under an existing idempotency key is denied. A matching key/payload returns the unchanged original receipt before attempting a new target CAS.
 
 `readTarget` reports the current local target; publication history is separate. A retry acknowledging old publication A after a newer B has advanced the target returns A's historical receipt and leaves B current. An acknowledgement is not a claim that A is still deployed.
 
 Corrupt/future registry documents, inconsistent indexes, modified stored blobs and missing/corrupt initialization metadata fail closed. Returned state is detached and frozen. Unknown storage/lock outcomes are not success. A stale lock or incomplete initialization needs operator recovery; the helper does not automatically break a lock it cannot prove safe to remove.
+
+A failed write to this process's newly created lock-owner file removes that owned file and lock, preserving the original error. This recovery does not extend to an abandoned lock after a process crash.
 
 The root and its parent directory entries must be trusted and modified only by cooperating local processes. Managed paths reject traversal and observed symlinks. The implementation does not defeat an adversarial filesystem rename race. It claims one-host local-filesystem behavior, with no fsync/power-loss durability, hostile-filesystem, network-filesystem or distributed exactly-once guarantee.
 

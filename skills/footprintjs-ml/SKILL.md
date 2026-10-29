@@ -11,7 +11,7 @@ Keep the application's numerical framework and workflow ownership. Add the small
 
 Read the application's installed SDK version and existing integration before editing. The public exports, TypeScript declarations and Python module are the API authority. Read only the feature guides needed for the task.
 
-These relative links work in the repository, npm package and Python wheel's documentation tree. If this skill was copied into a separate agent skill directory, locate the SDK's bundled guides or use the [versioned feature index](https://github.com/footprintjs/footprintjs-ml/blob/v0.6.0-beta.8/features/README.md). For another installed SDK version, use its matching release tag and API declarations.
+These relative links work in the repository, npm package and Python wheel's documentation tree. If this skill was copied into a separate agent skill directory, locate the SDK's bundled guides or use the [versioned feature index](https://github.com/footprintjs/footprintjs-ml/blob/v0.6.0-beta.9/features/README.md). For another installed SDK version, use its matching release tag and API declarations.
 
 | Task | Read first | Then, if needed |
 | --- | --- | --- |

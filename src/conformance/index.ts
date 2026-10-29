@@ -3,7 +3,7 @@ import { access } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { detached, isRecord, jsonObject } from '../contracts.js';
+import { canonicalJson, detached, isRecord, jsonObject } from '../contracts.js';
 import type { JsonObject, JsonValue } from '../contracts.js';
 
 export interface AdapterConformanceOptions {
@@ -164,7 +164,10 @@ export async function runAdapterConformance(options: AdapterConformanceOptions):
         fail(new ConformanceError('unexpected-exit', `Conformance exited with ${signal ?? code}`, context)); return;
       }
       let report: AdapterConformanceReport;
-      try { report = readReport(JSON.parse(Buffer.concat(chunks).toString('utf8'))); }
+      try {
+        report = readReport(JSON.parse(Buffer.concat(chunks).toString('utf8')));
+        if (canonicalJson(report.plan) !== canonicalJson(plan)) invalid('Returned conformance plan differs from the requested plan');
+      }
       catch (error) {
         fail(new ConformanceError('invalid-report', error instanceof Error ? error.message : String(error), context)); return;
       }

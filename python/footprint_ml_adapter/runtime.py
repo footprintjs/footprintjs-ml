@@ -6,8 +6,10 @@ import importlib.util
 import io
 import json
 import math
+import os
 from pathlib import Path
 import re
+import stat
 import sys
 from typing import Any
 from uuid import uuid4
@@ -21,6 +23,33 @@ from .identity import (MAX_TOTAL_BYTES, canonical_json, inference_identity, json
 CHECKPOINT_FORMAT = "footprint-ml-adapter-kit/trainstate-npz-v1"
 DATASET_FORMAT = "footprint-ml-adapter-kit/dataset-npz-v1"
 MAX_ARCHIVE_BYTES = MAX_TOTAL_BYTES + 4 * 1024 * 1024
+
+
+def _checkpoint_bytes(file: Path) -> bytes:
+    """Read one regular checkpoint within its profile cap, including growth checks."""
+    flags = os.O_RDONLY | getattr(os, "O_NONBLOCK", 0) | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_BINARY", 0)
+    descriptor = os.open(file, flags)
+    try:
+        before = os.fstat(descriptor)
+        if not stat.S_ISREG(before.st_mode):
+            raise ValueError("Checkpoint must be a regular file")
+        if before.st_size > MAX_ARCHIVE_BYTES:
+            raise ValueError("Checkpoint exceeds the supported archive size")
+        chunks, remaining = [], before.st_size
+        while remaining:
+            chunk = os.read(descriptor, min(1_048_576, remaining))
+            if not chunk:
+                raise ValueError("Checkpoint changed while reading")
+            chunks.append(chunk)
+            remaining -= len(chunk)
+        if os.read(descriptor, 1):
+            raise ValueError("Checkpoint grew while reading")
+        after = os.fstat(descriptor)
+        if (after.st_size, after.st_mtime_ns, after.st_ctime_ns) != (before.st_size, before.st_mtime_ns, before.st_ctime_ns):
+            raise ValueError("Checkpoint changed while reading")
+        return b"".join(chunks)
+    finally:
+        os.close(descriptor)
 
 
 class ContractError(ValueError):
@@ -359,7 +388,7 @@ class AdapterRuntime:
 
     def _read_checkpoint(self, relative: Any) -> tuple[Any, dict[str, Any], dict[str, Any]]:
         file = self._file(relative)
-        data = file.read_bytes()
+        data = _checkpoint_bytes(file)
         actual = self._artifact(file, data, CHECKPOINT_FORMAT)
         snapshot, envelope = deserialize_snapshot(data)
         expected = {"kind": "footprint-ml-adapter-kit-checkpoint", "schemaVersion": 1, "format": CHECKPOINT_FORMAT,

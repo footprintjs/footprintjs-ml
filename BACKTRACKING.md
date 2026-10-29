@@ -1,6 +1,6 @@
 # Backtrack a saved ML result
 
-**Beta 0.6.0-beta.8. APIs may change.** This guide covers the generic saved-recording reader and the existing ML decision reader in the same optional `/lens` entry point.
+**Beta 0.6.0-beta.9. APIs may change.** This guide covers the generic saved-recording reader and the existing ML decision reader in the same optional `/lens` entry point.
 
 A surprising ML result is a useful starting point for investigation: a selected candidate, a score, a checkpoint reference or a release decision. Reopen the saved workflow and follow the recorded value to its writer, then to the inputs that writer read. No browser or live trainer is required.
 
@@ -38,6 +38,8 @@ console.log(answer.result);
 
 `openWorkflowRecording` accepts a raw FootPrint snapshot, `{ snapshot }`, or the existing `{ footprint }` recording envelope. The snapshot must contain `commitLog` and `executionTree`. It returns the native tool response unchanged and retains each call in `run.transcript`.
 
+Both saved readers reject an envelope whose `snapshot` and `footprint` aliases contain different data. Equivalent aliases remain accepted, including a different object-key order; a missing or null alias does not override the other. Alias accessors are refused without invoking them. Select one intended snapshot explicitly when an envelope contains competing records.
+
 To ask about an earlier point, pass `{ before: index }` to `backtrack`. `before` is an **exclusive commit-array index**: the slice can use only commits before that boundary. This prevents later state from explaining an earlier decision. The underlying toolpack owns query validation, depth limits and missing-evidence messages.
 
 For a nested field, use the public path codec. A dotted string can name a literal root key; it is not always a nested-field alias.
@@ -59,6 +61,8 @@ npx --no-install footprint-ml investigate --run ./quickstart-run --variable mode
 ```
 
 Replace `modelRef` with a scope key your workflow actually wrote. `--run` accepts a directory containing `recording.json` or a JSON file. The command writes `investigation-variable.json` beside the recording. An optional `--before INDEX` limits the question to an earlier commit boundary.
+
+The CLI refuses to write a report over the source recording, its hardlink or symlink aliases, or an unrelated existing file. A repeated investigation may replace an existing report of the same schema. Reports are limited to 16 MiB, including bounded validation of a previous report before replacement. It writes a temporary report and atomically replaces the prior report, preserving the source and avoiding partial report replacement on a failed write. Keep the containing directory trusted; these checks do not establish hostile-filesystem or power-loss guarantees.
 
 Release-decision investigation still supports `--decision stale` or `--decision fresh` for the quickstart. Use `--stage DECISION_RUNTIME_ID` to select an exact recorded decision when multiple decisions have the same status. Stage selection and variable tracing are separate modes.
 

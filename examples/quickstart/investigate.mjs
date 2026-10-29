@@ -1,9 +1,51 @@
-import {readFile,writeFile,stat} from 'node:fs/promises';
+import {readFile,open,stat,lstat,rename,unlink} from 'node:fs/promises';
+import {constants,createReadStream} from 'node:fs';
+import {randomUUID} from 'node:crypto';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {openAdapterWorkflowRun,openWorkflowRecording} from 'footprintjs-ml/lens';
 
 const usage = 'Use --run DIR_OR_JSON [--decision stale|fresh | --stage DECISION_STAGE] or --run DIR_OR_JSON --variable KEY [--before INDEX].';
+const MAX_REPORT_BYTES=16*1024*1024;
+
+// Reports may replace earlier reports, but never a recording or an alias to it.
+// The temporary file and atomic replacement also avoid truncating an earlier
+// report on a failed write. The containing directory is application-trusted.
+async function saveReport(root,filename,report,sourceFile){
+ const output=resolve(root,filename),original=await stat(sourceFile);
+ const check=async()=>{
+  if(output===sourceFile)throw new Error('Refusing to overwrite the source recording with an investigation report.');
+  let info;
+  try{info=await lstat(output);}catch(error){if(error.code==='ENOENT')return;throw error;}
+  if(info.dev===original.dev&&info.ino===original.ino)
+   throw new Error('Refusing to overwrite an alias of the source recording.');
+  if(info.isSymbolicLink()||!info.isFile())throw new Error('Investigation report output must be a regular report file.');
+  if(info.size>MAX_REPORT_BYTES)throw new Error('Investigation report exceeds the 16 MiB report limit.');
+  let previous;
+  try{
+   const chunks=[];let bytes=0;
+   const flags=constants.O_RDONLY|(constants.O_NOFOLLOW??0)|(constants.O_NONBLOCK??0);
+   for await(const chunk of createReadStream(output,{flags,start:0,end:MAX_REPORT_BYTES,highWaterMark:65536})){
+    bytes+=chunk.length;if(bytes>MAX_REPORT_BYTES)throw new Error('Report byte limit');chunks.push(chunk);
+   }
+   previous=JSON.parse(Buffer.concat(chunks).toString('utf8'));
+  }catch{throw new Error('Refusing to replace an existing file that is not a bounded investigation report.');}
+  if(previous?.schema!==report.schema||previous.execution?.savedJsonOnly!==true||
+    ['snapshot','footprint','commitLog','executionTree'].some(key=>Object.hasOwn(previous,key)))
+   throw new Error('Refusing to replace an existing file that is not an investigation report.');
+ };
+ await check();
+ const encoded=JSON.stringify(report,null,2)+'\n';
+ if(Buffer.byteLength(encoded)>MAX_REPORT_BYTES)throw new Error('Investigation report exceeds the 16 MiB report limit.');
+ const temporary=resolve(root,`.investigation-${randomUUID()}.tmp`);
+ let owned=false;
+ try{
+  const file=await open(temporary,'wx',0o600);owned=true;
+  try{await file.writeFile(encoded);}finally{await file.close();}
+  await check();
+  await rename(temporary,output);owned=false;
+ }finally{if(owned)await unlink(temporary).catch(error=>{if(error.code!=='ENOENT')throw error;});}
+}
 function parseArgs(args) {
  const opts = {};
  for(let i=0;i<args.length;i+=2){
@@ -27,7 +69,8 @@ function parseArgs(args) {
 export async function investigate(args=process.argv.slice(2)){
  const opts=parseArgs(args), source=resolve(opts.run);
  const isDirectory=(await stat(source)).isDirectory();
- const root=isDirectory?source:dirname(source), input=JSON.parse(await readFile(isDirectory?resolve(source,'recording.json'):source,'utf8'));
+ const root=isDirectory?source:dirname(source),sourceFile=isDirectory?resolve(source,'recording.json'):source;
+ const input=JSON.parse(await readFile(sourceFile,'utf8'));
  // Optional dependencies load only for an explicit investigation. Opening saved
  // evidence never imports the trainer adapter or starts a model/provider.
  const {openRecording,traceToolpack,callTraceTool}=await import('agentfootprint/observe');
@@ -38,7 +81,7 @@ export async function investigate(args=process.argv.slice(2)){
   const report={schema:'footprint-ml-variable-investigation/v1',variable:opts.variable,
    ...(opts.before===undefined?{}:{before:opts.before}),transcript:session.transcript,
    execution:{savedJsonOnly:true,trainerStarted:false,trainingRepeated:false}};
-  await writeFile(resolve(root,'investigation-variable.json'),JSON.stringify(report,null,2)+'\n');
+  await saveReport(root,'investigation-variable.json',report,sourceFile);
   console.log(entry.result);
   console.log('Saved native backtracking evidence. Trainer was not started.');
   return report;
@@ -67,7 +110,7 @@ export async function investigate(args=process.argv.slice(2)){
   anchors:session.anchors,transcript:session.transcript,boundaries:session.boundaries,
   execution:{savedJsonOnly:true,trainerStarted:false,trainingRepeated:false}};
  const filename=opts.stage!==undefined?'investigation-stage.json':decision==='stale'?'investigation.json':'investigation-fresh.json';
- await writeFile(resolve(root,filename),JSON.stringify(report,null,2)+'\n');
+ await saveReport(root,filename,report,sourceFile);
  console.log(`Saved ${decision} decision at ${selected.runtimeStageId}: ${session.summary.releaseDecision.status}`);
  console.log(`Model last changed at: ${session.summary.modelWriterStageId}`);
  console.log(`Evaluation last written at: ${session.summary.receiptWriterStageId}`);

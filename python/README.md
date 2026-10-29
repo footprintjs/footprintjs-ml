@@ -98,7 +98,9 @@ inferenceManifest: {metadata, arrays:[{name,dtype,shape,bytes,sha256}]},
 snapshot: {metadata, arrays:[{name,key,dtype,shape}]}
 ```
 
-The loader reads one buffer, hashes that buffer and decodes that same buffer. It validates plugin/source/profile and method/preprocessing compatibility, restores the full state, and independently recomputes its fingerprints and inference manifest. The manifest supports plugin-specific independent audit when the inference arrays can be obtained or derived from the retained training snapshot. A digest is an identity claim, not a signature or proof of authenticity; retain checkpoints and recordings in trusted storage.
+Before reading a checkpoint payload, the loader checks the opened descriptor is a regular file and its serialized size is at most 132 MiB (128 MiB total array payload plus 4 MiB archive allowance). It bounds the read to the observed size, probes one extra byte for growth and refuses observed size/timestamp changes. FIFO paths do not wait for a writer. This is a bounded local-file profile, not large-model streaming or protection against a hostile filesystem.
+
+The loader hashes the collected buffer and decodes that same buffer. It validates plugin/source/profile and method/preprocessing compatibility, restores the full state, and independently recomputes its fingerprints and inference manifest. The manifest supports plugin-specific independent audit when the inference arrays can be obtained or derived from the retained training snapshot. A digest is an identity claim, not a signature or proof of authenticity; retain checkpoints and recordings in trusted storage.
 
 ## Conformance CLI and tests
 

@@ -149,6 +149,9 @@ export function createTrainerAdapter<M extends ModelRef = ModelRef, D extends Da
           parameters: actualParameters, createdAt: finiteNumber(clock(), 'clock', 0) });
         const output = detached({ receipt, backendResult: result });
         notify(ML_EVENTS.evaluateCompleted, { receipt });
+        // Legacy ports have no inspection hook to remember an externally
+        // created handle. Retain it only after the evaluation is validated.
+        current(observedModel, expected); published.set(key(observedModel), observedModel);
         return output;
       } catch (error) { failed('evaluate', error); throw error; }
     },

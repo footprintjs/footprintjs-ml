@@ -50,5 +50,9 @@ if mode == "wrong-count":
     report["counts"]["passed"] += 1
 if mode == "contradictory-status":
     report["passed"] = False
+if mode == "wrong-plan":
+    report["plan"] = {"train": {"steps": 999}, "source": "another-plan"}
+if mode == "reordered-plan":
+    report["plan"] = dict(reversed(list(plan.items())))
 sys.stdout.write(json.dumps(report))
 sys.exit(7 if mode == "unexpected-exit" else 1 if mode in ("failure", "passing-error") else 0)
