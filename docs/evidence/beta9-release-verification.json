@@ -1,0 +1,131 @@
+{
+  "schema": "footprint-ml-reviewed-fixes-delivery/v1",
+  "passed": true,
+  "version": "0.6.0-beta.9",
+  "pythonVersion": "0.6.0b9",
+  "commit": "e51aee66ae53ff02dbd2383f5591f5c357b3ee85",
+  "release": "https://github.com/footprintjs/footprintjs-ml/releases/tag/v0.6.0-beta.9",
+  "prerelease": true,
+  "ci": {
+    "conclusion": "success",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "name": "Optional Python MLflow integration",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Node 24 / Python 3.11",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Node 22 / Python 3.12",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Node 24 / Python 3.12",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Node 22 / Python 3.11",
+        "status": "completed"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/footprintjs/footprintjs-ml/actions/runs/40965716720"
+  },
+  "pages": {
+    "conclusion": "success",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "name": "build",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "deploy",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "report-build-status",
+        "status": "completed"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/footprintjs/footprintjs-ml/actions/runs/40965714987"
+  },
+  "reviews": [
+    {
+      "reviewer": "A",
+      "status": "clear",
+      "sourceManifestSHA": "f74c8183fc81c6644829bd3ff57c0d13cd3cbeab2e9bdc746e3c476dab455b91",
+      "report": {
+        "sha256": "6be1ac3e652a2633a12bab4c254d857141318f25ec162f83c6a5454da5f41023",
+        "bytes": 3831
+      },
+      "independentAgentReview": true
+    },
+    {
+      "reviewer": "B",
+      "status": "clear",
+      "sourceManifestSHA": "f74c8183fc81c6644829bd3ff57c0d13cd3cbeab2e9bdc746e3c476dab455b91",
+      "report": {
+        "sha256": "5c06e9087f78747d39c2899b11458ee525d658deb3d9f3091b5f441105d0be30",
+        "bytes": 4443
+      },
+      "independentAgentReview": true
+    }
+  ],
+  "tests": {
+    "javascriptPassed": 242,
+    "pythonPassed": 43,
+    "newJavascriptRegressions": 16,
+    "newPythonRegressions": 5,
+    "coldPythonInstallChecks": 25,
+    "nativeConsumerPassed": true
+  },
+  "fixedIssues": {
+    "R1": "Source-preserving, atomic bounded report output; repeat reports remain supported.",
+    "R2": "Unknown policy fields rejected.",
+    "R3": "Validated legacy handle identities remembered.",
+    "R4": "Partial owner-file writes cleaned up without losing the original error.",
+    "R5": "Bounded Node, Python checkpoint and MLflow-cache reads; separate registry metadata limit.",
+    "R6": "Conflicting aliases rejected; equivalent aliases remain supported.",
+    "R7": "Returned conformance plan matched to frozen request."
+  },
+  "assets": [
+    {
+      "file": "footprintjs-ml-0.6.0-beta.9.tgz",
+      "bytes": 359640,
+      "sha256": "1a5d2858bb5bcd76c2b20941eac393ba5edc748d6dbc95ea1c434422a7d3b45f",
+      "matchesReviewedArtifact": true
+    },
+    {
+      "file": "footprintjs_ml-0.6.0b9-py3-none-any.whl",
+      "bytes": 409710,
+      "sha256": "3803eaa85cc5f2134e3225c763ba9197849c3667a9fb0a29a728f8c253f29d8c",
+      "matchesReviewedArtifact": true
+    },
+    {
+      "file": "review-verification.json",
+      "bytes": 2853,
+      "sha256": "ab0304d30e5a8a31f3a1bd747c207d383b7ef57a5e2c46263891625a8b4b3b04",
+      "matchesReviewedArtifact": true
+    },
+    {
+      "file": "source-manifest.json",
+      "bytes": 4702,
+      "sha256": "f74c8183fc81c6644829bd3ff57c0d13cd3cbeab2e9bdc746e3c476dab455b91",
+      "matchesReviewedArtifact": true
+    }
+  ],
+  "workingTreeClean": true,
+  "newRuntimeDependencies": false,
+  "distribution": "GitHub prerelease archives; not npm or PyPI"
+}

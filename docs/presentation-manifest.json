@@ -179,7 +179,19 @@
   },
   "libraryStatus": {
     "stage": "beta",
+    "version": "0.6.0-beta.9",
     "notice": "Library APIs may change."
+  },
+  "currentRelease": {
+    "version": "0.6.0-beta.9",
+    "stage": "beta",
+    "url": "https://github.com/footprintjs/footprintjs-ml/releases/tag/v0.6.0-beta.9",
+    "summary": "Seven reliability fixes strengthen existing capabilities; no new chapter or runtime dependency.",
+    "sourceIds": [
+      "beta9-reliability-review",
+      "beta9-release-verification"
+    ],
+    "historicalEvidenceNotice": "Earlier experiments keep their recorded versions and original evidence. Beta 9 checks validate the reliability fixes, not new model training."
   },
   "format": "Self-contained HTML; StoryDeck custom element; editable HTML/SVG text",
   "audience": "Sanjay and developers following the experiments testing FootPrint’s flowchart pattern in ML",
@@ -278,6 +290,7 @@
     "external": "Numerical trainers compute; native Lens and foottrace inspect saved workflow state.",
     "exampleOnly": "Crash/recovery helpers and benchmark/trial harnesses remain examples, not general ML-package APIs.",
     "historicalPrototypeVersion": "0.5.0",
+    "packageVersionScope": "Retained beta 8 source snapshot for the existing teaching map; currentRelease identifies the latest SDK.",
     "chapters": [
       {
         "id": "question",
@@ -2889,6 +2902,22 @@
           "sourceIds": [
             "library-migration"
           ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R2): A misspelled approval-policy field is rejected, so a freshness rule cannot silently disappear.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R3): After a successful evaluation, a reused legacy model handle cannot silently identify a different checkpoint.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
         }
       ],
       "storyText": {
@@ -3531,6 +3560,14 @@
             "gp-conformance",
             "build"
           ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R7): A trainer conformance report must name the exact requested plan before it can be accepted.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
         }
       ],
       "storyText": {
@@ -3702,6 +3739,22 @@
           "text": "This remains a local private unpublished preview.",
           "sourceIds": [
             "build"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R1): Opening an investigation cannot replace its source recording. Valid reports can still be updated safely.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R6): Conflicting snapshot aliases are rejected instead of silently opening one of two different recordings.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
           ]
         }
       ],
@@ -5578,6 +5631,14 @@
             "release-contracts",
             "release-guide"
           ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R5): Readers check file type and expected size or a profile limit before bounded reads; registry metadata has its own limit.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
         }
       ],
       "storyText": {
@@ -5834,6 +5895,14 @@
             "release-verify",
             "release-guide",
             "release-contracts"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R4): A failed write of the release-lock owner file is cleaned up, allowing a later local attempt. This does not recover a crashed process.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
           ]
         }
       ],
@@ -6292,6 +6361,22 @@
             "backtracking-guide",
             "backtracking-outcome"
           ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R1): Opening an investigation cannot replace its source recording. Valid reports can still be updated safely.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R6): Conflicting snapshot aliases are rejected instead of silently opening one of two different recordings.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
         }
       ],
       "storyText": {
@@ -6532,6 +6617,14 @@
             "mlflow-guide",
             "mlflow-capture",
             "mlflow-recording"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R5): Readers check file type and expected size or a profile limit before bounded reads; registry metadata has its own limit.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
           ]
         }
       ],
@@ -8363,6 +8456,70 @@
             "native-inference-results",
             "native-inference-recording",
             "native-inference-native"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R1): Opening an investigation cannot replace its source recording. Valid reports can still be updated safely.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R2): A misspelled approval-policy field is rejected, so a freshness rule cannot silently disappear.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R3): After a successful evaluation, a reused legacy model handle cannot silently identify a different checkpoint.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R4): A failed write of the release-lock owner file is cleaned up, allowing a later local attempt. This does not recover a crashed process.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R5): Readers check file type and expected size or a profile limit before bounded reads; registry metadata has its own limit.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R6): Conflicting snapshot aliases are rejected instead of silently opening one of two different recordings.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 reliability update (R7): A trainer conformance report must name the exact requested plan before it can be accepted.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 9 passed 242 JavaScript tests, 43 Python tests, 25 clean-install checks and five CI jobs. Two independent agent reviewers cleared the same frozen changes. This is not an external human audit or a new numerical experiment. Existing storage and backend-trust limits remain.",
+          "sourceIds": [
+            "beta9-reliability-review",
+            "beta9-release-verification"
           ]
         }
       ],
@@ -11786,6 +11943,46 @@
         "path": "evidence/native-inference-investigator.mjs.txt",
         "sha256": "b96319cc60a451f045edc5df825279fef5b4028c58f25b422fb0f7e8e8f682d8",
         "bytes": 9851,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "beta9-reliability-review",
+      "path": "evidence/beta9-reliability-review.json",
+      "label": "Beta 9 seven-fix review, regression results and exact package checks",
+      "note": "Beta 9 seven-fix review, regression results and exact package checks",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/beta9-reliability-review.json",
+      "sha256": "ab0304d30e5a8a31f3a1bd747c207d383b7ef57a5e2c46263891625a8b4b3b04",
+      "bytes": 2853,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/beta9-reliability-review.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/beta9-reliability-review.json",
+        "sha256": "ab0304d30e5a8a31f3a1bd747c207d383b7ef57a5e2c46263891625a8b4b3b04",
+        "bytes": 2853,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "beta9-release-verification",
+      "path": "evidence/beta9-release-verification.json",
+      "label": "Beta 9 published release, five CI jobs and public download verification",
+      "note": "Beta 9 published release, five CI jobs and public download verification",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/beta9-release-verification.json",
+      "sha256": "b6fbceedab605fc2f8f70f15a29c12348fab0f056ecaeb7e29199d3c6c6e272d",
+      "bytes": 4001,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/beta9-release-verification.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/beta9-release-verification.json",
+        "sha256": "b6fbceedab605fc2f8f70f15a29c12348fab0f056ecaeb7e29199d3c6c6e272d",
+        "bytes": 4001,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }

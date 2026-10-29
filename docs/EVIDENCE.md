@@ -1147,6 +1147,20 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Published copy SHA-256: b96319cc60a451f045edc5df825279fef5b4028c58f25b422fb0f7e8e8f682d8
   - Published copy bytes: 9851
   - Path projection: 0 string(s); byte-identical to retained source.
+- **beta9-reliability-review** — Beta 9 seven-fix review, regression results and exact package checks
+  - Public copy: [evidence/beta9-reliability-review.json](evidence/beta9-reliability-review.json)
+  - Original retained source SHA-256: ab0304d30e5a8a31f3a1bd747c207d383b7ef57a5e2c46263891625a8b4b3b04
+  - Original retained source bytes: 2853
+  - Published copy SHA-256: ab0304d30e5a8a31f3a1bd747c207d383b7ef57a5e2c46263891625a8b4b3b04
+  - Published copy bytes: 2853
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **beta9-release-verification** — Beta 9 published release, five CI jobs and public download verification
+  - Public copy: [evidence/beta9-release-verification.json](evidence/beta9-release-verification.json)
+  - Original retained source SHA-256: b6fbceedab605fc2f8f70f15a29c12348fab0f056ecaeb7e29199d3c6c6e272d
+  - Original retained source bytes: 4001
+  - Published copy SHA-256: b6fbceedab605fc2f8f70f15a29c12348fab0f056ecaeb7e29199d3c6c6e272d
+  - Published copy bytes: 4001
+  - Path projection: 0 string(s); byte-identical to retained source.
 
 ## Claims by scene
 
@@ -1196,6 +1210,8 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **DERIVED** — The ML layer extends workflow orchestration and evidence semantics rather than implementing JAX-style tensor mathematics. [contracts, adapter, workflow]
 - **VERIFIED** — The ML investigation module reuses the existing Lens/foottrace bridge. [lens]
 - **VERIFIED** — The historical library integration passed 31 saved-record checks across legacy bypass, guarded wrong-model release and correct reload; the guard refused changed artifacts and allowed identical artifacts with a new handle. [library-migration]
+- **VERIFIED** — Beta 9 reliability update (R2): A misspelled approval-policy field is rejected, so a freshness rule cannot silently disappear. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 9 reliability update (R3): After a successful evaluation, a reused legacy model handle cannot silently identify a different checkpoint. [beta9-reliability-review, beta9-release-verification]
 
 ### 9. JAX’s changed classifier needed its own validation
 
@@ -1221,6 +1237,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — The actual GP conformance report passed fourteen runtime checks. [gp-conformance]
 - **VERIFIED** — The controlled GP workflow rejected stale A evidence, accepted B evidence, and accepted its optimizer-only fork. [gp-outcome]
 - **OPEN** — One retained plugin does not prove arbitrary trainer correctness or universal contract completeness. [gp-conformance, build]
+- **VERIFIED** — Beta 9 reliability update (R7): A trainer conformance report must name the exact requested plan before it can be accepted. [beta9-reliability-review, beta9-release-verification]
 
 ### 13. One installed package reopened a model’s saved evaluation
 
@@ -1228,6 +1245,8 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — The example defers the adapter import until its explicit connection stage. [workflow]
 - **VERIFIED** — A fresh consumer verifies the packaged worker and historical v2 receipt compatibility. [consumer]
 - **VERIFIED** — This remains a local private unpublished preview. [build]
+- **VERIFIED** — Beta 9 reliability update (R1): Opening an investigation cannot replace its source recording. Valid reports can still be updated safely. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 9 reliability update (R6): Conflicting snapshot aliases are rejected instead of silently opening one of two different recordings. [beta9-reliability-review, beta9-release-verification]
 
 ### 14. A good validation score still hid contaminated data
 
@@ -1301,6 +1320,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **DERIVED** — The workflow uses existing FootPrint stages, shared state, branches, recording and retry. ML-specific model, evaluation, selection and release contracts supply the domain meaning; the numerical adapter measures live model identity and the optional publisher handles the external side effect. [release-contracts, release-workflow, release-publisher, release-results]
 - **OPEN** — The pin is supplied by an authorized caller; hashing does not establish who is permitted to approve a release. Trusted adapters, complete comparison evidence and a publisher honoring its contract remain required. These local checks do not prove ML quality, data suitability, universal backend correctness or an atomic cloud deployment. [release-contracts, release-workflow, release-publisher, release-results]
 - **VERIFIED** — Twenty direct saved-evidence groups and twenty-seven combined source/native/HTML checks pass. The new release API and optional helpers remain an unpublished private preview. [release-proof, release-verify, release-contracts, release-guide]
+- **VERIFIED** — Beta 9 reliability update (R5): Readers check file type and expected size or a profile limit before bounded reads; registry metadata has its own limit. [beta9-reliability-review, beta9-release-verification]
 
 ### 23. A lost reply did not create a second local release
 
@@ -1311,6 +1331,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **OPEN** — This is a local single-host publisher proof. It does not establish a cloud registry adapter, model-serving rollout, multi-host exactly-once behavior, power-loss durability, stale-lock recovery, hostile-filesystem safety or independent human debugging advantage. A remote publisher needs its own compatible transaction and evidence semantics. [release-publisher, release-results, release-contracts, trial-protocol]
 - **VERIFIED** — Existing Lens and foottrace execute 100 native evidence calls over five decision views, with original returned strings and missing-evidence warnings preserved. Child processes are denied during the saved-run verification; opening the evidence performs no training, checkpoint load or publication. [release-native, release-verify]
 - **VERIFIED** — A separate real-clock expiry case first publishes before its deadline, then waits until after expiry. Read-only lookup confirms the original publication without a model or live verifier; it does not authorize another release. The same expired evidence with no existing publication is denied. The separate expiry registry retains one original publication while the main retry registry remains at one. [release-results, release-proof, release-verify, release-guide, release-contracts]
+- **VERIFIED** — Beta 9 reliability update (R4): A failed write of the release-lock owner file is cleaned up, allowing a later local attempt. This does not recover a crashed process. [beta9-reliability-review, beta9-release-verification]
 
 ### 24. A saved ML choice led back to its scores
 
@@ -1325,6 +1346,8 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — The corrected workflow consumes manifest and candidateResults through tracked scope in ranking and guard stages. Native saved slices reach the distinct observation producer. A separate readTracking-off control keeps the real guard outcomes while exposing incomplete diagnostic coverage. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-controls, backtracking-missing-reads]
 - **DERIVED** — Capture completeness depends on actual reads. Merely placing the same value elsewhere in scope cannot reveal a hidden closure dependency. Backtracking belongs to the existing workflow/Foottrace foundation; the ML library connects its evidence to that foundation. [backtracking-workflow, backtracking-tests, backtracking-guide]
 - **OPEN** — Only recorded dependencies can be followed. External code, closures, backend mutations and nested history need explicit capture where relevant. This is a controlled evidence-boundary proof, not complete numerical replay or automatic statistical root-cause discovery. [backtracking-guide, backtracking-outcome]
+- **VERIFIED** — Beta 9 reliability update (R1): Opening an investigation cannot replace its source recording. Valid reports can still be updated safely. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 9 reliability update (R6): Conflicting snapshot aliases are rejected instead of silently opening one of two different recordings. [beta9-reliability-review, beta9-release-verification]
 
 ### 26. Python kept control and linked MLflow artifacts
 
@@ -1332,6 +1355,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — The standalone Python capture facade imports only standard-library modules, and constructors start no process. Entering capture explicitly starts a Node helper. The npm root keeps zero runtime dependencies. MLflow and numerical dependencies are explicit application/example installations, not imported by the capture module. [mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-requirements]
 - **VERIFIED** — The MLflow artifact binding receives an application-supplied client, reads actual run metadata, downloads selected regular files and hashes their bytes. Consumption rechecks cached bytes. The example uses explicit local SQLite tracking and registers a local numeric model source. Run IDs and tags do not supply approval authority. [mlflow-python, mlflow-workflow, mlflow-outcome]
 - **OPEN** — The bridge captures explicit whole-key JSON operations, not arbitrary Python locals or tensor operations. The direct writer does not apply FootPrint executor redaction. The application selects and filters captured metadata. Boundary snapshots are not a durable workflow scheduler or write-ahead recovery log. [mlflow-guide, mlflow-capture, mlflow-recording]
+- **VERIFIED** — Beta 9 reliability update (R5): Readers check file type and expected size or a profile limit before bounded reads; registry metadata has its own limit. [beta9-reliability-review, beta9-release-verification]
 
 ### 27. A retry changed preprocessing and accuracy fell
 
@@ -1394,6 +1418,14 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — The Python facade now calls the same selection and data-lineage contracts over two independently retained experiments. The wrong candidate can pass its own metric gate and still fail selection; equal digits accuracies do not excuse using validation rows in preprocessing fit. Missing lineage evidence remains unknown. [python-guards-outcome, python-guards-native, python-guards-observations, mlflow-capture, mlflow-python]
 - **VERIFIED** — Inference evidence extends the library to actual prediction observations. The local stale-cache proof denies observed B despite approved A, allows a corrected A prediction, rejects same-shaped reordered input fields and keeps missing actual model evidence unknown. Existing backtracking reopens those saved decisions without numerical execution. [inference-results, inference-contracts, inference-native, inference-verify]
 - **VERIFIED** — The later native inference proof exercises the FootPrint executor itself: ordinary stages, decider branches and a native retry surround the existing inference contract and numerical worker. This strengthens the ninth capability; it does not change the historical Python proof into executor-owned orchestration. [native-inference-run, native-inference-results, native-inference-recording, native-inference-native]
+- **VERIFIED** — Beta 9 reliability update (R1): Opening an investigation cannot replace its source recording. Valid reports can still be updated safely. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 9 reliability update (R2): A misspelled approval-policy field is rejected, so a freshness rule cannot silently disappear. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 9 reliability update (R3): After a successful evaluation, a reused legacy model handle cannot silently identify a different checkpoint. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 9 reliability update (R4): A failed write of the release-lock owner file is cleaned up, allowing a later local attempt. This does not recover a crashed process. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 9 reliability update (R5): Readers check file type and expected size or a profile limit before bounded reads; registry metadata has its own limit. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 9 reliability update (R6): Conflicting snapshot aliases are rejected instead of silently opening one of two different recordings. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 9 reliability update (R7): A trainer conformance report must name the exact requested plan before it can be accepted. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 9 passed 242 JavaScript tests, 43 Python tests, 25 clean-install checks and five CI jobs. Two independent agent reviewers cleared the same frozen changes. This is not an external human audit or a new numerical experiment. Existing storage and backend-trust limits remain. [beta9-reliability-review, beta9-release-verification]
 
 ## Relationships
 

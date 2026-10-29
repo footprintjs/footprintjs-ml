@@ -1,0 +1,77 @@
+{
+  "schema": "footprint-ml-reviewed-fixes-verification/v1",
+  "passed": true,
+  "version": "0.6.0-beta.9",
+  "pythonVersion": "0.6.0b9",
+  "baseCommit": "b8ad79bda10fa4ec99bde619f051f0ee640608f4",
+  "sourceManifest": {
+    "file": "source-manifest.json",
+    "sha256": "f74c8183fc81c6644829bd3ff57c0d13cd3cbeab2e9bdc746e3c476dab455b91",
+    "bytes": 4702
+  },
+  "reviewedSourceFiles": 29,
+  "reviews": [
+    {
+      "reviewer": "A",
+      "status": "clear",
+      "sourceManifestSHA": "f74c8183fc81c6644829bd3ff57c0d13cd3cbeab2e9bdc746e3c476dab455b91",
+      "report": {
+        "sha256": "6be1ac3e652a2633a12bab4c254d857141318f25ec162f83c6a5454da5f41023",
+        "bytes": 3831
+      },
+      "independentAgentReview": true
+    },
+    {
+      "reviewer": "B",
+      "status": "clear",
+      "sourceManifestSHA": "f74c8183fc81c6644829bd3ff57c0d13cd3cbeab2e9bdc746e3c476dab455b91",
+      "report": {
+        "sha256": "5c06e9087f78747d39c2899b11458ee525d658deb3d9f3091b5f441105d0be30",
+        "bytes": 4443
+      },
+      "independentAgentReview": true
+    }
+  ],
+  "fixedIssues": {
+    "R1": "Source-preserving, atomic bounded report output; repeat reports remain supported.",
+    "R2": "Unknown policy fields rejected.",
+    "R3": "Validated legacy handle identities remembered.",
+    "R4": "Partial owner-file writes cleaned up without losing the original error.",
+    "R5": "Bounded Node, Python checkpoint and MLflow-cache reads; separate registry metadata limit.",
+    "R6": "Conflicting aliases rejected; equivalent aliases remain supported.",
+    "R7": "Returned conformance plan matched to frozen request."
+  },
+  "tests": {
+    "javascriptPassed": 242,
+    "pythonPassed": 43,
+    "newJavascriptRegressions": 16,
+    "newPythonRegressions": 5,
+    "coldPythonInstallChecks": 25,
+    "nativeConsumerPassed": true
+  },
+  "artifacts": [
+    {
+      "file": "footprintjs-ml-0.6.0-beta.9.tgz",
+      "sha256": "1a5d2858bb5bcd76c2b20941eac393ba5edc748d6dbc95ea1c434422a7d3b45f",
+      "bytes": 359640
+    },
+    {
+      "file": "footprintjs_ml-0.6.0b9-py3-none-any.whl",
+      "sha256": "3803eaa85cc5f2134e3225c763ba9197849c3667a9fb0a29a728f8c253f29d8c",
+      "bytes": 409710
+    }
+  ],
+  "archiveMatchesTestedRuntimeSourceAndCompiledCode": true,
+  "wheelRuntimeModulesMatchReviewedSource": true,
+  "automaticRuntimeDependenciesAdded": false,
+  "execution": {
+    "newNumericalExperimentPerformed": false,
+    "historicalMlProofsModified": false,
+    "newFeatureAdded": false
+  },
+  "limits": [
+    "Two independent agent reviews and exercised cases are not a formal proof or external human audit.",
+    "Trusted local storage and honest backend observations remain required.",
+    "Existing files are still consumed as complete buffers within their declared/profile bounds; no streaming model transfer or distributed durability was added."
+  ]
+}
