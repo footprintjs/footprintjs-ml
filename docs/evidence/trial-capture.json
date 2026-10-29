@@ -1,0 +1,31 @@
+{
+  "schema": "trial-capture-verification/v1",
+  "passed": true,
+  "checks": {
+    "strictTypeScript": true,
+    "nodeTestsPassed": 19,
+    "nodeTestsFailed": 0,
+    "fixtureCases": 2,
+    "realNativeCommitsPerCase": 11,
+    "losslessParityBothCases": true,
+    "retainedSourceInputsUnchanged": true
+  },
+  "execution": {
+    "pythonStarted": false,
+    "trainingInvoked": false,
+    "numericalAuditRerun": false,
+    "unitTestsChildProcessesAllowed": false,
+    "testRunner": "Node24, test isolation none"
+  },
+  "files": {
+    "capture.ts": "e63aadbf2b2ab7a2dfd7c8343d68e9cd146adff4ed2873313c6af96c87a5fa74",
+    "capture.mjs": "469832d1f1375342a6fa233b320809ca0585c6c563b6bc9409e3e516e3af3022",
+    "build-capture.mjs": "d8aff734d6ba6cca4d4d889426e930c5d55284d968110321a0f05eca1afbfec3",
+    "evidence.mjs": "ea357cc6131c2c37c1c5296def723d4385b832c506bc8c5a23ea4fd75135170b",
+    "tsconfig.capture.json": "fa0fdadf76cba6c0b82f476a5f663cb1ee0ad9c5dad0d5d4cb0140dcb2bad0e6",
+    "tests/capture.test.mjs": "b060323fff431e4699019addc11ec1eda6d822973c2af51ad85d738a6a1b0335",
+    "tests/evidence.test.mjs": "50ae44b5907e7c70d2e4d83dcd74004ab21e9d60669b1440961cdf600e8048c6",
+    "tests/results.tap": "9f6255f21ce5a9d01b0a898bc3979db5619478e1ad06c52ac638781d65e7a64f"
+  },
+  "scope": "New FootPrint selection/release runs over prior audited numerical artifacts; no new model training. Complete logs are a lossless export of the same captured journal. This validates evidence parity, not human investigation benefit."
+}

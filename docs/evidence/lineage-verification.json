@@ -1,0 +1,170 @@
+{
+  "schema": "footprint-data-lineage-offline-verification/v1",
+  "passed": true,
+  "checks": [
+    {
+      "name": "clean: saved state contains references and every artifact matches actual retained bytes",
+      "passed": true,
+      "detail": {
+        "nativeCommits": 8,
+        "sourceFiles": 12
+      }
+    },
+    {
+      "name": "clean: correct model evidence is separate from data-protocol approval",
+      "passed": true,
+      "detail": {
+        "accuracy": 0.9618055555555556,
+        "modelEvidence": "allow",
+        "dataLineage": "allow",
+        "preprocessingEvaluationRows": 0,
+        "result": "approved-locally"
+      }
+    },
+    {
+      "name": "clean: independent saved-artifact audit agrees without training",
+      "passed": true,
+      "detail": {
+        "report": "run/clean/independent-audit.json",
+        "passed": true,
+        "auditorSha256": "b577ec69d84c7ad215e7dc9c11167600f2a8405f774cc3305106695b3613945b",
+        "lineageValid": true
+      }
+    },
+    {
+      "name": "clean: native Lens and foottrace reopen lineage and locate its first captured fit writer",
+      "passed": true,
+      "detail": {
+        "firstFitWriter": "fit-preprocessing#1",
+        "nativeCalls": 18,
+        "backendStarted": false
+      }
+    },
+    {
+      "name": "faulty: saved state contains references and every artifact matches actual retained bytes",
+      "passed": true,
+      "detail": {
+        "nativeCommits": 8,
+        "sourceFiles": 12
+      }
+    },
+    {
+      "name": "faulty: correct model evidence is separate from data-protocol approval",
+      "passed": true,
+      "detail": {
+        "accuracy": 0.9618055555555556,
+        "modelEvidence": "allow",
+        "dataLineage": "deny",
+        "preprocessingEvaluationRows": 288,
+        "result": "quarantined"
+      }
+    },
+    {
+      "name": "faulty: independent saved-artifact audit agrees without training",
+      "passed": true,
+      "detail": {
+        "report": "run/faulty/independent-audit.json",
+        "passed": true,
+        "auditorSha256": "b577ec69d84c7ad215e7dc9c11167600f2a8405f774cc3305106695b3613945b",
+        "lineageValid": false
+      }
+    },
+    {
+      "name": "faulty: native Lens and foottrace reopen lineage and locate its first captured fit writer",
+      "passed": true,
+      "detail": {
+        "firstFitWriter": "fit-preprocessing#1",
+        "nativeCalls": 18,
+        "backendStarted": false
+      }
+    },
+    {
+      "name": "fixed: saved state contains references and every artifact matches actual retained bytes",
+      "passed": true,
+      "detail": {
+        "nativeCommits": 8,
+        "sourceFiles": 12
+      }
+    },
+    {
+      "name": "fixed: correct model evidence is separate from data-protocol approval",
+      "passed": true,
+      "detail": {
+        "accuracy": 0.9618055555555556,
+        "modelEvidence": "allow",
+        "dataLineage": "allow",
+        "preprocessingEvaluationRows": 0,
+        "result": "approved-locally"
+      }
+    },
+    {
+      "name": "fixed: independent saved-artifact audit agrees without training",
+      "passed": true,
+      "detail": {
+        "report": "run/fixed/independent-audit.json",
+        "passed": true,
+        "auditorSha256": "b577ec69d84c7ad215e7dc9c11167600f2a8405f774cc3305106695b3613945b",
+        "lineageValid": true
+      }
+    },
+    {
+      "name": "fixed: native Lens and foottrace reopen lineage and locate its first captured fit writer",
+      "passed": true,
+      "detail": {
+        "firstFitWriter": "fit-preprocessing#1",
+        "nativeCalls": 18,
+        "backendStarted": false
+      }
+    },
+    {
+      "name": "Missing lineage fails closed without changing a valid model-evaluation binding",
+      "passed": true,
+      "detail": {
+        "missingEvidenceStatus": "unknown"
+      }
+    },
+    {
+      "name": "The correction restores clean preprocessing and predictions without selecting on test data",
+      "passed": true,
+      "detail": {
+        "sameCleanAndFixedInference": true,
+        "metricImprovementRequired": false
+      }
+    },
+    {
+      "name": "Rich structured logs retain enough declared evidence to explain the same contamination",
+      "passed": true,
+      "detail": {
+        "firstBadStage": "fit-preprocessing",
+        "finalStatus": "quarantined",
+        "explicitSchemaFile": "structured-logging.ts",
+        "sourceBytes": 2176,
+        "claim": "Both representations explain this seeded failure; no human debugging-time advantage is established."
+      }
+    },
+    {
+      "name": "All inspected source and input artifacts remain unchanged after offline investigation",
+      "passed": true,
+      "detail": {
+        "filesRehashed": 55
+      }
+    }
+  ],
+  "totals": {
+    "passed": 16,
+    "failed": 0,
+    "artifacts": 30
+  },
+  "execution": {
+    "pythonStarted": false,
+    "trainingInvoked": false,
+    "languageModelInvoked": false,
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false
+  },
+  "limits": [
+    "Declared and independently checked row-ID lineage for this saved digits experiment, not detection of arbitrary or dishonest leakage.",
+    "Native missing-control-dependency and integrity coverage remains visible.",
+    "No browser or human debugging-speed claim is established by this verifier."
+  ]
+}

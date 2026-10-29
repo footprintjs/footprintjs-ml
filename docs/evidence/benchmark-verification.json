@@ -1,0 +1,53 @@
+{
+  "passed": 11,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "All 100 timed runs retain balanced mode positions and identical checked numerical outcomes",
+      "passed": true
+    },
+    {
+      "name": "Reported timing components sum exactly and plain-off saves zero trace bytes",
+      "passed": true
+    },
+    {
+      "name": "All saved compressed traces round-trip and contain compact metadata rather than image tensors",
+      "passed": true
+    },
+    {
+      "name": "Independent Python audit verifies five actual pipelines, training-only scalers, checkpoint hashes and metrics",
+      "passed": true
+    },
+    {
+      "name": "All eight investigation tasks pass complete per-profile checkpoint, data, metric and retry checks",
+      "passed": true
+    },
+    {
+      "name": "Trace queries reconstruct the same saved answers without reading runtime execution objects",
+      "passed": true
+    },
+    {
+      "name": "Lossless committed state and failed-attempt evidence remain distinct",
+      "passed": true
+    },
+    {
+      "name": "Summary keeps key evidence without cloning full read/write callback values; minimal retains no collector rows",
+      "passed": true
+    },
+    {
+      "name": "Actual observed policy reads expose the ignored identity value, and the guard prevents release",
+      "passed": true
+    },
+    {
+      "name": "Independent audit detects a forged released-checkpoint identity in a copied run",
+      "passed": true
+    },
+    {
+      "name": "Backend rejects released and previous-reset runtime references",
+      "passed": true
+    }
+  ],
+  "benchmarkSamples": 100,
+  "investigationQuestionsEach": 8,
+  "strictTypecheck": "performed separately"
+}

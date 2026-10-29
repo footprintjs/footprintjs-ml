@@ -1,0 +1,63 @@
+{
+  "passed": 14,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "The bad run selects the actual released instance and its audit",
+      "passed": true
+    },
+    {
+      "name": "The guarded run has an active reference but explicitly no released model",
+      "passed": true
+    },
+    {
+      "name": "Catalog keeps seven distinct runtime identities including four trained candidates and a failed attempt",
+      "passed": true
+    },
+    {
+      "name": "Reference history separates three committed changes from the discarded write in source order",
+      "passed": true
+    },
+    {
+      "name": "Every model selection changes inspection without changing the recorded release outcome",
+      "passed": true
+    },
+    {
+      "name": "Validation coverage follows content digest, while matching runtime identity remains separate",
+      "passed": true
+    },
+    {
+      "name": "Failed retry shows discard and explicit Python cleanup; successful retry shows a commit",
+      "passed": true
+    },
+    {
+      "name": "Legacy and guarded release evidence preserves actual conditions and observed read keys",
+      "passed": true
+    },
+    {
+      "name": "Every source entry resolves to the original raw record",
+      "passed": true
+    },
+    {
+      "name": "A model selection from another run cannot join reused numeric handles",
+      "passed": true
+    },
+    {
+      "name": "Missing observer/backend evidence remains unknown rather than inventing failed-attempt facts",
+      "passed": true
+    },
+    {
+      "name": "Renaming model labels does not change identity-based conclusions",
+      "passed": true
+    },
+    {
+      "name": "A later commit of the same reference cannot retroactively commit an earlier failed attempt",
+      "passed": true
+    },
+    {
+      "name": "Projection needs no runtime tree, precomputed diagnosis, or custom question answers",
+      "passed": true
+    }
+  ],
+  "browserQA": "Separate interactive checks cover selection, evidence dialog, guarded run, responsive layout and offline export."
+}

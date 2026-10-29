@@ -1,0 +1,749 @@
+{
+  "schema": "footprint-data-lineage-benchmark/v1",
+  "blocks": 8,
+  "warmupRuns": 4,
+  "measuredRuns": 32,
+  "workload": "One fixed digits scaler → classifier → validation → lineage/metric policy → local approval workflow, CPU threads fixed at one.",
+  "profiles": {
+    "direct": "Ordinary async stages with a final-state JSON record; no stage history.",
+    "logs": "Same ordinary stages with explicit application-maintained stage input/output schemas and backend events.",
+    "footprint-core": "FootPrint workflow and its native commit journal; read/write snapshot retention off, no supplemental recorder.",
+    "footprint-full": "Same FootPrint workflow with full read/write retention and read/write/decision/backend callbacks."
+  },
+  "timingScope": {
+    "included": [
+      "Workflow execution, numerical operations, trainer-boundary inspections, preprocessing/model artifact persistence, policy checks and local approval file",
+      "JSON serialization of the actual retained record"
+    ],
+    "excluded": [
+      "Python startup/imports and initial dataset creation",
+      "Final trace/outcome disk writes",
+      "Worker shutdown",
+      "Independent audit and browser rendering"
+    ]
+  },
+  "summaries": [
+    {
+      "capture": "direct",
+      "runs": 8,
+      "medianExecutionMs": 58.86372950000077,
+      "medianSerializationMs": 0.09331250000013824,
+      "medianExecutionAndSerializationMs": 58.95473000000038,
+      "medianRecordingBytes": 71269,
+      "minExecutionAndSerializationMs": 54.15020800000002,
+      "maxExecutionAndSerializationMs": 71.40720799999872
+    },
+    {
+      "capture": "logs",
+      "runs": 8,
+      "medianExecutionMs": 56.935645499999964,
+      "medianSerializationMs": 0.2688129999996818,
+      "medianExecutionAndSerializationMs": 57.19031250000012,
+      "medianRecordingBytes": 254177,
+      "minExecutionAndSerializationMs": 55.84216700000252,
+      "maxExecutionAndSerializationMs": 84.64712400000099
+    },
+    {
+      "capture": "footprint-core",
+      "runs": 8,
+      "medianExecutionMs": 56.30970849999994,
+      "medianSerializationMs": 0.25256199999967066,
+      "medianExecutionAndSerializationMs": 56.56012499999906,
+      "medianRecordingBytes": 149126,
+      "minExecutionAndSerializationMs": 55.15954200000033,
+      "maxExecutionAndSerializationMs": 66.71712599999773
+    },
+    {
+      "capture": "footprint-full",
+      "runs": 8,
+      "medianExecutionMs": 62.36089599999923,
+      "medianSerializationMs": 0.8194375000002765,
+      "medianExecutionAndSerializationMs": 63.33179199999904,
+      "medianRecordingBytes": 582629,
+      "minExecutionAndSerializationMs": 58.01208299999962,
+      "maxExecutionAndSerializationMs": 92.58458299999984
+    }
+  ],
+  "pairedComparisons": [
+    {
+      "baseline": "direct",
+      "compared": "logs",
+      "medianPairedDifferenceMs": 0.6982920000000377,
+      "medianPairedDifferencePercent": 1.2542420593994796,
+      "pairs": [
+        {
+          "block": 1,
+          "differenceMs": -3.6657079999995403,
+          "differencePercent": -5.9877214816697055
+        },
+        {
+          "block": 2,
+          "differenceMs": 1.8234990000000835,
+          "differencePercent": 3.367482909761099
+        },
+        {
+          "block": 3,
+          "differenceMs": -5.244373999998061,
+          "differencePercent": -7.344320198036803
+        },
+        {
+          "block": 4,
+          "differenceMs": 16.037624000002324,
+          "differencePercent": 23.37522354776327
+        },
+        {
+          "block": 5,
+          "differenceMs": -2.954168000000209,
+          "differencePercent": -4.951568984029908
+        },
+        {
+          "block": 6,
+          "differenceMs": 1.1271249999972497,
+          "differencePercent": 2.023607621503154
+        },
+        {
+          "block": 7,
+          "differenceMs": 1.3432499999980791,
+          "differencePercent": 2.3060794882088897
+        },
+        {
+          "block": 8,
+          "differenceMs": 0.26945900000282563,
+          "differencePercent": 0.4848764972958053
+        }
+      ]
+    },
+    {
+      "baseline": "direct",
+      "compared": "footprint-full",
+      "medianPairedDifferenceMs": 5.211998999998286,
+      "medianPairedDifferencePercent": 9.08777723728955,
+      "pairs": [
+        {
+          "block": 1,
+          "differenceMs": -3.2083330000000387,
+          "differencePercent": -5.24062593759581
+        },
+        {
+          "block": 2,
+          "differenceMs": 10.064124999999876,
+          "differencePercent": 18.585570345362058
+        },
+        {
+          "block": 3,
+          "differenceMs": 21.17737500000112,
+          "differencePercent": 29.657195111173507
+        },
+        {
+          "block": 4,
+          "differenceMs": 2.803083000002516,
+          "differencePercent": 4.0855610374693985
+        },
+        {
+          "block": 5,
+          "differenceMs": -1.1972100000002683,
+          "differencePercent": -2.0066793436836927
+        },
+        {
+          "block": 6,
+          "differenceMs": 3.5597909999978583,
+          "differencePercent": 6.391145790015829
+        },
+        {
+          "block": 7,
+          "differenceMs": 6.864206999998714,
+          "differencePercent": 11.784408684563275
+        },
+        {
+          "block": 8,
+          "differenceMs": 6.876542999998492,
+          "differencePercent": 12.373957015012715
+        }
+      ]
+    },
+    {
+      "baseline": "footprint-core",
+      "compared": "footprint-full",
+      "medianPairedDifferenceMs": 5.21881200000189,
+      "medianPairedDifferencePercent": 8.581936074091022,
+      "pairs": [
+        {
+          "block": 1,
+          "differenceMs": -2.9769170000004124,
+          "differencePercent": -4.881071996590225
+        },
+        {
+          "block": 2,
+          "differenceMs": 9.054790999999568,
+          "differencePercent": 16.415638476475223
+        },
+        {
+          "block": 3,
+          "differenceMs": 36.30054099999961,
+          "differencePercent": 64.49526315114231
+        },
+        {
+          "block": 4,
+          "differenceMs": 4.695457000003444,
+          "differencePercent": 7.037858615198145
+        },
+        {
+          "block": 5,
+          "differenceMs": 1.45433199999934,
+          "differencePercent": 2.5510251245087767
+        },
+        {
+          "block": 6,
+          "differenceMs": 2.8454170000004524,
+          "differencePercent": 5.043888159016707
+        },
+        {
+          "block": 7,
+          "differenceMs": 9.351417000001675,
+          "differencePercent": 16.7705334691044
+        },
+        {
+          "block": 8,
+          "differenceMs": 5.742167000000336,
+          "differencePercent": 10.126013532983901
+        }
+      ]
+    }
+  ],
+  "numericalParity": {
+    "passed": true,
+    "comparison": "Exact metric object and inference digest match every measured profile/block.",
+    "expected": {
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    }
+  },
+  "rawRuns": [
+    {
+      "block": 1,
+      "capture": "direct",
+      "startupAndDatasetInitializationMs": 478.4319999999998,
+      "executionMs": 61.12783300000001,
+      "serializationMs": 0.09258299999964947,
+      "executionAndSerializationMs": 61.22041599999966,
+      "recordingBytes": 71269,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 1,
+      "capture": "logs",
+      "startupAndDatasetInitializationMs": 444.4082920000001,
+      "executionMs": 57.2761660000001,
+      "serializationMs": 0.27854200000001583,
+      "executionAndSerializationMs": 57.55470800000012,
+      "recordingBytes": 254177,
+      "supplementalRows": 0,
+      "structuredLogEvents": 30,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 1,
+      "capture": "footprint-core",
+      "startupAndDatasetInitializationMs": 397.0963750000001,
+      "executionMs": 60.717125000000124,
+      "serializationMs": 0.27187499999990905,
+      "executionAndSerializationMs": 60.98900000000003,
+      "recordingBytes": 149126,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 1,
+      "capture": "footprint-full",
+      "startupAndDatasetInitializationMs": 398.91504199999963,
+      "executionMs": 57.20429100000001,
+      "serializationMs": 0.8077919999996084,
+      "executionAndSerializationMs": 58.01208299999962,
+      "recordingBytes": 582629,
+      "supplementalRows": 90,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 2,
+      "capture": "logs",
+      "startupAndDatasetInitializationMs": 413.35804199999984,
+      "executionMs": 55.73154100000011,
+      "serializationMs": 0.24216599999999744,
+      "executionAndSerializationMs": 55.973707000000104,
+      "recordingBytes": 254177,
+      "supplementalRows": 0,
+      "structuredLogEvents": 30,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 2,
+      "capture": "footprint-core",
+      "startupAndDatasetInitializationMs": 401.83287500000006,
+      "executionMs": 54.911417000000256,
+      "serializationMs": 0.24812500000007276,
+      "executionAndSerializationMs": 55.15954200000033,
+      "recordingBytes": 149126,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 2,
+      "capture": "footprint-full",
+      "startupAndDatasetInitializationMs": 441.2018340000004,
+      "executionMs": 63.066749999999956,
+      "serializationMs": 1.1475829999999405,
+      "executionAndSerializationMs": 64.2143329999999,
+      "recordingBytes": 582629,
+      "supplementalRows": 90,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 2,
+      "capture": "direct",
+      "startupAndDatasetInitializationMs": 433.17254200000025,
+      "executionMs": 54.020040999999765,
+      "serializationMs": 0.13016700000025594,
+      "executionAndSerializationMs": 54.15020800000002,
+      "recordingBytes": 71269,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 3,
+      "capture": "footprint-core",
+      "startupAndDatasetInitializationMs": 419.88945799999965,
+      "executionMs": 56.01337500000045,
+      "serializationMs": 0.2706669999997757,
+      "executionAndSerializationMs": 56.28404200000023,
+      "recordingBytes": 149126,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 3,
+      "capture": "footprint-full",
+      "startupAndDatasetInitializationMs": 523.7952910000004,
+      "executionMs": 91.4900830000006,
+      "serializationMs": 1.0944999999992433,
+      "executionAndSerializationMs": 92.58458299999984,
+      "recordingBytes": 582629,
+      "supplementalRows": 90,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 3,
+      "capture": "direct",
+      "startupAndDatasetInitializationMs": 800.419667000001,
+      "executionMs": 71.27387499999895,
+      "serializationMs": 0.1333329999997659,
+      "executionAndSerializationMs": 71.40720799999872,
+      "recordingBytes": 71269,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 3,
+      "capture": "logs",
+      "startupAndDatasetInitializationMs": 551.6254580000004,
+      "executionMs": 65.9002500000006,
+      "serializationMs": 0.26258400000006077,
+      "executionAndSerializationMs": 66.16283400000066,
+      "recordingBytes": 254177,
+      "supplementalRows": 0,
+      "structuredLogEvents": 30,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 4,
+      "capture": "footprint-full",
+      "startupAndDatasetInitializationMs": 502.9342089999991,
+      "executionMs": 70.22075000000041,
+      "serializationMs": 1.19183300000077,
+      "executionAndSerializationMs": 71.41258300000118,
+      "recordingBytes": 582629,
+      "supplementalRows": 90,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 4,
+      "capture": "direct",
+      "startupAndDatasetInitializationMs": 581.2662909999999,
+      "executionMs": 68.51133299999856,
+      "serializationMs": 0.09816700000010314,
+      "executionAndSerializationMs": 68.60949999999866,
+      "recordingBytes": 71269,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 4,
+      "capture": "logs",
+      "startupAndDatasetInitializationMs": 526.6557090000006,
+      "executionMs": 84.22620800000004,
+      "serializationMs": 0.4209160000009433,
+      "executionAndSerializationMs": 84.64712400000099,
+      "recordingBytes": 254177,
+      "supplementalRows": 0,
+      "structuredLogEvents": 30,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 4,
+      "capture": "footprint-core",
+      "startupAndDatasetInitializationMs": 628.4679580000011,
+      "executionMs": 66.43929199999911,
+      "serializationMs": 0.27783399999862013,
+      "executionAndSerializationMs": 66.71712599999773,
+      "recordingBytes": 149126,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 5,
+      "capture": "direct",
+      "startupAndDatasetInitializationMs": 533.8907909999998,
+      "executionMs": 59.57329200000095,
+      "serializationMs": 0.08795899999859103,
+      "executionAndSerializationMs": 59.66125099999954,
+      "recordingBytes": 71269,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 5,
+      "capture": "logs",
+      "startupAndDatasetInitializationMs": 434.8914590000004,
+      "executionMs": 56.43204100000003,
+      "serializationMs": 0.2750419999993028,
+      "executionAndSerializationMs": 56.70708299999933,
+      "recordingBytes": 254177,
+      "supplementalRows": 0,
+      "structuredLogEvents": 30,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 5,
+      "capture": "footprint-core",
+      "startupAndDatasetInitializationMs": 419.48183400000016,
+      "executionMs": 56.76308400000016,
+      "serializationMs": 0.24662499999976717,
+      "executionAndSerializationMs": 57.00970899999993,
+      "recordingBytes": 149126,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 5,
+      "capture": "footprint-full",
+      "startupAndDatasetInitializationMs": 415.48179100000016,
+      "executionMs": 57.71745799999917,
+      "serializationMs": 0.7465830000001006,
+      "executionAndSerializationMs": 58.46404099999927,
+      "recordingBytes": 582629,
+      "supplementalRows": 90,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 6,
+      "capture": "logs",
+      "startupAndDatasetInitializationMs": 428.6292090000006,
+      "executionMs": 56.595124999999825,
+      "serializationMs": 0.23079200000029232,
+      "executionAndSerializationMs": 56.82591700000012,
+      "recordingBytes": 254177,
+      "supplementalRows": 0,
+      "structuredLogEvents": 30,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 6,
+      "capture": "footprint-core",
+      "startupAndDatasetInitializationMs": 424.8029580000002,
+      "executionMs": 56.16112500000054,
+      "serializationMs": 0.2520409999997355,
+      "executionAndSerializationMs": 56.413166000000274,
+      "recordingBytes": 149126,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 6,
+      "capture": "footprint-full",
+      "startupAndDatasetInitializationMs": 440.45958299999984,
+      "executionMs": 58.47362500000054,
+      "serializationMs": 0.7849580000001879,
+      "executionAndSerializationMs": 59.258583000000726,
+      "recordingBytes": 582629,
+      "supplementalRows": 90,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 6,
+      "capture": "direct",
+      "startupAndDatasetInitializationMs": 408.1416249999984,
+      "executionMs": 55.612333000000945,
+      "serializationMs": 0.08645900000192341,
+      "executionAndSerializationMs": 55.69879200000287,
+      "recordingBytes": 71269,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 7,
+      "capture": "footprint-core",
+      "startupAndDatasetInitializationMs": 410.0973750000012,
+      "executionMs": 55.50791599999866,
+      "serializationMs": 0.2530829999996058,
+      "executionAndSerializationMs": 55.760998999998264,
+      "recordingBytes": 149126,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 7,
+      "capture": "footprint-full",
+      "startupAndDatasetInitializationMs": 418.5817079999979,
+      "executionMs": 64.281332999999,
+      "serializationMs": 0.8310830000009446,
+      "executionAndSerializationMs": 65.11241599999994,
+      "recordingBytes": 582629,
+      "supplementalRows": 90,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 7,
+      "capture": "direct",
+      "startupAndDatasetInitializationMs": 443.47570800000176,
+      "executionMs": 58.1541670000006,
+      "serializationMs": 0.09404200000062701,
+      "executionAndSerializationMs": 58.248209000001225,
+      "recordingBytes": 71269,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 7,
+      "capture": "logs",
+      "startupAndDatasetInitializationMs": 458.8038750000014,
+      "executionMs": 59.330958999998984,
+      "serializationMs": 0.26050000000032014,
+      "executionAndSerializationMs": 59.591458999999304,
+      "recordingBytes": 254177,
+      "supplementalRows": 0,
+      "structuredLogEvents": 30,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 8,
+      "capture": "footprint-full",
+      "startupAndDatasetInitializationMs": 430.625,
+      "executionMs": 61.6550419999985,
+      "serializationMs": 0.7942089999996824,
+      "executionAndSerializationMs": 62.449250999998185,
+      "recordingBytes": 582629,
+      "supplementalRows": 90,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 8,
+      "capture": "direct",
+      "startupAndDatasetInitializationMs": 410.23041600000215,
+      "executionMs": 55.4876669999976,
+      "serializationMs": 0.08504100000209291,
+      "executionAndSerializationMs": 55.57270799999969,
+      "recordingBytes": 71269,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 8,
+      "capture": "logs",
+      "startupAndDatasetInitializationMs": 419.70800000000236,
+      "executionMs": 55.55766700000095,
+      "serializationMs": 0.2845000000015716,
+      "executionAndSerializationMs": 55.84216700000252,
+      "recordingBytes": 254177,
+      "supplementalRows": 0,
+      "structuredLogEvents": 30,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    },
+    {
+      "block": 8,
+      "capture": "footprint-core",
+      "startupAndDatasetInitializationMs": 414.50195800000074,
+      "executionMs": 56.458291999999346,
+      "serializationMs": 0.24879199999850243,
+      "executionAndSerializationMs": 56.70708399999785,
+      "recordingBytes": 149126,
+      "supplementalRows": 0,
+      "structuredLogEvents": 0,
+      "metrics": {
+        "accuracy": 0.9618055555555556,
+        "logLoss": 0.13544977804017577
+      },
+      "inferenceSha256": "248d3e080ddf57a7ad73bc89c0e491015ef71a00619e965b3ba3afd8ac8a7147"
+    }
+  ],
+  "structuredLoggingCode": {
+    "file": "structured-logging.ts",
+    "nonblankNoncommentLines": 31,
+    "note": "This counts this explicit helper/schema only. It is not a universal LOC saving or a measure of developer time. FootPrint setup and backend instrumentation remain necessary."
+  },
+  "limitations": [
+    "Small local CPU workload and eight default blocks; descriptive timings, not a production/GPU result.",
+    "Full versus direct includes orchestration plus recording. Full versus core isolates additional capture/retention on the same FootPrint workflow, not all journaling cost.",
+    "Record bytes exclude backend data/model/lineage artifacts, which all profiles retain.",
+    "No human debugging-speed study was performed."
+  ]
+}

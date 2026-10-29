@@ -1,0 +1,72 @@
+{
+  "status": "passed",
+  "checks": 15,
+  "results": [
+    {
+      "name": "independent known-value prediction, MSE and gradient fixture",
+      "status": "passed"
+    },
+    {
+      "name": "both automatic gradients match independent central finite differences",
+      "status": "passed"
+    },
+    {
+      "name": "a different executed graph has its own derivatives, including shared-input accumulation",
+      "status": "passed"
+    },
+    {
+      "name": "validation is read-only; invalid shapes and stale/foreign references are rejected",
+      "status": "passed"
+    },
+    {
+      "name": "a failed completion observer releases the provisional model and evaluation",
+      "status": "passed"
+    },
+    {
+      "name": "released tensor/evaluation resources have zero live counts",
+      "status": "passed"
+    },
+    {
+      "name": "real training reduces loss and learns the parameters from zero",
+      "status": "passed"
+    },
+    {
+      "name": "training, validation and held-out test examples are separate; test data never trains",
+      "status": "passed"
+    },
+    {
+      "name": "all committed scope states contain descriptors and scalar metrics, not tensors",
+      "status": "passed"
+    },
+    {
+      "name": "every accepted epoch links its compute call to a real FootPrint model commit",
+      "status": "passed"
+    },
+    {
+      "name": "checkpoint retains actual parameters and reloads in a different Wasm session",
+      "status": "passed"
+    },
+    {
+      "name": "altered artifact bytes fail checksum validation",
+      "status": "passed"
+    },
+    {
+      "name": "an epoch limit stops training through its own recorded decision",
+      "status": "passed"
+    },
+    {
+      "name": "a failed training stage discards the new model without publishing its reference",
+      "status": "passed"
+    },
+    {
+      "name": "compiled Wasm artifact matches the actual Rust build record",
+      "status": "passed"
+    }
+  ],
+  "node": "v24.21.0",
+  "trainingResult": {
+    "weight": 2.9999991051940103,
+    "bias": 1.9999128877140682
+  },
+  "epochs": 45
+}

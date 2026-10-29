@@ -1,0 +1,97 @@
+{
+  "schema": "model-selection-independent-numpy-audit/v1",
+  "passed": true,
+  "execution": {
+    "trainingInvoked": false,
+    "jaxImported": false,
+    "numpyVersion": "2.2.6"
+  },
+  "evaluations": [
+    {
+      "candidateId": "steps-100",
+      "recorded": {
+        "mae": 0.026755881001008675,
+        "mse": 0.001700233258309988,
+        "rmse": 0.04123388483165257
+      },
+      "independentNumPy": {
+        "mse": 0.0017002386484600753,
+        "rmse": 0.04123395019228785,
+        "mae": 0.02675641856978614
+      }
+    },
+    {
+      "candidateId": "steps-30",
+      "recorded": {
+        "mae": 0.05457692264462821,
+        "mse": 0.004259598336456735,
+        "rmse": 0.0652655984149133
+      },
+      "independentNumPy": {
+        "mse": 0.004259598834205885,
+        "rmse": 0.06526560222817135,
+        "mae": 0.05457716254759655
+      }
+    },
+    {
+      "candidateId": "steps-60",
+      "recorded": {
+        "mae": 0.03372801325167529,
+        "mse": 0.0023385982112158693,
+        "rmse": 0.04835905511086697
+      },
+      "independentNumPy": {
+        "mse": 0.002338603831323901,
+        "rmse": 0.048359113218956994,
+        "mae": 0.03372807912790008
+      }
+    }
+  ],
+  "test": {
+    "candidateId": "steps-100",
+    "recorded": {
+      "mae": 0.030146896094083785,
+      "mse": 0.0019895516647118723,
+      "rmse": 0.044604390643880255
+    },
+    "independentNumPy": {
+      "mse": 0.0019895481965714135,
+      "rmse": 0.04460435176719211,
+      "mae": 0.030146985008883343
+    }
+  },
+  "allInputHashesUnchanged": true,
+  "artifactCount": 6,
+  "inputs": {
+    "outcome.json": {
+      "sha256": "d2af0712764b547511c7cf4d265d45078d1f68b68f5e5336a69dd281dcf310c0",
+      "bytes": 152881
+    },
+    "trace.json": {
+      "sha256": "22b370b278ad8f5c87d1fc056dcbb4056f576e34029799a1d9bb0872037600fb",
+      "bytes": 1414507
+    }
+  },
+  "artifactSha256": {
+    "datasets/000-9f86d081884c-7c8453d301b84ae6b9852e5f073adb47.npz": "b04b1ccd34e0294a03b295b18c62fc8556378d4c6a52faef99e2efab9762211c",
+    "datasets/001-116f54c41d04-379f17a290064dd0bafa9c4b3083b9c2.npz": "dd0ba10eee85f6677d26788fed1a8947b38acd4e8c440d496ef8f714711d7138",
+    "datasets/002-98c41dcd20b8-a1b534e27b7e4dadbde792fc23397f9e.npz": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352",
+    "checkpoints/f508e9cc840e416490bfbb6bc9a1d292.npz": "22f3acbed72ce24f2f5e146cbfcb4efa843709ecc88a84edcd489df7fd0e3da7",
+    "checkpoints/227dfa028c5a4873842c1cb80c430938.npz": "f8c10f30d9ce53913171c68e01941643db66d0188be03a5afe18bffbe870c526",
+    "checkpoints/32ded5a6c3114f92be38d0b62905562a.npz": "5d5bc365c9936543e479856f96863974153ec0a2ae067c87d664b1b904f6519d"
+  },
+  "sources": {
+    "backend/audit_saved.py": {
+      "sha256": "0eea147ee5e59b488e70b6914d550348c0f200d073de9b95444ef4bb195e403b",
+      "bytes": 5162
+    },
+    "backend/numpy_gp.py": {
+      "sha256": "3eca61ddbb1db7a43f1674fa1b8639835a1686b0a5da72da76935b19d3cf8cc9",
+      "bytes": 1770
+    }
+  },
+  "limits": [
+    "Float64 NumPy posterior values are compared with float32 JAX results using absolute 5e-6 plus relative 5e-4 tolerance.",
+    "This checks saved prediction metrics and conditioning partitions; it does not test derivatives or arbitrary plugin completeness."
+  ]
+}

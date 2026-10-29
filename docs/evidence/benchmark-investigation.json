@@ -1,0 +1,803 @@
+{
+  "questions": [
+    {
+      "question": "Which candidate won, using which validation results?",
+      "footprintCorrect": true,
+      "logsCorrect": true
+    },
+    {
+      "question": "Which checkpoint and dataset did validation cover?",
+      "footprintCorrect": true,
+      "logsCorrect": true
+    },
+    {
+      "question": "Which model was actually released?",
+      "footprintCorrect": true,
+      "logsCorrect": true
+    },
+    {
+      "question": "Which committed stage changed the active reference?",
+      "footprintCorrect": true,
+      "logsCorrect": true
+    },
+    {
+      "question": "Did the failed attempt enter committed state?",
+      "footprintCorrect": true,
+      "logsCorrect": true
+    },
+    {
+      "question": "Which model did the successful retry install?",
+      "footprintCorrect": true,
+      "logsCorrect": true
+    },
+    {
+      "question": "Which condition fields did the release gate evaluate?",
+      "footprintCorrect": true,
+      "logsCorrect": true
+    },
+    {
+      "question": "Does the held-out audit use the released model bytes and same test data?",
+      "footprintCorrect": true,
+      "logsCorrect": true
+    }
+  ],
+  "footprintAnswered": 8,
+  "logsAnswered": 8,
+  "footprint": {
+    "selectedCandidate": {
+      "id": "logistic-C-3",
+      "candidateIdIndex": 3,
+      "chosenBranch": "pick-3",
+      "candidates": [
+        {
+          "id": "logistic-C-0.03",
+          "accuracy": 0.9722222222222222,
+          "logLoss": 0.2543424595806353
+        },
+        {
+          "id": "logistic-C-0.1",
+          "accuracy": 0.9722222222222222,
+          "logLoss": 0.15856966211763393
+        },
+        {
+          "id": "logistic-C-1",
+          "accuracy": 0.9756944444444444,
+          "logLoss": 0.08865070603563492
+        },
+        {
+          "id": "logistic-C-3",
+          "accuracy": 0.9756944444444444,
+          "logLoss": 0.08250649450261135
+        }
+      ],
+      "rule": "Highest validation accuracy; ties by lowest validation log loss, then candidate order"
+    },
+    "validation": {
+      "checkpoint": {
+        "kind": "artifact",
+        "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+        "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+        "bytes": 8206,
+        "format": "trusted-digits-pipeline-pickle/v1"
+      },
+      "dataset": {
+        "kind": "artifact",
+        "path": "datasets/validation.json",
+        "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+        "bytes": 213480,
+        "format": "digits-dataset/json-v1"
+      },
+      "artifact": {
+        "kind": "artifact",
+        "path": "evaluations/selected-validation-b767796b-dc2e-4f4e-b27e-2a21ef67a212-predictions.json",
+        "sha256": "62ca830648d10258c83baeb5d8fbc93fa681785691062e6d617642e05f4ad872",
+        "bytes": 91857,
+        "format": "classifier-predictions/json-v1"
+      },
+      "passed": true
+    },
+    "actualRelease": {
+      "candidateId": "cached-baseline",
+      "checkpoint": {
+        "kind": "artifact",
+        "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+        "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+        "bytes": 2811,
+        "format": "trusted-digits-pipeline-pickle/v1"
+      },
+      "artifact": {
+        "kind": "artifact",
+        "path": "release.json",
+        "sha256": "8dedf33ca2e1dc2d9b5a5608a90f6aff7dc8570f4a0a482a0e721aaf36500c9c",
+        "bytes": 1393,
+        "format": "local-model-release/v1"
+      },
+      "status": "released-locally",
+      "testAccuracy": 0.1
+    },
+    "lastModelWriter": {
+      "stage": "Recover serving session",
+      "id": "recover#10",
+      "index": 10
+    },
+    "validationWriter": {
+      "stage": "Validate selected model",
+      "id": "validate#8",
+      "index": 8
+    },
+    "failedAttempt": {
+      "handle": 9,
+      "candidateId": "logistic-C-3",
+      "committed": false,
+      "explicitlyReleased": true
+    },
+    "successfulRetry": {
+      "recoveryAttempt": 2,
+      "candidateId": "cached-baseline",
+      "committed": true
+    },
+    "policy": {
+      "stage": "Release policy",
+      "chosen": "release",
+      "rules": [
+        {
+          "type": "filter",
+          "ruleIndex": 0,
+          "branch": "release",
+          "matched": true,
+          "label": "Legacy rule trusts saved validation flag",
+          "conditions": [
+            {
+              "key": "validationPassed",
+              "op": "eq",
+              "threshold": true,
+              "actualSummary": "true",
+              "result": true,
+              "redacted": false
+            }
+          ]
+        }
+      ]
+    },
+    "policyObservedReadKeys": [
+      "validationPassed"
+    ],
+    "audit": {
+      "activeCheckpoint": {
+        "kind": "artifact",
+        "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+        "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+        "bytes": 2811,
+        "format": "trusted-digits-pipeline-pickle/v1"
+      },
+      "validatedCheckpoint": {
+        "kind": "artifact",
+        "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+        "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+        "bytes": 8206,
+        "format": "trusted-digits-pipeline-pickle/v1"
+      },
+      "sameTestDataset": true,
+      "activeAccuracy": 0.1,
+      "validatedAccuracy": 0.9583333333333334
+    },
+    "mismatch": true,
+    "retryCount": 1
+  },
+  "logs": {
+    "selectedCandidate": {
+      "id": "logistic-C-3",
+      "candidateIdIndex": 3,
+      "chosenBranch": "pick-3",
+      "candidates": [
+        {
+          "id": "logistic-C-0.03",
+          "accuracy": 0.9722222222222222,
+          "logLoss": 0.2543424595806353
+        },
+        {
+          "id": "logistic-C-0.1",
+          "accuracy": 0.9722222222222222,
+          "logLoss": 0.15856966211763393
+        },
+        {
+          "id": "logistic-C-1",
+          "accuracy": 0.9756944444444444,
+          "logLoss": 0.08865070603563492
+        },
+        {
+          "id": "logistic-C-3",
+          "accuracy": 0.9756944444444444,
+          "logLoss": 0.08250649450261135
+        }
+      ],
+      "rule": "Highest validation accuracy; ties by lowest validation log loss, then candidate order"
+    },
+    "validation": {
+      "checkpoint": {
+        "kind": "artifact",
+        "path": "checkpoints/logistic-C-3-a4bc5eb8-9359-4cb7-a271-369f8a6d9be9.pkl",
+        "sha256": "17700cc8f0f9f6bd1010b5db33244e60bbf540ccf71c0f0295f6c4ff10135115",
+        "bytes": 8206,
+        "format": "trusted-digits-pipeline-pickle/v1"
+      },
+      "dataset": {
+        "kind": "artifact",
+        "path": "datasets/validation.json",
+        "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+        "bytes": 213480,
+        "format": "digits-dataset/json-v1"
+      },
+      "artifact": {
+        "kind": "artifact",
+        "path": "evaluations/selected-validation-f56c0f00-6464-4db0-8411-65e1fd5741ff-predictions.json",
+        "sha256": "a3ef7ec978549549e11c3c11da93bf311ab810f479e1451158c6068a9106ae31",
+        "bytes": 91857,
+        "format": "classifier-predictions/json-v1"
+      },
+      "passed": true
+    },
+    "actualRelease": {
+      "candidateId": "cached-baseline",
+      "checkpoint": {
+        "kind": "artifact",
+        "path": "checkpoints/cached-baseline-0e458792-7597-43e6-8fd8-bbfd9d7ad5d9.pkl",
+        "sha256": "01c74a5e5395e201007a9caee34e348e7f72bfc24dab4006b9b06b23cf5b938c",
+        "bytes": 2811,
+        "format": "trusted-digits-pipeline-pickle/v1"
+      },
+      "artifact": {
+        "kind": "artifact",
+        "path": "release.json",
+        "sha256": "587b30eedffd2a8e95a5aaa3c6ca50e99c03935493d4f1b7628a885b25b371eb",
+        "bytes": 1393,
+        "format": "local-model-release/v1"
+      },
+      "status": "released-locally",
+      "testAccuracy": 0.1
+    },
+    "lastModelWriter": {
+      "stage": "Recover serving session",
+      "id": "recover",
+      "index": 36
+    },
+    "validationWriter": {
+      "stage": "Validate selected model",
+      "id": "validate",
+      "index": 25
+    },
+    "failedAttempt": {
+      "handle": 9,
+      "candidateId": "logistic-C-3",
+      "committed": false,
+      "explicitlyReleased": true
+    },
+    "successfulRetry": {
+      "recoveryAttempt": 2,
+      "candidateId": "cached-baseline",
+      "committed": true
+    },
+    "policy": {
+      "stage": "Release policy",
+      "chosen": "release",
+      "rules": [
+        {
+          "branch": "release",
+          "label": "Legacy rule trusts saved validation flag",
+          "matched": true,
+          "conditions": [
+            {
+              "key": "validationPassed",
+              "op": "eq",
+              "threshold": true,
+              "actual": true,
+              "result": true
+            }
+          ]
+        }
+      ]
+    },
+    "policyObservedReadKeys": null,
+    "audit": {
+      "activeCheckpoint": {
+        "kind": "artifact",
+        "path": "checkpoints/cached-baseline-0e458792-7597-43e6-8fd8-bbfd9d7ad5d9.pkl",
+        "sha256": "01c74a5e5395e201007a9caee34e348e7f72bfc24dab4006b9b06b23cf5b938c",
+        "bytes": 2811,
+        "format": "trusted-digits-pipeline-pickle/v1"
+      },
+      "validatedCheckpoint": {
+        "kind": "artifact",
+        "path": "checkpoints/logistic-C-3-a4bc5eb8-9359-4cb7-a271-369f8a6d9be9.pkl",
+        "sha256": "17700cc8f0f9f6bd1010b5db33244e60bbf540ccf71c0f0295f6c4ff10135115",
+        "bytes": 8206,
+        "format": "trusted-digits-pipeline-pickle/v1"
+      },
+      "sameTestDataset": true,
+      "activeAccuracy": 0.1,
+      "validatedAccuracy": 0.9583333333333334
+    },
+    "mismatch": true,
+    "retryCount": 1
+  },
+  "independentGold": {
+    "footprint": {
+      "schema": "footprint-digits-independent-audit/v1",
+      "selectedCandidateId": "logistic-C-3",
+      "selectedCheckpoint": {
+        "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+        "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b"
+      },
+      "selectedValidationAccuracy": 0.9756944444444444,
+      "selectedValidationLogLoss": 0.08250649450261135,
+      "selectedTestAccuracy": 0.9583333333333334,
+      "releasedCandidateId": "cached-baseline",
+      "releaseCheckpoint": {
+        "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+        "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b"
+      },
+      "releasedTestAccuracy": 0.1,
+      "releaseUsesValidatedArtifact": false,
+      "release": {
+        "path": "release.json",
+        "declaredModelRef": {
+          "kind": "model",
+          "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+          "handle": 10,
+          "originArtifact": {
+            "kind": "artifact",
+            "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+            "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+            "bytes": 2811,
+            "format": "trusted-digits-pipeline-pickle/v1"
+          },
+          "modelId": "61e76ca9-9fc8-4c64-a673-972ebd5cba66",
+          "candidateId": "cached-baseline",
+          "C": null
+        },
+        "actualCheckpoint": {
+          "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+          "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+          "bytes": 2811,
+          "candidateId": "cached-baseline",
+          "modelId": "61e76ca9-9fc8-4c64-a673-972ebd5cba66"
+        },
+        "checkpointReferenceDigestVerified": true,
+        "declaredModelIdentityMatchesCheckpoint": true,
+        "declaredValidatedArtifactMatchesSelection": true,
+        "test": {
+          "accuracy": 0.1,
+          "macroF1": 0.01818181818181818,
+          "logLoss": 32.43928805020544
+        }
+      },
+      "scalerTrainOnly": true,
+      "datasetRows": {
+        "train": 1149,
+        "validation": 288,
+        "test": 360
+      },
+      "validationDatasetSha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+      "testDatasetSha256": "f98393307be069c3ea263b0a67e0c56886635cafbda103bcb3947967bf690bd7",
+      "datasetDefinition": {
+        "source": "sklearn.datasets.load_digits",
+        "features": 64,
+        "classes": 10,
+        "seed": 42,
+        "split": "stratified test=20%; validation=20% of the remaining rows"
+      },
+      "partitionIdsDisjoint": null,
+      "partitionIdentityEvidence": "source row identities were not recorded",
+      "checkpointFiles": 5,
+      "checkpointDigestsVerified": true,
+      "trainingDatasetDigestsVerified": true,
+      "candidateMetrics": [
+        {
+          "candidateId": "logistic-C-0.03",
+          "accuracy": 0.9722222222222222,
+          "logLoss": 0.2543424595806353
+        },
+        {
+          "candidateId": "logistic-C-0.1",
+          "accuracy": 0.9722222222222222,
+          "logLoss": 0.15856966211763393
+        },
+        {
+          "candidateId": "logistic-C-1",
+          "accuracy": 0.9756944444444444,
+          "logLoss": 0.08865070603563492
+        },
+        {
+          "candidateId": "logistic-C-3",
+          "accuracy": 0.9756944444444444,
+          "logLoss": 0.08250649450261135
+        }
+      ],
+      "ranking": [
+        {
+          "candidateId": "logistic-C-3",
+          "C": 3,
+          "accuracy": 0.9756944444444444,
+          "macroF1": 0.9758918521613922,
+          "logLoss": 0.08250649450261135
+        },
+        {
+          "candidateId": "logistic-C-1",
+          "C": 1,
+          "accuracy": 0.9756944444444444,
+          "macroF1": 0.9758918521613922,
+          "logLoss": 0.08865070603563492
+        },
+        {
+          "candidateId": "logistic-C-0.1",
+          "C": 0.1,
+          "accuracy": 0.9722222222222222,
+          "macroF1": 0.9727263306469519,
+          "logLoss": 0.15856966211763393
+        },
+        {
+          "candidateId": "logistic-C-0.03",
+          "C": 0.03,
+          "accuracy": 0.9722222222222222,
+          "macroF1": 0.9727263306469519,
+          "logLoss": 0.2543424595806353
+        }
+      ],
+      "checkpoints": [
+        {
+          "path": "checkpoints/logistic-C-0.03-cfa71a5f-45e5-4f61-8b10-d8f89a57634b.pkl",
+          "sha256": "f7df124580a84a07ff7e625a372df1b171934348889e8cfeddeac358feac431d",
+          "bytes": 8209,
+          "candidateId": "logistic-C-0.03",
+          "modelId": "cfa71a5f-45e5-4f61-8b10-d8f89a57634b",
+          "C": 0.03,
+          "baseline": false,
+          "validation": {
+            "accuracy": 0.9722222222222222,
+            "macroF1": 0.9727263306469519,
+            "logLoss": 0.2543424595806353
+          },
+          "scalerTrainOnly": true,
+          "trainingDatasetDigestVerified": true,
+          "digestVerified": true,
+          "digestReferenceCount": 1
+        },
+        {
+          "path": "checkpoints/logistic-C-0.1-38efa0bb-8b43-4fa1-b7ed-4d08938376f4.pkl",
+          "sha256": "b4613a00ede8dc1bacaf460f0ec8d065bfafee3d7ebb7c72a4173fa53ce867b6",
+          "bytes": 8208,
+          "candidateId": "logistic-C-0.1",
+          "modelId": "38efa0bb-8b43-4fa1-b7ed-4d08938376f4",
+          "C": 0.1,
+          "baseline": false,
+          "validation": {
+            "accuracy": 0.9722222222222222,
+            "macroF1": 0.9727263306469519,
+            "logLoss": 0.15856966211763393
+          },
+          "scalerTrainOnly": true,
+          "trainingDatasetDigestVerified": true,
+          "digestVerified": true,
+          "digestReferenceCount": 1
+        },
+        {
+          "path": "checkpoints/logistic-C-1-72030718-9fb3-4263-bd69-328f3c039bad.pkl",
+          "sha256": "5fc73046bb56fe01a69d89d17e872a8a4ece5e4648380a0ebd2570ee96ad56e0",
+          "bytes": 8206,
+          "candidateId": "logistic-C-1",
+          "modelId": "72030718-9fb3-4263-bd69-328f3c039bad",
+          "C": 1,
+          "baseline": false,
+          "validation": {
+            "accuracy": 0.9756944444444444,
+            "macroF1": 0.9758918521613922,
+            "logLoss": 0.08865070603563492
+          },
+          "scalerTrainOnly": true,
+          "trainingDatasetDigestVerified": true,
+          "digestVerified": true,
+          "digestReferenceCount": 1
+        },
+        {
+          "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+          "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+          "bytes": 8206,
+          "candidateId": "logistic-C-3",
+          "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+          "C": 3,
+          "baseline": false,
+          "validation": {
+            "accuracy": 0.9756944444444444,
+            "macroF1": 0.9758918521613922,
+            "logLoss": 0.08250649450261135
+          },
+          "scalerTrainOnly": true,
+          "trainingDatasetDigestVerified": true,
+          "digestVerified": true,
+          "digestReferenceCount": 4
+        },
+        {
+          "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+          "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+          "bytes": 2811,
+          "candidateId": "cached-baseline",
+          "modelId": "61e76ca9-9fc8-4c64-a673-972ebd5cba66",
+          "C": null,
+          "baseline": true,
+          "validation": {
+            "accuracy": 0.10069444444444445,
+            "macroF1": 0.01829652996845426,
+            "logLoss": 32.41425773535189
+          },
+          "scalerTrainOnly": true,
+          "trainingDatasetDigestVerified": true,
+          "digestVerified": true,
+          "digestReferenceCount": 2
+        }
+      ],
+      "method": "Independently unpickle trusted pipelines and recompute sklearn metrics from saved datasets; no TypeScript trace queries or reported metric reuse."
+    },
+    "logs": {
+      "schema": "footprint-digits-independent-audit/v1",
+      "selectedCandidateId": "logistic-C-3",
+      "selectedCheckpoint": {
+        "path": "checkpoints/logistic-C-3-a4bc5eb8-9359-4cb7-a271-369f8a6d9be9.pkl",
+        "sha256": "17700cc8f0f9f6bd1010b5db33244e60bbf540ccf71c0f0295f6c4ff10135115"
+      },
+      "selectedValidationAccuracy": 0.9756944444444444,
+      "selectedValidationLogLoss": 0.08250649450261135,
+      "selectedTestAccuracy": 0.9583333333333334,
+      "releasedCandidateId": "cached-baseline",
+      "releaseCheckpoint": {
+        "path": "checkpoints/cached-baseline-0e458792-7597-43e6-8fd8-bbfd9d7ad5d9.pkl",
+        "sha256": "01c74a5e5395e201007a9caee34e348e7f72bfc24dab4006b9b06b23cf5b938c"
+      },
+      "releasedTestAccuracy": 0.1,
+      "releaseUsesValidatedArtifact": false,
+      "release": {
+        "path": "release.json",
+        "declaredModelRef": {
+          "kind": "model",
+          "sessionId": "d2889b86-295c-45b8-9543-248969143ed0",
+          "handle": 10,
+          "originArtifact": {
+            "kind": "artifact",
+            "path": "checkpoints/cached-baseline-0e458792-7597-43e6-8fd8-bbfd9d7ad5d9.pkl",
+            "sha256": "01c74a5e5395e201007a9caee34e348e7f72bfc24dab4006b9b06b23cf5b938c",
+            "bytes": 2811,
+            "format": "trusted-digits-pipeline-pickle/v1"
+          },
+          "modelId": "0e458792-7597-43e6-8fd8-bbfd9d7ad5d9",
+          "candidateId": "cached-baseline",
+          "C": null
+        },
+        "actualCheckpoint": {
+          "path": "checkpoints/cached-baseline-0e458792-7597-43e6-8fd8-bbfd9d7ad5d9.pkl",
+          "sha256": "01c74a5e5395e201007a9caee34e348e7f72bfc24dab4006b9b06b23cf5b938c",
+          "bytes": 2811,
+          "candidateId": "cached-baseline",
+          "modelId": "0e458792-7597-43e6-8fd8-bbfd9d7ad5d9"
+        },
+        "checkpointReferenceDigestVerified": true,
+        "declaredModelIdentityMatchesCheckpoint": true,
+        "declaredValidatedArtifactMatchesSelection": true,
+        "test": {
+          "accuracy": 0.1,
+          "macroF1": 0.01818181818181818,
+          "logLoss": 32.43928805020544
+        }
+      },
+      "scalerTrainOnly": true,
+      "datasetRows": {
+        "train": 1149,
+        "validation": 288,
+        "test": 360
+      },
+      "validationDatasetSha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+      "testDatasetSha256": "f98393307be069c3ea263b0a67e0c56886635cafbda103bcb3947967bf690bd7",
+      "datasetDefinition": {
+        "source": "sklearn.datasets.load_digits",
+        "features": 64,
+        "classes": 10,
+        "seed": 42,
+        "split": "stratified test=20%; validation=20% of the remaining rows"
+      },
+      "partitionIdsDisjoint": null,
+      "partitionIdentityEvidence": "source row identities were not recorded",
+      "checkpointFiles": 5,
+      "checkpointDigestsVerified": true,
+      "trainingDatasetDigestsVerified": true,
+      "candidateMetrics": [
+        {
+          "candidateId": "logistic-C-0.03",
+          "accuracy": 0.9722222222222222,
+          "logLoss": 0.2543424595806353
+        },
+        {
+          "candidateId": "logistic-C-0.1",
+          "accuracy": 0.9722222222222222,
+          "logLoss": 0.15856966211763393
+        },
+        {
+          "candidateId": "logistic-C-1",
+          "accuracy": 0.9756944444444444,
+          "logLoss": 0.08865070603563492
+        },
+        {
+          "candidateId": "logistic-C-3",
+          "accuracy": 0.9756944444444444,
+          "logLoss": 0.08250649450261135
+        }
+      ],
+      "ranking": [
+        {
+          "candidateId": "logistic-C-3",
+          "C": 3,
+          "accuracy": 0.9756944444444444,
+          "macroF1": 0.9758918521613922,
+          "logLoss": 0.08250649450261135
+        },
+        {
+          "candidateId": "logistic-C-1",
+          "C": 1,
+          "accuracy": 0.9756944444444444,
+          "macroF1": 0.9758918521613922,
+          "logLoss": 0.08865070603563492
+        },
+        {
+          "candidateId": "logistic-C-0.1",
+          "C": 0.1,
+          "accuracy": 0.9722222222222222,
+          "macroF1": 0.9727263306469519,
+          "logLoss": 0.15856966211763393
+        },
+        {
+          "candidateId": "logistic-C-0.03",
+          "C": 0.03,
+          "accuracy": 0.9722222222222222,
+          "macroF1": 0.9727263306469519,
+          "logLoss": 0.2543424595806353
+        }
+      ],
+      "checkpoints": [
+        {
+          "path": "checkpoints/logistic-C-0.03-bd5807f0-7b04-4d43-bbba-3e207ca4d03d.pkl",
+          "sha256": "335d4ebd98d9045337b952a929329af361748ddd8dcb0da4051c45a029214953",
+          "bytes": 8209,
+          "candidateId": "logistic-C-0.03",
+          "modelId": "bd5807f0-7b04-4d43-bbba-3e207ca4d03d",
+          "C": 0.03,
+          "baseline": false,
+          "validation": {
+            "accuracy": 0.9722222222222222,
+            "macroF1": 0.9727263306469519,
+            "logLoss": 0.2543424595806353
+          },
+          "scalerTrainOnly": true,
+          "trainingDatasetDigestVerified": true,
+          "digestVerified": true,
+          "digestReferenceCount": 1
+        },
+        {
+          "path": "checkpoints/logistic-C-0.1-c98897be-0276-4b31-9f22-366ee13aaa41.pkl",
+          "sha256": "46e811a74550d4d13cb5d38346b64444c13f04178f125ebbba95871a7ad4ed24",
+          "bytes": 8208,
+          "candidateId": "logistic-C-0.1",
+          "modelId": "c98897be-0276-4b31-9f22-366ee13aaa41",
+          "C": 0.1,
+          "baseline": false,
+          "validation": {
+            "accuracy": 0.9722222222222222,
+            "macroF1": 0.9727263306469519,
+            "logLoss": 0.15856966211763393
+          },
+          "scalerTrainOnly": true,
+          "trainingDatasetDigestVerified": true,
+          "digestVerified": true,
+          "digestReferenceCount": 1
+        },
+        {
+          "path": "checkpoints/logistic-C-1-3ead3202-f60d-4735-8598-4bfeb7faf75a.pkl",
+          "sha256": "a006bc8da85d463c1b83ae0af4836015f94f7ada081a828e4a33a13e57894344",
+          "bytes": 8206,
+          "candidateId": "logistic-C-1",
+          "modelId": "3ead3202-f60d-4735-8598-4bfeb7faf75a",
+          "C": 1,
+          "baseline": false,
+          "validation": {
+            "accuracy": 0.9756944444444444,
+            "macroF1": 0.9758918521613922,
+            "logLoss": 0.08865070603563492
+          },
+          "scalerTrainOnly": true,
+          "trainingDatasetDigestVerified": true,
+          "digestVerified": true,
+          "digestReferenceCount": 1
+        },
+        {
+          "path": "checkpoints/logistic-C-3-a4bc5eb8-9359-4cb7-a271-369f8a6d9be9.pkl",
+          "sha256": "17700cc8f0f9f6bd1010b5db33244e60bbf540ccf71c0f0295f6c4ff10135115",
+          "bytes": 8206,
+          "candidateId": "logistic-C-3",
+          "modelId": "a4bc5eb8-9359-4cb7-a271-369f8a6d9be9",
+          "C": 3,
+          "baseline": false,
+          "validation": {
+            "accuracy": 0.9756944444444444,
+            "macroF1": 0.9758918521613922,
+            "logLoss": 0.08250649450261135
+          },
+          "scalerTrainOnly": true,
+          "trainingDatasetDigestVerified": true,
+          "digestVerified": true,
+          "digestReferenceCount": 4
+        },
+        {
+          "path": "checkpoints/cached-baseline-0e458792-7597-43e6-8fd8-bbfd9d7ad5d9.pkl",
+          "sha256": "01c74a5e5395e201007a9caee34e348e7f72bfc24dab4006b9b06b23cf5b938c",
+          "bytes": 2811,
+          "candidateId": "cached-baseline",
+          "modelId": "0e458792-7597-43e6-8fd8-bbfd9d7ad5d9",
+          "C": null,
+          "baseline": true,
+          "validation": {
+            "accuracy": 0.10069444444444445,
+            "macroF1": 0.01829652996845426,
+            "logLoss": 32.41425773535189
+          },
+          "scalerTrainOnly": true,
+          "trainingDatasetDigestVerified": true,
+          "digestVerified": true,
+          "digestReferenceCount": 2
+        }
+      ],
+      "method": "Independently unpickle trusted pipelines and recompute sklearn metrics from saved datasets; no TypeScript trace queries or reported metric reuse."
+    }
+  },
+  "goldMethod": "Separate Python audit reads retained datasets/checkpoints/release artifacts, verifies digests and preprocessing, and recomputes validation/test metrics. Retry/policy expectations come from the declared fault schedule and policy, not inferred numerical performance.",
+  "scriptTimingMs": {
+    "footprint": {
+      "parse": {
+        "median": 0.19289624999999888,
+        "p10": 0.19010091199999987,
+        "p90": 0.20996483399999943,
+        "min": 0.18799749999999676,
+        "max": 0.22530831999999917
+      },
+      "queryAlreadyParsed": {
+        "median": 0.0037845800000013696,
+        "p10": 0.0031450000000004365,
+        "p90": 0.006980910000002041,
+        "min": 0.0030183199999964925,
+        "max": 0.008082500000000437
+      },
+      "batches": 20,
+      "iterationsPerBatch": 50
+    },
+    "logs": {
+      "parse": {
+        "median": 0.057307080000000496,
+        "p10": 0.05526757799999996,
+        "p90": 0.060428165999999235,
+        "min": 0.054469160000003285,
+        "max": 0.06119249999999738
+      },
+      "queryAlreadyParsed": {
+        "median": 0.0038162499999998545,
+        "p10": 0.0032967439999979434,
+        "p90": 0.005578429999999571,
+        "min": 0.003190839999997479,
+        "max": 0.005822500000003856
+      },
+      "batches": 20,
+      "iterationsPerBatch": 50
+    }
+  },
+  "additionalFootprintEvidence": {
+    "policyObservedReadKeys": [
+      "validationPassed"
+    ],
+    "explanation": "Read callbacks observe tracked scope keys across business stages. Delta logs retain writes and explicit decision evidence, not arbitrary property-read observations."
+  },
+  "conclusion": "Both records answer the shared questions. Script execution time is not human debugging time. No blinded usability study was conducted, so this experiment does not establish that human investigation is easier."
+}

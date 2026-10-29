@@ -1,0 +1,97 @@
+{
+  "schema": "footprintjs-ml-jax-integration-verification/v1",
+  "root": "retained-examples/footprint-realistic-ml-benchmark/jax-run",
+  "passed": true,
+  "totals": {
+    "passed": 11,
+    "failed": 0,
+    "distinctArtifactFilesHashed": 10,
+    "nativeToolCalls": 79
+  },
+  "execution": {
+    "trainerStarted": false,
+    "pythonStarted": false,
+    "jaxImported": false,
+    "llmInvoked": false,
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false
+  },
+  "observed": {
+    "accuracyA": 0.9652777777777778,
+    "accuracyB": 0.96875,
+    "heldOutAccuracyB": 0.9722222222222222,
+    "oldReceiptAllowedForB": false,
+    "freshReceiptAllowedForB": true,
+    "sameCheckpointReloadAllowed": true,
+    "releaseStatus": "released-locally"
+  },
+  "limits": [
+    "This Node invocation consumes the saved independent NumPy audit; it does not rerun numerical computation or start Python/JAX.",
+    "The first-update audit uses recorded minibatch indices and independently derives gradients/momentum; it does not independently generate JAX random permutations.",
+    "The workflow records reload into a new handle in the same worker. A separate fresh-worker check requires its own evidence.",
+    "No typed AgentFootprint event tail or live control-dependency lookup was captured; native Lens absence warnings are retained.",
+    "Dataset content overlap diagnostics do not establish original source-row identity disjointness.",
+    "This proves the retained CPU example; it does not benchmark production, GPU, or distributed execution."
+  ],
+  "checks": [
+    {
+      "name": "workflow, package, source, and outcome identify the actual JAX CPU run",
+      "status": "passed"
+    },
+    {
+      "name": "all referenced checkpoints, histories, witness, datasets, predictions, and release bytes match their hashes",
+      "status": "passed",
+      "detail": {
+        "distinctFiles": 10,
+        "referenceOccurrences": 422
+      }
+    },
+    {
+      "name": "saved NumPy audit verifies real checkpoint arrays and continuation instead of trusting step labels alone",
+      "status": "passed",
+      "detail": {
+        "numpyFirstUpdateMaxAbsoluteError": 2.2351741790771484e-8,
+        "resetOptimizerCounterfactualMaxDifference": 0.0013712048530578613
+      }
+    },
+    {
+      "name": "A, B, and test receipts match independently recomputed predictions and the observed dataset/method identities",
+      "status": "passed"
+    },
+    {
+      "name": "A approval is denied for B, while B re-evaluation satisfies the previously declared policy",
+      "status": "passed"
+    },
+    {
+      "name": "same-checkpoint reload uses a new handle and release publishes B with its own receipt",
+      "status": "passed"
+    },
+    {
+      "name": "foottrace replay preserves A approval through B training, then records re-evaluation and reload separately",
+      "status": "passed"
+    },
+    {
+      "name": "all committed scopes retain references and small metadata, with tensors/optimizer/PRNG only in the backend and artifacts",
+      "status": "passed"
+    },
+    {
+      "name": "stale and fresh Lens profiles reopen the same trace with phase-correct summaries and verbatim native responses",
+      "status": "passed"
+    },
+    {
+      "name": "existing native Lens tools expose old/new receipts, guard reads, last writers, and honest missing-evidence warnings",
+      "status": "passed",
+      "detail": {
+        "nativeToolCalls": 79,
+        "fabricatedAgentEvents": false
+      }
+    },
+    {
+      "name": "saved trace and all inspected source/artifact/audit files remain unchanged after offline queries",
+      "status": "passed",
+      "detail": {
+        "filesRechecked": 17
+      }
+    }
+  ]
+}

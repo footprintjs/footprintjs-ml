@@ -1,0 +1,111 @@
+{
+  "schema": "footprint-data-lineage-proof-results/v1",
+  "runs": [
+    {
+      "mode": "clean",
+      "accuracy": 0.9618055555555556,
+      "modelEvidence": "allow",
+      "dataLineage": "allow",
+      "combined": "allow",
+      "releaseStatus": "approved-locally",
+      "record": "run/clean/trace.json"
+    },
+    {
+      "mode": "faulty",
+      "accuracy": 0.9618055555555556,
+      "modelEvidence": "allow",
+      "dataLineage": "deny",
+      "combined": "deny",
+      "releaseStatus": "quarantined",
+      "record": "run/faulty/trace.json"
+    },
+    {
+      "mode": "fixed",
+      "accuracy": 0.9618055555555556,
+      "modelEvidence": "allow",
+      "dataLineage": "allow",
+      "combined": "allow",
+      "releaseStatus": "approved-locally",
+      "record": "run/fixed/trace.json"
+    }
+  ],
+  "verified": {
+    "packageTests": 89,
+    "backendTests": 8,
+    "offlineGroups": 16,
+    "nativeLensToolCalls": 54,
+    "browser": "passed"
+  },
+  "benchmark": {
+    "measuredRuns": 32,
+    "summaries": [
+      {
+        "capture": "direct",
+        "runs": 8,
+        "medianExecutionMs": 58.86372950000077,
+        "medianSerializationMs": 0.09331250000013824,
+        "medianExecutionAndSerializationMs": 58.95473000000038,
+        "medianRecordingBytes": 71269,
+        "minExecutionAndSerializationMs": 54.15020800000002,
+        "maxExecutionAndSerializationMs": 71.40720799999872
+      },
+      {
+        "capture": "logs",
+        "runs": 8,
+        "medianExecutionMs": 56.935645499999964,
+        "medianSerializationMs": 0.2688129999996818,
+        "medianExecutionAndSerializationMs": 57.19031250000012,
+        "medianRecordingBytes": 254177,
+        "minExecutionAndSerializationMs": 55.84216700000252,
+        "maxExecutionAndSerializationMs": 84.64712400000099
+      },
+      {
+        "capture": "footprint-core",
+        "runs": 8,
+        "medianExecutionMs": 56.30970849999994,
+        "medianSerializationMs": 0.25256199999967066,
+        "medianExecutionAndSerializationMs": 56.56012499999906,
+        "medianRecordingBytes": 149126,
+        "minExecutionAndSerializationMs": 55.15954200000033,
+        "maxExecutionAndSerializationMs": 66.71712599999773
+      },
+      {
+        "capture": "footprint-full",
+        "runs": 8,
+        "medianExecutionMs": 62.36089599999923,
+        "medianSerializationMs": 0.8194375000002765,
+        "medianExecutionAndSerializationMs": 63.33179199999904,
+        "medianRecordingBytes": 582629,
+        "minExecutionAndSerializationMs": 58.01208299999962,
+        "maxExecutionAndSerializationMs": 92.58458299999984
+      }
+    ],
+    "pairedComparisons": [
+      {
+        "baseline": "direct",
+        "compared": "logs",
+        "medianPairedDifferenceMs": 0.6982920000000377,
+        "medianPairedDifferencePercent": 1.2542420593994796
+      },
+      {
+        "baseline": "direct",
+        "compared": "footprint-full",
+        "medianPairedDifferenceMs": 5.211998999998286,
+        "medianPairedDifferencePercent": 9.08777723728955
+      },
+      {
+        "baseline": "footprint-core",
+        "compared": "footprint-full",
+        "medianPairedDifferenceMs": 5.21881200000189,
+        "medianPairedDifferencePercent": 8.581936074091022
+      }
+    ],
+    "rawReport": "benchmark-run/benchmark.json"
+  },
+  "backendNumericalArtifactBytes": {
+    "clean": 3201550,
+    "faulty": 3207333,
+    "fixed": 3201550
+  },
+  "scope": "Saved workflow correctness and investigation over declared backend lineage; no arbitrary leakage detection or human usability advantage proven."
+}

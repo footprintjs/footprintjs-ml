@@ -1,0 +1,202 @@
+import {flowChart,FlowChartExecutor,decide} from 'footprintjs';
+import type {TypedScope,CombinedRecorder} from 'footprintjs';
+import {artifactRef,checkpointRef,checkRelease,ML_EVENTS} from 'footprintjs-ml';
+import type {ArtifactRef,CheckpointRef,DatasetRef,EvaluationReceipt,ReleaseDecision} from 'footprintjs-ml';
+import type {PythonModelRef,PythonTrainer} from 'footprintjs-ml/adapter';
+import {createRecoveryManifest,persistRecoveryManifest,loadRecoveryManifest,checkRecoverySource,publishLocallyOnce} from './recovery.js';
+import type {RecoveryManifest} from './recovery.js';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {mkdirSync,writeFileSync,renameSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
+
+type Phase='baseline'|'checkpoint'|'resume'|'reopen';
+type State={backend:any;partitions:Record<string,DatasetRef>;plan:any;runId:string;
+  activePredictor:PythonModelRef;modelA:PythonModelRef;modelB:PythonModelRef;restoredA:PythonModelRef;
+  savedA:CheckpointRef;savedB:CheckpointRef;savedCheckpoint:CheckpointRef;
+  approval:EvaluationReceipt;approvalA:EvaluationReceipt;approvalB:EvaluationReceipt;
+  policyDecision:ReleaseDecision;reloadDecision:ReleaseDecision;staleDecision:ReleaseDecision;freshDecision:ReleaseDecision;
+  publishAllowed:boolean;releasedPredictor:PythonModelRef|null;releaseStatus:string;
+  sourceManifest:RecoveryManifest;recoveryDecision:any;oldHandleRejection:any;optimizerProbe:any;resumeEvidence:any;publicationEvidence:any;
+};
+type Step={id:string;name:string;run(s:TypedScope<State>):Promise<void>};
+const here=fileURLToPath(new URL('.',import.meta.url));
+const args=process.argv.slice(2),flag=(key:string)=>{const i=args.indexOf(key);return i<0?undefined:args[i+1];};
+const phase=flag('--phase') as Phase,root=resolve(flag('--root')??resolve(here,'run'));
+if(!['baseline','checkpoint','resume','reopen'].includes(phase))throw new Error('Choose a valid phase.');
+const plain=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
+const hash=(bytes:Uint8Array)=>createHash('sha256').update(bytes).digest('hex');
+const plan=JSON.parse(await readFile(resolve(here,'plan.json'),'utf8'));
+const config=JSON.parse(await readFile(resolve(here,'config.json'),'utf8'));
+const experiment=JSON.parse(await readFile(resolve(root,'experiment.json'),'utf8'));
+if(experiment.planSha256!==hash(await readFile(resolve(here,'plan.json'))))throw new Error('The supervised plan changed.');
+const paths=['workflow.ts','phase.mjs','recovery.ts','recovery.mjs','run.mjs','plan.json','config.json','backend/plugin.py',
+  '../footprintjs-ml/dist/adapter.js','../footprintjs-ml/dist/guard.js','../footprintjs-ml/dist/adapter/client.js',
+  '../footprintjs-ml/python/worker.py','../footprintjs-ml/python/footprint_ml_adapter/runtime.py',
+  '../footprintjs-ml/python/footprint_ml_adapter/identity.py','../footprint-ml-external-trainer/example/plugin.py',
+  '../footprint-ml-external-trainer/example/external_trainer.py','../footprint-ml-external-trainer/vendor/gaussian_process_regression.py'];
+const implementation=Object.fromEntries(await Promise.all(paths.map(async p=>[p,hash(await readFile(resolve(here,p)))])));
+for(const [path,digest]of Object.entries(experiment.sourceSha256??{}))if(implementation[path]!==digest)throw new Error('Supervised implementation changed: '+path);
+await mkdir(resolve(root,phase),{recursive:true});
+let trainer:PythonTrainer|undefined,emit:(name:string,payload:any)=>void=()=>{};
+let activeExecutor:FlowChartExecutor|undefined,activePhase:string=phase;
+let rows:{type:string;event:any}[]=[];
+const trace=(snapshot:any)=>({schema:'footprint-ml-crash-resume-recording/v1',workflow:{kind:'ml-adapter-workflow/v1'},
+  implementation:{package:'footprintjs-ml@0.3.0',extension:'crash-resume-proof/v1',sourceSha256:implementation},
+  experiment:{runId:experiment.runId,phase:activePhase,planSha256:experiment.planSha256},
+  mlInvestigation:{schemaVersion:1,bindings:{model:'activePredictor',receipt:'approval',decision:'policyDecision',allowed:'publishAllowed',releasedModel:'releasedPredictor'}},
+  recoveryInvestigation:{schemaVersion:1,phase:activePhase,runId:experiment.runId,
+    boundary:activePhase==='interrupted'?'Request start captured; process death prevents a completion/commit.':'Completed native FootPrint segment; restart links are explicit manifest artifacts.'},
+  footprint:snapshot,rows});
+const retain=(type:string)=>(event:any)=>rows.push({type,event:plain(event)});
+let partialSaved=false;
+const recorder:CombinedRecorder={id:'crash-resume-proof',onRead:retain('read'),onWrite:retain('write'),onDecision:retain('decision'),onError:retain('error'),
+  onEmit:event=>{
+    retain('backend')(event);
+    if(activePhase==='interrupted'&&!partialSaved&&event.name===ML_EVENTS.trainStarted&&activeExecutor){
+      const dir=resolve(root,'interrupted');mkdirSync(dir,{recursive:true});
+      const file=resolve(dir,'trace.json'),temporary=file+'.tmp';
+      writeFileSync(temporary,JSON.stringify({...trace(activeExecutor.getSnapshot()),partial:true}));renameSync(temporary,file);
+      partialSaved=true;
+    }
+  }};
+const adapter=()=>{if(!trainer)throw new Error('No trainer');return trainer.adapter;};
+const evaluation=(s:TypedScope<State>)=>({modelRef:plain(s.activePredictor),datasetRef:plain(s.partitions.validation),
+  preprocessingVersion:s.backend.preprocessingVersion as string,evaluationMethodVersion:s.backend.evaluationMethodVersion as string,parameters:{}});
+const check=async(s:TypedScope<State>)=>checkRelease({...evaluation(s),modelRef:await adapter().verifyModel({modelRef:plain(s.activePredictor)}),receipt:plain(s.approval),policy:s.plan.policy});
+const setDecision=(s:TypedScope<State>,decision:ReleaseDecision)=>{s.policyDecision=plain(decision);s.publishAllowed=decision.allowed;};
+const wrap=(step:Step)=>async(s:TypedScope<State>)=>{emit=(name,payload)=>s.$emit(name,payload);await step.run(s);};
+function executorFor(steps:Step[]){let chart=flowChart<State>(steps[0].name,wrap(steps[0]),steps[0].id);for(const step of steps.slice(1))chart.addFunction(step.name,wrap(step),step.id);return chart;}
+function attach(chart:any){const executor=new FlowChartExecutor(chart.build());executor.setReadTracking('full');executor.setWriteTracking('full');executor.attachCombinedRecorder(recorder);activeExecutor=executor;return executor;}
+const connect:Step={id:'connect',name:'Connect a new numerical backend session',run:async s=>{
+  s.runId=experiment.runId;s.plan=plain(plan);s.backend=plain(trainer!.backend);s.partitions=plain(trainer!.datasets);
+  s.releasedPredictor=null;s.releaseStatus=phase==='baseline'?'control-only-not-published':'pending';
+  emit('recovery.plan',{runId:experiment.runId,phase,plan,backendSessionId:trainer!.backend.sessionId});
+}};
+const trainA:Step={id:'train-a',name:'Train a full checkpoint through step 30',run:async s=>{
+  const result=await adapter().train(s.plan.trainA);s.activePredictor=plain(result.modelRef);s.modelA=plain(result.modelRef);s.savedA=plain(checkpointRef(result.checkpoint));
+}};
+const scoreA:Step={id:'evaluate-a',name:'Evaluate checkpoint A on validation data',run:async s=>{const result=await adapter().evaluate(evaluation(s));s.approval=plain(result.receipt);s.approvalA=plain(result.receipt);}};
+const continueB:Step={id:'continue-b',name:'Continue the full saved optimizer to step 100',run:async s=>{
+  if(phase==='resume'&&!s.recoveryDecision.allowed)throw new Error('Full recovery source did not pass.');
+  const result=await adapter().train({...s.plan.continueB,modelRef:plain(s.activePredictor) as any});
+  s.activePredictor=plain(result.modelRef);s.modelB=plain(result.modelRef);s.savedB=plain(checkpointRef(result.checkpoint));
+  if(phase==='resume')s.resumeEvidence={sourceCheckpoint:plain(s.savedA),restoredModelRef:plain(s.restoredA),stepsRequested:70,finalStep:(result.modelRef as any).step};
+}};
+const scoreB:Step={id:'evaluate-b',name:'Evaluate the current B predictor for new evidence',run:async s=>{const result=await adapter().evaluate(evaluation(s));s.approval=plain(result.receipt);s.approvalB=plain(result.receipt);}};
+const freshCheck:Step={id:'check-current-evidence',name:'Check the current predictor and its own evaluation',run:async s=>{const d=await check(s);s.freshDecision=plain(d);setDecision(s,d);}};
+const publish:Step={id:'publish',name:'Inspect and record one local publication marker',run:async s=>{
+  const ref=await adapter().verifyModel({modelRef:plain(s.activePredictor)}),decision=await check(s);
+  if(!decision.allowed)throw new Error('Final live publication check denied.');
+  const result=await publishLocallyOnce({path:resolve(root,'release.json'),runId:s.runId,modelRef:ref,receipt:plain(s.approval),decision});
+  s.publicationEvidence=plain(result);if(!result.allowed)throw new Error('Local publication conflict: '+JSON.stringify(result.reasons));
+  s.releasedPredictor=plain(ref);s.releaseStatus=result.status==='published'?'published-locally':'already-published-locally';
+  emit('recovery.local-publication',plain(result));
+}};
+async function artifact(path:string,format:string):Promise<ArtifactRef>{const bytes=await readFile(resolve(root,path));return artifactRef({kind:'artifact',path,format,sha256:hash(bytes),bytes:bytes.length});}
+async function save(executor:FlowChartExecutor,name:string){
+  const snapshot=executor.getSnapshot(),state=snapshot.sharedState as State;
+  await writeFile(resolve(root,name,'trace.json'),JSON.stringify(trace(snapshot)));
+  return {state,traceRef:await artifact(name+'/trace.json','footprint/saved-recording-json/v1')};
+}
+async function outcome(name:string,state:State,extra:any={}){
+  const result={schema:'footprint-crash-resume-outcome/v1',runId:experiment.runId,phase:name,backend:state.backend,plan,
+    checkpointA:state.savedA??null,checkpointB:state.savedB??null,modelA:state.modelA??null,modelB:state.modelB??null,
+    restoredA:state.restoredA??null,datasets:state.partitions,receiptA:state.approvalA??null,receiptB:state.approvalB??null,
+    reloadDecision:state.reloadDecision??null,staleDecision:state.staleDecision??null,freshDecision:state.freshDecision??null,
+    recoveryDecision:state.recoveryDecision??null,oldHandleRejection:state.oldHandleRejection??null,optimizerProbe:state.optimizerProbe??null,
+    resumeEvidence:state.resumeEvidence??null,publicationEvidence:state.publicationEvidence??null,releaseStatus:state.releaseStatus,...extra};
+  await writeFile(resolve(root,name,'outcome.json'),JSON.stringify(result,null,2));return result;
+}
+async function manifestFor(state:State,traceRef:ArtifactRef,path:string,checkpoint:CheckpointRef,receipt:EvaluationReceipt){
+  const manifest=createRecoveryManifest({runId:experiment.runId,planSha256:experiment.planSha256,checkpoint,evaluationReceipt:receipt,
+    validationDatasetRef:state.partitions.validation,preprocessingVersion:state.backend.preprocessingVersion as string,
+    evaluationMethodVersion:state.backend.evaluationMethodVersion as string,parameters:{},policy:plan.policy,sourceTrace:traceRef,
+    priorBackendSessionId:state.activePredictor.sessionId});
+  return persistRecoveryManifest({root,path,manifest});
+}
+try{
+  const {createPythonTrainerAdapter}=await import('footprintjs-ml/adapter');
+  trainer=await createPythonTrainerAdapter({root,pluginPath:resolve(here,'backend/plugin.py'),config,expectedProfile:'footprint-crash-resume-gp-inference/v1'},
+    {python:process.env.JAX_PYTHON??process.env.PYTHON??resolve(here,'../../work/jax-env/bin/python'),
+      env:{JAX_PLATFORMS:'cpu',OPENBLAS_NUM_THREADS:'1',OMP_NUM_THREADS:'1',VECLIB_MAXIMUM_THREADS:'1'},emit:(name,payload)=>emit(name,payload)});
+  if(phase==='baseline'){
+    const executor=attach(executorFor([connect,trainA,scoreA,continueB,scoreB,freshCheck]));await executor.run();
+    const saved=await save(executor,phase);await outcome(phase,saved.state);process.send?.({type:'phase-complete',phase});
+  }else if(phase==='checkpoint'){
+    const checkpointCheck:Step={id:'check-a',name:'Check A evidence and retain a checkpoint without publication',run:async s=>{setDecision(s,await check(s));s.releaseStatus='checkpoint-saved-not-published';}};
+    const executor=attach(executorFor([connect,trainA,scoreA,checkpointCheck]));await executor.run();
+    const saved=await save(executor,phase);
+    const reference=await manifestFor(saved.state,saved.traceRef,'manifests/checkpoint-a.json',saved.state.savedA,saved.state.approvalA);
+    await outcome(phase,saved.state,{manifestRef:reference});
+    await new Promise<void>((resolveAck,reject)=>{const timer=setTimeout(()=>reject(new Error('Supervisor did not acknowledge checkpoint.')),30000);process.on('message',message=>{if((message as any)?.type==='checkpoint-ack'){clearTimeout(timer);resolveAck();}});process.send?.({type:'checkpoint-committed',manifestRef:reference,backendSessionId:trainer!.backend.sessionId});});
+    activePhase='interrupted';rows=[];partialSaved=false;
+    const restore:Step={id:'restore-inflight-source',name:'Start the unsaved continuation from the committed A state',run:async s=>{
+      for(const [key,value]of Object.entries(saved.state))s.$setValue(key,value);
+      s.sourceManifest=plain(await loadRecoveryManifest({root,reference,planSha256:experiment.planSha256}));
+      s.releaseStatus='continuation-not-completed';s.savedCheckpoint=plain(saved.state.savedA);
+    }};
+    const crash:Step={id:'continue-after-checkpoint',name:'Continue training until the supervisor interrupts this process',run:async s=>{
+      const result=await adapter().train({...s.plan.continueB,modelRef:plain(s.activePredictor) as any,
+        crashBarrier:{afterSteps:s.plan.crashAfterAdditionalSteps,directory:resolve(root,'fault')}});
+      s.activePredictor=plain(result.modelRef);throw new Error('The supervisor failed to interrupt the request.');
+    }};
+    await attach(executorFor([restore,crash])).run();throw new Error('The interrupting phase unexpectedly completed.');
+  }else{
+    const supervised=JSON.parse(await readFile(resolve(root,'supervised-manifests.json'),'utf8'));
+    const reference=phase==='resume'?supervised.checkpointA:supervised.checkpointB;
+    const manifest=await loadRecoveryManifest({root,reference,planSha256:experiment.planSha256});
+    const hydrate:Step={id:'read-recovery-manifest',name:'Read the externally pinned recovery manifest in a fresh session',run:async s=>{
+      s.sourceManifest=plain(manifest);s.savedCheckpoint=plain(manifest.checkpoint);s.approval=plain(manifest.evaluationReceipt);
+      if(phase==='resume'){s.savedA=plain(manifest.checkpoint);s.approvalA=plain(manifest.evaluationReceipt);}
+      else{s.savedB=plain(manifest.checkpoint);s.approvalB=plain(manifest.evaluationReceipt);}
+    }};
+    const load:Step={id:'load-full-checkpoint',name:'Load saved bytes into a new live model reference',run:async s=>{
+      s.activePredictor=plain(await adapter().loadCheckpoint({checkpoint:plain(s.savedCheckpoint)}));
+      if(phase==='resume'){s.modelA=plain(s.activePredictor);s.restoredA=plain(s.activePredictor);}else{s.modelB=plain(s.activePredictor);}
+    }};
+    const rejectOld:Step={id:'reject-old-live-handle',name:'Refuse the prior process live handle',run:async s=>{
+      const prior=plain(s.sourceManifest.evaluationReceipt.modelRef);let observed:any;
+      try{await adapter().verifyModel({modelRef:prior as PythonModelRef});}catch(error:any){observed={rejected:true,errorCode:error.code,message:error.message,priorSessionId:prior.sessionId,currentSessionId:s.activePredictor.sessionId};}
+      if(observed?.errorCode!=='stale-runtime-reference')throw new Error('The expected stale session guard did not reject the old live handle.');
+      s.oldHandleRejection=plain(observed);
+    }};
+    const recover:Step={id:'check-full-recovery-source',name:'Check the exact full checkpoint required for training recovery',run:async s=>{
+      const ref=await adapter().verifyModel({modelRef:plain(s.activePredictor)});
+      s.recoveryDecision=plain(checkRecoverySource({manifest:plain(s.sourceManifest),modelRef:ref,planSha256:experiment.planSha256}));
+      if(!s.recoveryDecision.allowed)throw new Error('The selected full recovery checkpoint was refused.');
+      s.reloadDecision=plain(await check(s));setDecision(s,s.reloadDecision);
+      if(!s.reloadDecision.allowed)throw new Error('Matching saved predictor lost valid evaluation coverage on reload.');
+    }};
+    const steps=[connect,hydrate,load,rejectOld,recover];
+    if(phase==='resume'){
+      steps.push({id:'probe-optimizer-only-fork',name:'Distinguish prediction coverage from full training recovery',run:async s=>{
+        const reset=await adapter().train({steps:0,resetOptimizer:true,candidateId:'model-A',modelRef:plain(s.activePredictor) as any});
+        const predictionEvidence=checkRelease({...evaluation(s),modelRef:reset.modelRef,receipt:plain(s.approval),policy:s.plan.policy});
+        const recoveryDecision=checkRecoverySource({manifest:plain(s.sourceManifest),modelRef:reset.modelRef,planSha256:experiment.planSha256});
+        if(!predictionEvidence.allowed||recoveryDecision.allowed)throw new Error('Optimizer-only probe did not separate the two contracts.');
+        s.optimizerProbe=plain({modelRef:reset.modelRef,checkpoint:checkpointRef(reset.checkpoint),predictionEvidence,recoveryDecision});
+        await adapter().dispose({modelRef:reset.modelRef});
+      }},continueB,{id:'check-stale-a-evidence',name:'Refuse A evaluation evidence for the changed B predictor',run:async s=>{
+        s.staleDecision=plain(await check(s));setDecision(s,s.staleDecision);if(s.staleDecision.allowed)throw new Error('Stale evidence unexpectedly allowed.');
+      }});
+    }
+    let chart=executorFor(steps);
+    if(phase==='resume'){
+      const stale=chart.addDeciderFunction('Route the recorded stale evidence refusal',s=>decide(s,
+        [{when:{publishAllowed:{eq:true}},then:'unexpected',label:'Unexpected stale permission'}],{branch:'blocked',label:'A evidence cannot approve B'}),'stale-route');
+      stale.addFunctionBranch('unexpected','Refuse an invalid proof',()=>{throw new Error('Invalid stale route');});
+      stale.addFunctionBranch('blocked','Record the blocked publication attempt',s=>{s.releaseStatus='stale-evidence-blocked';});
+      chart=stale.end();chart.addFunction(scoreB.name,wrap(scoreB),scoreB.id);chart.addFunction(freshCheck.name,wrap(freshCheck),freshCheck.id);
+    }
+    const release=chart.addDeciderFunction('Publish only when current measured evidence allows it',s=>decide(s,
+      [{when:{publishAllowed:{eq:true}},then:'publish',label:'Current evidence permits local publication'}],{branch:'quarantine',label:'Missing or refused evidence blocks publication'}),'publication-route');
+    release.addFunctionBranch('publish',publish.name,wrap(publish));
+    release.addFunctionBranch('quarantine','Keep the model unapproved',s=>{s.releaseStatus='quarantined';});
+    chart=release.end();const executor=attach(chart);await executor.run();const saved=await save(executor,phase);
+    let manifestRef;
+    if(phase==='resume')manifestRef=await manifestFor(saved.state,saved.traceRef,'manifests/checkpoint-b.json',saved.state.savedB,saved.state.approvalB);
+    await outcome(phase,saved.state,manifestRef?{manifestRef}:{});process.send?.({type:'phase-complete',phase,manifestRef});
+  }
+}finally{await trainer?.close();process.disconnect?.();}

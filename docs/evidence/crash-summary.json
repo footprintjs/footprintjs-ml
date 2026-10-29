@@ -1,0 +1,31 @@
+{
+  "schema": "footprint-crash-resume-summary/v1",
+  "runId": "58264750-8661-4c94-b9f1-400a02abdbc8",
+  "interruptedAtStep": 40,
+  "lastSavedStep": 30,
+  "resumedFinalStep": 100,
+  "discardedUpdates": 10,
+  "distinctBackendSessions": [
+    "0b47a96f-b826-4202-877c-57951490110b",
+    "2f76ac57-4ab0-4cbc-8fcd-5dfad1e1e9d4",
+    "51324754-208d-47c7-bf57-90e59b683010",
+    "0f0b2982-bb9d-447f-a2b0-0b707982a33e"
+  ],
+  "resumedInferenceMatchesControl": true,
+  "resumedMetricsMatchControl": true,
+  "metrics": {
+    "mae": 0.026755881001008675,
+    "mse": 0.001700233258309988,
+    "rmse": 0.04123388483165257
+  },
+  "reloadEvidenceAllowed": true,
+  "oldLiveHandleRejected": true,
+  "optimizerResetPredictionEvidenceAllowed": true,
+  "optimizerResetRecoverySourceAllowed": false,
+  "staleEvidenceForBAllowed": false,
+  "freshEvidenceForBAllowed": true,
+  "localPublicationCount": 1,
+  "freshReopenStatus": "already-published",
+  "publicationMarkerUnchanged": true,
+  "numericalFullStateAudit": "Run backend/audit_saved.py; inference/metric comparisons here do not replace full-state array checks."
+}

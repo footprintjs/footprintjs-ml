@@ -1,0 +1,77 @@
+{
+  "schema": "footprint-data-lineage-independent-audit/v1",
+  "passed": true,
+  "mode": "faulty",
+  "execution": {
+    "trainingInvoked": false,
+    "workflowRerun": false,
+    "sklearnImported": false,
+    "method": "NumPy inference and saved-row/scaler checks only"
+  },
+  "implementation": {
+    "pluginSourceSha256": "637bec9421cc769f2ad59f22945a1bc8c1bf75b43174d452f7d2b0bc5d2453b6",
+    "profile": "footprint-sklearn-digits-lineage-inference/v1"
+  },
+  "sourceSha256": "08278857ffda33f3c1c6af39a86462e25f036d12ebbb010508f94635c6c6b5c5",
+  "sourceDatasetArtifact": {
+    "bytes": 949974,
+    "format": "footprint-lineage/source-digits-npz/v1",
+    "kind": "artifact",
+    "path": "backend-artifacts/source-digits.npz",
+    "sha256": "ce35c80bd4690ca0917a3dada43a6bd21ccae1d936c7d12e3baa615e921f638c"
+  },
+  "splitManifest": {
+    "bytes": 8463,
+    "format": "footprint-lineage/split-membership-json/v1",
+    "kind": "artifact",
+    "path": "backend-artifacts/split-membership.json",
+    "sha256": "a4c7b839967600f36b17465834dec8841ec9018bad2225891dc7488c9c1704c5"
+  },
+  "splitRows": {
+    "train": 1149,
+    "validation": 288,
+    "test": 360
+  },
+  "splitMembershipDisjoint": true,
+  "originalSourceRowsPreserved": true,
+  "preprocessing": {
+    "artifact": {
+      "bytes": 4309,
+      "format": "footprint-lineage/standardscaler-state-npz/v1",
+      "kind": "artifact",
+      "path": "backend-artifacts/preparation/baee759e8f6d409b8b84013fff1e158a-scaler.npz",
+      "sha256": "7cf307b7ef48c6a2b90b770b3392572a4f047a43730feae02b6782ad2b57f8c9"
+    },
+    "sourceRoles": [
+      "train",
+      "validation"
+    ],
+    "rowCount": 1437,
+    "trainEvaluationRows": 0,
+    "preprocessingEvaluationRows": 288,
+    "fittedParametersMatchActualRows": true,
+    "testRowsUsed": 0
+  },
+  "overlap": {
+    "trainEvaluationRows": 0,
+    "preprocessingEvaluationRows": 288
+  },
+  "lineageValid": false,
+  "modelAndReceiptBindingsVerified": true,
+  "counts": {
+    "artifacts": 11,
+    "modelCheckpoints": 2,
+    "predictionArtifacts": 1,
+    "evaluationReceipts": 1,
+    "lineageReceipts": 1
+  },
+  "metrics": {
+    "accuracy": 0.9618055555555556,
+    "logLoss": 0.13583211536130252
+  },
+  "releaseStatus": "quarantined",
+  "limits": [
+    "Corroborates recorded source rows and numerical artifacts; it cannot establish unrecorded upstream data history.",
+    "Receipt matching checks model, dataset, parameters, methods and measured metrics; the worker generates evaluationId after prediction capture."
+  ]
+}

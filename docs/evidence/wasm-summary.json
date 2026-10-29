@@ -1,0 +1,85 @@
+{
+  "status": "completed",
+  "model": "single-feature linear regression",
+  "targetRuleInSyntheticData": "y = 3*x + 2",
+  "optimizer": "full-batch gradient descent; one update per epoch",
+  "settings": {
+    "learningRate": 0.1,
+    "targetValidationLoss": 1e-8,
+    "maxEpochs": 100
+  },
+  "backend": {
+    "language": "Rust",
+    "runtime": "CPU WebAssembly",
+    "sessionId": "9ca23516-42bc-4d11-be8e-34719a8bdef7",
+    "wasmSha256": "1cdeb0005dc1624900c980888c74788a3930b098b197c181e61433fa9229b38a",
+    "dtype": "f64",
+    "differentiation": "reverse-mode autodiff",
+    "scope": "single-feature linear regression; five vector primitives; no JIT or GPU"
+  },
+  "graphId": "sha256:f4f0dc6d712ba056134444b87c428ba8bfedf22e6849467a3fe5240fd22e146a",
+  "epochs": 45,
+  "stopReason": "validation-target",
+  "initialTrainingLoss": 16.774193548387096,
+  "finalTrainingLoss": 7.589686806119975e-9,
+  "initialValidationLoss": 16.9285,
+  "finalValidationLoss": 7.58970053385389e-9,
+  "heldOutTestLoss": 7.681466284081247e-9,
+  "learnedParameters": {
+    "weight": 2.9999991051940103,
+    "bias": 1.9999128877140682
+  },
+  "checkpointRef": {
+    "kind": "artifact",
+    "path": "checkpoint.json",
+    "sha256": "1e8a3cf073a382913dd869d415b0bfc5b4a1cbdaf7efa5f3fb0654e5c3cda598",
+    "bytes": 1103,
+    "format": "model-checkpoint/v1"
+  },
+  "reloadVerified": true,
+  "reloadRuntimeChanged": true,
+  "staleReferenceRejected": true,
+  "reloadMaxPredictionDifference": 0,
+  "predictions": {
+    "x": [
+      -2.5,
+      -1.5,
+      -0.5,
+      0.5,
+      1.5,
+      2.5,
+      4
+    ],
+    "target": [
+      -5.5,
+      -2.5,
+      0.5,
+      3.5,
+      6.5,
+      9.5,
+      14
+    ],
+    "prediction": [
+      -5.500084875270957,
+      -2.500085770076947,
+      0.49991333511706304,
+      3.499912440311073,
+      6.499911545505084,
+      9.499910650699094,
+      13.999909308490109
+    ],
+    "modelRevision": 45
+  },
+  "provenanceCounts": {
+    "committedStages": 185,
+    "computeEvents": 375,
+    "stoppingDecisions": 45,
+    "committedModelReferences": 47
+  },
+  "numericalCapture": "All compute invocations; selected forward node summaries; scalar gradients per update. No full intermediate tensor snapshots.",
+  "resourcesBeforeFinalSessionClose": {
+    "tensors": 3,
+    "evaluations": 0
+  },
+  "limitation": "A small CPU/Wasm teaching engine, not a production JAX replacement. Perfect synthetic labels do not establish real-world accuracy."
+}

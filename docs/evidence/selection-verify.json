@@ -1,0 +1,150 @@
+{
+  "schema": "footprint-model-selection-verification/v1",
+  "passed": true,
+  "trainingInvoked": false,
+  "pythonStarted": false,
+  "execution": {
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false
+  },
+  "checks": [
+    {
+      "name": "Pinned manifest and observed results match the saved workflow",
+      "passed": true
+    },
+    {
+      "name": "Each actual evaluation passes the independent quality threshold",
+      "passed": true
+    },
+    {
+      "name": "Wrong runtime direction is denied despite valid model evaluation",
+      "passed": true
+    },
+    {
+      "name": "Correct winner passes the actual selection guard",
+      "passed": true
+    },
+    {
+      "name": "A valid best-model receipt cannot release the inferior model",
+      "passed": true
+    },
+    {
+      "name": "An omitted candidate cannot silently shrink the declared comparison",
+      "passed": true
+    },
+    {
+      "name": "A copied result with a modified score is denied",
+      "passed": true
+    },
+    {
+      "name": "Changed candidate configuration does not reuse approval",
+      "passed": true
+    },
+    {
+      "name": "A stale candidate set cannot reuse selection approval",
+      "passed": true
+    },
+    {
+      "name": "Held-out audit follows fixed winner and does not enter ranking evidence",
+      "passed": true
+    },
+    {
+      "name": "Every referenced checkpoint, evaluation dataset and release marker has matching retained bytes",
+      "passed": true,
+      "artifacts": 6
+    },
+    {
+      "name": "Local publication contains the approved exact winner and both decisions",
+      "passed": true
+    },
+    {
+      "name": "Top-level outcome and committed final scope retain the same observed results",
+      "passed": true
+    },
+    {
+      "name": "Three new training completions precede selection; held-out evaluation follows local publication",
+      "passed": true
+    },
+    {
+      "name": "Independent NumPy report binds actual saved inputs, auditor sources and every numerical artifact",
+      "passed": true
+    },
+    {
+      "name": "Native Lens reopens three distinct decision views with child processes denied",
+      "passed": true
+    },
+    {
+      "name": "Self-contained investigation embeds the original captured journal and unchanged native bridge",
+      "passed": true
+    },
+    {
+      "name": "Verification leaves retained evidence unchanged",
+      "passed": true
+    }
+  ],
+  "inputs": {
+    "run/trace.json": {
+      "sha256": "22b370b278ad8f5c87d1fc056dcbb4056f576e34029799a1d9bb0872037600fb",
+      "bytes": 1414507
+    },
+    "run/outcome.json": {
+      "sha256": "d2af0712764b547511c7cf4d265d45078d1f68b68f5e5336a69dd281dcf310c0",
+      "bytes": 152881
+    },
+    "run/experiment-manifest.json": {
+      "sha256": "605eb3ed615fc3af923b8277a79ccd21bc88a8a312af20d51e0c0a17657b3998",
+      "bytes": 1850
+    },
+    "run/candidate-results.json": {
+      "sha256": "1ddaa37dadc68e95a660b5882d662d2d5175f117138bf8cfe75aefb8f2bf80ef",
+      "bytes": 10912
+    },
+    "results.json": {
+      "sha256": "d2af0712764b547511c7cf4d265d45078d1f68b68f5e5336a69dd281dcf310c0",
+      "bytes": 152881
+    },
+    "numpy-audit.json": {
+      "sha256": "671940e21b493c6b2a1e1d408df348a322e177f956304bb07b627956936ee36f",
+      "bytes": 3254
+    },
+    "view/native-verification.json": {
+      "sha256": "13ce54db81265705f6147e3a30fc4860958414d78cb5e563e74900ff80a7ebe4",
+      "bytes": 2422
+    },
+    "workflow.ts": {
+      "sha256": "201a1ebe6f7a2a34ea8759badbf17fedfa28c37082e34fbb1d996c77d54d550d",
+      "bytes": 14496
+    },
+    "backend/plugin.py": {
+      "sha256": "cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+      "bytes": 10227
+    },
+    "backend/external_trainer.py": {
+      "sha256": "be09ff7c23d282b83fe6381050e1f36ff1eacb40e4f709992c923fee070cb6d4",
+      "bytes": 6154
+    },
+    "proof-checks.mjs": {
+      "sha256": "307aefa8f0f21050a754455acea08f2bbc9a2d91c6c76121b17dc0b2d41c3a0a",
+      "bytes": 5407
+    }
+  },
+  "results": {
+    "validationMse": {
+      "steps-100": 0.001700233258309988,
+      "steps-30": 0.004259598336456735,
+      "steps-60": 0.0023385982112158693
+    },
+    "wrong": {
+      "candidate": "steps-30",
+      "qualityAllowed": true,
+      "selectionAllowed": false
+    },
+    "releasedCandidate": "steps-100",
+    "testMse": 0.0019895516647118723
+  },
+  "boundaries": [
+    "Saved evidence and native inspection are checked without child-process access.",
+    "NumPy report is source/input linked; this verifier does not rerun NumPy or JAX.",
+    "No human investigation advantage, global model optimum or remote deployment is established."
+  ]
+}

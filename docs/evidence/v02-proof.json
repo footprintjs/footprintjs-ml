@@ -1,0 +1,741 @@
+{
+  "schema": "jax-inference-identity-outcome/v2",
+  "backend": {
+    "architecture": [
+      64,
+      32,
+      10
+    ],
+    "devices": [
+      {
+        "deviceKind": "cpu",
+        "id": 0,
+        "platform": "cpu"
+      }
+    ],
+    "dtype": "float32",
+    "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=32e76253dd732d00d78e4d64aaf2ad7821598b04a0dcbcc424e03110c2d5e2a1",
+    "execution": "jax.jit(jax.value_and_grad(...))",
+    "inferenceProfile": "footprint-jax-digits-inference/v1",
+    "inferenceSpec": {
+      "activation": "relu",
+      "architecture": [
+        64,
+        32,
+        10
+      ],
+      "inferenceCodeSha256": "1b037e12910fbbde0bed4d9a2e128e8d630b1f3c6cdb02727cc4d114085b58bb",
+      "input": {
+        "dtype": "float32",
+        "features": 64
+      },
+      "labels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "matmulPrecision": "default",
+      "mode": "deterministic-evaluation",
+      "normalization": "standard-scaler/train-only/v1",
+      "prediction": "argmax-logits/class-order-0-through-9",
+      "profile": "footprint-jax-digits-inference/v1",
+      "versions": {
+        "jax": "0.7.2",
+        "jaxlib": "0.7.2",
+        "numpy": "2.2.6"
+      },
+      "x64Enabled": false
+    },
+    "initializationMs": 23.51141699909931,
+    "optimizer": "sgd-momentum/v1",
+    "partitionContentOverlap": {
+      "trainTest": 0,
+      "trainValidation": 0,
+      "validationTest": 0
+    },
+    "preprocessing": {
+      "fitSha256": "6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+      "kind": "standard-scaler/train-only/v1",
+      "trainingDatasetSha256": "8b39f296f77dc0263ca25a33e6c9bb282f7310922eeb7390d7986b241cffe0fb",
+      "trainingRows": 1149
+    },
+    "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+    "prngAlgorithm": "jax-threefry2x32",
+    "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+    "sourceSha256": "32e76253dd732d00d78e4d64aaf2ad7821598b04a0dcbcc424e03110c2d5e2a1",
+    "trainer": "jax-digits-mlp/v2",
+    "versions": {
+      "jax": "0.7.2",
+      "jaxlib": "0.7.2",
+      "numpy": "2.2.6",
+      "python": "3.11.5"
+    }
+  },
+  "policy": {
+    "metric": "accuracy",
+    "operator": "gte",
+    "threshold": 0.9
+  },
+  "checkpointA": {
+    "kind": "checkpoint",
+    "artifact": {
+      "bytes": 25246,
+      "format": "jax-digits-trainstate/npz-v2",
+      "kind": "artifact",
+      "path": "checkpoints/cf82efc8-ef3b-41f5-8c38-bc58880b23a2-epoch-020.npz",
+      "sha256": "4b107fa886f210b5a7f2caf3173c987dd4ecec28b896713b0b7cdc37cc571f4d"
+    }
+  },
+  "checkpointB": {
+    "kind": "checkpoint",
+    "artifact": {
+      "bytes": 25466,
+      "format": "jax-digits-trainstate/npz-v2",
+      "kind": "artifact",
+      "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+      "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+    }
+  },
+  "accuracyA": 0.9652777777777778,
+  "accuracyB": 0.96875,
+  "testAccuracyB": 0.9722222222222222,
+  "staleDecision": {
+    "kind": "release-decision",
+    "schemaVersion": 1,
+    "allowed": false,
+    "status": "deny",
+    "reasons": [
+      {
+        "code": "inference-mismatch",
+        "message": "The proposed inference profile or digest differs from the evaluated inference identity."
+      }
+    ],
+    "checkedAt": 1793160342148,
+    "receiptId": "aae9a205-a64c-4024-8da4-08efe6a3a287",
+    "policy": {
+      "metric": "accuracy",
+      "operator": "gte",
+      "threshold": 0.9
+    },
+    "bindings": {
+      "coverage": "inference",
+      "proposed": {
+        "modelRef": {
+          "candidateId": "checkpoint-B",
+          "epochs": 40,
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-jax-digits-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+          },
+          "kind": "model",
+          "modelId": "7b56206f-d029-4d81-b907-adcca64b0440",
+          "originArtifact": {
+            "bytes": 25466,
+            "format": "jax-digits-trainstate/npz-v2",
+            "kind": "artifact",
+            "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+            "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "step": 360
+        },
+        "checkpoint": {
+          "bytes": 25466,
+          "format": "jax-digits-trainstate/npz-v2",
+          "kind": "artifact",
+          "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+          "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "footprint-jax-digits-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=32e76253dd732d00d78e4d64aaf2ad7821598b04a0dcbcc424e03110c2d5e2a1",
+        "parameters": {}
+      },
+      "receipt": {
+        "evaluationId": "aae9a205-a64c-4024-8da4-08efe6a3a287",
+        "createdAt": 1793160342079,
+        "checkpoint": {
+          "bytes": 25246,
+          "format": "jax-digits-trainstate/npz-v2",
+          "kind": "artifact",
+          "path": "checkpoints/cf82efc8-ef3b-41f5-8c38-bc58880b23a2-epoch-020.npz",
+          "sha256": "4b107fa886f210b5a7f2caf3173c987dd4ecec28b896713b0b7cdc37cc571f4d"
+        },
+        "modelRef": {
+          "candidateId": "checkpoint-A",
+          "epochs": 20,
+          "handle": 4,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-jax-digits-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "0ae86e736febb886eb3adc321f047c8fc3b388f68e1d6bb111442b9023e193d1"
+          },
+          "kind": "model",
+          "modelId": "cf82efc8-ef3b-41f5-8c38-bc58880b23a2",
+          "originArtifact": {
+            "bytes": 25246,
+            "format": "jax-digits-trainstate/npz-v2",
+            "kind": "artifact",
+            "path": "checkpoints/cf82efc8-ef3b-41f5-8c38-bc58880b23a2-epoch-020.npz",
+            "sha256": "4b107fa886f210b5a7f2caf3173c987dd4ecec28b896713b0b7cdc37cc571f4d"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "step": 180
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "footprint-jax-digits-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "0ae86e736febb886eb3adc321f047c8fc3b388f68e1d6bb111442b9023e193d1"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=32e76253dd732d00d78e4d64aaf2ad7821598b04a0dcbcc424e03110c2d5e2a1",
+        "parameters": {},
+        "metrics": {
+          "accuracy": 0.9652777777777778,
+          "logLoss": 0.11539876965924302,
+          "macroF1": 0.9656167289589348
+        }
+      }
+    }
+  },
+  "freshDecision": {
+    "kind": "release-decision",
+    "schemaVersion": 1,
+    "allowed": true,
+    "status": "allow",
+    "reasons": [
+      {
+        "code": "inference-identity-matches",
+        "message": "The proposed inference profile and digest match the evaluated model."
+      },
+      {
+        "code": "receipt-matches-policy",
+        "message": "Inference identity, dataset, preprocessing, evaluation method, parameters, and metric policy match."
+      }
+    ],
+    "checkedAt": 1793160342152,
+    "receiptId": "928b8e92-7e34-4fc4-b2e9-4f22cf50abba",
+    "policy": {
+      "metric": "accuracy",
+      "operator": "gte",
+      "threshold": 0.9
+    },
+    "bindings": {
+      "coverage": "inference",
+      "proposed": {
+        "modelRef": {
+          "candidateId": "checkpoint-B",
+          "epochs": 40,
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-jax-digits-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+          },
+          "kind": "model",
+          "modelId": "7b56206f-d029-4d81-b907-adcca64b0440",
+          "originArtifact": {
+            "bytes": 25466,
+            "format": "jax-digits-trainstate/npz-v2",
+            "kind": "artifact",
+            "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+            "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "step": 360
+        },
+        "checkpoint": {
+          "bytes": 25466,
+          "format": "jax-digits-trainstate/npz-v2",
+          "kind": "artifact",
+          "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+          "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "footprint-jax-digits-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=32e76253dd732d00d78e4d64aaf2ad7821598b04a0dcbcc424e03110c2d5e2a1",
+        "parameters": {}
+      },
+      "receipt": {
+        "evaluationId": "928b8e92-7e34-4fc4-b2e9-4f22cf50abba",
+        "createdAt": 1793160342151,
+        "checkpoint": {
+          "bytes": 25466,
+          "format": "jax-digits-trainstate/npz-v2",
+          "kind": "artifact",
+          "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+          "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+        },
+        "modelRef": {
+          "candidateId": "checkpoint-B",
+          "epochs": 40,
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-jax-digits-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+          },
+          "kind": "model",
+          "modelId": "7b56206f-d029-4d81-b907-adcca64b0440",
+          "originArtifact": {
+            "bytes": 25466,
+            "format": "jax-digits-trainstate/npz-v2",
+            "kind": "artifact",
+            "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+            "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "step": 360
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "footprint-jax-digits-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=32e76253dd732d00d78e4d64aaf2ad7821598b04a0dcbcc424e03110c2d5e2a1",
+        "parameters": {},
+        "metrics": {
+          "accuracy": 0.96875,
+          "logLoss": 0.09202582194096293,
+          "macroF1": 0.9691108871305124
+        }
+      }
+    }
+  },
+  "reloadDecision": {
+    "kind": "release-decision",
+    "schemaVersion": 1,
+    "allowed": true,
+    "status": "allow",
+    "reasons": [
+      {
+        "code": "inference-identity-matches",
+        "message": "The proposed inference profile and digest match the evaluated model."
+      },
+      {
+        "code": "receipt-matches-policy",
+        "message": "Inference identity, dataset, preprocessing, evaluation method, parameters, and metric policy match."
+      }
+    ],
+    "checkedAt": 1793160342156,
+    "receiptId": "928b8e92-7e34-4fc4-b2e9-4f22cf50abba",
+    "policy": {
+      "metric": "accuracy",
+      "operator": "gte",
+      "threshold": 0.9
+    },
+    "bindings": {
+      "coverage": "inference",
+      "proposed": {
+        "modelRef": {
+          "candidateId": "checkpoint-B",
+          "epochs": 40,
+          "handle": 6,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-jax-digits-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+          },
+          "kind": "model",
+          "modelId": "7b56206f-d029-4d81-b907-adcca64b0440",
+          "originArtifact": {
+            "bytes": 25466,
+            "format": "jax-digits-trainstate/npz-v2",
+            "kind": "artifact",
+            "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+            "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "step": 360
+        },
+        "checkpoint": {
+          "bytes": 25466,
+          "format": "jax-digits-trainstate/npz-v2",
+          "kind": "artifact",
+          "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+          "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "footprint-jax-digits-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=32e76253dd732d00d78e4d64aaf2ad7821598b04a0dcbcc424e03110c2d5e2a1",
+        "parameters": {}
+      },
+      "receipt": {
+        "evaluationId": "928b8e92-7e34-4fc4-b2e9-4f22cf50abba",
+        "createdAt": 1793160342151,
+        "checkpoint": {
+          "bytes": 25466,
+          "format": "jax-digits-trainstate/npz-v2",
+          "kind": "artifact",
+          "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+          "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+        },
+        "modelRef": {
+          "candidateId": "checkpoint-B",
+          "epochs": 40,
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-jax-digits-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+          },
+          "kind": "model",
+          "modelId": "7b56206f-d029-4d81-b907-adcca64b0440",
+          "originArtifact": {
+            "bytes": 25466,
+            "format": "jax-digits-trainstate/npz-v2",
+            "kind": "artifact",
+            "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+            "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "step": 360
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "footprint-jax-digits-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=32e76253dd732d00d78e4d64aaf2ad7821598b04a0dcbcc424e03110c2d5e2a1",
+        "parameters": {},
+        "metrics": {
+          "accuracy": 0.96875,
+          "logLoss": 0.09202582194096293,
+          "macroF1": 0.9691108871305124
+        }
+      }
+    }
+  },
+  "releaseStatus": "released-locally",
+  "forkedCheckpoint": {
+    "kind": "checkpoint",
+    "artifact": {
+      "bytes": 25785,
+      "format": "jax-digits-trainstate/npz-v2",
+      "kind": "artifact",
+      "path": "checkpoints/6d32f6f6-1316-40a8-9307-92ba5d06b9c3-optimizer-reset.npz",
+      "sha256": "15b14fbe3f87851c65a353f7ab044ddf2ea85ffe25f1e73a0e675595b863fedf"
+    }
+  },
+  "optimizerOnlyDecision": {
+    "kind": "release-decision",
+    "schemaVersion": 1,
+    "allowed": true,
+    "status": "allow",
+    "reasons": [
+      {
+        "code": "inference-identity-matches",
+        "message": "The proposed inference profile and digest match the evaluated model."
+      },
+      {
+        "code": "checkpoint-differs-inference-matches",
+        "message": "The full training checkpoint differs; this v2 receipt covers the matching inference identity and retains its evaluated checkpoint for audit."
+      },
+      {
+        "code": "receipt-matches-policy",
+        "message": "Inference identity, dataset, preprocessing, evaluation method, parameters, and metric policy match."
+      }
+    ],
+    "checkedAt": 1793160342161,
+    "receiptId": "928b8e92-7e34-4fc4-b2e9-4f22cf50abba",
+    "policy": {
+      "metric": "accuracy",
+      "operator": "gte",
+      "threshold": 0.9
+    },
+    "bindings": {
+      "coverage": "inference",
+      "proposed": {
+        "modelRef": {
+          "candidateId": "checkpoint-B-optimizer-reset",
+          "epochs": 40,
+          "handle": 7,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-jax-digits-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+          },
+          "kind": "model",
+          "modelId": "6d32f6f6-1316-40a8-9307-92ba5d06b9c3",
+          "originArtifact": {
+            "bytes": 25785,
+            "format": "jax-digits-trainstate/npz-v2",
+            "kind": "artifact",
+            "path": "checkpoints/6d32f6f6-1316-40a8-9307-92ba5d06b9c3-optimizer-reset.npz",
+            "sha256": "15b14fbe3f87851c65a353f7ab044ddf2ea85ffe25f1e73a0e675595b863fedf"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "step": 360
+        },
+        "checkpoint": {
+          "bytes": 25785,
+          "format": "jax-digits-trainstate/npz-v2",
+          "kind": "artifact",
+          "path": "checkpoints/6d32f6f6-1316-40a8-9307-92ba5d06b9c3-optimizer-reset.npz",
+          "sha256": "15b14fbe3f87851c65a353f7ab044ddf2ea85ffe25f1e73a0e675595b863fedf"
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "footprint-jax-digits-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=32e76253dd732d00d78e4d64aaf2ad7821598b04a0dcbcc424e03110c2d5e2a1",
+        "parameters": {}
+      },
+      "receipt": {
+        "evaluationId": "928b8e92-7e34-4fc4-b2e9-4f22cf50abba",
+        "createdAt": 1793160342151,
+        "checkpoint": {
+          "bytes": 25466,
+          "format": "jax-digits-trainstate/npz-v2",
+          "kind": "artifact",
+          "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+          "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+        },
+        "modelRef": {
+          "candidateId": "checkpoint-B",
+          "epochs": 40,
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "footprint-jax-digits-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+          },
+          "kind": "model",
+          "modelId": "7b56206f-d029-4d81-b907-adcca64b0440",
+          "originArtifact": {
+            "bytes": 25466,
+            "format": "jax-digits-trainstate/npz-v2",
+            "kind": "artifact",
+            "path": "checkpoints/7b56206f-d029-4d81-b907-adcca64b0440-epoch-040.npz",
+            "sha256": "b18ad2176ce6d7b4bd6280a525614193205cce1fdf016a40c9595e6d44af4dd1"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "step": 360
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "footprint-jax-digits-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "8857db9d-116e-44c9-b6a6-54c50049232b",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=32e76253dd732d00d78e4d64aaf2ad7821598b04a0dcbcc424e03110c2d5e2a1",
+        "parameters": {},
+        "metrics": {
+          "accuracy": 0.96875,
+          "logLoss": 0.09202582194096293,
+          "macroF1": 0.9691108871305124
+        }
+      }
+    }
+  },
+  "inferenceIdentityB": {
+    "kind": "inference-identity",
+    "profile": "footprint-jax-digits-inference/v1",
+    "schemaVersion": 1,
+    "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+  },
+  "inferenceIdentityFork": {
+    "kind": "inference-identity",
+    "profile": "footprint-jax-digits-inference/v1",
+    "schemaVersion": 1,
+    "sha256": "5f2ac3151b5f402fd7d14b858ced81fc7470187c0f210b7d377861aa7988e8a8"
+  },
+  "handles": {
+    "A": 4,
+    "B": 5,
+    "forkedB": 7
+  }
+}

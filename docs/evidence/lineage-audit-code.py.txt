@@ -1,0 +1,372 @@
+"""Independently inspect saved numerical evidence. No sklearn or trainer import.
+
+This process reads saved arrays and performs NumPy inference. It never fits a
+scaler or classifier, starts the adapter, or re-executes the FootPrint workflow.
+An accurately recorded contaminated run passes integrity checks while its
+separate lineageValid finding is false.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import io
+import json
+from pathlib import Path
+import sys
+from typing import Any
+
+import numpy as np
+
+PROFILE = "footprint-sklearn-digits-lineage-inference/v1"
+ROWS = {"train": 1149, "validation": 288, "test": 360}
+TRAINING = {"C": 1, "max_iter": 500, "random_state": 2026}
+
+
+def canonical(value: Any) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+                      allow_nan=False).encode("utf-8")
+
+
+def require(condition: bool, message: str) -> None:
+    if not condition:
+        raise ValueError(message)
+
+
+def artifact_key(value: dict[str, Any]) -> tuple[Any, ...]:
+    return value.get("sha256"), value.get("bytes"), value.get("format")
+
+
+def dataset_key(value: dict[str, Any]) -> tuple[Any, ...]:
+    return (*artifact_key(value["artifact"]), value.get("role"), value.get("rows"), tuple(value.get("shape", [])))
+
+
+def snapshot_hash(arrays: dict[str, np.ndarray], metadata: dict[str, Any], domain: str) -> str:
+    # Independent implementation of the public kit identity framing.
+    digest = hashlib.sha256(b"footprint-ml-adapter-kit/identity/v1\0")
+    def frame(tag: str, payload: bytes) -> None:
+        tag_bytes = tag.encode("utf-8")
+        digest.update(len(tag_bytes).to_bytes(4, "big")); digest.update(tag_bytes)
+        digest.update(len(payload).to_bytes(8, "big")); digest.update(payload)
+    frame("domain", domain.encode()); frame("profile", PROFILE.encode())
+    frame("metadata", canonical(metadata))
+    for name, original in sorted(arrays.items()):
+        array = np.array(original, dtype=original.dtype.newbyteorder("<"), order="C", copy=True)
+        frame("array-name", name.encode()); frame("array-dtype", array.dtype.str.encode())
+        frame("array-shape", canonical(list(array.shape))); frame("array-bytes", array.tobytes(order="C"))
+    return digest.hexdigest()
+
+
+def source_hash(arrays: dict[str, np.ndarray]) -> str:
+    digest = hashlib.sha256(b"sklearn-digits-source/row-id-v1\0")
+    for name in ("x", "y", "row_id"):
+        original = arrays[name]
+        array = np.ascontiguousarray(original.astype(original.dtype.newbyteorder("<"), copy=False))
+        header = canonical({"name": name, "dtype": array.dtype.str, "shape": list(array.shape)})
+        digest.update(len(header).to_bytes(8, "big")); digest.update(header)
+        digest.update(array.nbytes.to_bytes(8, "big")); digest.update(array.tobytes(order="C"))
+    return digest.hexdigest()
+
+
+def read_npz(data: bytes) -> tuple[dict[str, np.ndarray], dict[str, Any], dict[str, Any] | None]:
+    require(len(data) <= 128 * 1024 * 1024, "Saved NPZ exceeds audit size bound")
+    with np.load(io.BytesIO(data), allow_pickle=False) as archive:
+        require("metadata" in archive.files, "Saved NPZ omitted metadata")
+        encoded = archive["metadata"]
+        require(encoded.dtype == np.uint8 and encoded.ndim == 1 and encoded.nbytes < 2 * 1024 * 1024,
+                "Metadata is not a bounded JSON byte vector")
+        document = json.loads(encoded.tobytes().decode("utf-8"))
+        arrays = {}
+        if "snapshot" in document:
+            envelope = dict(document); description = envelope.pop("snapshot")
+            require(set(description) == {"arrays", "metadata"}, "Invalid runtime snapshot description")
+            expected = {"metadata"}
+            for index, descriptor in enumerate(description["arrays"]):
+                name, key = descriptor["name"], descriptor["key"]
+                require(key == f"array_{index:05d}" and name not in arrays, "Ambiguous runtime array descriptor")
+                array = np.array(archive[key], copy=True)
+                require(array.dtype.str == descriptor["dtype"] and list(array.shape) == descriptor["shape"],
+                        "Array differs from saved dtype/shape descriptor")
+                arrays[name] = array; expected.add(key)
+            require(set(archive.files) == expected, "Unmanifested runtime arrays")
+            metadata = description["metadata"]
+        else:
+            arrays = {name: np.array(archive[name], copy=True) for name in archive.files if name != "metadata"}
+            metadata, envelope = document, None
+        for name, array in arrays.items():
+            require(array.dtype.kind in "biufc" and array.dtype.fields is None and np.isfinite(array).all(),
+                    "Unsupported or nonfinite numerical array: " + name)
+        return arrays, metadata, envelope
+
+
+def probability(arrays: dict[str, np.ndarray], x: np.ndarray) -> np.ndarray:
+    normalized = (x - arrays["scaler_mean"]) / arrays["scaler_scale"]
+    logits = normalized @ arrays["coef"].T + arrays["intercept"]
+    logits -= logits.max(axis=1, keepdims=True)
+    values = np.exp(logits)
+    return values / values.sum(axis=1, keepdims=True)
+
+
+def measured_metrics(probabilities: np.ndarray, labels: np.ndarray, classes: np.ndarray) -> dict[str, float]:
+    predicted = classes[probabilities.argmax(axis=1)]
+    correct = probabilities[np.arange(len(labels)), np.searchsorted(classes, labels)]
+    return {"accuracy": float(np.mean(predicted == labels)),
+            "logLoss": float(-np.mean(np.log(np.maximum(correct, np.finfo(np.float64).eps))))}
+
+
+def close_metrics(actual: dict[str, Any], expected: dict[str, float]) -> None:
+    require(set(actual) == set(expected), "Metric names differ from independent computation")
+    for name, value in expected.items():
+        require(np.isclose(actual[name], value, rtol=1e-12, atol=1e-12), "Metric differs: " + name)
+
+
+class Auditor:
+    def __init__(self, root: Path):
+        self.root = root.resolve()
+        self.plugin_sha = hashlib.sha256(Path(__file__).with_name("trainer.py").read_bytes()).hexdigest()
+        self.preprocessing = "sklearn-standardscaler/digits-lineage/v1;plugin=" + self.plugin_sha
+        self.method = "digits-accuracy-and-logloss/numpy/v1;plugin=" + self.plugin_sha
+        self.artifacts: dict[str, tuple[Any, ...]] = {}
+        self.models: dict[tuple[Any, ...], dict[str, Any]] = {}
+        self.datasets: dict[str, tuple[dict[str, np.ndarray], dict[str, Any]]] = {}
+        self.fit_reports: list[dict[str, Any]] = []
+        self.evaluation_receipts: dict[str, dict[str, Any]] = {}
+        self.lineage_receipts: dict[str, dict[str, Any]] = {}
+
+    def artifact(self, reference: dict[str, Any]) -> bytes:
+        require(reference.get("kind") == "artifact", "Missing artifact reference")
+        relative = Path(reference["path"])
+        require(not relative.is_absolute(), "Artifact path must be run-relative")
+        file = (self.root / relative).resolve(); file.relative_to(self.root)
+        data = file.read_bytes()
+        require(len(data) == reference["bytes"] and hashlib.sha256(data).hexdigest() == reference["sha256"],
+                "Saved artifact bytes disagree: " + str(relative))
+        self.artifacts[str(relative)] = artifact_key(reference)
+        return data
+
+    def json_artifact(self, reference: dict[str, Any]) -> dict[str, Any]:
+        return json.loads(self.artifact(reference))
+
+    def dataset(self, reference: dict[str, Any]) -> dict[str, np.ndarray]:
+        role = reference["role"]
+        require(role in ROWS and reference["rows"] == ROWS[role] and reference["shape"] == [ROWS[role], 64],
+                "Dataset reference role/count/shape differ")
+        arrays, metadata, envelope = read_npz(self.artifact(reference["artifact"]))
+        require(envelope is not None and envelope["kind"] == "footprint-ml-adapter-kit-dataset"
+                and envelope["role"] == role and envelope["rows"] == ROWS[role]
+                and envelope["shape"] == [ROWS[role], 64] and envelope["pluginSourceSha256"] == self.plugin_sha,
+                "Dataset envelope disagrees with reference or source code")
+        require(set(arrays) == {"x", "y", "row_id"}, "Dataset array names differ")
+        ids = np.asarray(self.manifest["partitions"][role], dtype=np.int64)
+        for name, value in (("row_id", ids), ("x", self.source["x"][ids]), ("y", self.source["y"][ids])):
+            require(np.array_equal(arrays[name], value), "Saved partition differs from original source rows: " + role + "/" + name)
+        require(metadata["sourceSha256"] == self.source_sha and metadata["partition"] == role,
+                "Dataset source metadata differs")
+        if role in self.datasets:
+            require(dataset_key(reference) == dataset_key(self.datasets[role][1]), "Multiple contents for one declared role")
+        self.datasets[role] = arrays, reference
+        return arrays
+
+    def preparation(self, report: dict[str, Any], arrays: dict[str, np.ndarray]) -> None:
+        fit = report["preprocessingFit"]
+        require(artifact_key(report["splitManifest"]) == artifact_key(self.manifest_ref)
+                and artifact_key(report["sourceDatasetArtifact"]) == artifact_key(self.source_ref),
+                "Preparation report uses different source/splits")
+        membership = self.json_artifact(fit["membershipArtifact"])
+        scaler, observation, unused = read_npz(self.artifact(fit["artifact"]))
+        require(unused is None and observation["schema"] == "standardscaler-fit-observation/v1"
+                and observation["method"] == "sklearn.preprocessing.StandardScaler"
+                and observation["withMean"] is True and observation["withStd"] is True
+                and observation["preprocessingVersion"] == self.preprocessing
+                and observation["pluginSourceSha256"] == self.plugin_sha, "Fitted preprocessing identity differs")
+        require(fit["fitDatasetRefs"] == observation["fitDatasetRefs"] == membership["fitDatasetRefs"],
+                "Fitting DatasetRefs differ across observations")
+        roles = [ref["role"] for ref in fit["fitDatasetRefs"]]
+        require(roles == fit["sourceRoles"] == membership["sourceRoles"] == observation["sourceRoles"],
+                "Actual fit roles differ across observations")
+        require(roles == (["train", "validation"] if report["mode"] == "faulty" else ["train"]),
+                "Unexpected fitting partitions for declared demonstration mode")
+        fitted = [self.dataset(ref) for ref in fit["fitDatasetRefs"]]
+        ids = np.concatenate([data["row_id"] for data in fitted])
+        x = np.concatenate([data["x"] for data in fitted], axis=0)
+        require(np.array_equal(ids, membership["fitRowIds"]) and np.array_equal(ids, arrays["fit_row_id"]),
+                "Actual saved fit rows differ from checkpoint")
+        require(len(ids) == fit["rowCount"] == membership["rowCount"] == observation["rowCount"], "Fit counts differ")
+        require(np.intersect1d(ids, self.manifest["partitions"]["test"]).size == 0, "Test rows entered preprocessing")
+        mean, variance = x.mean(axis=0), x.var(axis=0)
+        scale = np.sqrt(variance); scale[scale == 0] = 1
+        for name, expected in (("mean", mean), ("var", variance), ("scale", scale)):
+            require(np.allclose(scaler[name], expected, rtol=1e-12, atol=1e-12), "Fitted scaler does not match observed data: " + name)
+            require(np.array_equal(scaler[name], arrays["scaler_" + name]), "Classifier checkpoint uses different fitted preprocessing")
+        require(np.array_equal(scaler["n_samples_seen"], [len(ids)]) and np.array_equal(arrays["scaler_n"], [len(ids)]),
+                "Scaler n_samples_seen differs from actual fit membership")
+        require(artifact_key(observation["membershipArtifact"]) == artifact_key(fit["membershipArtifact"]), "Scaler membership binding differs")
+        overlap = self.json_artifact(report["overlap"]["evidenceArtifact"])
+        train_ids = np.asarray(self.manifest["partitions"]["train"], dtype=np.int64)
+        eval_ids = np.asarray(self.manifest["partitions"]["validation"], dtype=np.int64)
+        train_overlap, prep_overlap = np.intersect1d(train_ids, eval_ids), np.intersect1d(ids, eval_ids)
+        require(overlap["evaluationRole"] == "validation"
+                and overlap["trainEvaluationRows"] == report["overlap"]["trainEvaluationRows"] == len(train_overlap)
+                and overlap["preprocessingEvaluationRows"] == report["overlap"]["preprocessingEvaluationRows"] == len(prep_overlap)
+                and np.array_equal(overlap["trainEvaluationRowIds"], train_overlap)
+                and np.array_equal(overlap["preprocessingEvaluationRowIds"], prep_overlap), "Overlap evidence differs from original row intersections")
+        require(dataset_key(overlap["trainingDatasetRef"]) == dataset_key(self.datasets["train"][1]), "Overlap training binding differs")
+        self.dataset(overlap["evaluationDatasetRef"])
+        require(artifact_key(overlap["splitManifest"]) == artifact_key(self.manifest_ref)
+                and artifact_key(overlap["fitMembership"]) == artifact_key(fit["membershipArtifact"]), "Overlap artifacts bind different observations")
+        self.fit_reports.append({"artifact": fit["artifact"], "sourceRoles": roles, "rowCount": len(ids),
+            "trainEvaluationRows": len(train_overlap), "preprocessingEvaluationRows": len(prep_overlap)})
+
+    def model(self, reference: dict[str, Any]) -> dict[str, Any]:
+        key = artifact_key(reference["originArtifact"])
+        if key not in self.models:
+            arrays, metadata, envelope = read_npz(self.artifact(reference["originArtifact"]))
+            require(envelope is not None and envelope["kind"] == "footprint-ml-adapter-kit-checkpoint"
+                    and envelope["profile"] == PROFILE and envelope["pluginSourceSha256"] == self.plugin_sha,
+                    "Checkpoint implementation profile/source differs")
+            require(metadata["training"] == TRAINING and metadata["pluginSourceSha256"] == self.plugin_sha,
+                    "Checkpoint training plan/code differs")
+            require(snapshot_hash(arrays, metadata, "training-state") == envelope["trainingStateSha256"],
+                    "Full training-state identity differs")
+            inference_arrays = {name: arrays[name] for name in ("coef", "intercept", "classes", "scaler_mean", "scaler_scale")}
+            inference_metadata = {"profile": PROFILE, "phase": metadata["phase"],
+                "model": "multinomial-logistic-regression", "preprocessing": "StandardScaler",
+                "inputFeatures": 64, "inputDtype": "float64", "classOrder": list(range(10)),
+                "prediction": "softmax-linear-logits/argmax", "deterministic": True,
+                "preprocessingVersion": self.preprocessing, "pluginSourceSha256": self.plugin_sha, "versions": metadata["versions"]}
+            identity = {"kind": "inference-identity", "schemaVersion": 1, "profile": PROFILE,
+                        "sha256": snapshot_hash(inference_arrays, inference_metadata, "inference")}
+            require(identity == envelope["inferenceIdentity"], "Measured inference identity differs from checkpoint")
+            require(envelope["inferenceManifest"]["metadata"] == inference_metadata, "Saved inference procedure metadata differs")
+            for name, expected in (("train_x", self.source["x"][self.manifest["partitions"]["train"]]),
+                                   ("train_y", self.source["y"][self.manifest["partitions"]["train"]]),
+                                   ("train_row_id", self.manifest["partitions"]["train"])):
+                require(np.array_equal(arrays[name], expected), "Classifier training input differs from train-only partition")
+            self.preparation(metadata["trainingReport"], arrays)
+            self.models[key] = {"arrays": arrays, "metadata": metadata, "identity": identity}
+        model = self.models[key]
+        require(reference["inferenceIdentity"] == model["identity"], "ModelRef disagrees with measured checkpoint")
+        for field in ("phase", "mode", "candidateId", "trainingReport"):
+            require(reference[field] == model["metadata"][field], "ModelRef metadata differs from checkpoint: " + field)
+        return model
+
+    def walk(self, value: Any) -> None:
+        if isinstance(value, list):
+            for item in value: self.walk(item)
+        elif isinstance(value, dict):
+            kind = value.get("kind")
+            if kind == "artifact": self.artifact(value)
+            elif kind == "model" and "originArtifact" in value: self.model(value)
+            elif kind == "dataset" and "artifact" in value: self.dataset(value)
+            elif kind == "evaluation-receipt": self.evaluation_receipts[value["evaluationId"]] = value
+            elif kind == "data-lineage-receipt": self.lineage_receipts[value["lineageId"]] = value
+            for item in value.values(): self.walk(item)
+
+    def run(self) -> dict[str, Any]:
+        outcome = json.loads((self.root / "outcome.json").read_text())
+        self.manifest_ref = outcome["splitManifest"]
+        self.manifest = self.json_artifact(self.manifest_ref)
+        self.source_ref = self.manifest["sourceDataset"]
+        self.source, source_metadata, unused = read_npz(self.artifact(self.source_ref))
+        require(unused is None and set(self.source) == {"x", "y", "row_id"}, "Invalid source arrays")
+        require(self.source["x"].shape == (1797, 64) and self.source["y"].shape == (1797,)
+                and np.array_equal(self.source["row_id"], np.arange(1797)), "Source shape/row identity differs")
+        self.source_sha = source_hash(self.source)
+        require(self.source_sha == source_metadata["sourceSha256"] == self.manifest["sourceSha256"], "Original source fingerprint differs")
+        all_ids = []
+        for role, count in ROWS.items():
+            ids = self.manifest["partitions"][role]
+            require(len(ids) == count and all(type(v) is int for v in ids), "Split membership count/type differs")
+            all_ids.extend(ids)
+        require(sorted(all_ids) == list(range(1797)), "Splits overlap or omit original rows")
+        require(outcome["plan"]["training"] == TRAINING and outcome["plan"]["releasePolicy"] == {"metric": "accuracy", "operator": "gte", "threshold": 0.9},
+                "Saved plan differs from fixed declared proof")
+        documents = [outcome]
+        for name in ("trace.json", "structured-logs.json", "release.json"):
+            if (self.root / name).exists(): documents.append(json.loads((self.root / name).read_text()))
+        for document in documents: self.walk(document)
+        require(self.models and self.evaluation_receipts and self.lineage_receipts, "Saved run omitted model or receipt evidence")
+        index = json.loads((self.root / "backend-artifacts/evaluations.json").read_text())
+        verified_predictions = []
+        for item in index["evaluations"]:
+            arrays, metadata, unused = read_npz(self.artifact(item["artifact"]))
+            require(unused is None and metadata["schema"] == "digits-observed-predictions/v1", "Invalid prediction artifact")
+            candidates = [m for m in self.models.values() if m["identity"] == metadata["inferenceIdentity"] and m["metadata"]["phase"] == "trained"]
+            require(bool(candidates), "Prediction artifact refers to an unknown measured classifier")
+            model = candidates[0]
+            dataset = self.dataset(metadata["datasetRef"])
+            require(metadata["datasetRef"]["role"] == "validation", "This release proof must use validation, not test")
+            expected = probability(model["arrays"], dataset["x"])
+            require(np.allclose(arrays["probabilities"], expected, rtol=1e-12, atol=1e-12), "Saved predictions differ from independent inference")
+            require(np.array_equal(arrays["row_id"], dataset["row_id"]) and np.array_equal(arrays["y"], dataset["y"])
+                    and np.array_equal(arrays["predicted"], model["arrays"]["classes"][expected.argmax(axis=1)]), "Prediction row/label binding differs")
+            metrics = measured_metrics(expected, dataset["y"], model["arrays"]["classes"])
+            close_metrics(metadata["metrics"], metrics); close_metrics(item["metrics"], metrics)
+            require(metadata["parameters"] == {} and metadata["preprocessingVersion"] == self.preprocessing
+                    and metadata["evaluationMethodVersion"] == self.method, "Prediction procedure identity differs")
+            verified_predictions.append((metadata, metrics))
+        for receipt in self.evaluation_receipts.values():
+            model = self.model(receipt["modelRef"]); self.dataset(receipt["datasetRef"])
+            require(receipt["schemaVersion"] == 2 and receipt["inferenceIdentity"] == model["identity"]
+                    and artifact_key(receipt["checkpointForAudit"]["artifact"]) == artifact_key(receipt["modelRef"]["originArtifact"]),
+                    "Evaluation receipt model/checkpoint binding differs")
+            matches = [metrics for meta, metrics in verified_predictions if meta["inferenceIdentity"] == receipt["inferenceIdentity"]
+                       and dataset_key(meta["datasetRef"]) == dataset_key(receipt["datasetRef"])
+                       and meta["parameters"] == receipt["parameters"]]
+            require(bool(matches), "Receipt has no saved prediction evidence for its model/dataset/parameters")
+            close_metrics(receipt["metrics"], matches[0])
+            require(receipt["preprocessingVersion"] == self.preprocessing and receipt["evaluationMethodVersion"] == self.method,
+                    "Evaluation receipt method binding differs")
+        for receipt in self.lineage_receipts.values():
+            model = self.model(receipt["modelRef"]); report = model["metadata"]["trainingReport"]
+            self.dataset(receipt["datasetRef"]); self.dataset(receipt["trainingDatasetRef"])
+            require(receipt["schemaVersion"] == 1 and receipt["trainingDatasetRef"]["role"] == "train"
+                    and receipt["datasetRef"]["role"] == "validation", "Lineage receipt roles differ")
+            require(artifact_key(receipt["splitManifest"]) == artifact_key(self.manifest_ref)
+                    and receipt["overlap"] == report["overlap"]
+                    and artifact_key(receipt["preprocessing"]["artifact"]) == artifact_key(report["preprocessingFit"]["artifact"])
+                    and receipt["preprocessing"]["fitDatasetRefs"] == report["preprocessingFit"]["fitDatasetRefs"],
+                    "Lineage receipt disagrees with this classifier's saved preparation")
+        fit = self.fit_reports[-1]
+        lineage_valid = fit["trainEvaluationRows"] == 0 and fit["preprocessingEvaluationRows"] == 0 and fit["sourceRoles"] == ["train"]
+        require(outcome["lineageDecision"]["allowed"] == lineage_valid, "Recorded lineage decision differs from observed rows")
+        close_metrics(outcome["metrics"], verified_predictions[0][1])
+        metric_allowed = outcome["metrics"]["accuracy"] >= 0.9
+        require(outcome["metricDecision"]["allowed"] == metric_allowed
+                and outcome["combinedDecision"]["allowed"] == (metric_allowed and lineage_valid), "Recorded release checks differ from evidence")
+        require(outcome["releaseStatus"] == ("approved-locally" if metric_allowed and lineage_valid else "quarantined"), "Recorded release branch differs")
+        return {"schema": "footprint-data-lineage-independent-audit/v1", "passed": True,
+            "mode": outcome["mode"], "execution": {"trainingInvoked": False, "workflowRerun": False,
+                "sklearnImported": "sklearn" in sys.modules, "method": "NumPy inference and saved-row/scaler checks only"},
+            "implementation": {"pluginSourceSha256": self.plugin_sha, "profile": PROFILE},
+            "sourceSha256": self.source_sha, "sourceDatasetArtifact": self.source_ref, "splitManifest": self.manifest_ref,
+            "splitRows": ROWS, "splitMembershipDisjoint": True, "originalSourceRowsPreserved": True,
+            "preprocessing": {**fit, "fittedParametersMatchActualRows": True, "testRowsUsed": 0},
+            "overlap": {"trainEvaluationRows": fit["trainEvaluationRows"], "preprocessingEvaluationRows": fit["preprocessingEvaluationRows"]},
+            "lineageValid": lineage_valid, "modelAndReceiptBindingsVerified": True,
+            "counts": {"artifacts": len(self.artifacts), "modelCheckpoints": len(self.models),
+                "predictionArtifacts": len(verified_predictions), "evaluationReceipts": len(self.evaluation_receipts), "lineageReceipts": len(self.lineage_receipts)},
+            "metrics": verified_predictions[0][1], "releaseStatus": outcome["releaseStatus"],
+            "limits": ["Corroborates recorded source rows and numerical artifacts; it cannot establish unrecorded upstream data history.",
+                       "Receipt matching checks model, dataset, parameters, methods and measured metrics; the worker generates evaluationId after prediction capture."]}
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--run", required=True, type=Path)
+    parser.add_argument("--out", type=Path)
+    args = parser.parse_args()
+    destination = args.out or args.run / "independent-audit.json"
+    try:
+        report = Auditor(args.run).run()
+    except Exception as error:
+        report = {"schema": "footprint-data-lineage-independent-audit/v1", "passed": False,
+                  "execution": {"trainingInvoked": False, "workflowRerun": False, "sklearnImported": "sklearn" in sys.modules},
+                  "error": str(error)}
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(json.dumps(report, indent=2) + "\n")
+    print(json.dumps({"passed": report["passed"], "report": str(destination), **({"error": report["error"]} if "error" in report else {"lineageValid": report["lineageValid"]})}))
+    return 0 if report["passed"] else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

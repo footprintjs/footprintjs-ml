@@ -1,0 +1,18 @@
+{
+  "schema": "external-gp-workflow-plan/v1",
+  "train": {"candidateId": "GP-A", "steps": 30},
+  "continue": {"candidateId": "GP-B", "steps": 70},
+  "trainingOnly": {"candidateId": "GP-B-optimizer-reset", "steps": 0, "resetOptimizer": true},
+  "metric": "mse",
+  "operator": "lte",
+  "threshold": 0.5,
+  "policyDeclaredBeforeEvaluation": true,
+  "selectionDatasetRole": "validation",
+  "heldOutDatasetRole": "test",
+  "notes": [
+    "The fixed mse <= 0.5 policy is declared before measuring model scores.",
+    "The test partition is evaluated only after the release decision; its score does not choose the threshold or training steps.",
+    "B receives 70 additional updates after A's 30 updates, reaching step 100.",
+    "Optimizer-only training resets upstream momentum to zero and scale estimates to their upstream initial value of one, adds zero updates, and preserves the actual inference arrays."
+  ]
+}

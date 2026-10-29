@@ -1,0 +1,444 @@
+{
+  "schema": "jax-checkpoint-revision-outcome/v1",
+  "backend": {
+    "architecture": [
+      64,
+      32,
+      10
+    ],
+    "devices": [
+      {
+        "deviceKind": "cpu",
+        "id": 0,
+        "platform": "cpu"
+      }
+    ],
+    "dtype": "float32",
+    "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=8c204a9adc3e9fd53f4145221c764f8eb7a404f7cf5eba2c6a5eeb505ef0aa0d",
+    "execution": "jax.jit(jax.value_and_grad(...))",
+    "initializationMs": 16.393334000895265,
+    "optimizer": "sgd-momentum/v1",
+    "partitionContentOverlap": {
+      "trainTest": 0,
+      "trainValidation": 0,
+      "validationTest": 0
+    },
+    "preprocessing": {
+      "fitSha256": "6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+      "kind": "standard-scaler/train-only/v1",
+      "trainingDatasetSha256": "8b39f296f77dc0263ca25a33e6c9bb282f7310922eeb7390d7986b241cffe0fb",
+      "trainingRows": 1149
+    },
+    "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+    "prngAlgorithm": "jax-threefry2x32",
+    "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+    "sourceSha256": "8c204a9adc3e9fd53f4145221c764f8eb7a404f7cf5eba2c6a5eeb505ef0aa0d",
+    "trainer": "jax-digits-mlp/v1",
+    "versions": {
+      "jax": "0.7.2",
+      "jaxlib": "0.7.2",
+      "numpy": "2.2.6",
+      "python": "3.11.5"
+    }
+  },
+  "policy": {
+    "metric": "accuracy",
+    "operator": "gte",
+    "threshold": 0.9
+  },
+  "checkpointA": {
+    "kind": "checkpoint",
+    "artifact": {
+      "bytes": 24542,
+      "format": "jax-digits-trainstate/npz-v1",
+      "kind": "artifact",
+      "path": "checkpoints/5fcdbb4f-42e5-4079-bb1b-9bcaa1d31fcc-epoch-020.npz",
+      "sha256": "761d2022ddd9a9de3dd3efc99922e13e2e2b1e72c1a894ccca7b255a43b5f750"
+    }
+  },
+  "checkpointB": {
+    "kind": "checkpoint",
+    "artifact": {
+      "bytes": 24762,
+      "format": "jax-digits-trainstate/npz-v1",
+      "kind": "artifact",
+      "path": "checkpoints/d3ef62f1-4e64-424f-8ab1-03df2d67641b-epoch-040.npz",
+      "sha256": "28f09a5d3ec48e01da980c7cf04baf1f7ce964b2ed9f17be044daf0d2749dc15"
+    }
+  },
+  "accuracyA": 0.9652777777777778,
+  "accuracyB": 0.96875,
+  "testAccuracyB": 0.9722222222222222,
+  "staleDecision": {
+    "kind": "release-decision",
+    "schemaVersion": 1,
+    "allowed": false,
+    "status": "deny",
+    "reasons": [
+      {
+        "code": "checkpoint-mismatch",
+        "message": "The proposed checkpoint differs from the evaluated checkpoint digest, size, or format."
+      }
+    ],
+    "checkedAt": 1793157792903,
+    "receiptId": "534ea89f-cc21-4e7b-84aa-62cb9889b33d",
+    "policy": {
+      "metric": "accuracy",
+      "operator": "gte",
+      "threshold": 0.9
+    },
+    "bindings": {
+      "proposed": {
+        "modelRef": {
+          "candidateId": "checkpoint-B",
+          "epochs": 40,
+          "handle": 5,
+          "kind": "model",
+          "modelId": "d3ef62f1-4e64-424f-8ab1-03df2d67641b",
+          "originArtifact": {
+            "bytes": 24762,
+            "format": "jax-digits-trainstate/npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/d3ef62f1-4e64-424f-8ab1-03df2d67641b-epoch-040.npz",
+            "sha256": "28f09a5d3ec48e01da980c7cf04baf1f7ce964b2ed9f17be044daf0d2749dc15"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "step": 360
+        },
+        "checkpoint": {
+          "bytes": 24762,
+          "format": "jax-digits-trainstate/npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/d3ef62f1-4e64-424f-8ab1-03df2d67641b-epoch-040.npz",
+          "sha256": "28f09a5d3ec48e01da980c7cf04baf1f7ce964b2ed9f17be044daf0d2749dc15"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=8c204a9adc3e9fd53f4145221c764f8eb7a404f7cf5eba2c6a5eeb505ef0aa0d",
+        "parameters": {}
+      },
+      "receipt": {
+        "evaluationId": "534ea89f-cc21-4e7b-84aa-62cb9889b33d",
+        "createdAt": 1793157792838,
+        "checkpoint": {
+          "bytes": 24542,
+          "format": "jax-digits-trainstate/npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/5fcdbb4f-42e5-4079-bb1b-9bcaa1d31fcc-epoch-020.npz",
+          "sha256": "761d2022ddd9a9de3dd3efc99922e13e2e2b1e72c1a894ccca7b255a43b5f750"
+        },
+        "modelRef": {
+          "candidateId": "checkpoint-A",
+          "epochs": 20,
+          "handle": 4,
+          "kind": "model",
+          "modelId": "5fcdbb4f-42e5-4079-bb1b-9bcaa1d31fcc",
+          "originArtifact": {
+            "bytes": 24542,
+            "format": "jax-digits-trainstate/npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/5fcdbb4f-42e5-4079-bb1b-9bcaa1d31fcc-epoch-020.npz",
+            "sha256": "761d2022ddd9a9de3dd3efc99922e13e2e2b1e72c1a894ccca7b255a43b5f750"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "step": 180
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=8c204a9adc3e9fd53f4145221c764f8eb7a404f7cf5eba2c6a5eeb505ef0aa0d",
+        "parameters": {},
+        "metrics": {
+          "accuracy": 0.9652777777777778,
+          "logLoss": 0.11539876965924302,
+          "macroF1": 0.9656167289589348
+        }
+      }
+    }
+  },
+  "freshDecision": {
+    "kind": "release-decision",
+    "schemaVersion": 1,
+    "allowed": true,
+    "status": "allow",
+    "reasons": [
+      {
+        "code": "receipt-matches-policy",
+        "message": "Checkpoint, dataset, preprocessing, evaluation method, parameters, and metric policy match."
+      }
+    ],
+    "checkedAt": 1793157792906,
+    "receiptId": "5bee6f5a-dcfb-4c26-beaf-eff25c342936",
+    "policy": {
+      "metric": "accuracy",
+      "operator": "gte",
+      "threshold": 0.9
+    },
+    "bindings": {
+      "proposed": {
+        "modelRef": {
+          "candidateId": "checkpoint-B",
+          "epochs": 40,
+          "handle": 5,
+          "kind": "model",
+          "modelId": "d3ef62f1-4e64-424f-8ab1-03df2d67641b",
+          "originArtifact": {
+            "bytes": 24762,
+            "format": "jax-digits-trainstate/npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/d3ef62f1-4e64-424f-8ab1-03df2d67641b-epoch-040.npz",
+            "sha256": "28f09a5d3ec48e01da980c7cf04baf1f7ce964b2ed9f17be044daf0d2749dc15"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "step": 360
+        },
+        "checkpoint": {
+          "bytes": 24762,
+          "format": "jax-digits-trainstate/npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/d3ef62f1-4e64-424f-8ab1-03df2d67641b-epoch-040.npz",
+          "sha256": "28f09a5d3ec48e01da980c7cf04baf1f7ce964b2ed9f17be044daf0d2749dc15"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=8c204a9adc3e9fd53f4145221c764f8eb7a404f7cf5eba2c6a5eeb505ef0aa0d",
+        "parameters": {}
+      },
+      "receipt": {
+        "evaluationId": "5bee6f5a-dcfb-4c26-beaf-eff25c342936",
+        "createdAt": 1793157792905,
+        "checkpoint": {
+          "bytes": 24762,
+          "format": "jax-digits-trainstate/npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/d3ef62f1-4e64-424f-8ab1-03df2d67641b-epoch-040.npz",
+          "sha256": "28f09a5d3ec48e01da980c7cf04baf1f7ce964b2ed9f17be044daf0d2749dc15"
+        },
+        "modelRef": {
+          "candidateId": "checkpoint-B",
+          "epochs": 40,
+          "handle": 5,
+          "kind": "model",
+          "modelId": "d3ef62f1-4e64-424f-8ab1-03df2d67641b",
+          "originArtifact": {
+            "bytes": 24762,
+            "format": "jax-digits-trainstate/npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/d3ef62f1-4e64-424f-8ab1-03df2d67641b-epoch-040.npz",
+            "sha256": "28f09a5d3ec48e01da980c7cf04baf1f7ce964b2ed9f17be044daf0d2749dc15"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "step": 360
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=8c204a9adc3e9fd53f4145221c764f8eb7a404f7cf5eba2c6a5eeb505ef0aa0d",
+        "parameters": {},
+        "metrics": {
+          "accuracy": 0.96875,
+          "logLoss": 0.09202582194096293,
+          "macroF1": 0.9691108871305124
+        }
+      }
+    }
+  },
+  "reloadDecision": {
+    "kind": "release-decision",
+    "schemaVersion": 1,
+    "allowed": true,
+    "status": "allow",
+    "reasons": [
+      {
+        "code": "receipt-matches-policy",
+        "message": "Checkpoint, dataset, preprocessing, evaluation method, parameters, and metric policy match."
+      }
+    ],
+    "checkedAt": 1793157792907,
+    "receiptId": "5bee6f5a-dcfb-4c26-beaf-eff25c342936",
+    "policy": {
+      "metric": "accuracy",
+      "operator": "gte",
+      "threshold": 0.9
+    },
+    "bindings": {
+      "proposed": {
+        "modelRef": {
+          "candidateId": "checkpoint-B",
+          "epochs": 40,
+          "handle": 6,
+          "kind": "model",
+          "modelId": "d3ef62f1-4e64-424f-8ab1-03df2d67641b",
+          "originArtifact": {
+            "bytes": 24762,
+            "format": "jax-digits-trainstate/npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/d3ef62f1-4e64-424f-8ab1-03df2d67641b-epoch-040.npz",
+            "sha256": "28f09a5d3ec48e01da980c7cf04baf1f7ce964b2ed9f17be044daf0d2749dc15"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "step": 360
+        },
+        "checkpoint": {
+          "bytes": 24762,
+          "format": "jax-digits-trainstate/npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/d3ef62f1-4e64-424f-8ab1-03df2d67641b-epoch-040.npz",
+          "sha256": "28f09a5d3ec48e01da980c7cf04baf1f7ce964b2ed9f17be044daf0d2749dc15"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=8c204a9adc3e9fd53f4145221c764f8eb7a404f7cf5eba2c6a5eeb505ef0aa0d",
+        "parameters": {}
+      },
+      "receipt": {
+        "evaluationId": "5bee6f5a-dcfb-4c26-beaf-eff25c342936",
+        "createdAt": 1793157792905,
+        "checkpoint": {
+          "bytes": 24762,
+          "format": "jax-digits-trainstate/npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/d3ef62f1-4e64-424f-8ab1-03df2d67641b-epoch-040.npz",
+          "sha256": "28f09a5d3ec48e01da980c7cf04baf1f7ce964b2ed9f17be044daf0d2749dc15"
+        },
+        "modelRef": {
+          "candidateId": "checkpoint-B",
+          "epochs": 40,
+          "handle": 5,
+          "kind": "model",
+          "modelId": "d3ef62f1-4e64-424f-8ab1-03df2d67641b",
+          "originArtifact": {
+            "bytes": 24762,
+            "format": "jax-digits-trainstate/npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/d3ef62f1-4e64-424f-8ab1-03df2d67641b-epoch-040.npz",
+            "sha256": "28f09a5d3ec48e01da980c7cf04baf1f7ce964b2ed9f17be044daf0d2749dc15"
+          },
+          "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "step": 360
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 213480,
+            "format": "application/json",
+            "kind": "artifact",
+            "path": "datasets/validation.json",
+            "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+          },
+          "handle": 2,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 288,
+          "sessionId": "f6ed5ac7-38e1-4f82-9937-3501f61cd5d1",
+          "shape": [
+            288,
+            64
+          ]
+        },
+        "preprocessingVersion": "standard-scaler/train-only/v1:6b4ffef28fedfec43880f3fe60dd90f0307d23ab8d7f7a6126b02ab55ee5fe8e",
+        "evaluationMethodVersion": "jax-digits-classification/v1;jax=0.7.2;numpy=2.2.6;trainer=8c204a9adc3e9fd53f4145221c764f8eb7a404f7cf5eba2c6a5eeb505ef0aa0d",
+        "parameters": {},
+        "metrics": {
+          "accuracy": 0.96875,
+          "logLoss": 0.09202582194096293,
+          "macroF1": 0.9691108871305124
+        }
+      }
+    }
+  },
+  "releaseStatus": "released-locally",
+  "handles": {
+    "A": 4,
+    "B": 5,
+    "reloadedB": 6
+  }
+}

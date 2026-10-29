@@ -1,0 +1,165 @@
+import {createHash} from 'node:crypto';
+import {stateAt} from './vendor/lens.node.mjs';
+
+/** Object key order is presentation, while array order and all JSON values are evidence. */
+export function canonicalStringify(value) {
+  if (value === null || typeof value === 'string' || typeof value === 'boolean') return JSON.stringify(value);
+  if (typeof value === 'number' && Number.isFinite(value)) return Object.is(value, -0) ? '-0' : JSON.stringify(value);
+  if (Array.isArray(value)) return '[' + Array.from(value, canonicalStringify).join(',') + ']';
+  if (value && typeof value === 'object' && [Object.prototype, null].includes(Object.getPrototypeOf(value))) {
+    return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonicalStringify(value[key])).join(',') + '}';
+  }
+  throw new TypeError('Evidence must contain only finite JSON values');
+}
+
+const clone = value => JSON.parse(canonicalStringify(value));
+const hash = value => createHash('sha256').update(canonicalStringify(value)).digest('hex');
+const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
+const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+const idAt = index => 'E' + String(index + 1).padStart(4, '0');
+
+function validateRecording(trace) {
+  canonicalStringify(trace);
+  if (!object(trace) || !object(trace.footprint) || !Array.isArray(trace.footprint.commitLog) ||
+      !own(trace.footprint, 'sharedState') || !Array.isArray(trace.rows)) {
+    throw new TypeError('A recording needs a FootPrint commitLog, sharedState and callback rows');
+  }
+  for (const commit of trace.footprint.commitLog) {
+    if (!object(commit)) throw new TypeError('Each commit must be a JSON object');
+  }
+}
+
+function folded(snapshot, index) {
+  const result = stateAt(snapshot, index);
+  // Preserve the native fold's known redactions and basis instead of treating missing facts as values.
+  return clone(result);
+}
+
+/**
+ * A lossless complete-log projection of one real recording, not a separately instrumented logger.
+ * Stream grouping is explicit: journal order and callback order are retained independently.
+ */
+export function projectLogs(trace) {
+  validateRecording(trace);
+  const {footprint, rows, ...recordingMetadata} = trace;
+  const {commitLog, sharedState, ...footprintMetadata} = footprint;
+  const events = [];
+  const push = event => events.push({id: idAt(events.length), ...event});
+  push({
+    type: 'recording-metadata',
+    stageId: null,
+    schema: 'footprint-complete-structured-log/v1',
+    recordingMetadata: clone(recordingMetadata),
+    footprintMetadata: clone(footprintMetadata),
+    expected: {commits: commitLog.length, callbacks: rows.length, finalStates: 1},
+    recordingSha256: hash(trace),
+    ordering: 'Projection groups metadata, commits, final state and callbacks. Commit and callback indices preserve their own native order. Cross-stream chronology is not inferred.',
+    scope: 'All JSON facts in the saved recording, including unknown metadata, native read/write traces, callback observations and coverage data. Numerical arrays absent from the recording are not added.',
+  });
+  for (let index = 0; index < commitLog.length; index++) {
+    const commit = commitLog[index];
+    const before = folded(footprint, index - 1);
+    const after = folded(footprint, index);
+    push({
+      type: 'stage-committed',
+      stageId: commit.stageId ?? null,
+      runtimeStageId: commit.runtimeStageId ?? null,
+      stageName: commit.stage ?? null,
+      commitIndex: index,
+      rawCommit: clone(commit),
+      beforeState: before.state,
+      afterState: after.state,
+      foldEvidence: {before, after},
+    });
+  }
+  push({type: 'final-state', stageId: null, sharedState: clone(sharedState)});
+  for (let index = 0; index < rows.length; index++) {
+    const row = rows[index];
+    push({
+      type: 'callback-observation',
+      stageId: row?.event?.stageId ?? row?.stageId ?? null,
+      runtimeStageId: row?.event?.runtimeStageId ?? row?.runtimeStageId ?? null,
+      observationType: row?.type ?? null,
+      observationName: row?.event?.name ?? null,
+      callbackIndex: index,
+      rawRow: clone(row),
+    });
+  }
+  return events;
+}
+
+/** Reassemble every original JSON field. Derived navigation state is verified separately below. */
+export function reconstructRecording(events) {
+  canonicalStringify(events);
+  if (!Array.isArray(events) || !events.length) throw new TypeError('Complete logs must be a nonempty event array');
+  for (let index = 0; index < events.length; index++) {
+    if (!object(events[index]) || events[index].id !== idAt(index)) throw new TypeError('Log event identifiers or order are invalid');
+  }
+  const metadata = events[0];
+  if (metadata.type !== 'recording-metadata' || metadata.schema !== 'footprint-complete-structured-log/v1' ||
+      !object(metadata.recordingMetadata) || !object(metadata.footprintMetadata) || !object(metadata.expected)) {
+    throw new TypeError('Complete-log metadata is missing or malformed');
+  }
+  const {commits, callbacks, finalStates} = metadata.expected;
+  if (!Number.isInteger(commits) || commits < 0 || !Number.isInteger(callbacks) || callbacks < 0 || finalStates !== 1 ||
+      events.length !== commits + callbacks + 2) throw new TypeError('The complete-log event count does not match its manifest');
+  const commitLog = [];
+  for (let index = 0; index < commits; index++) {
+    const event = events[index + 1];
+    if (event.type !== 'stage-committed' || event.commitIndex !== index || !object(event.rawCommit)) {
+      throw new TypeError('A committed stage is missing, reordered or malformed');
+    }
+    commitLog.push(clone(event.rawCommit));
+  }
+  const final = events[commits + 1];
+  if (final.type !== 'final-state' || !own(final, 'sharedState')) throw new TypeError('Final recorded state is missing');
+  const rows = [];
+  for (let index = 0; index < callbacks; index++) {
+    const event = events[commits + 2 + index];
+    if (event.type !== 'callback-observation' || event.callbackIndex !== index || !own(event, 'rawRow')) {
+      throw new TypeError('A callback observation is missing, reordered or malformed');
+    }
+    rows.push(clone(event.rawRow));
+  }
+  const trace = {
+    ...clone(metadata.recordingMetadata),
+    footprint: {...clone(metadata.footprintMetadata), commitLog, sharedState: clone(final.sharedState)},
+    rows,
+  };
+  validateRecording(trace);
+  return trace;
+}
+
+/** Raw roundtrip parity plus exact projection parity, including derived before/after state. */
+export function verifyParity(trace, events) {
+  let originalSha256 = null;
+  let reconstructedSha256 = null;
+  let projectionSha256 = null;
+  let expectedProjectionSha256 = null;
+  const reasons = [];
+  try {
+    validateRecording(trace);
+    originalSha256 = hash(trace);
+    projectionSha256 = hash(events);
+    const reconstructed = reconstructRecording(events);
+    reconstructedSha256 = hash(reconstructed);
+    if (originalSha256 !== reconstructedSha256) reasons.push('recording-roundtrip-mismatch');
+    expectedProjectionSha256 = hash(projectLogs(trace));
+    if (projectionSha256 !== expectedProjectionSha256) reasons.push('complete-projection-mismatch');
+  } catch (error) {
+    reasons.push('malformed-evidence: ' + error.message);
+  }
+  return {
+    passed: reasons.length === 0,
+    originalSha256,
+    reconstructedSha256,
+    projectionSha256,
+    expectedProjectionSha256,
+    commitCount: trace?.footprint?.commitLog?.length ?? null,
+    callbackCount: trace?.rows?.length ?? null,
+    eventCount: Array.isArray(events) ? events.length : null,
+    reasons,
+    equality: 'Canonical JSON equality of every saved recording field and every projected event; object-key order is immaterial, array/event order is material.',
+    scope: 'Navigation/presentation comparison over one captured execution, not independent logging instrumentation or omitted backend numerical internals.',
+  };
+}

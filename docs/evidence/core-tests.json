@@ -1,0 +1,289 @@
+{
+  "schema": "footprintjs-ml-unified-test-report/v1",
+  "package": "footprintjs-ml@0.3.0",
+  "passed": true,
+  "node": "v24.19.0",
+  "tests": 67,
+  "failed": 0,
+  "skipped": 0,
+  "breakdown": {
+    "core": 39,
+    "optionalAdapter": 9,
+    "optionalLens": 7,
+    "loadingIsolation": 2,
+    "optionalConformance": 10
+  },
+  "report": "unified-all-results.tap",
+  "checks": [
+    {
+      "name": "A backend evaluation produces an immutable receipt from actual returned evidence",
+      "passed": true
+    },
+    {
+      "name": "Live evaluation refuses stale worker references before using the backend",
+      "passed": true
+    },
+    {
+      "name": "Async backend work cannot rewrite the evaluation intent through shared mutable input",
+      "passed": true
+    },
+    {
+      "name": "An evaluation for another runtime model or dataset cannot masquerade as the requested work",
+      "passed": true
+    },
+    {
+      "name": "The adapter compares actual preprocessing, method and configuration rather than echoing intent",
+      "passed": true
+    },
+    {
+      "name": "Training output must identify its real session and the checkpoint it reports",
+      "passed": true
+    },
+    {
+      "name": "Checkpoint loading admits a new runtime identity for matching bytes and rejects observed mismatches",
+      "passed": true
+    },
+    {
+      "name": "A rejected newly loaded handle receives explicit compensating cleanup, without successful load evidence",
+      "passed": true
+    },
+    {
+      "name": "Cleanup failure cannot replace a rejected-load error or assert successful disposal",
+      "passed": true
+    },
+    {
+      "name": "Reusing a published runtime handle for different checkpoint bytes is refused without deleting its owner",
+      "passed": true
+    },
+    {
+      "name": "An observer failure cannot prevent cleanup of an unpublished loaded handle",
+      "passed": true
+    },
+    {
+      "name": "Malformed accessor-backed output is rejected without executing the getter",
+      "passed": true
+    },
+    {
+      "name": "Failed evaluation does not pretend to roll back backend lifetime; explicit disposal owns cleanup",
+      "passed": true
+    },
+    {
+      "name": "Disposal cannot report successful cleanup for another handle or a failed release",
+      "passed": true
+    },
+    {
+      "name": "A confirmed disposed reference cannot be evaluated or disposed twice through the adapter",
+      "passed": true
+    },
+    {
+      "name": "Conformance and CLI imports create no process even when spawning is blocked",
+      "passed": true
+    },
+    {
+      "name": "A valid report is detached and frozen; arguments are literal and snapshotted before awaiting",
+      "passed": true
+    },
+    {
+      "name": "Exit one preserves a valid failed conformance report",
+      "passed": true
+    },
+    {
+      "name": "Explicit skipped coverage remains partial instead of becoming a passing report",
+      "passed": true
+    },
+    {
+      "name": "Malformed JSON, contradictory counts and contradictory status are protocol failures",
+      "passed": true
+    },
+    {
+      "name": "Unexpected exits cannot turn an earlier passing report into successful conformance",
+      "passed": true
+    },
+    {
+      "name": "Deadline and stdout bounds terminate the owned child rather than wait for it",
+      "passed": true
+    },
+    {
+      "name": "Error diagnostics retain a bounded stderr tail",
+      "passed": true
+    },
+    {
+      "name": "Invalid JSON options and an unavailable interpreter fail explicitly",
+      "passed": true
+    },
+    {
+      "name": "CLI reads JSON files and exits distinctly for success, conformance failure and input failure",
+      "passed": true
+    },
+    {
+      "name": "Root import never loads optional entry points; a deferred adapter import loads only when reached",
+      "passed": true
+    },
+    {
+      "name": "Importing every public entry point starts no worker; explicit trainer construction is the first spawn",
+      "passed": true
+    },
+    {
+      "name": "New identity-aware evaluations produce an explicit v2 inference receipt with separate checkpoint audit data",
+      "passed": true
+    },
+    {
+      "name": "V2 coverage permits optimizer-only and container changes while retaining the original checkpoint for audit",
+      "passed": true
+    },
+    {
+      "name": "Changed weights, fitted preprocessing, architecture or inference code cannot borrow prior v2 coverage",
+      "passed": true
+    },
+    {
+      "name": "V1 receipts are preserved rather than silently upgraded, and retain exact-checkpoint coverage",
+      "passed": true
+    },
+    {
+      "name": "Missing, mixed and contradictory identity evidence fails closed without dropping back to checkpoint matching",
+      "passed": true
+    },
+    {
+      "name": "Malformed identity claims are rejected when recording or reopening evidence",
+      "passed": true
+    },
+    {
+      "name": "Identity-aware new handles require inspection before train/load publication or evaluation",
+      "passed": true
+    },
+    {
+      "name": "Explicit verifyModel always asks an inspector, including for legacy refs",
+      "passed": true
+    },
+    {
+      "name": "Live mutation hidden behind stale metadata is caught before evaluation or explicit verification",
+      "passed": true
+    },
+    {
+      "name": "An evaluator cannot mutate the inspected model during work and still publish an old receipt",
+      "passed": true
+    },
+    {
+      "name": "A newly returned model is inspected before publication, and its original fingerprint cannot be rewritten",
+      "passed": true
+    },
+    {
+      "name": "Successful identity-aware evaluation is inspected before and after work, and disposal is inspected first",
+      "passed": true
+    },
+    {
+      "name": "Training continuation receives an immutable copy of the verified source and configuration",
+      "passed": true
+    },
+    {
+      "name": "Inference equivalence never permits a published live handle to change its full checkpoint metadata",
+      "passed": true
+    },
+    {
+      "name": "real saved historical external workflow: unified Lens reopens each decision through native tools without a trainer",
+      "passed": true
+    },
+    {
+      "name": "synthetic harness: arbitrary keys and stage names select the latest recorded decision",
+      "passed": true
+    },
+    {
+      "name": "synthetic harness: selecting an earlier denial never substitutes the later receipt",
+      "passed": true
+    },
+    {
+      "name": "synthetic harness: renaming every binding changes queries without editing a workflow profile",
+      "passed": true
+    },
+    {
+      "name": "synthetic harness: absent inference evidence is omitted rather than asserted false",
+      "passed": true
+    },
+    {
+      "name": "synthetic harness: missing bindings, unsupported schema, and non-decision stage selection reject clearly",
+      "passed": true
+    },
+    {
+      "name": "synthetic harness: repeated cursor selection is a no-op and unavailable stops fail",
+      "passed": true
+    },
+    {
+      "name": "The generic client accepts arbitrary profile, dataset role and shape without a digit-model contract",
+      "passed": true
+    },
+    {
+      "name": "The public adapter routes generic worker results through v0.2 receipts, inspection and disposal",
+      "passed": true
+    },
+    {
+      "name": "An unrequested worker profile fails initialization rather than selecting another identity protocol",
+      "passed": true
+    },
+    {
+      "name": "A missing-identity worker response invalidates the owned session",
+      "passed": true
+    },
+    {
+      "name": "A foreign-session worker response invalidates the owned session",
+      "passed": true
+    },
+    {
+      "name": "A malformed worker response invalidates the owned session",
+      "passed": true
+    },
+    {
+      "name": "A unknown-id worker response invalidates the owned session",
+      "passed": true
+    },
+    {
+      "name": "A timed out operation terminates the worker and cannot be retried in that session",
+      "passed": true
+    },
+    {
+      "name": "Unavailable Python reports a spawn error and repeated close remains safe",
+      "passed": true
+    },
+    {
+      "name": "A validation receipt allows an explicit matching release policy and survives JSON persistence",
+      "passed": true
+    },
+    {
+      "name": "Checkpoint identity follows bytes and serialization format, allowing reloads and storage relocation",
+      "passed": true
+    },
+    {
+      "name": "Validation cannot be borrowed from different data, split semantics or preprocessing",
+      "passed": true
+    },
+    {
+      "name": "Evaluation protocol and nested parameter changes invalidate coverage; key ordering does not",
+      "passed": true
+    },
+    {
+      "name": "Policies apply their declared metric and direction, with inclusive threshold boundaries",
+      "passed": true
+    },
+    {
+      "name": "Absent own metrics remain unavailable even when their names exist on Object.prototype",
+      "passed": true
+    },
+    {
+      "name": "Freshness is explicit, with expired or future-dated evidence refused",
+      "passed": true
+    },
+    {
+      "name": "Receipts snapshot caller-owned objects and deeply prevent later evidence mutation",
+      "passed": true
+    },
+    {
+      "name": "Malformed, incomplete and nonfinite evidence never becomes an evaluation receipt",
+      "passed": true
+    },
+    {
+      "name": "Malformed persisted receipts and invalid policy configuration fail closed at the release boundary",
+      "passed": true
+    }
+  ],
+  "historicalCoreReportPreserved": "test-report.json",
+  "browserEntryReport": "browser-entry-verification.json"
+}

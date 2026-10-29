@@ -1,0 +1,61 @@
+{
+  "schema": "footprintjs-ml-unified-python-tests/v1",
+  "passed": true,
+  "python": "3.11.5",
+  "numpy": "2.2.6",
+  "counts": {
+    "tests": 11,
+    "passed": 11,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "environment": "Isolated JAX CPU environment used for unified-test-results.txt; backend versions also recorded in the actual saved outcome.",
+  "report": "unified-test-results.txt",
+  "tests": [
+    {
+      "name": "test_runtime.IdentityTests.test_canonical_identity_is_order_and_endian_independent_but_binds_shape_dtype_and_spec.test_canonical_identity_is_order_and_endian_independent_but_binds_shape_dtype_and_spec",
+      "passed": true
+    },
+    {
+      "name": "test_runtime.IdentityTests.test_normalization_copies_and_rejects_nonfinite_or_executable_object_arrays.test_normalization_copies_and_rejects_nonfinite_or_executable_object_arrays",
+      "passed": true
+    },
+    {
+      "name": "test_runtime.RuntimeTests.test_actual_optimizer_only_mutation_is_refused_even_when_inference_agrees.test_actual_optimizer_only_mutation_is_refused_even_when_inference_agrees",
+      "passed": true
+    },
+    {
+      "name": "test_runtime.RuntimeTests.test_evaluation_mutation_is_detected_after_backend_work.test_evaluation_mutation_is_detected_after_backend_work",
+      "passed": true
+    },
+    {
+      "name": "test_runtime.RuntimeTests.test_inplace_continuation_gets_detached_source_and_optimizer_changes_do_not_change_inference.test_inplace_continuation_gets_detached_source_and_optimizer_changes_do_not_change_inference",
+      "passed": true
+    },
+    {
+      "name": "test_runtime.RuntimeTests.test_load_reports_actual_bytes_while_resume_requires_intended_bytes.test_load_reports_actual_bytes_while_resume_requires_intended_bytes",
+      "passed": true
+    },
+    {
+      "name": "test_runtime.RuntimeTests.test_optional_conformance_case_is_partial_and_dataset_role_is_configurable.test_optional_conformance_case_is_partial_and_dataset_role_is_configurable",
+      "passed": true
+    },
+    {
+      "name": "test_runtime.RuntimeTests.test_second_initialize_and_metadata_mutation_cannot_republish_a_changed_model.test_second_initialize_and_metadata_mutation_cannot_republish_a_changed_model",
+      "passed": true
+    },
+    {
+      "name": "test_runtime.SerializationTests.test_deserializer_never_unpickles_object_payload.test_deserializer_never_unpickles_object_payload",
+      "passed": true
+    },
+    {
+      "name": "test_runtime.SerializationTests.test_npy_header_cannot_request_an_unbounded_allocation.test_npy_header_cannot_request_an_unbounded_allocation",
+      "passed": true
+    },
+    {
+      "name": "test_runtime.SerializationTests.test_npz_roundtrip_maps_arbitrary_names_and_refuses_unmanifested_arrays.test_npz_roundtrip_maps_arbitrary_names_and_refuses_unmanifested_arrays",
+      "passed": true
+    }
+  ]
+}

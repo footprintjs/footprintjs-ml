@@ -1,0 +1,160 @@
+"""Adapter-kit boundary for the independent upstream Gaussian-process trainer.
+
+The kit owns sessions, references, measured identities, checkpoints and protocol.
+This plugin supplies the domain state and arrays; the numerical module imports
+no kit or FootPrint code. See ../upstream-source.json for retained attribution.
+"""
+from __future__ import annotations
+
+import hashlib
+import importlib.util
+from pathlib import Path
+import platform
+import sys
+from typing import Any
+
+import jax
+import jax.numpy as jnp
+import numpy as np
+
+_MODULE_PATH = Path(__file__).with_name("external_trainer.py")
+_SPEC = importlib.util.spec_from_file_location("footprint_external_gp_numerical_trainer", _MODULE_PATH)
+assert _SPEC and _SPEC.loader
+trainer = importlib.util.module_from_spec(_SPEC)
+sys.modules[_SPEC.name] = trainer
+_SPEC.loader.exec_module(trainer)
+
+PROFILE = "external-jax-gaussian-process-inference/v1"
+PREPROCESSING = "none/raw-scalar-input/v1"
+CONFIG_KEYS = {"seed", "trainRows", "validationRows", "testRows", "learningRate", "noiseStd", "domain", "dtype"}
+
+
+class GaussianProcessPlugin:
+    profile = PROFILE
+
+    def __init__(self, config: dict[str, Any]):
+        if set(config) - CONFIG_KEYS:
+            raise ValueError("Unsupported Gaussian process configuration fields")
+        self.config = {"seed": 2026, "trainRows": 24, "validationRows": 32, "testRows": 40,
+                       "learningRate": 0.01, "noiseStd": 0.08, "domain": [0.0, 6.0], "dtype": "float32", **config}
+        for name in ("seed", "trainRows", "validationRows", "testRows"):
+            value = self.config[name]
+            if isinstance(value, bool) or not isinstance(value, int) or value < (0 if name == "seed" else 2):
+                raise ValueError(f"Invalid {name}")
+        if self.config["dtype"] != "float32" or self.config["domain"] != [0.0, 6.0]:
+            raise ValueError("This profile uses float32 inputs in the predeclared [0,6] domain")
+        for name in ("learningRate", "noiseStd"):
+            value = self.config[name]
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not np.isfinite(value) or value <= 0:
+                raise ValueError(f"Invalid {name}")
+        jax.config.update("jax_enable_x64", False)
+        self.math = trainer.GaussianProcessMath(self.config["trainRows"], self.config["learningRate"])
+        self.dataset_arrays: dict[str, dict[str, np.ndarray]] = {}
+        self.code = {**trainer.source_contract(),
+                     "pluginSourceSha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+        self.evaluation_method = "gp-posterior-mean-regression/v1;plugin=" + self.code["pluginSourceSha256"]
+
+    def initialize(self) -> dict[str, Any]:
+        rng = np.random.default_rng(self.config["seed"])
+        datasets = {}
+        for role, rows_key in (("train", "trainRows"), ("validation", "validationRows"), ("test", "testRows")):
+            rows = self.config[rows_key]
+            x = np.sort(rng.uniform(0., 6., size=(rows, 1)), axis=0).astype("float32")
+            y = np.sin(x).astype("float32")
+            if role == "train":
+                y = (y + rng.normal(0., self.config["noiseStd"], size=y.shape)).astype("float32")
+            arrays = {"x": x, "y": y}
+            self.dataset_arrays[role] = {name: array.copy() for name, array in arrays.items()}
+            datasets[role] = {"arrays": arrays, "rows": rows, "shape": [rows, 1],
+                              "metadata": {"generator": "numpy-PCG64/sin/v1", "seed": self.config["seed"],
+                                           "domain": [0., 6.], "target": "sin(x)",
+                                           "targetNoiseStd": self.config["noiseStd"] if role == "train" else 0.}}
+        return {"datasets": datasets, "metadata": {"trainer": "official-jax-gaussian-process/AST-harness-v1",
+                "preprocessingVersion": PREPROCESSING, "evaluationMethodVersion": self.evaluation_method,
+                "versions": {"python": platform.python_version(), **trainer.versions()},
+                "code": self.code, "dtype": "float32", "conditioningRows": self.config["trainRows"],
+                "preprocessing": "none", "devices": [{"platform": d.platform, "deviceKind": d.device_kind} for d in jax.devices()]}}
+
+    def train(self, request: dict[str, Any], source: dict[str, Any] | None) -> dict[str, Any]:
+        if set(request) - {"steps", "candidateId", "resetOptimizer"}:
+            raise ValueError("Unsupported training request fields")
+        steps = request.get("steps", 30)
+        reset = request.get("resetOptimizer", False)
+        if not isinstance(reset, bool):
+            raise ValueError("resetOptimizer must be boolean")
+        if source is None:
+            if not self.dataset_arrays:
+                raise ValueError("initialize must run before training")
+            data = self.dataset_arrays["train"]
+            source = trainer.fresh_state(data["x"], data["y"], self.config["learningRate"])
+        if source["learningRate"] != self.config["learningRate"]:
+            raise ValueError("Continuation learning rate differs from the declared configuration")
+        result = self.math.train(source, steps, reset_optimizer=reset)
+        candidate = request.get("candidateId", source.get("candidateId", "model"))
+        if not isinstance(candidate, str) or not candidate.strip():
+            raise ValueError("candidateId must be a nonempty string")
+        result["candidateId"] = candidate
+        return result
+
+    def evaluate(self, state: dict[str, Any], dataset_arrays: dict[str, np.ndarray], parameters: dict[str, Any]) -> dict[str, float]:
+        if parameters:
+            raise ValueError("This evaluation method accepts no parameters")
+        if set(dataset_arrays) != {"x", "y"}:
+            raise ValueError("Gaussian process evaluation requires x and y arrays")
+        x, y = dataset_arrays["x"], dataset_arrays["y"]
+        if x.ndim != 2 or x.shape[1] != 1 or y.shape != x.shape:
+            raise ValueError("Expected matching [rows,1] regression arrays")
+        prediction = self.math.predict(state, x)
+        residual = prediction.astype("float64") - np.asarray(y, dtype="float64")
+        mse = float(np.mean(residual ** 2))
+        return {"mse": mse, "rmse": float(np.sqrt(mse)), "mae": float(np.mean(np.abs(residual)))}
+
+    def snapshot(self, state: dict[str, Any]) -> dict[str, Any]:
+        arrays = {f"{group}_{name}": np.asarray(value).copy()
+                  for group in ("params", "momentums", "scales") for name, value in state[group].items()}
+        arrays.update({"conditioning_x": np.asarray(state["x"]).copy(), "conditioning_y": np.asarray(state["y"]).copy()})
+        return {"arrays": arrays, "metadata": {"schema": "external-gp-training-state/v1",
+                "step": state["step"], "learningRate": state["learningRate"], "candidateId": state["candidateId"],
+                "numericalSource": self.code, "preprocessingVersion": PREPROCESSING}}
+
+    def restore(self, snapshot: dict[str, Any]) -> dict[str, Any]:
+        arrays, metadata = snapshot["arrays"], snapshot["metadata"]
+        expected = {f"{group}_{name}" for group in ("params", "momentums", "scales") for name in trainer.PARAMETER_NAMES}
+        expected |= {"conditioning_x", "conditioning_y"}
+        if set(arrays) != expected or metadata.get("schema") != "external-gp-training-state/v1":
+            raise ValueError("Unsupported external Gaussian process snapshot")
+        if metadata.get("numericalSource") != self.code or metadata.get("preprocessingVersion") != PREPROCESSING:
+            raise ValueError("Snapshot numerical source/preprocessing differs from this plugin")
+        if metadata.get("learningRate") != self.config["learningRate"]:
+            raise ValueError("Snapshot learning rate differs from this configuration")
+        step = metadata.get("step")
+        if isinstance(step, bool) or not isinstance(step, int) or step < 0:
+            raise ValueError("Snapshot step must be a nonnegative integer")
+        for name, value in arrays.items():
+            expected_shape = (self.config["trainRows"], 1) if name.startswith("conditioning_") else (1, 1)
+            if not isinstance(value, np.ndarray) or value.dtype != np.dtype("float32") or value.shape != expected_shape or not np.isfinite(value).all():
+                raise ValueError(f"Invalid snapshot array {name}")
+        return {group: {name: jnp.asarray(arrays[f"{group}_{name}"].copy()) for name in trainer.PARAMETER_NAMES}
+                for group in ("params", "momentums", "scales")} | {
+                    "x": jnp.asarray(arrays["conditioning_x"].copy()), "y": jnp.asarray(arrays["conditioning_y"].copy()),
+                    "step": step, "learningRate": metadata["learningRate"], "candidateId": metadata["candidateId"]}
+
+    def inference(self, state: dict[str, Any]) -> dict[str, Any]:
+        # A GP's prediction depends on the conditioning observations, not just
+        # learned covariance hyperparameters. Both arrays must be measured.
+        arrays = {f"params_{name}": np.asarray(value).copy() for name, value in state["params"].items()}
+        arrays.update({"conditioning_x": np.asarray(state["x"]).copy(), "conditioning_y": np.asarray(state["y"]).copy()})
+        return {"arrays": arrays, "metadata": {"profile": PROFILE, "model": "Gaussian-process/posterior-mean",
+                "kernel": "upstream-exp-quadratic", "parameterTransform": "upstream-softplus",
+                "preprocessingVersion": PREPROCESSING, "predictionDtype": "float32", "inputShape": [None, 1],
+                "targetShape": [None, 1], "conditioningRows": len(state["x"]), "numericalSource": self.code,
+                "versions": trainer.versions(), "x64Enabled": bool(jax.config.jax_enable_x64),
+                "matmulPrecision": str(jax.config.jax_default_matmul_precision)}}
+
+    def model_metadata(self, state: dict[str, Any]) -> dict[str, Any]:
+        return {"candidateId": state["candidateId"], "step": state["step"],
+                "conditioningRows": len(state["x"]), "learningRate": state["learningRate"]}
+
+
+def create_plugin(config: dict[str, Any]) -> GaussianProcessPlugin:
+    return GaussianProcessPlugin(config)

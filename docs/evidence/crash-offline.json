@@ -1,0 +1,151 @@
+{
+  "schema": "footprint-crash-resume-offline-verification/v1",
+  "passed": true,
+  "checks": [
+    {
+      "name": "Saved scope retains references, source fingerprints and real artifact bytes",
+      "passed": true,
+      "detail": {
+        "phases": 5,
+        "distinctArtifactPaths": 19
+      }
+    },
+    {
+      "name": "The actual process-group kill occurred after real partial training and created no additional checkpoint",
+      "passed": true,
+      "detail": {
+        "signal": "SIGKILL",
+        "checkpointStep": 30,
+        "partialStep": 40,
+        "discardedUpdates": 10,
+        "checkpointInventoryUnchanged": true
+      }
+    },
+    {
+      "name": "Interrupted native evidence records a start with no result, completion or B commit",
+      "passed": true,
+      "detail": {
+        "callbackCounts": {
+          "trainStarted": 1,
+          "trainCompleted": 0
+        },
+        "lastCommittedModelStep": 30,
+        "completionInvented": false
+      }
+    },
+    {
+      "name": "Externally pinned manifests rehydrate artifact authority, not dead runtime handles",
+      "passed": true,
+      "detail": {
+        "distinctBackendSessions": 4,
+        "oldHandleRejected": true,
+        "sourceTraceLinks": [
+          "checkpoint→resume",
+          "resume→reopen"
+        ]
+      }
+    },
+    {
+      "name": "Faithful recovery requires the full checkpoint even when prediction evidence survives an optimizer reset",
+      "passed": true,
+      "detail": {
+        "fullRecoveryAllowed": true,
+        "optimizerResetPredictionEvidenceAllowed": true,
+        "optimizerResetRecoveryAllowed": false
+      }
+    },
+    {
+      "name": "Evaluation evidence covers restored A, refuses changed B and permits freshly evaluated B",
+      "passed": true,
+      "detail": {
+        "decisionSequence": [
+          "allow restored A",
+          "deny A evidence for B",
+          "allow B evidence"
+        ],
+        "validationMse": 0.001700233258309988
+      }
+    },
+    {
+      "name": "Independent saved-array audit binds actual full A/B state and numerical predictions",
+      "passed": true,
+      "detail": {
+        "allElevenArraysEqual": true,
+        "AHash": "49a9408aa0507a2f829c86d0c34c94742b6d2b30bc8a2a7503a6a4efd32f113f",
+        "BHash": "6e98b31c8a3ec32e87eb0279b386203b43b4579f4d56fef2aa63ba0e67bebc28",
+        "optimizerBuffersChanged": 6
+      }
+    },
+    {
+      "name": "Fresh reopening performs zero training and reuses the identical local publication marker",
+      "passed": true,
+      "detail": {
+        "callbackCounts": {
+          "trainStarted": 0,
+          "trainCompleted": 0
+        },
+        "localMarkers": 1,
+        "markerBytesUnchanged": true,
+        "currentReferenceIsFresh": true
+      }
+    },
+    {
+      "name": "Existing Lens reopens every real decision without manufacturing native crash events",
+      "passed": true,
+      "detail": {
+        "phases": 5,
+        "decisions": 7,
+        "nativeQueriesHere": 70,
+        "expandedNativeViewQueries": 217,
+        "verbatimResults": true
+      }
+    },
+    {
+      "name": "Every inspected source and input file remains unchanged",
+      "passed": true,
+      "detail": {
+        "filesRehashed": 56
+      }
+    }
+  ],
+  "totals": {
+    "passed": 10,
+    "failed": 0,
+    "artifacts": 22
+  },
+  "callbackCounts": {
+    "baseline": {
+      "trainStarted": 2,
+      "trainCompleted": 2
+    },
+    "checkpoint": {
+      "trainStarted": 1,
+      "trainCompleted": 1
+    },
+    "interrupted": {
+      "trainStarted": 1,
+      "trainCompleted": 0
+    },
+    "resume": {
+      "trainStarted": 2,
+      "trainCompleted": 2
+    },
+    "reopen": {
+      "trainStarted": 0,
+      "trainCompleted": 0
+    }
+  },
+  "execution": {
+    "pythonStarted": false,
+    "trainingInvoked": false,
+    "languageModelInvoked": false,
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false
+  },
+  "limits": [
+    "Controlled local CPU process-group interruption, not power failure or distributed recovery.",
+    "A fresh workflow explicitly rehydrates the saved manifest; automatic native executor continuation is not asserted.",
+    "One idempotent local JSON marker is not an atomic external deployment or distributed exactly-once transaction.",
+    "Captured handles remain historical; live use requires loading in the current backend session."
+  ]
+}

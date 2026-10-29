@@ -1,0 +1,265 @@
+{
+  "schema": "footprint-crash-resume-independent-audit/v1",
+  "passed": true,
+  "execution": {
+    "trainingInvoked": false,
+    "jaxImported": false,
+    "adapterImported": false,
+    "workflowRerun": false,
+    "numpyVersion": "2.2.6"
+  },
+  "profile": "footprint-crash-resume-gp-inference/v1",
+  "numericalSource": {
+    "upstreamSourceSha256": "7bbd1574fb62fa090850546cd4092ff9bd3875370754f178939482a4254dd649",
+    "unchangedFunctionNames": [
+      "cov_map",
+      "softplus",
+      "exp_quadratic",
+      "gp",
+      "train_step"
+    ],
+    "extractedAstSha256": "dd69b83b28dbda005925855da09d77dd09060ec0287aca098d84634abbf5be44",
+    "harnessSourceSha256": "be09ff7c23d282b83fe6381050e1f36ff1eacb40e4f709992c923fee070cb6d4",
+    "adaptation": "AST-extract unchanged nested functions; supply original closure bindings externally",
+    "pluginSourceSha256": "cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+    "crashResumeWrapperSourceSha256": "cda1379cc21263b140e302f58653e0ea106993574b853d9f562a4e33fac81509",
+    "crashResumeAdaptation": "Inherited numerical calls; inference-only barrier before worker publication"
+  },
+  "auditSourceSha256": "3f4624dc090af278c971823e0f780b370200d2f5c429c17e5c59b0637d6f0711",
+  "checkpointIdentities": {
+    "baselineA": {
+      "label": "baseline A",
+      "artifact": {
+        "bytes": 7954,
+        "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+        "kind": "artifact",
+        "path": "checkpoints/f67f272d3a5b48c084c1ad29931db7e9.npz",
+        "sha256": "54cb1a5b3943d7d1c9ac0a08291aba627f5a061cb57763f0d3f32e3822ab1b53"
+      },
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "schemaVersion": 1,
+        "profile": "footprint-crash-resume-gp-inference/v1",
+        "sha256": "96ebe2f47945f52d997bf31f7227d9704ae4e4ec2cf46b4ffd761c1fe6250cad"
+      },
+      "trainingStateSha256": "49a9408aa0507a2f829c86d0c34c94742b6d2b30bc8a2a7503a6a4efd32f113f",
+      "step": 30
+    },
+    "baselineB": {
+      "label": "baseline B",
+      "artifact": {
+        "bytes": 7955,
+        "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+        "kind": "artifact",
+        "path": "checkpoints/1c3d2ece11404c239918a7b701fa68b2.npz",
+        "sha256": "343fdf6efa0b4fa26bf8222df70773657e6ee8a99cb66afb0a7aa8af3eecc694"
+      },
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "schemaVersion": 1,
+        "profile": "footprint-crash-resume-gp-inference/v1",
+        "sha256": "22f2e1c6438359937814a9dd7b841b64051d0f7f2dec3f86d3dac405e0149a6f"
+      },
+      "trainingStateSha256": "6e98b31c8a3ec32e87eb0279b386203b43b4579f4d56fef2aa63ba0e67bebc28",
+      "step": 100
+    },
+    "recoveredA": {
+      "label": "recovered A",
+      "artifact": {
+        "bytes": 7954,
+        "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+        "kind": "artifact",
+        "path": "checkpoints/5f3c8393878548eda3c01124cd306038.npz",
+        "sha256": "54cb1a5b3943d7d1c9ac0a08291aba627f5a061cb57763f0d3f32e3822ab1b53"
+      },
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "schemaVersion": 1,
+        "profile": "footprint-crash-resume-gp-inference/v1",
+        "sha256": "96ebe2f47945f52d997bf31f7227d9704ae4e4ec2cf46b4ffd761c1fe6250cad"
+      },
+      "trainingStateSha256": "49a9408aa0507a2f829c86d0c34c94742b6d2b30bc8a2a7503a6a4efd32f113f",
+      "step": 30
+    },
+    "resumedB": {
+      "label": "resumed B",
+      "artifact": {
+        "bytes": 7955,
+        "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+        "kind": "artifact",
+        "path": "checkpoints/e05e4569d893402bbb8747ecc536d129.npz",
+        "sha256": "343fdf6efa0b4fa26bf8222df70773657e6ee8a99cb66afb0a7aa8af3eecc694"
+      },
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "schemaVersion": 1,
+        "profile": "footprint-crash-resume-gp-inference/v1",
+        "sha256": "22f2e1c6438359937814a9dd7b841b64051d0f7f2dec3f86d3dac405e0149a6f"
+      },
+      "trainingStateSha256": "6e98b31c8a3ec32e87eb0279b386203b43b4579f4d56fef2aa63ba0e67bebc28",
+      "step": 100
+    },
+    "optimizerOnly": {
+      "label": "optimizer-only A fork",
+      "artifact": {
+        "bytes": 7954,
+        "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+        "kind": "artifact",
+        "path": "checkpoints/c02c51bdfeab4b89854ccbd685fca27b.npz",
+        "sha256": "b500b7368ae5eae9efd2aaa73cf69ab626db0ff9966cc5465264cf57da982804"
+      },
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "schemaVersion": 1,
+        "profile": "footprint-crash-resume-gp-inference/v1",
+        "sha256": "96ebe2f47945f52d997bf31f7227d9704ae4e4ec2cf46b4ffd761c1fe6250cad"
+      },
+      "trainingStateSha256": "39694659eac7f9fc4df50f498a344623eda72c27a7128ff65cfa7ab4f7e7698b",
+      "step": 30
+    }
+  },
+  "fullStateMatchesUninterrupted": {
+    "A": true,
+    "B": true,
+    "allElevenArraysEqual": true
+  },
+  "crashWitness": {
+    "sourceStep": 30,
+    "actualStep": 40,
+    "requestedUpdates": 70,
+    "completedUncheckpointedUpdates": 10,
+    "differentInferenceFromA": true,
+    "inferenceIdentity": {
+      "kind": "inference-identity",
+      "schemaVersion": 1,
+      "profile": "footprint-crash-resume-gp-inference/v1",
+      "sha256": "8b240726dc47fb637bea24bc36d8763c04ea597ee821d40b5981685dcb0d338e"
+    },
+    "artifact": {
+      "bytes": 3999,
+      "format": "footprint-crash-resume/partial-inference-npz/v1",
+      "kind": "artifact",
+      "path": "partial-inference.npz",
+      "sha256": "3c73725dff232d1dc853495754b6601312a746a7b9b7a8fb1d39b31909df111d"
+    },
+    "containsOptimizerState": false,
+    "usableResumeCheckpoint": false,
+    "interruptedTracePublishesOnlyA": true,
+    "completedCheckpointInventoryUnchangedAcrossKill": true,
+    "completedCheckpointsAtSavedBoundary": 3
+  },
+  "optimizerOnlyReset": {
+    "sameInference": true,
+    "fullTrainingStateChanged": true,
+    "addedUpdates": 0,
+    "sourceModel": "recovered A",
+    "step": 30,
+    "changedArrayNames": [
+      "momentums_amplitude",
+      "momentums_lengthscale",
+      "momentums_noise",
+      "scales_amplitude",
+      "scales_lengthscale",
+      "scales_noise"
+    ],
+    "metadataChanges": []
+  },
+  "evaluations": [
+    {
+      "label": "baseline B validation",
+      "role": "validation",
+      "recorded": {
+        "mae": 0.026755881001008675,
+        "mse": 0.001700233258309988,
+        "rmse": 0.04123388483165257
+      },
+      "independentNumPy": {
+        "mse": 0.0017002386484600753,
+        "rmse": 0.04123395019228785,
+        "mae": 0.02675641856978614
+      }
+    },
+    {
+      "label": "baseline A validation",
+      "role": "validation",
+      "recorded": {
+        "mae": 0.05457692264462821,
+        "mse": 0.004259598336456735,
+        "rmse": 0.0652655984149133
+      },
+      "independentNumPy": {
+        "mse": 0.004259598834205885,
+        "rmse": 0.06526560222817135,
+        "mae": 0.05457716254759655
+      }
+    },
+    {
+      "label": "recovery B validation",
+      "role": "validation",
+      "recorded": {
+        "mae": 0.026755881001008675,
+        "mse": 0.001700233258309988,
+        "rmse": 0.04123388483165257
+      },
+      "independentNumPy": {
+        "mse": 0.0017002386484600753,
+        "rmse": 0.04123395019228785,
+        "mae": 0.02675641856978614
+      }
+    },
+    {
+      "label": "recovery A validation",
+      "role": "validation",
+      "recorded": {
+        "mae": 0.05457692264462821,
+        "mse": 0.004259598336456735,
+        "rmse": 0.0652655984149133
+      },
+      "independentNumPy": {
+        "mse": 0.004259598834205885,
+        "rmse": 0.06526560222817135,
+        "mae": 0.05457716254759655
+      }
+    }
+  ],
+  "metricTolerance": {
+    "absolute": 5e-06,
+    "relative": 0.0005
+  },
+  "modelDatasetReceiptArtifactsVerified": true,
+  "allInputHashesUnchanged": true,
+  "inputHashes": {
+    "evidence-manifest.json": "49c1e2e560b8fd22b490ffc1e90e62ca4b374d6651fed365af51fee2fcde13c4",
+    "checkpoints/f67f272d3a5b48c084c1ad29931db7e9.npz": "54cb1a5b3943d7d1c9ac0a08291aba627f5a061cb57763f0d3f32e3822ab1b53",
+    "checkpoints/1c3d2ece11404c239918a7b701fa68b2.npz": "343fdf6efa0b4fa26bf8222df70773657e6ee8a99cb66afb0a7aa8af3eecc694",
+    "checkpoints/5f3c8393878548eda3c01124cd306038.npz": "54cb1a5b3943d7d1c9ac0a08291aba627f5a061cb57763f0d3f32e3822ab1b53",
+    "checkpoints/e05e4569d893402bbb8747ecc536d129.npz": "343fdf6efa0b4fa26bf8222df70773657e6ee8a99cb66afb0a7aa8af3eecc694",
+    "checkpoints/c02c51bdfeab4b89854ccbd685fca27b.npz": "b500b7368ae5eae9efd2aaa73cf69ab626db0ff9966cc5465264cf57da982804",
+    "datasets/001-116f54c41d04-720767c12e4744ca9e2ad06fc37e807b.npz": "fc50f88eb68981de08fb1784d555e4f4025d775946db9dbee3436c87e7f33609",
+    "datasets/002-98c41dcd20b8-2cfde4f3b3ed4df98f528662786959c3.npz": "40539a53f82137829c379ab10c03f812c68392416a2017707c7117048ef45f54",
+    "datasets/000-9f86d081884c-6f4cbcc62bdd47f38da33145655a2fc0.npz": "2f58930a052a90ec8257ef6f6a691c1358df40deac94dd21731222d12394c7b2",
+    "datasets/001-116f54c41d04-5ab8d0131dd2433bb1083d19707aa182.npz": "fc50f88eb68981de08fb1784d555e4f4025d775946db9dbee3436c87e7f33609",
+    "datasets/002-98c41dcd20b8-8d43f1e5fd1d470585e10a26ff0d7e3b.npz": "40539a53f82137829c379ab10c03f812c68392416a2017707c7117048ef45f54",
+    "datasets/000-9f86d081884c-6d55e83be3e546aa8b712e3f507dea67.npz": "2f58930a052a90ec8257ef6f6a691c1358df40deac94dd21731222d12394c7b2",
+    "datasets/002-98c41dcd20b8-64edafc8f5e942e5b9a44245120d4904.npz": "40539a53f82137829c379ab10c03f812c68392416a2017707c7117048ef45f54",
+    "fault/barrier.json": "4f7f7b06a52915da5db1de77fa1b0b0c18cb4b0a50de6a346275153ebc209402",
+    "fault/partial-inference.npz": "3c73725dff232d1dc853495754b6601312a746a7b9b7a8fb1d39b31909df111d",
+    "interruption.json": "68d314930c64615b496ad82fe10161fe5e376f9ce734fbf28155f9d18a466dce",
+    "interrupted/trace.json": "e811b4c28a12d9d67a13a1555a81152304048df7840b84fde8503a005cb6ab7f",
+    "baseline/trace.json": "19e78433060cf26ea4cd89a5cf17e4869593c3863dcac3e8d9c939937e529e4c",
+    "checkpoint/trace.json": "ebc0efbfc1c9b052ef3f2e22ec05091354cea3cd2bd0891f1d57e4c85041ee4e",
+    "datasets/000-9f86d081884c-d164808f5190432d8256ad4c116d13ac.npz": "2f58930a052a90ec8257ef6f6a691c1358df40deac94dd21731222d12394c7b2",
+    "datasets/001-116f54c41d04-e3ad9c70b9e24b199affca93141bcac9.npz": "fc50f88eb68981de08fb1784d555e4f4025d775946db9dbee3436c87e7f33609",
+    "resume/trace.json": "636582d5d838b8bae8e4dc930b69edad696796146f9650625cb3197c10e9c501",
+    "reopen/trace.json": "3fab09f43b0f2f12c892aa3718c09c6b9baf4d8f4a9c0e17c74f1e9d88695bb1",
+    "datasets/000-9f86d081884c-9b7d250fbc50403298687a0a128d40a2.npz": "2f58930a052a90ec8257ef6f6a691c1358df40deac94dd21731222d12394c7b2",
+    "datasets/001-116f54c41d04-b25413b0a6b443b7992ce0f8fa2f539d.npz": "fc50f88eb68981de08fb1784d555e4f4025d775946db9dbee3436c87e7f33609",
+    "datasets/002-98c41dcd20b8-ba42a0dd784444c2b91b01900b9fe3a1.npz": "40539a53f82137829c379ab10c03f812c68392416a2017707c7117048ef45f54"
+  },
+  "limits": [
+    "Controlled local SIGKILL of the supervisor's owned child process group; this is not a machine-power-loss or distributed durability test.",
+    "The saved supervisor record reports the process kill; a later offline audit cannot independently inspect the already-dead OS process.",
+    "NumPy recomputes predictions and full-state identities; it does not retrain or independently reproduce gradient calculations.",
+    "Partial witness identifies discarded work at step40 and deliberately omits optimizer buffers; recovery restarts from complete A at step30."
+  ]
+}

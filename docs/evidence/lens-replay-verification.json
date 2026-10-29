@@ -1,0 +1,81 @@
+{
+  "schema": "saved-ml-lens-verification/v1",
+  "passed": 14,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "The bundled bridge exposes existing public Lens and foottrace APIs",
+      "passed": true
+    },
+    {
+      "name": "The adapter preserves the original snapshot and keeps callbacks outside typed agent events",
+      "passed": true
+    },
+    {
+      "name": "Native Lens overview is returned verbatim and does not invent missing historical errors",
+      "passed": true
+    },
+    {
+      "name": "Native writer and value tools expose the validated classifier and the changed active checkpoint",
+      "passed": true
+    },
+    {
+      "name": "Native Lens identifies the stale validation flag and the sole tracked legacy gate input",
+      "passed": true
+    },
+    {
+      "name": "Native causal tools retain missing-control warnings instead of manufacturing routing edges",
+      "passed": true
+    },
+    {
+      "name": "Missing Context Integrity findings are reported as unavailable evidence, never a clean run",
+      "passed": true
+    },
+    {
+      "name": "Foottrace replay shows the exact before/after change while preserving validation association",
+      "passed": true
+    },
+    {
+      "name": "Repeated valid stop selections are safe and unavailable addresses are refused",
+      "passed": true
+    },
+    {
+      "name": "Supplemental retry, native cleanup and detailed predicates remain actual source callbacks",
+      "passed": true
+    },
+    {
+      "name": "The guarded saved run has no released reference and native Lens sees its identity guard",
+      "passed": true
+    },
+    {
+      "name": "JSON round-trip of adapted recordings preserves native answers, state replay and callback pointers",
+      "passed": true
+    },
+    {
+      "name": "Native tool validation, bounded values and missing-read warnings remain intact",
+      "passed": true
+    },
+    {
+      "name": "Reopening leaves source bytes and input objects unchanged without any network call",
+      "passed": true
+    }
+  ],
+  "scope": "Existing saved-record Lens tools and foottrace only; no training, benchmark, provider or child process execution",
+  "executionGuards": {
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false,
+    "networkFetchCalls": 0
+  },
+  "source": {
+    "bad": {
+      "path": "retained-examples/footprint-realistic-ml-benchmark/sample-run/examples/fp-full/trace.json",
+      "sha256": "d8ff61897d611d4329ba90b8e64e7bbf4549528a9a492e734d655c90967c8eb1",
+      "unchanged": true
+    },
+    "guarded": {
+      "path": "retained-examples/footprint-realistic-ml-benchmark/sample-run/examples/guarded/trace.json",
+      "sha256": "bb5482bc77b9fd310ffa23f0d2d6aa26e49cf93374d467d4738494b72e442eea",
+      "unchanged": true
+    }
+  }
+}

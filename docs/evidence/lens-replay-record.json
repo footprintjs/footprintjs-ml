@@ -1,0 +1,1667 @@
+{
+  "schema": "selfexplain-ml-offline-investigation/v1",
+  "source": {
+    "path": "retained-examples/footprint-realistic-ml-benchmark/sample-run/examples/fp-full/trace.json",
+    "sha256": "d8ff61897d611d4329ba90b8e64e7bbf4549528a9a492e734d655c90967c8eb1",
+    "unchanged": true
+  },
+  "libraries": {
+    "agentfootprint": "11.0.0 existing local source build",
+    "footprintjs": "10.0.0",
+    "foottrace": "1.8.0"
+  },
+  "mode": "Existing scripted Lens toolpack; no LLM provider and no training execution",
+  "executionGuards": {
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false,
+    "pythonEnvironment": "/not-available-for-offline-investigation"
+  },
+  "anchors": {
+    "validation": "validate#8",
+    "recovery": "recover#10",
+    "identityCheck": "compare#11",
+    "decision": "release-policy#12",
+    "release": "release#13"
+  },
+  "summary": {
+    "activeModel": {
+      "kind": "model",
+      "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+      "handle": 10,
+      "originArtifact": {
+        "kind": "artifact",
+        "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+        "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+        "bytes": 2811,
+        "format": "trusted-digits-pipeline-pickle/v1"
+      },
+      "modelId": "61e76ca9-9fc8-4c64-a673-972ebd5cba66",
+      "candidateId": "cached-baseline",
+      "C": null
+    },
+    "validatedModel": {
+      "kind": "model",
+      "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+      "handle": 8,
+      "originArtifact": {
+        "kind": "artifact",
+        "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+        "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+        "bytes": 8206,
+        "format": "trusted-digits-pipeline-pickle/v1"
+      },
+      "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+      "candidateId": "logistic-C-3",
+      "C": 3
+    },
+    "releasedModel": {
+      "kind": "model",
+      "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+      "handle": 10,
+      "originArtifact": {
+        "kind": "artifact",
+        "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+        "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+        "bytes": 2811,
+        "format": "trusted-digits-pipeline-pickle/v1"
+      },
+      "modelId": "61e76ca9-9fc8-4c64-a673-972ebd5cba66",
+      "candidateId": "cached-baseline",
+      "C": null
+    },
+    "validationPassed": true,
+    "checkpointMatches": false,
+    "releaseStatus": "released-locally",
+    "activeTestAccuracy": 0.1,
+    "validatedTestAccuracy": 0.9583333333333334
+  },
+  "nativeLensTranscript": [
+    {
+      "ordinal": 1,
+      "tool": "run_overview",
+      "args": {},
+      "result": "TRACE RUN OVERVIEW\nstatus: no step errors recorded\nexecution steps: 15 · distinct stages: 15 · commit-log mode: full\nstep ids look like stageId#executionIndex (e.g. 'initialize#0') — pass them to trace_node / trace_slice / get_value.\n\nSTAGES (15 distinct, first-execution order):\n- initialize ×1 — \"Prepare split and cached baseline\"\n- candidate-0 ×1 — \"Train and validate C=0.03\"\n- candidate-1 ×1 — \"Train and validate C=0.1\"\n- candidate-2 ×1 — \"Train and validate C=1\"\n- candidate-3 ×1 — \"Train and validate C=3\"\n- rank ×1 — \"Rank candidate validation results\"\n- select ×1 — \"Select best candidate\"\n- pick-3 ×1 — \"Activate candidate 3\"\n- validate ×1 — \"Validate selected model\"\n- recovery-route ×1 — \"Choose session recovery path\"\n- recover ×1 — \"Recover serving session\"\n- compare ×1 — \"Compare active and validated checkpoint\"\n- release-policy ×1 — \"Release policy\"\n- release ×1 — \"Release model locally\"\n- audit ×1 — \"Audit active and validated models on held-out data\"\n\nSHARED STATE KEYS (20): runLabel, datasets, recoverSession, releaseStatus, releasedModelRef, cachedModelRef, modelRef, candidate0, candidate1, candidate2, candidate3, bestCandidateIndex, bestValidationAccuracy, validatedModelRef, validationArtifactRef, validationPassed, sameValidatedArtifact, releaseArtifactRef, releasedTest, referenceTest — values via who_wrote / get_value.\nSEARCH: find_in_trace('<text>') locates any phrase in this record and hands back ids.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 2,
+      "tool": "find_context_errors",
+      "args": {},
+      "result": "find_context_errors: ⚠ NO FINDING EVIDENCE — these artifacts carry no event tail at all. Context Integrity findings ride the event stream (agentfootprint.integrity.context_error), and the per-run accounting of which checks ran rides agentfootprint.integrity.disposition; with neither retained, this run cannot be reported on either way. That is \"no evidence\", NOT \"no context errors\". Capture the tail with recordRun(agent), or leave it on for a self-explaining agent (selfExplain({ include: { events: true } }) — the default).",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 3,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "validate#8",
+        "key": "validatedModelRef"
+      },
+      "result": "VALUE of 'validatedModelRef' as of validate#8:\n{\"kind\":\"model\",\"sessionId\":\"aeab2608-a1d4-48ef-92e2-1fc1f8d9151a\",\"handle\":8,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl\",\"sha256\":\"9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b\",\"bytes\":8206,\"format\":\"trusted-digits-pipeline-pickle/v1\"},\"modelId\":\"426e87c6-4e83-406e-93eb-24cb05b264ac\",\"candidateId\":\"logistic-C-3\",\"C\":3}",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 4,
+      "tool": "who_wrote",
+      "args": {
+        "key": "modelRef",
+        "beforeStageId": "release-policy#12"
+      },
+      "result": "'modelRef' was last written by recover#10 — \"Recover serving session\" (verb: set): {\"kind\":\"model\",\"sessionId\":\"aeab2608-a1d4-48ef-92e2-1fc1f8d9151a\",\"handle\":10,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl\",\"sha256\":\"1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b\",\"bytes\":2811,\"format\":\"trusted-digits-pipeline-pickle/v1\"},\"modelId\":\"61e76ca9-9fc8-4c64-a673-972ebd5cba66\",\"candidateId\":\"cached-baseline\",\"C\":null}",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 5,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "recover#10",
+        "key": "modelRef"
+      },
+      "result": "VALUE of 'modelRef' as of recover#10:\n{\"kind\":\"model\",\"sessionId\":\"aeab2608-a1d4-48ef-92e2-1fc1f8d9151a\",\"handle\":10,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl\",\"sha256\":\"1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b\",\"bytes\":2811,\"format\":\"trusted-digits-pipeline-pickle/v1\"},\"modelId\":\"61e76ca9-9fc8-4c64-a673-972ebd5cba66\",\"candidateId\":\"cached-baseline\",\"C\":null}",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 6,
+      "tool": "who_wrote",
+      "args": {
+        "key": "validationPassed",
+        "beforeStageId": "release-policy#12"
+      },
+      "result": "'validationPassed' was last written by validate#8 — \"Validate selected model\" (verb: set): true",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 7,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "release-policy#12",
+        "key": "validationPassed"
+      },
+      "result": "VALUE of 'validationPassed' as of release-policy#12:\ntrue",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 8,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "compare#11",
+        "key": "sameValidatedArtifact"
+      },
+      "result": "VALUE of 'sameValidatedArtifact' as of compare#11:\nfalse",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 9,
+      "tool": "trace_node",
+      "args": {
+        "runtimeStageId": "release-policy#12"
+      },
+      "result": "STEP release-policy#12 — \"Release policy\"\nwrote: nothing committed\nread (1): validationPassed\nparents:\n- data: validationPassed ← validate#8 \"Validate selected model\"\n⚠ control-dependence lookup not provided — the decision that routed here is unknown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 10,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "release#13",
+        "key": "releasedModelRef"
+      },
+      "result": "VALUE of 'releasedModelRef' as of release#13:\n{\"kind\":\"model\",\"sessionId\":\"aeab2608-a1d4-48ef-92e2-1fc1f8d9151a\",\"handle\":10,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl\",\"sha256\":\"1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b\",\"bytes\":2811,\"format\":\"trusted-digits-pipeline-pickle/v1\"},\"modelId\":\"61e76ca9-9fc8-4c64-a673-972ebd5cba66\",\"candidateId\":\"cached-baseline\",\"C\":null}",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 11,
+      "tool": "backtrack",
+      "args": {
+        "variable": "releasedModelRef"
+      },
+      "result": "SLICE for 'releasedModelRef' — reads via: custom-fn\nRelease model locally (release#13) [wrote: releasedModelRef, releaseArtifactRef, releaseStatus]\n  Recover serving session (recover#10) ← via modelRef [wrote: modelRef]\n    Prepare split and cached baseline (initialize#0) ← via releasedModelRef [wrote: runLabel, datasets, recoverSession, releaseStatus, releasedModelRef, cachedModelRef, modelRef]\n  Validate selected model (validate#8) ← via validatedModelRef [wrote: validatedModelRef, validationArtifactRef, validationPassed]\n    Activate candidate 3 (pick-3#7) ← via modelRef [wrote: modelRef]\n      Train and validate C=3 (candidate-3#4) ← via candidate3 [wrote: candidate3]\n  ↳ initialize#0 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    }
+  ],
+  "foottraceReplay": [
+    {
+      "stop": {
+        "step": 10,
+        "runtimeStageId": "recovery-route#9",
+        "commitIdx": 9,
+        "lastCommitIdx": 9,
+        "stageId": "recovery-route",
+        "label": "Choose session recovery path",
+        "kind": "commit"
+      },
+      "folded": {
+        "state": {
+          "runLabel": "fp-full",
+          "datasets": {
+            "train": {
+              "kind": "dataset",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 1,
+              "role": "train",
+              "artifact": {
+                "kind": "artifact",
+                "path": "datasets/train.json",
+                "sha256": "8b39f296f77dc0263ca25a33e6c9bb282f7310922eeb7390d7986b241cffe0fb",
+                "bytes": 850838,
+                "format": "digits-dataset/json-v1"
+              },
+              "rows": 1149,
+              "shape": [
+                1149,
+                64
+              ]
+            },
+            "validation": {
+              "kind": "dataset",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 2,
+              "role": "validation",
+              "artifact": {
+                "kind": "artifact",
+                "path": "datasets/validation.json",
+                "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                "bytes": 213480,
+                "format": "digits-dataset/json-v1"
+              },
+              "rows": 288,
+              "shape": [
+                288,
+                64
+              ]
+            },
+            "test": {
+              "kind": "dataset",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 3,
+              "role": "test",
+              "artifact": {
+                "kind": "artifact",
+                "path": "datasets/test.json",
+                "sha256": "f98393307be069c3ea263b0a67e0c56886635cafbda103bcb3947967bf690bd7",
+                "bytes": 266703,
+                "format": "digits-dataset/json-v1"
+              },
+              "rows": 360,
+              "shape": [
+                360,
+                64
+              ]
+            }
+          },
+          "recoverSession": true,
+          "releaseStatus": "pending",
+          "releasedModelRef": null,
+          "cachedModelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 4,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+              "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+              "bytes": 2811,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "61e76ca9-9fc8-4c64-a673-972ebd5cba66",
+            "candidateId": "cached-baseline",
+            "C": null
+          },
+          "modelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 8,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+              "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+              "bytes": 8206,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+            "candidateId": "logistic-C-3",
+            "C": 3
+          },
+          "candidate0": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 5,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-0.03-cfa71a5f-45e5-4f61-8b10-d8f89a57634b.pkl",
+                "sha256": "f7df124580a84a07ff7e625a372df1b171934348889e8cfeddeac358feac431d",
+                "bytes": 8209,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "cfa71a5f-45e5-4f61-8b10-d8f89a57634b",
+              "candidateId": "logistic-C-0.03",
+              "C": 0.03
+            },
+            "evaluation": {
+              "evaluationId": "726460c8-8ed1-44d5-8f33-e612478228c4",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 5,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-0.03-cfa71a5f-45e5-4f61-8b10-d8f89a57634b.pkl",
+                  "sha256": "f7df124580a84a07ff7e625a372df1b171934348889e8cfeddeac358feac431d",
+                  "bytes": 8209,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "cfa71a5f-45e5-4f61-8b10-d8f89a57634b",
+                "candidateId": "logistic-C-0.03",
+                "C": 0.03
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9722222222222222,
+              "macroF1": 0.9727263306469519,
+              "logLoss": 0.2543424595806353,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-0-726460c8-8ed1-44d5-8f33-e612478228c4-predictions.json",
+                "sha256": "aa37560438556d72fa680395d51d98acac04fe583f984e550625a624a0c9fbc8",
+                "bytes": 89210,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-0-726460c8-8ed1-44d5-8f33-e612478228c4-confusion.json",
+                "sha256": "9560c44eb3a7d9c64eb7555c4420ca949acd3c560f5cfeac17d41581e4c13487",
+                "bytes": 2211,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.063708998117363
+            },
+            "trainingMs": 8.857374999934109
+          },
+          "candidate1": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 6,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-0.1-38efa0bb-8b43-4fa1-b7ed-4d08938376f4.pkl",
+                "sha256": "b4613a00ede8dc1bacaf460f0ec8d065bfafee3d7ebb7c72a4173fa53ce867b6",
+                "bytes": 8208,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "38efa0bb-8b43-4fa1-b7ed-4d08938376f4",
+              "candidateId": "logistic-C-0.1",
+              "C": 0.1
+            },
+            "evaluation": {
+              "evaluationId": "f1e69b8f-6c78-4722-b975-24ba929411b0",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 6,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-0.1-38efa0bb-8b43-4fa1-b7ed-4d08938376f4.pkl",
+                  "sha256": "b4613a00ede8dc1bacaf460f0ec8d065bfafee3d7ebb7c72a4173fa53ce867b6",
+                  "bytes": 8208,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "38efa0bb-8b43-4fa1-b7ed-4d08938376f4",
+                "candidateId": "logistic-C-0.1",
+                "C": 0.1
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9722222222222222,
+              "macroF1": 0.9727263306469519,
+              "logLoss": 0.15856966211763393,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-1-f1e69b8f-6c78-4722-b975-24ba929411b0-predictions.json",
+                "sha256": "5bc579c2797dcdb2972d57e13b73fba0532f71a968ce1283b97aee1ffcc4ba0d",
+                "bytes": 90345,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-1-f1e69b8f-6c78-4722-b975-24ba929411b0-confusion.json",
+                "sha256": "94b01a0b973f71c08a6f2876151cd4169197aa6d47f9775e8ae88d951e0b751f",
+                "bytes": 2208,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.1277910016360693
+            },
+            "trainingMs": 11.234792000323068
+          },
+          "candidate2": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 7,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-1-72030718-9fb3-4263-bd69-328f3c039bad.pkl",
+                "sha256": "5fc73046bb56fe01a69d89d17e872a8a4ece5e4648380a0ebd2570ee96ad56e0",
+                "bytes": 8206,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "72030718-9fb3-4263-bd69-328f3c039bad",
+              "candidateId": "logistic-C-1",
+              "C": 1
+            },
+            "evaluation": {
+              "evaluationId": "549bbe12-06f3-46af-821f-2508292a81d7",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 7,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-1-72030718-9fb3-4263-bd69-328f3c039bad.pkl",
+                  "sha256": "5fc73046bb56fe01a69d89d17e872a8a4ece5e4648380a0ebd2570ee96ad56e0",
+                  "bytes": 8206,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "72030718-9fb3-4263-bd69-328f3c039bad",
+                "candidateId": "logistic-C-1",
+                "C": 1
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9756944444444444,
+              "macroF1": 0.9758918521613922,
+              "logLoss": 0.08865070603563492,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-2-549bbe12-06f3-46af-821f-2508292a81d7-predictions.json",
+                "sha256": "72188831da12d07993d65357048ee0da6b5060444ac5744560a69eaf98b899d2",
+                "bytes": 91563,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-2-549bbe12-06f3-46af-821f-2508292a81d7-confusion.json",
+                "sha256": "1873bf15a73e1baf004a9091e11f4decaefed34d50fa6340552184b8a1f43406",
+                "bytes": 2204,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.030958999763243
+            },
+            "trainingMs": 20.53291700212867
+          },
+          "candidate3": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 8,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+                "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+                "bytes": 8206,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+              "candidateId": "logistic-C-3",
+              "C": 3
+            },
+            "evaluation": {
+              "evaluationId": "7fc2f631-c545-412a-903c-174cc0a59899",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 8,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+                  "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+                  "bytes": 8206,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+                "candidateId": "logistic-C-3",
+                "C": 3
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9756944444444444,
+              "macroF1": 0.9758918521613922,
+              "logLoss": 0.08250649450261135,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-3-7fc2f631-c545-412a-903c-174cc0a59899-predictions.json",
+                "sha256": "f89cd3fb6d485f1071b6404a0dbf8316a56bfb67399a88c0974271c815f5841b",
+                "bytes": 91849,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-3-7fc2f631-c545-412a-903c-174cc0a59899-confusion.json",
+                "sha256": "4506fcdf4c9aed983872ad05960637f08e88cdb7d9e2c22e496e0d03b1b6b033",
+                "bytes": 2204,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.7376670002704486
+            },
+            "trainingMs": 24.120207999658305
+          },
+          "bestCandidateIndex": 3,
+          "bestValidationAccuracy": 0.9756944444444444,
+          "validatedModelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 8,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+              "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+              "bytes": 8206,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+            "candidateId": "logistic-C-3",
+            "C": 3
+          },
+          "validationArtifactRef": {
+            "kind": "artifact",
+            "path": "evaluations/selected-validation-b767796b-dc2e-4f4e-b27e-2a21ef67a212-predictions.json",
+            "sha256": "62ca830648d10258c83baeb5d8fbc93fa681785691062e6d617642e05f4ad872",
+            "bytes": 91857,
+            "format": "classifier-predictions/json-v1"
+          },
+          "validationPassed": true
+        },
+        "basis": "initial+log",
+        "redacted": false,
+        "redactedPaths": [],
+        "throughCommitIdx": 9
+      },
+      "changedKeys": []
+    },
+    {
+      "stop": {
+        "step": 11,
+        "runtimeStageId": "recover#10",
+        "commitIdx": 10,
+        "lastCommitIdx": 10,
+        "stageId": "recover",
+        "label": "Recover serving session",
+        "kind": "commit"
+      },
+      "folded": {
+        "state": {
+          "runLabel": "fp-full",
+          "datasets": {
+            "train": {
+              "kind": "dataset",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 1,
+              "role": "train",
+              "artifact": {
+                "kind": "artifact",
+                "path": "datasets/train.json",
+                "sha256": "8b39f296f77dc0263ca25a33e6c9bb282f7310922eeb7390d7986b241cffe0fb",
+                "bytes": 850838,
+                "format": "digits-dataset/json-v1"
+              },
+              "rows": 1149,
+              "shape": [
+                1149,
+                64
+              ]
+            },
+            "validation": {
+              "kind": "dataset",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 2,
+              "role": "validation",
+              "artifact": {
+                "kind": "artifact",
+                "path": "datasets/validation.json",
+                "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                "bytes": 213480,
+                "format": "digits-dataset/json-v1"
+              },
+              "rows": 288,
+              "shape": [
+                288,
+                64
+              ]
+            },
+            "test": {
+              "kind": "dataset",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 3,
+              "role": "test",
+              "artifact": {
+                "kind": "artifact",
+                "path": "datasets/test.json",
+                "sha256": "f98393307be069c3ea263b0a67e0c56886635cafbda103bcb3947967bf690bd7",
+                "bytes": 266703,
+                "format": "digits-dataset/json-v1"
+              },
+              "rows": 360,
+              "shape": [
+                360,
+                64
+              ]
+            }
+          },
+          "recoverSession": true,
+          "releaseStatus": "pending",
+          "releasedModelRef": null,
+          "cachedModelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 4,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+              "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+              "bytes": 2811,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "61e76ca9-9fc8-4c64-a673-972ebd5cba66",
+            "candidateId": "cached-baseline",
+            "C": null
+          },
+          "modelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 10,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+              "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+              "bytes": 2811,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "61e76ca9-9fc8-4c64-a673-972ebd5cba66",
+            "candidateId": "cached-baseline",
+            "C": null
+          },
+          "candidate0": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 5,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-0.03-cfa71a5f-45e5-4f61-8b10-d8f89a57634b.pkl",
+                "sha256": "f7df124580a84a07ff7e625a372df1b171934348889e8cfeddeac358feac431d",
+                "bytes": 8209,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "cfa71a5f-45e5-4f61-8b10-d8f89a57634b",
+              "candidateId": "logistic-C-0.03",
+              "C": 0.03
+            },
+            "evaluation": {
+              "evaluationId": "726460c8-8ed1-44d5-8f33-e612478228c4",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 5,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-0.03-cfa71a5f-45e5-4f61-8b10-d8f89a57634b.pkl",
+                  "sha256": "f7df124580a84a07ff7e625a372df1b171934348889e8cfeddeac358feac431d",
+                  "bytes": 8209,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "cfa71a5f-45e5-4f61-8b10-d8f89a57634b",
+                "candidateId": "logistic-C-0.03",
+                "C": 0.03
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9722222222222222,
+              "macroF1": 0.9727263306469519,
+              "logLoss": 0.2543424595806353,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-0-726460c8-8ed1-44d5-8f33-e612478228c4-predictions.json",
+                "sha256": "aa37560438556d72fa680395d51d98acac04fe583f984e550625a624a0c9fbc8",
+                "bytes": 89210,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-0-726460c8-8ed1-44d5-8f33-e612478228c4-confusion.json",
+                "sha256": "9560c44eb3a7d9c64eb7555c4420ca949acd3c560f5cfeac17d41581e4c13487",
+                "bytes": 2211,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.063708998117363
+            },
+            "trainingMs": 8.857374999934109
+          },
+          "candidate1": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 6,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-0.1-38efa0bb-8b43-4fa1-b7ed-4d08938376f4.pkl",
+                "sha256": "b4613a00ede8dc1bacaf460f0ec8d065bfafee3d7ebb7c72a4173fa53ce867b6",
+                "bytes": 8208,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "38efa0bb-8b43-4fa1-b7ed-4d08938376f4",
+              "candidateId": "logistic-C-0.1",
+              "C": 0.1
+            },
+            "evaluation": {
+              "evaluationId": "f1e69b8f-6c78-4722-b975-24ba929411b0",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 6,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-0.1-38efa0bb-8b43-4fa1-b7ed-4d08938376f4.pkl",
+                  "sha256": "b4613a00ede8dc1bacaf460f0ec8d065bfafee3d7ebb7c72a4173fa53ce867b6",
+                  "bytes": 8208,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "38efa0bb-8b43-4fa1-b7ed-4d08938376f4",
+                "candidateId": "logistic-C-0.1",
+                "C": 0.1
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9722222222222222,
+              "macroF1": 0.9727263306469519,
+              "logLoss": 0.15856966211763393,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-1-f1e69b8f-6c78-4722-b975-24ba929411b0-predictions.json",
+                "sha256": "5bc579c2797dcdb2972d57e13b73fba0532f71a968ce1283b97aee1ffcc4ba0d",
+                "bytes": 90345,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-1-f1e69b8f-6c78-4722-b975-24ba929411b0-confusion.json",
+                "sha256": "94b01a0b973f71c08a6f2876151cd4169197aa6d47f9775e8ae88d951e0b751f",
+                "bytes": 2208,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.1277910016360693
+            },
+            "trainingMs": 11.234792000323068
+          },
+          "candidate2": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 7,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-1-72030718-9fb3-4263-bd69-328f3c039bad.pkl",
+                "sha256": "5fc73046bb56fe01a69d89d17e872a8a4ece5e4648380a0ebd2570ee96ad56e0",
+                "bytes": 8206,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "72030718-9fb3-4263-bd69-328f3c039bad",
+              "candidateId": "logistic-C-1",
+              "C": 1
+            },
+            "evaluation": {
+              "evaluationId": "549bbe12-06f3-46af-821f-2508292a81d7",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 7,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-1-72030718-9fb3-4263-bd69-328f3c039bad.pkl",
+                  "sha256": "5fc73046bb56fe01a69d89d17e872a8a4ece5e4648380a0ebd2570ee96ad56e0",
+                  "bytes": 8206,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "72030718-9fb3-4263-bd69-328f3c039bad",
+                "candidateId": "logistic-C-1",
+                "C": 1
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9756944444444444,
+              "macroF1": 0.9758918521613922,
+              "logLoss": 0.08865070603563492,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-2-549bbe12-06f3-46af-821f-2508292a81d7-predictions.json",
+                "sha256": "72188831da12d07993d65357048ee0da6b5060444ac5744560a69eaf98b899d2",
+                "bytes": 91563,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-2-549bbe12-06f3-46af-821f-2508292a81d7-confusion.json",
+                "sha256": "1873bf15a73e1baf004a9091e11f4decaefed34d50fa6340552184b8a1f43406",
+                "bytes": 2204,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.030958999763243
+            },
+            "trainingMs": 20.53291700212867
+          },
+          "candidate3": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 8,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+                "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+                "bytes": 8206,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+              "candidateId": "logistic-C-3",
+              "C": 3
+            },
+            "evaluation": {
+              "evaluationId": "7fc2f631-c545-412a-903c-174cc0a59899",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 8,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+                  "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+                  "bytes": 8206,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+                "candidateId": "logistic-C-3",
+                "C": 3
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9756944444444444,
+              "macroF1": 0.9758918521613922,
+              "logLoss": 0.08250649450261135,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-3-7fc2f631-c545-412a-903c-174cc0a59899-predictions.json",
+                "sha256": "f89cd3fb6d485f1071b6404a0dbf8316a56bfb67399a88c0974271c815f5841b",
+                "bytes": 91849,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-3-7fc2f631-c545-412a-903c-174cc0a59899-confusion.json",
+                "sha256": "4506fcdf4c9aed983872ad05960637f08e88cdb7d9e2c22e496e0d03b1b6b033",
+                "bytes": 2204,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.7376670002704486
+            },
+            "trainingMs": 24.120207999658305
+          },
+          "bestCandidateIndex": 3,
+          "bestValidationAccuracy": 0.9756944444444444,
+          "validatedModelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 8,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+              "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+              "bytes": 8206,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+            "candidateId": "logistic-C-3",
+            "C": 3
+          },
+          "validationArtifactRef": {
+            "kind": "artifact",
+            "path": "evaluations/selected-validation-b767796b-dc2e-4f4e-b27e-2a21ef67a212-predictions.json",
+            "sha256": "62ca830648d10258c83baeb5d8fbc93fa681785691062e6d617642e05f4ad872",
+            "bytes": 91857,
+            "format": "classifier-predictions/json-v1"
+          },
+          "validationPassed": true
+        },
+        "basis": "initial+log",
+        "redacted": false,
+        "redactedPaths": [],
+        "throughCommitIdx": 10
+      },
+      "changedKeys": [
+        "modelRef"
+      ]
+    },
+    {
+      "stop": {
+        "step": 13,
+        "runtimeStageId": "release-policy#12",
+        "commitIdx": 12,
+        "lastCommitIdx": 12,
+        "stageId": "release-policy",
+        "label": "Release policy",
+        "kind": "commit"
+      },
+      "folded": {
+        "state": {
+          "runLabel": "fp-full",
+          "datasets": {
+            "train": {
+              "kind": "dataset",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 1,
+              "role": "train",
+              "artifact": {
+                "kind": "artifact",
+                "path": "datasets/train.json",
+                "sha256": "8b39f296f77dc0263ca25a33e6c9bb282f7310922eeb7390d7986b241cffe0fb",
+                "bytes": 850838,
+                "format": "digits-dataset/json-v1"
+              },
+              "rows": 1149,
+              "shape": [
+                1149,
+                64
+              ]
+            },
+            "validation": {
+              "kind": "dataset",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 2,
+              "role": "validation",
+              "artifact": {
+                "kind": "artifact",
+                "path": "datasets/validation.json",
+                "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                "bytes": 213480,
+                "format": "digits-dataset/json-v1"
+              },
+              "rows": 288,
+              "shape": [
+                288,
+                64
+              ]
+            },
+            "test": {
+              "kind": "dataset",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 3,
+              "role": "test",
+              "artifact": {
+                "kind": "artifact",
+                "path": "datasets/test.json",
+                "sha256": "f98393307be069c3ea263b0a67e0c56886635cafbda103bcb3947967bf690bd7",
+                "bytes": 266703,
+                "format": "digits-dataset/json-v1"
+              },
+              "rows": 360,
+              "shape": [
+                360,
+                64
+              ]
+            }
+          },
+          "recoverSession": true,
+          "releaseStatus": "pending",
+          "releasedModelRef": null,
+          "cachedModelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 4,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+              "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+              "bytes": 2811,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "61e76ca9-9fc8-4c64-a673-972ebd5cba66",
+            "candidateId": "cached-baseline",
+            "C": null
+          },
+          "modelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 10,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+              "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+              "bytes": 2811,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "61e76ca9-9fc8-4c64-a673-972ebd5cba66",
+            "candidateId": "cached-baseline",
+            "C": null
+          },
+          "candidate0": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 5,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-0.03-cfa71a5f-45e5-4f61-8b10-d8f89a57634b.pkl",
+                "sha256": "f7df124580a84a07ff7e625a372df1b171934348889e8cfeddeac358feac431d",
+                "bytes": 8209,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "cfa71a5f-45e5-4f61-8b10-d8f89a57634b",
+              "candidateId": "logistic-C-0.03",
+              "C": 0.03
+            },
+            "evaluation": {
+              "evaluationId": "726460c8-8ed1-44d5-8f33-e612478228c4",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 5,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-0.03-cfa71a5f-45e5-4f61-8b10-d8f89a57634b.pkl",
+                  "sha256": "f7df124580a84a07ff7e625a372df1b171934348889e8cfeddeac358feac431d",
+                  "bytes": 8209,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "cfa71a5f-45e5-4f61-8b10-d8f89a57634b",
+                "candidateId": "logistic-C-0.03",
+                "C": 0.03
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9722222222222222,
+              "macroF1": 0.9727263306469519,
+              "logLoss": 0.2543424595806353,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-0-726460c8-8ed1-44d5-8f33-e612478228c4-predictions.json",
+                "sha256": "aa37560438556d72fa680395d51d98acac04fe583f984e550625a624a0c9fbc8",
+                "bytes": 89210,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-0-726460c8-8ed1-44d5-8f33-e612478228c4-confusion.json",
+                "sha256": "9560c44eb3a7d9c64eb7555c4420ca949acd3c560f5cfeac17d41581e4c13487",
+                "bytes": 2211,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.063708998117363
+            },
+            "trainingMs": 8.857374999934109
+          },
+          "candidate1": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 6,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-0.1-38efa0bb-8b43-4fa1-b7ed-4d08938376f4.pkl",
+                "sha256": "b4613a00ede8dc1bacaf460f0ec8d065bfafee3d7ebb7c72a4173fa53ce867b6",
+                "bytes": 8208,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "38efa0bb-8b43-4fa1-b7ed-4d08938376f4",
+              "candidateId": "logistic-C-0.1",
+              "C": 0.1
+            },
+            "evaluation": {
+              "evaluationId": "f1e69b8f-6c78-4722-b975-24ba929411b0",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 6,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-0.1-38efa0bb-8b43-4fa1-b7ed-4d08938376f4.pkl",
+                  "sha256": "b4613a00ede8dc1bacaf460f0ec8d065bfafee3d7ebb7c72a4173fa53ce867b6",
+                  "bytes": 8208,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "38efa0bb-8b43-4fa1-b7ed-4d08938376f4",
+                "candidateId": "logistic-C-0.1",
+                "C": 0.1
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9722222222222222,
+              "macroF1": 0.9727263306469519,
+              "logLoss": 0.15856966211763393,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-1-f1e69b8f-6c78-4722-b975-24ba929411b0-predictions.json",
+                "sha256": "5bc579c2797dcdb2972d57e13b73fba0532f71a968ce1283b97aee1ffcc4ba0d",
+                "bytes": 90345,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-1-f1e69b8f-6c78-4722-b975-24ba929411b0-confusion.json",
+                "sha256": "94b01a0b973f71c08a6f2876151cd4169197aa6d47f9775e8ae88d951e0b751f",
+                "bytes": 2208,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.1277910016360693
+            },
+            "trainingMs": 11.234792000323068
+          },
+          "candidate2": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 7,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-1-72030718-9fb3-4263-bd69-328f3c039bad.pkl",
+                "sha256": "5fc73046bb56fe01a69d89d17e872a8a4ece5e4648380a0ebd2570ee96ad56e0",
+                "bytes": 8206,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "72030718-9fb3-4263-bd69-328f3c039bad",
+              "candidateId": "logistic-C-1",
+              "C": 1
+            },
+            "evaluation": {
+              "evaluationId": "549bbe12-06f3-46af-821f-2508292a81d7",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 7,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-1-72030718-9fb3-4263-bd69-328f3c039bad.pkl",
+                  "sha256": "5fc73046bb56fe01a69d89d17e872a8a4ece5e4648380a0ebd2570ee96ad56e0",
+                  "bytes": 8206,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "72030718-9fb3-4263-bd69-328f3c039bad",
+                "candidateId": "logistic-C-1",
+                "C": 1
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9756944444444444,
+              "macroF1": 0.9758918521613922,
+              "logLoss": 0.08865070603563492,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-2-549bbe12-06f3-46af-821f-2508292a81d7-predictions.json",
+                "sha256": "72188831da12d07993d65357048ee0da6b5060444ac5744560a69eaf98b899d2",
+                "bytes": 91563,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-2-549bbe12-06f3-46af-821f-2508292a81d7-confusion.json",
+                "sha256": "1873bf15a73e1baf004a9091e11f4decaefed34d50fa6340552184b8a1f43406",
+                "bytes": 2204,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.030958999763243
+            },
+            "trainingMs": 20.53291700212867
+          },
+          "candidate3": {
+            "modelRef": {
+              "kind": "model",
+              "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+              "handle": 8,
+              "originArtifact": {
+                "kind": "artifact",
+                "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+                "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+                "bytes": 8206,
+                "format": "trusted-digits-pipeline-pickle/v1"
+              },
+              "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+              "candidateId": "logistic-C-3",
+              "C": 3
+            },
+            "evaluation": {
+              "evaluationId": "7fc2f631-c545-412a-903c-174cc0a59899",
+              "modelRef": {
+                "kind": "model",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 8,
+                "originArtifact": {
+                  "kind": "artifact",
+                  "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+                  "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+                  "bytes": 8206,
+                  "format": "trusted-digits-pipeline-pickle/v1"
+                },
+                "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+                "candidateId": "logistic-C-3",
+                "C": 3
+              },
+              "datasetRef": {
+                "kind": "dataset",
+                "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+                "handle": 2,
+                "role": "validation",
+                "artifact": {
+                  "kind": "artifact",
+                  "path": "datasets/validation.json",
+                  "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15",
+                  "bytes": 213480,
+                  "format": "digits-dataset/json-v1"
+                },
+                "rows": 288,
+                "shape": [
+                  288,
+                  64
+                ]
+              },
+              "accuracy": 0.9756944444444444,
+              "macroF1": 0.9758918521613922,
+              "logLoss": 0.08250649450261135,
+              "predictionsArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-3-7fc2f631-c545-412a-903c-174cc0a59899-predictions.json",
+                "sha256": "f89cd3fb6d485f1071b6404a0dbf8316a56bfb67399a88c0974271c815f5841b",
+                "bytes": 91849,
+                "format": "classifier-predictions/json-v1"
+              },
+              "confusionMatrixArtifact": {
+                "kind": "artifact",
+                "path": "evaluations/candidate-3-7fc2f631-c545-412a-903c-174cc0a59899-confusion.json",
+                "sha256": "4506fcdf4c9aed983872ad05960637f08e88cdb7d9e2c22e496e0d03b1b6b033",
+                "bytes": 2204,
+                "format": "confusion-matrix/json-v1"
+              },
+              "evaluationMs": 1.7376670002704486
+            },
+            "trainingMs": 24.120207999658305
+          },
+          "bestCandidateIndex": 3,
+          "bestValidationAccuracy": 0.9756944444444444,
+          "validatedModelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 8,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+              "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+              "bytes": 8206,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+            "candidateId": "logistic-C-3",
+            "C": 3
+          },
+          "validationArtifactRef": {
+            "kind": "artifact",
+            "path": "evaluations/selected-validation-b767796b-dc2e-4f4e-b27e-2a21ef67a212-predictions.json",
+            "sha256": "62ca830648d10258c83baeb5d8fbc93fa681785691062e6d617642e05f4ad872",
+            "bytes": 91857,
+            "format": "classifier-predictions/json-v1"
+          },
+          "validationPassed": true,
+          "sameValidatedArtifact": false
+        },
+        "basis": "initial+log",
+        "redacted": false,
+        "redactedPaths": [],
+        "throughCommitIdx": 12
+      },
+      "changedKeys": []
+    }
+  ],
+  "supplementalSavedCallbacks": [
+    {
+      "kind": "Backend callback",
+      "pointer": "/rows/39/event",
+      "pointerSource": "Input recording passed to openSavedMLRun",
+      "event": {
+        "name": "ml.checkpoint.loaded",
+        "payload": {
+          "purpose": "session-recovery",
+          "recoveryAttempt": 1,
+          "loadId": "b473ca02-852a-4151-ab98-001f0be72577",
+          "requestedPath": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+          "actualArtifact": {
+            "kind": "artifact",
+            "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+            "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+            "bytes": 8206,
+            "format": "trusted-digits-pipeline-pickle/v1"
+          },
+          "modelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 9,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+              "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+              "bytes": 8206,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+            "candidateId": "logistic-C-3",
+            "C": 3
+          },
+          "loadMs": 0.23337499806075357
+        },
+        "stageName": "Recover serving session",
+        "runtimeStageId": "recover#10",
+        "subflowPath": [],
+        "pipelineId": "",
+        "timestamp": 1793142669506,
+        "sourcePosition": {
+          "runId": "1793142669387-0000000003",
+          "logRunId": "1793142669387-0000000003",
+          "drillPath": [],
+          "committedThroughIdx": 9
+        }
+      }
+    },
+    {
+      "kind": "Backend callback",
+      "pointer": "/rows/40/event",
+      "pointerSource": "Input recording passed to openSavedMLRun",
+      "event": {
+        "name": "ml.model.released",
+        "payload": {
+          "modelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 9,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/logistic-C-3-426e87c6-4e83-406e-93eb-24cb05b264ac.pkl",
+              "sha256": "9f12e3f269075e4fe2e2cb2c08322913b40a4d394cd10074289e0a51c2ec682b",
+              "bytes": 8206,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "426e87c6-4e83-406e-93eb-24cb05b264ac",
+            "candidateId": "logistic-C-3",
+            "C": 3
+          },
+          "released": true
+        },
+        "stageName": "Recover serving session",
+        "runtimeStageId": "recover#10",
+        "subflowPath": [],
+        "pipelineId": "",
+        "timestamp": 1793142669506,
+        "sourcePosition": {
+          "runId": "1793142669387-0000000003",
+          "logRunId": "1793142669387-0000000003",
+          "drillPath": [],
+          "committedThroughIdx": 9
+        }
+      }
+    },
+    {
+      "kind": "Retry callback",
+      "pointer": "/rows/41/event",
+      "pointerSource": "Input recording passed to openSavedMLRun",
+      "event": {
+        "stageName": "Recover serving session",
+        "stageId": "recover",
+        "attempt": 1,
+        "maxAttempts": 2,
+        "delayMs": 0,
+        "message": "Injected readiness timeout after loading the validated checkpoint",
+        "structuredError": {
+          "message": "Injected readiness timeout after loading the validated checkpoint",
+          "name": "Error",
+          "raw": {}
+        },
+        "traversalContext": {
+          "runId": "1793142669387-0000000003",
+          "stageId": "recover",
+          "runtimeStageId": "recover#10",
+          "stageName": "Recover serving session",
+          "parentStageId": "recovery-route",
+          "parentRuntimeStageId": "recovery-route#9",
+          "depth": 0
+        },
+        "channel": "flow"
+      }
+    },
+    {
+      "kind": "Backend callback",
+      "pointer": "/rows/44/event",
+      "pointerSource": "Input recording passed to openSavedMLRun",
+      "event": {
+        "name": "ml.checkpoint.loaded",
+        "payload": {
+          "purpose": "session-recovery",
+          "recoveryAttempt": 2,
+          "loadId": "e2b6f317-d799-4b72-aaf9-228da93f7f2b",
+          "requestedPath": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+          "actualArtifact": {
+            "kind": "artifact",
+            "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+            "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+            "bytes": 2811,
+            "format": "trusted-digits-pipeline-pickle/v1"
+          },
+          "modelRef": {
+            "kind": "model",
+            "sessionId": "aeab2608-a1d4-48ef-92e2-1fc1f8d9151a",
+            "handle": 10,
+            "originArtifact": {
+              "kind": "artifact",
+              "path": "checkpoints/cached-baseline-61e76ca9-9fc8-4c64-a673-972ebd5cba66.pkl",
+              "sha256": "1fbebdb8f3164b17f1ed5e5c4402c8aa2179d1aaa2d318ca2b74e566f774317b",
+              "bytes": 2811,
+              "format": "trusted-digits-pipeline-pickle/v1"
+            },
+            "modelId": "61e76ca9-9fc8-4c64-a673-972ebd5cba66",
+            "candidateId": "cached-baseline",
+            "C": null
+          },
+          "loadMs": 0.16858299932209775
+        },
+        "stageName": "Recover serving session",
+        "runtimeStageId": "recover#10",
+        "subflowPath": [],
+        "pipelineId": "",
+        "timestamp": 1793142669506,
+        "sourcePosition": {
+          "runId": "1793142669387-0000000003",
+          "logRunId": "1793142669387-0000000003",
+          "drillPath": [],
+          "committedThroughIdx": 9
+        }
+      }
+    },
+    {
+      "kind": "Decision callback",
+      "pointer": "/rows/49/event",
+      "pointerSource": "Input recording passed to openSavedMLRun",
+      "event": {
+        "decider": "Release policy",
+        "chosen": "Release model locally",
+        "traversalContext": {
+          "runId": "1793142669387-0000000003",
+          "stageId": "release-policy",
+          "runtimeStageId": "release-policy#12",
+          "stageName": "Release policy",
+          "parentStageId": "compare",
+          "parentRuntimeStageId": "compare#11",
+          "depth": 0
+        },
+        "evidence": {
+          "rules": [
+            {
+              "type": "filter",
+              "ruleIndex": 0,
+              "branch": "release",
+              "matched": true,
+              "label": "Legacy rule trusts saved validation flag",
+              "conditions": [
+                {
+                  "key": "validationPassed",
+                  "op": "eq",
+                  "threshold": true,
+                  "actualSummary": "true",
+                  "result": true,
+                  "redacted": false
+                }
+              ]
+            }
+          ],
+          "chosen": "release",
+          "default": "quarantine"
+        }
+      }
+    }
+  ],
+  "boundaries": [
+    "These are real scripted Lens tool calls. No language model or training backend is invoked.",
+    "foottrace replays committed state; it does not rerun stages or restore live Python handles.",
+    "The saved snapshot has no live controlDeps lookup. Native Lens warnings remain in the transcript.",
+    "No typed AgentFootprint event tail or Context Integrity findings were captured. Absence is not a clean bill of health.",
+    "Failed-attempt loading/cleanup and detailed decision conditions are supplemental saved callbacks, not native Lens tool-call events."
+  ]
+}

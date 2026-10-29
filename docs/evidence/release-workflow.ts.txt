@@ -1,0 +1,257 @@
+import {flowChart,FlowChartExecutor,decide} from 'footprintjs';
+import {artifactRef,checkpointRef,prepareModelRelease,publishModelRelease} from 'footprintjs-ml';
+import {createFileArtifactStore,createLocalModelPublisher} from 'footprintjs-ml/release';
+import type {ArtifactRef,ModelRef} from 'footprintjs-ml';
+import type {PythonTrainer} from 'footprintjs-ml/adapter';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {isDeepStrictEqual} from 'node:util';
+import {resolve,dirname,relative,sep} from 'node:path';
+import {fileURLToPath} from 'node:url';
+
+const here=fileURLToPath(new URL('.',import.meta.url));
+const source=resolve(here,'source-run');
+const args=process.argv.slice(2),position=args.indexOf('--out');
+const root=resolve(position<0?resolve(here,'run'):args[position+1]);
+const plain=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
+const sha=(bytes:Uint8Array|string)=>createHash('sha256').update(bytes).digest('hex');
+const config=JSON.parse(await readFile(resolve(here,'config.json'),'utf8'));
+try{await readFile(resolve(root,'trace.json'));throw new Error('Choose a fresh --out directory; prior evidence is preserved.');}
+catch(error:any){if(error.code!=='ENOENT')throw error;}
+await mkdir(root,{recursive:true});
+const store=createFileArtifactStore({root});
+const publisherRoot=resolve(root,'local-publisher');
+const rows:any[]=[],protocolObservations:any[]=[],backendSessions:any[]=[];
+const retain=(type:string)=>(event:any)=>rows.push({type,event:plain(event)});
+const recorder={id:'pinned-model-release-evidence',onRead:retain('read'),onWrite:retain('write'),
+  onDecision:retain('decision'),onStageRetry:retain('retry'),onEmit:retain('backend'),onError:retain('error')};
+let emit:(name:string,payload:any)=>void=()=>{};
+const stage=(fn:(s:any)=>Promise<void>|void)=>async(s:any)=>{emit=(name,payload)=>s.$emit(name,payload);await fn(s);};
+let trainer:PythonTrainer|undefined;
+let sourceOutcome:any,pinnedPlan:any,pinnedPlanRef:ArtifactRef,correctCheckpoint:ArtifactRef,wrongCheckpoint:ArtifactRef;
+let approvedPreparation:any,loadedWrong:ModelRef,loadedCorrect:ModelRef;
+let publishAttempts=0,ackLost=false;
+const adapter=()=>{if(!trainer)throw new Error('Connect a numerical backend session first');return trainer.adapter;};
+const verifyModel=async({modelRef}:{modelRef:ModelRef})=>adapter().verifyModel({modelRef:modelRef as any});
+async function putJson(value:any,format:string){return store.putJson(value,format);}
+async function connect(){
+  const {createPythonTrainerAdapter}=await import('footprintjs-ml/adapter');
+  trainer=await createPythonTrainerAdapter({root,pluginPath:resolve(here,'backend/plugin.py'),config,
+    expectedProfile:'external-jax-gaussian-process-inference/v1'},
+    {python:process.env.JAX_PYTHON??process.env.PYTHON??resolve(here,'../../work/jax-env/bin/python'),
+      env:{JAX_PLATFORMS:'cpu',OPENBLAS_NUM_THREADS:'1',OMP_NUM_THREADS:'1',VECLIB_MAXIMUM_THREADS:'1'},
+      emit:(name,payload)=>emit(name,payload)});
+  backendSessions.push(plain(trainer.backend));
+  return trainer;
+}
+function setDecision(s:any,result:any){s.releaseDecision=plain(result.decision);s.releaseAllowed=result.allowed;}
+async function verifiedCopy(ref:ArtifactRef){
+  const file=resolve(source,ref.path),rel=relative(source,file);
+  if(rel==='..'||rel.startsWith('..'+sep)||rel.startsWith(sep))throw new Error('Source reference escaped retained run');
+  const bytes=await readFile(file);if(sha(bytes)!==ref.sha256||bytes.length!==ref.bytes)throw new Error('Retained source artifact changed: '+ref.path);
+  const destination=resolve(root,ref.path),relativeDestination=relative(root,destination);
+  if(relativeDestination==='..'||relativeDestination.startsWith('..'+sep)||relativeDestination.startsWith(sep))throw new Error('Destination escaped new run');
+  await mkdir(dirname(destination),{recursive:true});
+  try{await writeFile(destination,bytes,{flag:'wx'});}catch(error:any){if(error.code!=='EEXIST')throw error;const existing=await readFile(destination);if(sha(existing)!==ref.sha256)throw new Error('Imported artifact collision');}
+  return store.put(bytes,{format:ref.format});
+}
+async function evidenceRef(path:string,value:any,format:string){
+  const ref=await putJson(value,format);await writeFile(resolve(root,path),JSON.stringify(value,null,2)+'\n',{flag:'wx'});return ref;
+}
+async function publish(s:any,publisher:any,chosenStore:any=store){
+  return publishModelRelease({planRef:pinnedPlanRef,preparedRef:approvedPreparation.preparedRef,
+    modelRef:plain(s.modelRef),store:chosenStore,verifyModel,publisher});
+}
+function protocol(name:string,payload:any){protocolObservations.push({name,payload:plain(payload)});emit(name,payload);}
+
+let chart=flowChart<any>('Pin prior JAX selection evidence and exact release policy',stage(async s=>{
+  sourceOutcome=JSON.parse(await readFile(resolve(source,'outcome.json'),'utf8'));
+  const retainedTrace=JSON.parse(await readFile(resolve(source,'trace.json'),'utf8'));
+  const sourceFiles={};
+  for(const name of ['outcome.json','trace.json','experiment-manifest.json','candidate-results.json']){
+    const bytes=await readFile(resolve(source,name));(sourceFiles as any)[name]={sha256:sha(bytes),bytes:bytes.length};
+  }
+  const imports:any[]=[];const copied=new Map<string,ArtifactRef>();
+  const refs=[...sourceOutcome.candidateResults.map((r:any)=>r.modelRef.originArtifact),
+    ...Object.values(retainedTrace.footprint.sharedState.datasets).map((d:any)=>d.artifact)];
+  for(const ref of refs){if(copied.has(ref.sha256))continue;const actual=await verifiedCopy(ref);copied.set(ref.sha256,actual);imports.push({source:ref,retained:actual});}
+  const winner=sourceOutcome.candidateResults.find((r:any)=>r.candidateId==='steps-100');
+  const alternative=sourceOutcome.candidateResults.find((r:any)=>r.candidateId==='steps-30');
+  correctCheckpoint=copied.get(winner.modelRef.originArtifact.sha256)!;wrongCheckpoint=copied.get(alternative.modelRef.originArtifact.sha256)!;
+  const manifestRef=await evidenceRef('expected-manifest.json',sourceOutcome.experimentManifest,'footprint-ml/selection-manifest-json/v1');
+  const resultsRef=await evidenceRef('expected-results.json',sourceOutcome.candidateResults,'footprint-ml/selection-results-json/v1');
+  const selectionReceiptRef=await evidenceRef('expected-selection-receipt.json',sourceOutcome.correctedAttempt.selectionReceipt,'footprint-ml/selection-receipt-json/v1');
+  pinnedPlan={kind:'model-release-plan',schemaVersion:1,releaseId:'jax-gp-release-v1',idempotencyKey:'jax-gp-release-attempt-001',
+    target:{name:'gp-sine-production',expectedRevision:null},modelArtifact:correctCheckpoint,manifestRef,resultsRef,selectionReceiptRef,
+    qualityPolicy:sourceOutcome.qualityPolicy};
+  pinnedPlanRef=await evidenceRef('pinned-release-plan.json',pinnedPlan,'footprint-ml/model-release-plan-json/v1');
+  s.releasePlan=plain(pinnedPlan);s.releasePlanRef=plain(pinnedPlanRef);s.sourceEvidence={root:source,files:sourceFiles,imports};
+  s.experimentManifest=plain(sourceOutcome.experimentManifest);s.candidateResults=plain(sourceOutcome.candidateResults);
+  s.selectionReceipt=plain(sourceOutcome.correctedAttempt.selectionReceipt);s.selectedCandidateId='steps-100';
+  s.evaluationReceipt=plain(winner.evaluation);s.releasedModel=null;s.releaseStatus='pending';s.publicationAttempt=0;
+  s.correctCheckpoint=plain(correctCheckpoint);s.wrongCheckpoint=plain(wrongCheckpoint);
+  emit('ml.release.plan-pinned',{planRef:pinnedPlanRef,plan:pinnedPlan,trainingInvoked:false,lineageRequired:false,
+    lineageReason:'Retained raw-input GP proof has no new backend lineage receipt; this plan requires selection and quality evidence.'});
+}), 'import-pinned-evidence');
+chart.addFunction('Connect a fresh JAX worker without training',stage(async s=>{await connect();s.backend=plain(trainer!.backend);s.liveDatasets=plain(trainer!.datasets);}), 'connect-fresh-backend');
+chart.addFunction('Reload winner and alternative as new live model references',stage(async s=>{
+  loadedCorrect=await adapter().loadCheckpoint({checkpoint:checkpointRef(correctCheckpoint)});
+  loadedWrong=await adapter().loadCheckpoint({checkpoint:checkpointRef(wrongCheckpoint)});
+  s.winningModel=plain(await verifyModel({modelRef:loadedCorrect}));s.alternativeModel=plain(await verifyModel({modelRef:loadedWrong}));
+  s.modelRef=plain(loadedWrong);s.selectedCandidateId='steps-30';
+  emit('ml.release.checkpoints-reloaded',{winningModel:loadedCorrect,alternativeModel:loadedWrong,trainingInvoked:false});
+}), 'load-model-handles');
+chart.addFunction('Reject the wrong live predictor against the pinned release plan',stage(async s=>{
+  const result=await prepareModelRelease({planRef:pinnedPlanRef,modelRef:plain(s.modelRef),store,verifyModel});
+  s.releasePreparation=plain(result);s.wrongModelAttempt=plain(result);s.selectionDecision=plain(result.decision.checks?.selection??null);setDecision(s,result);
+  if(result.allowed)throw new Error('Wrong proposed model unexpectedly passed pinned release preparation');
+}), 'reject-wrong-model');
+const wrong=chart.addDeciderFunction('Keep the unapproved model away from publication',s=>decide(s,
+  [{when:{releaseAllowed:{eq:true}},then:'unexpected',label:'The selected model must match the pinned plan and both guards'}],'blocked'),'wrong-release-policy');
+wrong.addFunctionBranch('unexpected','Fail if the wrong model is approved',stage(()=>{throw new Error('Wrong release proposal passed');}));
+wrong.addFunctionBranch('blocked','Record the wrong-model release denial',stage(s=>{s.releaseStatus='blocked-wrong-model';}));chart=wrong.end();
+chart.addFunction('Prepare the exact approved winner for publication',stage(async s=>{
+  s.modelRef=plain(await verifyModel({modelRef:loadedCorrect}));s.selectedCandidateId='steps-100';
+  approvedPreparation=await prepareModelRelease({planRef:pinnedPlanRef,modelRef:plain(s.modelRef),store,verifyModel});
+  s.releasePreparation=plain(approvedPreparation);s.preparedArtifactRef=plain(approvedPreparation.preparedRef);
+  s.selectionDecision=plain(approvedPreparation.record?.selectionDecision??approvedPreparation.decision.checks?.selection??null);setDecision(s,approvedPreparation);
+  if(!approvedPreparation.allowed||!approvedPreparation.preparedRef)throw new Error('Correct pinned winner was not prepared');
+}), 'prepare-correct-model');
+chart.addFunction('Reject storage returning different checkpoint bytes at publication',stage(async s=>{
+  const wrongBytes=await store.read(wrongCheckpoint),observed:any[]=[];
+  const swappedStore={...store,read:async(ref:ArtifactRef)=>{
+    if(ref.sha256===correctCheckpoint.sha256){observed.push({requested:ref,returnedSha256:sha(wrongBytes),returnedBytes:wrongBytes.length});return wrongBytes;}
+    return store.read(ref);
+  }};
+  const result=await publish(s,createLocalModelPublisher({root:publisherRoot}),swappedStore);
+  s.storageSwapAttempt=plain(result);s.storageSwapObservations=observed;s.publicationResult=plain(result);s.publicationAttempt={phase:'storage-swap',attempt:1};setDecision(s,result);
+  protocol('ml.release.storage-swap-refused',{requestedSha256:correctCheckpoint.sha256,actualSha256:wrongCheckpoint.sha256,result});
+  if(result.allowed||observed.length===0)throw new Error('Storage swap was not observed and rejected');
+}), 'reject-storage-swap');
+chart.addFunction('Reject different model bytes at the publisher receiver',stage(async s=>{
+  const local=createLocalModelPublisher({root:publisherRoot}),wrongBytes=await store.read(wrongCheckpoint);
+  let transportCalled=false;
+  const transport={lookup:local.lookup,publish:async(request:any)=>{transportCalled=true;protocol('ml.release.receiver-swap-injected',{
+    approvedSha256:correctCheckpoint.sha256,actualSha256:wrongCheckpoint.sha256});return local.publish({...request,modelBytes:wrongBytes});}};
+  const before=await local.readState(),result=await publish(s,transport),after=await local.readState();
+  s.receiverSwapAttempt=plain(result);s.receiverSwapState={before:plain(before),after:plain(after),transportCalled};
+  s.publicationResult=plain(result);s.publicationAttempt={phase:'receiver-swap',attempt:1};setDecision(s,result);
+  if(result.allowed||!transportCalled||JSON.stringify(before)!==JSON.stringify(after))throw new Error('Receiver swap was not refused without publication');
+}), 'reject-receiver-swap');
+chart.addFunction('Publish once, lose the acknowledgment, then retry from a fresh worker',stage(async s=>{
+  const attempt=++publishAttempts;s.publicationAttempt={phase:'publish-and-retry',attempt,freshPublisherClient:true};
+  if(!trainer){
+    const oldModel=plain(s.modelRef);await connect();s.backend=plain(trainer!.backend);
+    s.modelRef=plain(await adapter().loadCheckpoint({checkpoint:checkpointRef(correctCheckpoint)}));
+    protocol('ml.release.retry-model-reloaded',{attempt,priorModelRef:oldModel,currentModelRef:s.modelRef,
+      sameInference:oldModel.inferenceIdentity?.sha256===s.modelRef.inferenceIdentity?.sha256});
+  }
+  const local=createLocalModelPublisher({root:publisherRoot});
+  const transport={lookup:async(request:any)=>{
+    const existing=await local.lookup(request);
+    if(existing)protocol('ml.release.publisher-response',{attempt,response:existing,mode:'historical-lookup',liveSessionId:trainer!.backend.sessionId});
+    return existing;
+  },publish:async(request:any)=>{
+    const committed=await local.publish(request);
+    protocol('ml.release.publisher-response',{attempt,response:committed,mode:'publish',liveSessionId:trainer!.backend.sessionId});
+    if(!committed.allowed)return committed;
+    if(!ackLost){
+      ackLost=true;protocol('ml.release.acknowledgment-lost',{attempt,committedResponse:committed,
+        note:'Actual durable publisher result exists; client acknowledgment is deliberately discarded before the FootPrint stage can commit.'});
+      await trainer!.close();trainer=undefined;throw new Error('Injected acknowledgment loss after durable local commit');
+    }
+    return committed;
+  }};
+  const result=await publish(s,transport);
+  if(attempt===1&&ackLost){
+    protocol('ml.release.publication-outcome-before-retry',{attempt,result});
+    throw new Error('Injected acknowledgment loss after durable local commit');
+  }
+  if(!result.allowed)throw new Error('Publication failed: '+JSON.stringify(result.reasons));
+  s.publicationResult=plain(result);s.releasePreparation=plain(approvedPreparation);s.releaseDecision=plain(result.decision);s.releaseAllowed=result.allowed;
+  s.releasedModel=plain(s.modelRef);s.releaseStatus=result.status;s.successfulRetry=plain(result);
+  s.publicationAttempt={phase:'publish-and-retry',attempt,freshPublisherClient:true,liveSessionId:trainer!.backend.sessionId};
+}), 'publish-with-lost-ack').retry({attempts:2,retryOn:error=>error instanceof Error&&error.message==='Injected acknowledgment loss after durable local commit'});
+chart.addFunction('Refuse conflicting payload and stale target revision',stage(async s=>{
+  const local=createLocalModelPublisher({root:publisherRoot});
+  const differentPayload={...pinnedPlan,releaseId:'jax-gp-other-target',target:{name:'gp-sine-shadow',expectedRevision:null}};
+  const conflictPlanRef=await putJson(differentPayload,'footprint-ml/model-release-plan-json/v1');
+  const conflictPrep=await prepareModelRelease({planRef:conflictPlanRef,modelRef:plain(s.modelRef),store,verifyModel});
+  if(!conflictPrep.allowed)throw new Error('Payload conflict fixture was not otherwise valid');
+  const keyConflict=await publishModelRelease({planRef:conflictPlanRef,preparedRef:conflictPrep.preparedRef!,modelRef:plain(s.modelRef),store,verifyModel,publisher:local});
+  const staleTarget={...pinnedPlan,releaseId:'jax-gp-stale-target',idempotencyKey:'jax-gp-release-attempt-002'};
+  const stalePlanRef=await putJson(staleTarget,'footprint-ml/model-release-plan-json/v1');
+  const stalePrep=await prepareModelRelease({planRef:stalePlanRef,modelRef:plain(s.modelRef),store,verifyModel});
+  if(!stalePrep.allowed)throw new Error('Target conflict fixture was not otherwise valid');
+  const targetConflict=await publishModelRelease({planRef:stalePlanRef,preparedRef:stalePrep.preparedRef!,modelRef:plain(s.modelRef),store,verifyModel,publisher:local});
+  s.conflictProbes={keyConflict:{planRef:conflictPlanRef,preparation:plain(conflictPrep),publication:plain(keyConflict)},
+    targetConflict:{planRef:stalePlanRef,preparation:plain(stalePrep),publication:plain(targetConflict)}};
+  protocol('ml.release.conflicts-refused',{keyConflict,targetConflict});
+  if(keyConflict.allowed||targetConflict.allowed)throw new Error('A conflicting payload or stale target revision was accepted');
+}), 'check-conflicts');
+chart.addFunction('Recover an expired approval only when publication already exists',stage(async s=>{
+  // This is a separate target/registry: the primary lost-reply test retains one publication.
+  const expiryPublisher=createLocalModelPublisher({root:resolve(root,'expiry-publisher')});
+  const winner=sourceOutcome.candidateResults.find((r:any)=>r.candidateId==='steps-100');
+  const maxAgeMs=Date.now()-winner.evaluation.createdAt+1500;
+  const policy={...pinnedPlan.qualityPolicy,maxAgeMs};
+  const shortPlan={...pinnedPlan,releaseId:'short-lived-release',idempotencyKey:'short-lived-existing',
+    target:{name:'gp-expiry-existing',expectedRevision:null},qualityPolicy:policy};
+  const missingPlan={...shortPlan,releaseId:'short-lived-missing',idempotencyKey:'short-lived-missing',
+    target:{name:'gp-expiry-missing',expectedRevision:null}};
+  const shortPin=await putJson(shortPlan,'footprint-ml/model-release-plan-json/v1');
+  const missingPin=await putJson(missingPlan,'footprint-ml/model-release-plan-json/v1');
+  const prep=await prepareModelRelease({planRef:shortPin,modelRef:plain(s.modelRef),store,verifyModel});
+  const missingPrep=await prepareModelRelease({planRef:missingPin,modelRef:plain(s.modelRef),store,verifyModel});
+  if(!prep.allowed||!missingPrep.allowed)throw new Error('Short-lived evidence expired before preparation');
+  const first=await publishModelRelease({planRef:shortPin,preparedRef:prep.preparedRef!,modelRef:plain(s.modelRef),store,verifyModel,publisher:expiryPublisher});
+  if(!first.allowed||first.status!=='published')throw new Error('Short-lived first publication did not complete before expiry');
+  const validUntil=prep.record!.payload.validUntil!;
+  await new Promise(resolveWait=>setTimeout(resolveWait,Math.max(0,validUntil-Date.now()+25)));
+  const afterExpiry=Date.now();
+  // Historical acknowledgement needs no live model. It does not authorize a new commit.
+  const recovered=await publishModelRelease({planRef:shortPin,preparedRef:prep.preparedRef!,store,publisher:expiryPublisher});
+  const missing=await publishModelRelease({planRef:missingPin,preparedRef:missingPrep.preparedRef!,store,publisher:expiryPublisher});
+  const registry=await expiryPublisher.readState();
+  if(afterExpiry<=validUntil||!recovered.allowed||recovered.status!=='already-published'||missing.allowed||registry.publications.length!==1||!isDeepStrictEqual(first.publisherReceipt,recovered.publisherReceipt))
+    throw new Error('Expired acknowledgement was not separated from a new expired release');
+  s.expiryRecovery={planRef:shortPin,missingPlanRef:missingPin,preparation:plain(prep),missingPreparation:plain(missingPrep),
+    first:plain(first),validUntil,afterExpiry,recovered:plain(recovered),missing:plain(missing),
+    liveVerificationSupplied:false,publicationCount:registry.publications.length,registry:plain(registry),
+    originalReceiptUnchanged:isDeepStrictEqual(first.publisherReceipt,recovered.publisherReceipt)};
+  protocol('ml.release.expired-acknowledgement-checked',s.expiryRecovery);
+}), 'recover-expired-ack');
+chart.addFunction('Read the durable target and retained idempotency outcome',stage(async s=>{
+  const local=createLocalModelPublisher({root:publisherRoot});s.publisherState=plain(await local.readState());
+  s.target=plain(await local.readTarget(pinnedPlan.target.name));s.backendSessions=plain(backendSessions);s.nativeRetryCount=rows.filter(row=>row.type==='retry').length;
+  if(s.nativeRetryCount!==1||publishAttempts!==2||backendSessions.length!==2)throw new Error('The native retry and fresh-worker proof did not run exactly as declared');
+}), 'verify-final-target');
+
+const executor=new FlowChartExecutor(chart.build());executor.setReadTracking('full');executor.setWriteTracking('full');executor.attachCombinedRecorder(recorder);
+try{
+  const started=performance.now();await executor.run();const elapsedMs=performance.now()-started;
+  const footprint=executor.getSnapshot(),s:any=footprint.sharedState;
+  const descriptor={schemaVersion:1,bindings:{model:'modelRef',receipt:'evaluationReceipt',decision:'releaseDecision',allowed:'releaseAllowed',releasedModel:'releasedModel'},
+    selection:{manifest:'experimentManifest',results:'candidateResults',receipt:'selectionReceipt',decision:'selectionDecision',candidate:'selectedCandidateId'},
+    publication:{pin:'releasePlanRef',plan:'releasePlan',preparation:'releasePreparation',publication:'publicationResult',attempt:'publicationAttempt'}};
+  const trace={schema:'footprint-model-release-proof/v1',workflow:{kind:'pinned-model-release/v1'},mlInvestigation:descriptor,footprint,rows};
+  const encoded=JSON.stringify(trace);await writeFile(resolve(root,'trace.json'),encoded);
+  const outcome={schema:'footprint-model-release-outcome/v1',recordedAt:new Date().toISOString(),root,
+    releasePlanRef:s.releasePlanRef,releasePlan:s.releasePlan,sourceEvidence:s.sourceEvidence,
+    wrongModelAttempt:s.wrongModelAttempt,approvedPreparation:s.releasePreparation,storageSwapAttempt:s.storageSwapAttempt,
+    storageSwapObservations:s.storageSwapObservations,receiverSwapAttempt:s.receiverSwapAttempt,receiverSwapState:s.receiverSwapState,
+    successfulRetry:s.successfulRetry,publicationAttempt:s.publicationAttempt,publicationResult:s.publicationResult,
+    releasedModel:s.releasedModel,releaseStatus:s.releaseStatus,conflictProbes:s.conflictProbes,
+    publisherState:s.publisherState,target:s.target,backendSessions,protocolObservations,nativeRetryCount:s.nativeRetryCount,
+    expiryRecovery:s.expiryRecovery,trainingInvoked:false,measurements:{elapsedMs,traceBytes:Buffer.byteLength(encoded),commits:footprint.commitLog.length,callbackRows:rows.length},
+    boundaries:['Reuses hash-checked saved JAX candidates and evaluation evidence; no new training or test evaluation.',
+      'The plan requires matching evaluation and selection evidence. No data-lineage receipt is invented for the raw-input GP example.',
+      'The first durable publication is observed in a real publisher response and supplemental callback before stage failure; FootPrint discards its uncommitted scope writes.',
+      'The retry creates a fresh Python worker and publisher client, reloads the same prediction model and reuses the same pinned plan, prepared artifact and idempotency key.',
+      'The publisher is a local filesystem reference implementation; this proof does not establish cloud registry, multi-host or distributed exactly-once behavior.']};
+  await writeFile(resolve(root,'outcome.json'),JSON.stringify(outcome,null,2)+'\n');await writeFile(resolve(here,'results.json'),JSON.stringify(outcome,null,2)+'\n');
+  console.log(JSON.stringify({wrongModelAllowed:s.wrongModelAttempt.allowed,storageSwapAllowed:s.storageSwapAttempt.allowed,
+    receiverSwapAllowed:s.receiverSwapAttempt.allowed,releaseStatus:s.releaseStatus,nativeRetryCount:s.nativeRetryCount,
+    backendSessions:backendSessions.length,keyConflictAllowed:s.conflictProbes.keyConflict.publication.allowed,
+    targetConflictAllowed:s.conflictProbes.targetConflict.publication.allowed,elapsedMs},null,2));
+}finally{await trainer?.close();}

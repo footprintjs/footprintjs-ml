@@ -1,0 +1,287 @@
+import { artifactRef, checkpointRef, inferenceIdentity, readEvaluationReceipt, receiptCheckpoint,
+  checkRelease } from 'footprintjs-ml';
+import type { ArtifactRef, CheckpointRef, DatasetRef, EvaluationReceipt, JsonObject, JsonValue,
+  ModelRef, ReleaseDecision, ReleasePolicy } from 'footprintjs-ml';
+import { createHash, randomUUID } from 'node:crypto';
+import { mkdir, open, link, unlink, readFile, realpath } from 'node:fs/promises';
+import { basename, dirname, isAbsolute, relative, resolve, sep, win32 } from 'node:path';
+
+export const RECOVERY_MANIFEST_FORMAT = 'footprint-ml/recovery-manifest-json/v1';
+export interface RecoveryManifestInput {
+  readonly runId: string;
+  readonly planSha256: string;
+  readonly checkpoint: CheckpointRef;
+  readonly evaluationReceipt: EvaluationReceipt;
+  /** Historical dataset handle: re-register the data in the new backend. */
+  readonly validationDatasetRef: DatasetRef;
+  readonly preprocessingVersion: string;
+  readonly evaluationMethodVersion: string;
+  readonly parameters: JsonObject;
+  readonly policy: ReleasePolicy;
+  readonly sourceTrace: ArtifactRef;
+  readonly priorBackendSessionId: string;
+}
+export interface RecoveryManifest extends RecoveryManifestInput {
+  readonly kind: 'ml-recovery-manifest'; readonly schemaVersion: 1;
+}
+export interface RecoveryReason { readonly code: string; readonly message: string }
+export interface RecoverySourceDecision {
+  readonly kind: 'recovery-source-decision'; readonly schemaVersion: 1;
+  readonly allowed: boolean; readonly status: 'allow' | 'deny' | 'unknown';
+  readonly reasons: readonly RecoveryReason[];
+  readonly bindings: { readonly expectedCheckpoint: CheckpointRef | null; readonly actualModel: ModelRef | null };
+}
+export interface LocalReleaseMarker {
+  readonly kind: 'ml-local-release-marker'; readonly schemaVersion: 1;
+  readonly runId: string; readonly modelRef: ModelRef;
+  readonly receipt: EvaluationReceipt; readonly decision: ReleaseDecision;
+}
+export interface LocalPublicationResult {
+  readonly kind: 'local-publication-result'; readonly schemaVersion: 1;
+  readonly allowed: boolean; readonly status: 'published' | 'already-published' | 'deny' | 'unknown';
+  readonly path: string; readonly reasons: readonly RecoveryReason[]; readonly marker: LocalReleaseMarker | null;
+}
+export class RecoveryContractError extends Error {
+  constructor(readonly code: string, message: string) { super(message); this.name = 'RecoveryContractError'; }
+}
+function fail(code: string, message: string): never { throw new RecoveryContractError(code, message); }
+const message = (error: unknown) => error instanceof Error ? error.message : 'Invalid recovery evidence';
+const text = (value: unknown, label: string): string => typeof value === 'string' && value.trim()
+  ? value : fail('invalid-string', `${label} must be a nonempty string`);
+const integer = (value: unknown, label: string): number => typeof value === 'number' && Number.isSafeInteger(value) && value > 0
+  ? value : fail('invalid-integer', `${label} must be a positive safe integer`);
+const digest = (value: unknown, label: string): string => typeof value === 'string' && /^[a-f\d]{64}$/i.test(value)
+  ? value.toLowerCase() : fail('invalid-digest', `${label} must be a SHA-256 hex digest`);
+const hash = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
+
+/** Strict JSON snapshots preserve evidence without invoking accessors or silently coercing values. */
+function snapshot<T>(value: T, label = 'value', ancestors = new Set<object>(), depth = 0): T {
+  if (depth > 64) fail('invalid-json', `${label} exceeds the JSON nesting limit`);
+  if (value === null || typeof value === 'string' || typeof value === 'boolean') return value;
+  if (typeof value === 'number') return Number.isFinite(value) ? value : fail('invalid-json', `${label} is nonfinite`);
+  if (typeof value !== 'object') fail('invalid-json', `${label} must contain only JSON values`);
+  if (ancestors.has(value)) fail('invalid-json', `${label} contains a cycle`);
+  if (!Array.isArray(value) && ![Object.prototype, null].includes(Object.getPrototypeOf(value)))
+    fail('invalid-json', `${label} must contain plain JSON objects`);
+  if (Object.getOwnPropertySymbols(value).length) fail('invalid-json', `${label} has symbol properties`);
+  const next = new Set(ancestors); next.add(value);
+  const descriptors = Object.getOwnPropertyDescriptors(value);
+  for (const [key, item] of Object.entries(descriptors))
+    if (item.enumerable && !('value' in item)) fail('invalid-json', `${label}.${key} is an accessor`);
+  if (Array.isArray(value)) {
+    if (Object.keys(value).some(key => !/^\d+$/.test(key) || Number(key) >= value.length))
+      fail('invalid-json', `${label} has non-index array properties`);
+    const copy = [];
+    for (let index = 0; index < value.length; index++) {
+      if (!Object.hasOwn(descriptors, index)) fail('invalid-json', `${label} contains an array hole`);
+      copy.push(snapshot(descriptors[index].value, `${label}[${index}]`, next, depth + 1));
+    }
+    return Object.freeze(copy) as T;
+  }
+  const copy: Record<string, unknown> = {};
+  for (const [key, item] of Object.entries(descriptors)) if (item.enumerable)
+    Object.defineProperty(copy, key, { value: snapshot(item.value, `${label}.${key}`, next, depth + 1), enumerable: true });
+  return Object.freeze(copy) as T;
+}
+function object(value: unknown, label: string): Record<string, unknown> {
+  const copy = snapshot(value, label);
+  if (!copy || typeof copy !== 'object' || Array.isArray(copy)) fail('invalid-json', `${label} must be a JSON object`);
+  return copy as Record<string, unknown>;
+}
+function canonical(value: unknown): string {
+  if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
+  if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonical((value as Record<string, unknown>)[key])).join(',') + '}';
+  return JSON.stringify(value);
+}
+function runRelative(value: unknown): string {
+  const path = text(value, 'artifact.path');
+  if (isAbsolute(path) || win32.isAbsolute(path) || /[\\\0:]/.test(path) || path.split('/').some(part => !part || part === '.' || part === '..'))
+    fail('invalid-artifact-path', 'Artifact paths must be portable run-relative paths without traversal');
+  return path;
+}
+function checkedArtifact(value: unknown): ArtifactRef {
+  const ref = artifactRef(value); runRelative(ref.path); return ref;
+}
+function model(value: unknown): ModelRef {
+  const copy = object(value, 'modelRef');
+  if (copy.kind !== 'model') fail('invalid-model', 'Expected a model reference');
+  text(copy.sessionId, 'modelRef.sessionId'); integer(copy.handle, 'modelRef.handle'); checkedArtifact(copy.originArtifact);
+  if (Object.hasOwn(copy, 'inferenceIdentity')) inferenceIdentity(copy.inferenceIdentity);
+  return copy as unknown as ModelRef;
+}
+function dataset(value: unknown): DatasetRef {
+  const copy = object(value, 'datasetRef');
+  if (copy.kind !== 'dataset') fail('invalid-dataset', 'Expected a dataset reference');
+  text(copy.sessionId, 'datasetRef.sessionId'); integer(copy.handle, 'datasetRef.handle'); text(copy.role, 'datasetRef.role');
+  integer(copy.rows, 'datasetRef.rows'); checkedArtifact(copy.artifact);
+  if (!Array.isArray(copy.shape) || !copy.shape.length || copy.shape[0] !== copy.rows)
+    fail('invalid-dataset', 'Dataset shape must begin with its row count');
+  copy.shape.forEach(size => integer(size, 'datasetRef.shape dimension'));
+  return copy as unknown as DatasetRef;
+}
+function policy(value: unknown): ReleasePolicy {
+  const copy = object(value, 'policy'), metric = text(copy.metric, 'policy.metric');
+  if (copy.operator !== 'gte' && copy.operator !== 'lte') fail('invalid-policy', 'Policy operator must be gte or lte');
+  if (typeof copy.threshold !== 'number' || !Number.isFinite(copy.threshold)) fail('invalid-policy', 'Policy threshold must be finite');
+  if (Object.hasOwn(copy, 'maxAgeMs') && (typeof copy.maxAgeMs !== 'number' || !Number.isFinite(copy.maxAgeMs) || copy.maxAgeMs < 0))
+    fail('invalid-policy', 'Policy maxAgeMs must be finite and nonnegative');
+  return snapshot({ metric, operator: copy.operator, threshold: copy.threshold,
+    ...(copy.maxAgeMs === undefined ? {} : { maxAgeMs: copy.maxAgeMs }) }) as ReleasePolicy;
+}
+const sameArtifact = (a: ArtifactRef, b: ArtifactRef) => a.sha256.toLowerCase() === b.sha256.toLowerCase() && a.bytes === b.bytes && a.format === b.format;
+const sameInference = (a: ModelRef, b: ModelRef) => a.inferenceIdentity === undefined ? b.inferenceIdentity === undefined :
+  b.inferenceIdentity !== undefined && a.inferenceIdentity.profile === b.inferenceIdentity.profile && a.inferenceIdentity.sha256.toLowerCase() === b.inferenceIdentity.sha256.toLowerCase();
+const sameModel = (a: ModelRef, b: ModelRef) => sameArtifact(a.originArtifact, b.originArtifact) && sameInference(a, b);
+const sameDataset = (a: DatasetRef, b: DatasetRef) => sameArtifact(a.artifact, b.artifact) && a.role === b.role && a.rows === b.rows && canonical(a.shape) === canonical(b.shape);
+function validateArtifactPaths(value: unknown): void {
+  if (!value || typeof value !== 'object') return;
+  if ((value as Record<string, unknown>).kind === 'artifact') checkedArtifact(value);
+  for (const child of Object.values(value)) validateArtifactPaths(child);
+}
+
+function manifestFrom(value: unknown): RecoveryManifest {
+  const copy = object(value, 'recovery manifest');
+  const receipt = readEvaluationReceipt(copy.evaluationReceipt), checkpointValue = object(copy.checkpoint, 'checkpoint');
+  if (checkpointValue.kind !== 'checkpoint') fail('invalid-checkpoint', 'Expected checkpoint kind');
+  const checkpoint = checkpointRef(checkedArtifact(checkpointValue.artifact));
+  const validationDatasetRef = dataset(copy.validationDatasetRef), priorBackendSessionId = text(copy.priorBackendSessionId, 'priorBackendSessionId');
+  if (!sameArtifact(checkpoint.artifact, receiptCheckpoint(receipt).artifact))
+    fail('manifest-checkpoint-mismatch', 'The recovery checkpoint differs from the evaluation receipt audit checkpoint');
+  if (!sameDataset(validationDatasetRef, receipt.datasetRef) || validationDatasetRef.role !== 'validation')
+    fail('manifest-dataset-mismatch', 'The recovery validation partition differs from the evaluated validation data');
+  if (receipt.modelRef.sessionId !== priorBackendSessionId || receipt.datasetRef.sessionId !== priorBackendSessionId || validationDatasetRef.sessionId !== priorBackendSessionId)
+    fail('manifest-session-mismatch', 'Historical evaluation and validation references must identify the prior backend session');
+  const preprocessingVersion = text(copy.preprocessingVersion, 'preprocessingVersion');
+  const evaluationMethodVersion = text(copy.evaluationMethodVersion, 'evaluationMethodVersion');
+  const parameters = object(copy.parameters, 'parameters') as JsonObject;
+  if (preprocessingVersion !== receipt.preprocessingVersion || evaluationMethodVersion !== receipt.evaluationMethodVersion || canonical(parameters) !== canonical(receipt.parameters))
+    fail('manifest-evaluation-mismatch', 'Recovery evaluation versions or parameters disagree with the saved receipt');
+  const result = snapshot({ kind: 'ml-recovery-manifest' as const, schemaVersion: 1 as const,
+    runId: text(copy.runId, 'runId'), planSha256: digest(copy.planSha256, 'planSha256'), checkpoint,
+    evaluationReceipt: receipt, validationDatasetRef, preprocessingVersion, evaluationMethodVersion, parameters,
+    policy: policy(copy.policy), sourceTrace: checkedArtifact(copy.sourceTrace), priorBackendSessionId });
+  validateArtifactPaths(result);
+  return result;
+}
+/** Historical handles remain inside evidence. The checkpoint is the resume authority. */
+export function createRecoveryManifest(input: RecoveryManifestInput): RecoveryManifest { return manifestFrom(input); }
+export function readRecoveryManifest(value: unknown): RecoveryManifest {
+  const copy = object(value, 'recovery manifest');
+  if (copy.kind !== 'ml-recovery-manifest' || copy.schemaVersion !== 1) fail('invalid-manifest-schema', 'Unsupported recovery manifest schema');
+  return manifestFrom(copy);
+}
+
+export function checkRecoverySource(input: { readonly manifest: unknown; readonly modelRef: ModelRef; readonly planSha256: string }): RecoverySourceDecision {
+  let expectedCheckpoint: CheckpointRef | null = null, actualModel: ModelRef | null = null;
+  const reasons: RecoveryReason[] = []; let denied = false, unknown = false;
+  try {
+    const copy = object(input, 'recovery source request'), manifest = readRecoveryManifest(copy.manifest);
+    actualModel = model(copy.modelRef); expectedCheckpoint = manifest.checkpoint;
+    if (digest(copy.planSha256, 'planSha256') !== manifest.planSha256) {
+      denied = true; reasons.push({ code: 'recovery-plan-mismatch', message: 'The current experiment plan differs from the supervised recovery plan.' });
+    }
+    if (!sameArtifact(actualModel.originArtifact, manifest.checkpoint.artifact)) {
+      denied = true; reasons.push({ code: 'resume-checkpoint-mismatch', message: 'Resuming requires the exact full checkpoint digest, byte count and format, including saved training state.' });
+    }
+    if (actualModel.inferenceIdentity === undefined && manifest.evaluationReceipt.modelRef.inferenceIdentity !== undefined) {
+      unknown = true; reasons.push({ code: 'recovery-inference-unavailable', message: 'The actual loaded model has no measured prediction identity required by the saved evidence.' });
+    } else if (!sameInference(actualModel, manifest.evaluationReceipt.modelRef)) {
+      denied = true; reasons.push({ code: 'recovery-inference-mismatch', message: 'The actual loaded model inference identity differs from the saved evaluation model.' });
+    } else if (actualModel.inferenceIdentity === undefined) reasons.push({ code: 'prediction-identity-unavailable', message: 'This legacy evidence has checkpoint coverage without a measured prediction identity.' });
+    else reasons.push({ code: 'prediction-identity-matches', message: 'Declared prediction identity matches; this alone does not establish the correct training checkpoint.' });
+  } catch (error) { unknown = true; reasons.push({ code: 'invalid-or-missing-recovery-evidence', message: message(error) }); }
+  const allowed = !denied && !unknown;
+  if (allowed) reasons.push({ code: 'recovery-source-matches', message: 'The plan, full checkpoint and declared inference identity match; new runtime handles may differ.' });
+  return snapshot({ kind: 'recovery-source-decision' as const, schemaVersion: 1 as const, allowed,
+    status: allowed ? 'allow' as const : denied ? 'deny' as const : 'unknown' as const,
+    reasons, bindings: { expectedCheckpoint, actualModel } });
+}
+
+const contained = (root: string, file: string) => { const rel = relative(root, file); if (rel === '..' || rel.startsWith('..' + sep) || isAbsolute(rel)) fail('path-outside-root', 'Recovery path escapes the experiment root'); };
+async function syncDirectory(path: string): Promise<void> { const file = await open(path, 'r'); try { await file.sync(); } finally { await file.close(); } }
+/** Fsync complete temporary bytes, then atomically link without replacing an existing destination. */
+async function atomicCreate(path: string, bytes: Uint8Array): Promise<boolean> {
+  await mkdir(dirname(path), { recursive: true });
+  const temporary = resolve(dirname(path), `.${basename(path)}.${randomUUID()}.tmp`);
+  const file = await open(temporary, 'wx', 0o600);
+  try {
+    try { await file.writeFile(bytes); await file.sync(); } finally { await file.close(); }
+    try { await link(temporary, path); }
+    catch (error) { if ((error as NodeJS.ErrnoException).code === 'EEXIST') return false; throw error; }
+    await syncDirectory(dirname(path)); return true;
+  } finally { await unlink(temporary); }
+}
+export async function persistRecoveryManifest(input: { readonly root: string; readonly path: string; readonly manifest: RecoveryManifest }): Promise<ArtifactRef> {
+  const copy = object(input, 'persist manifest request'), manifest = readRecoveryManifest(copy.manifest);
+  const root = resolve(text(copy.root, 'root')), path = runRelative(copy.path), file = resolve(root, path);
+  await mkdir(dirname(file), { recursive: true });
+  contained(await realpath(root), await realpath(dirname(file)));
+  const bytes = Buffer.from(canonical(manifest) + '\n');
+  if (!await atomicCreate(file, bytes)) fail('manifest-exists', 'A recovery manifest already exists at this path; it was not overwritten');
+  return artifactRef({ kind: 'artifact', path, bytes: bytes.length, sha256: hash(bytes), format: RECOVERY_MANIFEST_FORMAT });
+}
+export async function loadRecoveryManifest(input: { readonly root: string; readonly reference: ArtifactRef; readonly planSha256: string }): Promise<RecoveryManifest> {
+  const copy = object(input, 'load manifest request'), reference = checkedArtifact(copy.reference);
+  if (reference.format !== RECOVERY_MANIFEST_FORMAT) fail('invalid-manifest-format', 'Expected a recovery manifest artifact');
+  const root = await realpath(resolve(text(copy.root, 'root'))), file = await realpath(resolve(root, reference.path)); contained(root, file);
+  const bytes = await readFile(file);
+  if (bytes.length !== reference.bytes || hash(bytes) !== reference.sha256.toLowerCase())
+    fail('manifest-bytes-mismatch', 'Recovery manifest bytes differ from the externally supervised artifact reference');
+  const manifest = readRecoveryManifest(JSON.parse(bytes.toString('utf8')));
+  if (manifest.planSha256 !== digest(copy.planSha256, 'planSha256')) fail('recovery-plan-mismatch', 'The saved recovery plan differs from the current plan');
+  return manifest;
+}
+
+function publicationMarker(value: unknown): LocalReleaseMarker {
+  const copy = object(value, 'local publication marker');
+  if (copy.kind !== 'ml-local-release-marker' || copy.schemaVersion !== 1) fail('invalid-marker-schema', 'Unsupported local publication marker');
+  const modelRef = model(copy.modelRef), receipt = readEvaluationReceipt(copy.receipt);
+  const decision = object(copy.decision, 'publication decision') as unknown as ReleaseDecision;
+  if (decision.allowed !== true || decision.status !== 'allow' || decision.kind !== 'release-decision' || decision.schemaVersion !== 1)
+    fail('publication-not-approved', 'The supplied release decision must explicitly allow publication');
+  if (!sameArtifact(modelRef.originArtifact, receiptCheckpoint(receipt).artifact))
+    fail('publication-checkpoint-mismatch', 'This recovery example publishes only the exact checkpoint recorded by its saved receipt');
+  const proposed = object((decision.bindings as unknown as Record<string, unknown>)?.proposed, 'decision proposed bindings');
+  const boundModel = model(proposed.modelRef);
+  if (!sameModel(modelRef, boundModel) || modelRef.sessionId !== boundModel.sessionId || modelRef.handle !== boundModel.handle)
+    fail('publication-model-binding-mismatch', 'The release decision was not checked for the proposed current live model');
+  const checkedAt = decision.checkedAt;
+  if (typeof checkedAt !== 'number' || !Number.isFinite(checkedAt) || checkedAt < 0)
+    fail('publication-decision-time-invalid', 'The release decision must retain its finite checkedAt');
+  const replay = checkRelease({ modelRef, datasetRef: dataset(proposed.datasetRef),
+    receipt, preprocessingVersion: text(proposed.preprocessingVersion, 'decision preprocessingVersion'),
+    evaluationMethodVersion: text(proposed.evaluationMethodVersion, 'decision evaluationMethodVersion'),
+    parameters: object(proposed.parameters, 'decision parameters') as JsonObject,
+    policy: policy(decision.policy), now: checkedAt });
+  if (!replay.allowed || canonical(replay) !== canonical(decision))
+    fail('publication-decision-binding-mismatch', 'The supplied coverage, receipt, evaluation context or policy decision does not match a replayed allowed check');
+  const marker = snapshot({ kind: 'ml-local-release-marker' as const, schemaVersion: 1 as const,
+    runId: text(copy.runId, 'runId'), modelRef, receipt, decision });
+  validateArtifactPaths(marker); return marker;
+}
+
+/** One durable local approval marker, not an atomic deployment or a trainer transaction. */
+export async function publishLocallyOnce(input: { readonly path: string; readonly runId: string; readonly modelRef: ModelRef;
+  readonly receipt: EvaluationReceipt; readonly decision: ReleaseDecision }): Promise<LocalPublicationResult> {
+  let path = '', marker: LocalReleaseMarker | null = null;
+  const result = (status: LocalPublicationResult['status'], code: string, detail: string) => snapshot({
+    kind: 'local-publication-result' as const, schemaVersion: 1 as const,
+    allowed: status === 'published' || status === 'already-published', status, path,
+    reasons: [{ code, message: detail }], marker });
+  try {
+    const copy = object(input, 'publication request'); path = resolve(text(copy.path, 'path'));
+    try { marker = publicationMarker({ ...copy, kind: 'ml-local-release-marker', schemaVersion: 1 }); }
+    catch (error) { return result('deny', error instanceof RecoveryContractError ? error.code : 'invalid-publication-evidence', message(error)); }
+    const bytes = Buffer.from(canonical(marker) + '\n');
+    if (await atomicCreate(path, bytes)) return result('published', 'local-marker-created', 'Created and fsynced one exclusive local approval marker.');
+    let existing: LocalReleaseMarker;
+    try { existing = publicationMarker(JSON.parse(await readFile(path, 'utf8'))); }
+    catch (error) { return result('deny', 'existing-marker-invalid', message(error)); }
+    if (existing.runId !== marker.runId || !sameModel(existing.modelRef, marker.modelRef) ||
+        canonical(existing.receipt) !== canonical(marker.receipt) || canonical(existing.decision.policy) !== canonical(marker.decision.policy))
+      return result('deny', 'existing-marker-conflict', 'The existing local marker covers a different run, full checkpoint, inference identity, saved receipt or policy; it was not overwritten.');
+    await syncDirectory(dirname(path));
+    marker = existing;
+    return result('already-published', 'local-marker-already-exists', 'The identical run/checkpoint/inference/receipt approval was already recorded; reopened live handles are allowed.');
+  } catch (error) { return result('unknown', 'local-publication-unavailable', message(error)); }
+}

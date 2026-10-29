@@ -1,0 +1,245 @@
+{
+  "schema": "footprint-ml-release-verification/v1",
+  "passed": true,
+  "trainingInvoked": false,
+  "pythonStarted": false,
+  "publicationInvoked": false,
+  "execution": {
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false
+  },
+  "checks": [
+    {
+      "name": "Actual wrong live model is denied against the pinned release plan",
+      "passed": true
+    },
+    {
+      "name": "Correct exact model has both quality and complete selection approval",
+      "passed": true
+    },
+    {
+      "name": "Storage-side swapped checkpoint bytes are observed and refused",
+      "passed": true
+    },
+    {
+      "name": "Publisher receiver independently refuses alternative bytes without mutation",
+      "passed": true
+    },
+    {
+      "name": "The first actual durable publication preceded the deliberately lost acknowledgment",
+      "passed": true
+    },
+    {
+      "name": "Native FootPrint retry recovers the same publication receipt",
+      "passed": true
+    },
+    {
+      "name": "Retry starts a new numerical backend process and reloads the same predictor",
+      "passed": true
+    },
+    {
+      "name": "One durable publication, target and idempotency outcome remain",
+      "passed": true
+    },
+    {
+      "name": "Same idempotency key cannot authorize another otherwise valid payload",
+      "passed": true
+    },
+    {
+      "name": "A fresh key cannot overwrite a target with a stale expected revision",
+      "passed": true
+    },
+    {
+      "name": "Only the successful retry becomes the committed publication stage state",
+      "passed": true
+    },
+    {
+      "name": "No training or new evaluation was invoked in this release workflow",
+      "passed": true
+    },
+    {
+      "name": "Pinned plan, source evidence, preparation and approved model bytes match their content references",
+      "passed": true,
+      "artifacts": [
+        {
+          "sha256": "4976f281411dbaf573ec98a0e7556f672a538321ce274c7fe0ea62e7ab0ac63e",
+          "bytes": 1562,
+          "format": "footprint-ml/model-release-plan-json/v1"
+        },
+        {
+          "sha256": "d22aa75b8f0ec59d66cedfaaa3f3fd395a3e3875f576dc65f69558f84b42efdf",
+          "bytes": 55281,
+          "format": "footprintjs-ml/prepared-model-release-json/v1"
+        },
+        {
+          "sha256": "22f3acbed72ce24f2f5e146cbfcb4efa843709ecc88a84edcd489df7fd0e3da7",
+          "bytes": 7479,
+          "format": "footprint-ml-adapter-kit/trainstate-npz-v1"
+        },
+        {
+          "sha256": "78d5e3003e6423fe9c0288856ea1e5a66d5797637ebc311782177818cbceba54",
+          "bytes": 1411,
+          "format": "footprint-ml/selection-manifest-json/v1"
+        },
+        {
+          "sha256": "44718b3203ec60f6f825dfb63276c083d2f2e0e94dbd2b51dc4a6624e1009db2",
+          "bytes": 8123,
+          "format": "footprint-ml/selection-results-json/v1"
+        },
+        {
+          "sha256": "22530b494c7cb30d5383dde450fb061d38fb5103aa12aadf3cfc13b42a60aa13",
+          "bytes": 10495,
+          "format": "footprint-ml/selection-receipt-json/v1"
+        },
+        {
+          "sha256": "29605534e99f7502cbe3b139559899f0954fe409893a9019cb07473660497f60",
+          "bytes": 1577,
+          "format": "footprint-ml/model-release-plan-json/v1"
+        },
+        {
+          "sha256": "c4b39d558fa2610ff193dc98b739fc78bb65d9389cab302d0e2f52aaed239fdd",
+          "bytes": 1575,
+          "format": "footprint-ml/model-release-plan-json/v1"
+        },
+        {
+          "sha256": "bf774b2aeb47e8a19d9028be4d88387f70774bba84475f3e180ee0fb8961442d",
+          "bytes": 55343,
+          "format": "footprintjs-ml/prepared-model-release-json/v1"
+        },
+        {
+          "sha256": "fc83c6e3b104157a3dd836302e9c39f7b9aaad1740bc8b6d8bfbde4d6d8aa71b",
+          "bytes": 55341,
+          "format": "footprintjs-ml/prepared-model-release-json/v1"
+        }
+      ]
+    },
+    {
+      "name": "Saved registry bytes match the actual publisher-client readback and target",
+      "passed": true
+    },
+    {
+      "name": "The receiver retained the exact approved checkpoint bytes",
+      "passed": true
+    },
+    {
+      "name": "Saved final state keeps the original pin and successful publication",
+      "passed": true
+    },
+    {
+      "name": "A real-clock expiry permits historical acknowledgement without a live backend",
+      "passed": true
+    },
+    {
+      "name": "No existing publication plus expired evidence does not authorize a new effect",
+      "passed": true
+    },
+    {
+      "name": "The separate expiry registry retains only its original publication",
+      "passed": true
+    },
+    {
+      "name": "Retained JAX source evidence and every imported numerical artifact match their pinned bytes",
+      "passed": true,
+      "artifacts": 6
+    },
+    {
+      "name": "Top-level outcome and committed final state agree",
+      "passed": true
+    },
+    {
+      "name": "Actual worker restarts and retry callbacks are distinct from training and failed scope commits",
+      "passed": true
+    },
+    {
+      "name": "Native Lens follows five decision boundaries with original returned text and denied child processes",
+      "passed": true
+    },
+    {
+      "name": "The saved real-clock expiry confirms history without authorizing a new commit",
+      "passed": true
+    },
+    {
+      "name": "Self-contained HTML embeds the exact saved records and unchanged native inspection bundle",
+      "passed": true
+    },
+    {
+      "name": "Retained release sources match the installed library source",
+      "passed": true
+    },
+    {
+      "name": "All retained evidence remains byte-for-byte unchanged after inspection",
+      "passed": true
+    }
+  ],
+  "inputs": {
+    "results.json": {
+      "sha256": "7f8735302191014d864534bd5237f2210d1d5afc32a44cd2a61dabbc2fcf400b",
+      "bytes": 3232720
+    },
+    "run/outcome.json": {
+      "sha256": "7f8735302191014d864534bd5237f2210d1d5afc32a44cd2a61dabbc2fcf400b",
+      "bytes": 3232720
+    },
+    "run/trace.json": {
+      "sha256": "91aef2f03fc4e2359e62bdef576e60572d4f3088236770f1525227a4232fa4e8",
+      "bytes": 6930823
+    },
+    "run/local-publisher/registry.json": {
+      "sha256": "b988e63867da73d1431bdd884fabf127ddcf5d5a545dd8d6d4c683bf7ce1691e",
+      "bytes": 1376
+    },
+    "run/expiry-publisher/registry.json": {
+      "sha256": "4a89eb74bb0ea120ea7ead11afee440e6b0cbe3e7bf626abbc6c633a32ebe756",
+      "bytes": 1366
+    },
+    "proof-verification.json": {
+      "sha256": "2a6f1be7b20d82d0b40add1d14060656203c442799a3de670ba5f2a91d13551d",
+      "bytes": 4653
+    },
+    "view/native-verification.json": {
+      "sha256": "b2a01eac28209dfc74328f312de0bb35a06a11ce1ff722c32178d2dfbb5a270c",
+      "bytes": 3662
+    },
+    "workflow.ts": {
+      "sha256": "c15f90e3ddd53fd9fee5d58cf7488fed5b560c11230f8904a920c5fede035795",
+      "bytes": 23820
+    },
+    "proof-checks.mjs": {
+      "sha256": "f0a93e77d86c6059c808fc6844514d3cfa66e55f280a6398ea2f60b520149708",
+      "bytes": 10176
+    },
+    "vendor/release-source/release.ts": {
+      "sha256": "048eed3a23d1757b9d4ec04d6d912e8906bf81a7c0feb9f44e87c7b38053a93f",
+      "bytes": 33601
+    },
+    "vendor/release-source/files.ts": {
+      "sha256": "ebd658576526cd98680e37db9933a0f6c4ef31cc743e218beb7adb8924dce58a",
+      "bytes": 4419
+    },
+    "vendor/release-source/local-publisher.ts": {
+      "sha256": "a56058293660a977e12f77a1513c210065ff734cf4773c0f14e35611d43f0e64",
+      "bytes": 16503
+    },
+    "vendor/release-source/RELEASE.md": {
+      "sha256": "ae301934a9d500689ae1d3e553c8a8d2d4be41592b64ad2932d2902d06e70eb5",
+      "bytes": 13906
+    }
+  },
+  "summary": {
+    "mainPublications": 1,
+    "expiryPublications": 1,
+    "mainTarget": "gp-sine-production",
+    "artifactSha256": "22f3acbed72ce24f2f5e146cbfcb4efa843709ecc88a84edcd489df7fd0e3da7",
+    "nativeRetryCount": 1,
+    "backendSessions": 2,
+    "nativeLensCalls": 100,
+    "decisionViews": 5,
+    "expiredExistingAcknowledged": true,
+    "expiredNewDenied": true
+  },
+  "limits": [
+    "Reopens recorded evidence and reads immutable bytes; no model or publisher executes.",
+    "Trusts the original external plan pin, numerical adapter and publisher boundary.",
+    "One-host local publisher; no power-loss durability, cloud/distributed exactly-once or human investigation superiority established."
+  ]
+}

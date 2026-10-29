@@ -1,0 +1,119 @@
+{
+  "schema": "footprint-release-native-lens-verification/v1",
+  "passed": true,
+  "trainingInvoked": false,
+  "pythonStarted": false,
+  "publicationInvoked": false,
+  "execution": {
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false
+  },
+  "source": {
+    "path": "run/trace.json",
+    "sha256": "91aef2f03fc4e2359e62bdef576e60572d4f3088236770f1525227a4232fa4e8",
+    "bytes": 6930823
+  },
+  "nativeToolCalls": 100,
+  "decisions": [
+    {
+      "stageId": "reject-wrong-model#3",
+      "commitIdx": 3,
+      "allowed": false,
+      "modelStep": 30,
+      "publicationStatus": null,
+      "writers": {
+        "pin": "import-pinned-evidence#0",
+        "plan": "import-pinned-evidence#0",
+        "preparation": "reject-wrong-model#3",
+        "attempt": "import-pinned-evidence#0"
+      },
+      "nativeCalls": 20,
+      "nativeResultsVerbatim": true,
+      "warningsPreserved": true
+    },
+    {
+      "stageId": "prepare-correct-model#6",
+      "commitIdx": 6,
+      "allowed": true,
+      "modelStep": 100,
+      "publicationStatus": null,
+      "writers": {
+        "pin": "import-pinned-evidence#0",
+        "plan": "import-pinned-evidence#0",
+        "preparation": "prepare-correct-model#6",
+        "attempt": "import-pinned-evidence#0"
+      },
+      "nativeCalls": 20,
+      "nativeResultsVerbatim": true,
+      "warningsPreserved": true
+    },
+    {
+      "stageId": "reject-storage-swap#7",
+      "commitIdx": 7,
+      "allowed": false,
+      "modelStep": 100,
+      "publicationStatus": "deny",
+      "writers": {
+        "pin": "import-pinned-evidence#0",
+        "plan": "import-pinned-evidence#0",
+        "preparation": "prepare-correct-model#6",
+        "publication": "reject-storage-swap#7",
+        "attempt": "reject-storage-swap#7"
+      },
+      "nativeCalls": 20,
+      "nativeResultsVerbatim": true,
+      "warningsPreserved": true
+    },
+    {
+      "stageId": "reject-receiver-swap#8",
+      "commitIdx": 8,
+      "allowed": false,
+      "modelStep": 100,
+      "publicationStatus": "deny",
+      "writers": {
+        "pin": "import-pinned-evidence#0",
+        "plan": "import-pinned-evidence#0",
+        "preparation": "prepare-correct-model#6",
+        "publication": "reject-receiver-swap#8",
+        "attempt": "reject-receiver-swap#8"
+      },
+      "nativeCalls": 20,
+      "nativeResultsVerbatim": true,
+      "warningsPreserved": true
+    },
+    {
+      "stageId": "publish-with-lost-ack#9",
+      "commitIdx": 9,
+      "allowed": true,
+      "basis": "historical-acknowledgement",
+      "modelStep": 100,
+      "publicationStatus": "already-published",
+      "writers": {
+        "pin": "import-pinned-evidence#0",
+        "plan": "import-pinned-evidence#0",
+        "preparation": "prepare-correct-model#6",
+        "publication": "publish-with-lost-ack#9",
+        "attempt": "publish-with-lost-ack#9"
+      },
+      "nativeCalls": 20,
+      "nativeResultsVerbatim": true,
+      "warningsPreserved": true
+    }
+  ],
+  "sourceUnchanged": true,
+  "code": {
+    "verifier": "1402edade7d720cf3133a44e798624dc88d4879ae4b0cc6c09d81389896f5c41",
+    "session": "5c3d8ea491ea78f7be79dd048aa6da6b168b22d291d4f232d43d47e6d916e815",
+    "bridge": "32c5915a422ae1e981879e6c83e695bcc4f9a65d5d9d4e9e3be1b7cbc19fd2cb"
+  },
+  "retry": {
+    "callbacks": 1,
+    "failedAttempt": 1,
+    "committedAttempt": 2,
+    "committedPublicationStages": 1,
+    "firstDurableOutcome": "published",
+    "retryOutcome": "already-published",
+    "retryMode": "historical-lookup",
+    "classification": "The first durable publisher response is an actual supplemental emit before a failed attempt, not a successful FootPrint commit."
+  }
+}

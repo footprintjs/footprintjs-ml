@@ -1,0 +1,99 @@
+{
+  "schema": "footprint-owned-process-interruption/v1",
+  "runId": "58264750-8661-4c94-b9f1-400a02abdbc8",
+  "spawnedNodePID": 36705,
+  "workerPID": 36706,
+  "killSignal": "SIGKILL",
+  "killedAt": 1793219367463,
+  "barrierObservedBeforeKill": true,
+  "barrier": {
+    "candidateId": "model-B",
+    "completedSteps": 10,
+    "inferenceIdentity": {
+      "kind": "inference-identity",
+      "profile": "footprint-crash-resume-gp-inference/v1",
+      "schemaVersion": 1,
+      "sha256": "8b240726dc47fb637bea24bc36d8763c04ea597ee821d40b5981685dcb0d338e"
+    },
+    "paramsSha256": "c423713fce4b9889b222e0a92739b445544b384744c6d261cf3a2c7de7c87f57",
+    "parentPid": 36705,
+    "pid": 36706,
+    "processGroupId": 36705,
+    "requestedSteps": 70,
+    "resumeCheckpoint": false,
+    "schema": "footprint-crash-resume-barrier/v1",
+    "sourceStep": 30,
+    "step": 40,
+    "waitingFor": "supervisor SIGKILL",
+    "watchdogSeconds": 60,
+    "witnessArtifact": {
+      "bytes": 3999,
+      "format": "footprint-crash-resume/partial-inference-npz/v1",
+      "kind": "artifact",
+      "path": "partial-inference.npz",
+      "sha256": "3c73725dff232d1dc853495754b6601312a746a7b9b7a8fb1d39b31909df111d"
+    }
+  },
+  "childExit": {
+    "code": null,
+    "signal": "SIGKILL"
+  },
+  "checkpointsAtSavedBoundary": [
+    {
+      "path": "checkpoints/1c3d2ece11404c239918a7b701fa68b2.npz",
+      "sha256": "343fdf6efa0b4fa26bf8222df70773657e6ee8a99cb66afb0a7aa8af3eecc694",
+      "bytes": 7955
+    },
+    {
+      "path": "checkpoints/5f3c8393878548eda3c01124cd306038.npz",
+      "sha256": "54cb1a5b3943d7d1c9ac0a08291aba627f5a061cb57763f0d3f32e3822ab1b53",
+      "bytes": 7954
+    },
+    {
+      "path": "checkpoints/f67f272d3a5b48c084c1ad29931db7e9.npz",
+      "sha256": "54cb1a5b3943d7d1c9ac0a08291aba627f5a061cb57763f0d3f32e3822ab1b53",
+      "bytes": 7954
+    }
+  ],
+  "checkpointsBeforeKill": [
+    {
+      "path": "checkpoints/1c3d2ece11404c239918a7b701fa68b2.npz",
+      "sha256": "343fdf6efa0b4fa26bf8222df70773657e6ee8a99cb66afb0a7aa8af3eecc694",
+      "bytes": 7955
+    },
+    {
+      "path": "checkpoints/5f3c8393878548eda3c01124cd306038.npz",
+      "sha256": "54cb1a5b3943d7d1c9ac0a08291aba627f5a061cb57763f0d3f32e3822ab1b53",
+      "bytes": 7954
+    },
+    {
+      "path": "checkpoints/f67f272d3a5b48c084c1ad29931db7e9.npz",
+      "sha256": "54cb1a5b3943d7d1c9ac0a08291aba627f5a061cb57763f0d3f32e3822ab1b53",
+      "bytes": 7954
+    }
+  ],
+  "checkpointsAfterKill": [
+    {
+      "path": "checkpoints/1c3d2ece11404c239918a7b701fa68b2.npz",
+      "sha256": "343fdf6efa0b4fa26bf8222df70773657e6ee8a99cb66afb0a7aa8af3eecc694",
+      "bytes": 7955
+    },
+    {
+      "path": "checkpoints/5f3c8393878548eda3c01124cd306038.npz",
+      "sha256": "54cb1a5b3943d7d1c9ac0a08291aba627f5a061cb57763f0d3f32e3822ab1b53",
+      "bytes": 7954
+    },
+    {
+      "path": "checkpoints/f67f272d3a5b48c084c1ad29931db7e9.npz",
+      "sha256": "54cb1a5b3943d7d1c9ac0a08291aba627f5a061cb57763f0d3f32e3822ab1b53",
+      "bytes": 7954
+    }
+  ],
+  "scope": "One explicitly owned detached Node process group containing its Python worker. This is process-crash injection, not host/power failure.",
+  "lostProgress": {
+    "lastCompletedCheckpointStep": 30,
+    "observedPartialStep": 40,
+    "discardedUpdates": 10
+  },
+  "nativeCapture": "The interrupted recording contains the request start and last committed A state. The kill itself and numerical barrier are supplemental supervisor/backend evidence; no completion event is invented."
+}

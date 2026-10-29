@@ -1,0 +1,117 @@
+import assert from 'node:assert/strict';
+import {spawn} from 'node:child_process';
+import {readFile,writeFile,mkdir,readdir,access} from 'node:fs/promises';
+import {createHash,randomUUID} from 'node:crypto';
+import {resolve,relative,isAbsolute} from 'node:path';
+import {fileURLToPath} from 'node:url';
+const here=fileURLToPath(new URL('.',import.meta.url)),args=process.argv.slice(2);
+const i=args.indexOf('--out'),root=resolve(i<0?resolve(here,'run'):args[i+1]);
+const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
+const json=async path=>JSON.parse(await readFile(path,'utf8'));
+try{await access(resolve(root,'experiment.json'));throw new Error('Choose a fresh output folder to preserve the proof.');}
+catch(error){if(error.code!=='ENOENT')throw error;}
+await mkdir(root,{recursive:true});
+const plan=await json(resolve(here,'plan.json'));
+const paths=['workflow.ts','phase.mjs','recovery.ts','recovery.mjs','run.mjs','plan.json','config.json','backend/plugin.py',
+  '../footprintjs-ml/dist/adapter.js','../footprintjs-ml/dist/guard.js','../footprintjs-ml/dist/adapter/client.js',
+  '../footprintjs-ml/python/worker.py','../footprintjs-ml/python/footprint_ml_adapter/runtime.py',
+  '../footprintjs-ml/python/footprint_ml_adapter/identity.py','../footprint-ml-external-trainer/example/plugin.py',
+  '../footprint-ml-external-trainer/example/external_trainer.py','../footprint-ml-external-trainer/vendor/gaussian_process_regression.py'];
+const sourceSha256=Object.fromEntries(await Promise.all(paths.map(async path=>[path,hash(await readFile(resolve(here,path)))])));
+const experiment={schema:'footprint-crash-resume-experiment/v1',runId:randomUUID(),createdAt:Date.now(),planSha256:hash(await readFile(resolve(here,'plan.json'))),sourceSha256};
+await writeFile(resolve(root,'experiment.json'),JSON.stringify(experiment,null,2));
+let supervised={};
+const safe=path=>{const target=resolve(root,path),r=relative(root,target);if(isAbsolute(path)||r==='..'||r.startsWith('../'))throw new Error('Supervised reference escapes experiment.');return target;};
+async function pin(reference){const bytes=await readFile(safe(reference.path));assert.equal(bytes.length,reference.bytes);assert.equal(hash(bytes),reference.sha256);return reference;}
+async function persistSupervised(){await writeFile(resolve(root,'supervised-manifests.json'),JSON.stringify(supervised,null,2));}
+async function inventory(){
+  let names=[];try{names=await readdir(resolve(root,'checkpoints'));}catch(error){if(error.code!=='ENOENT')throw error;}
+  return Promise.all(names.filter(name=>name.endsWith('.npz')).sort().map(async name=>{const path='checkpoints/'+name,bytes=await readFile(resolve(root,path));return {path,sha256:hash(bytes),bytes:bytes.length};}));
+}
+function start(phase,onMessage){
+  const child=spawn(process.execPath,[resolve(here,'phase.mjs'),'--phase',phase,'--root',root],
+    {detached:true,stdio:['ignore','pipe','pipe','ipc'],env:process.env});
+  let stdout='',stderr='',failure;
+  child.stdout.on('data',chunk=>stdout+=chunk);child.stderr.on('data',chunk=>stderr+=chunk);
+  const stopOwnedGroup=()=>{if(child.pid>0&&child.exitCode===null&&child.signalCode===null)try{process.kill(-child.pid,'SIGKILL');}catch(error){if(error.code!=='ESRCH')throw error;}};
+  child.on('message',message=>{Promise.resolve(onMessage?.(message,child)).catch(error=>{failure=error;stopOwnedGroup();});});
+  const exited=new Promise((resolveExit,reject)=>{child.on('error',reject);child.on('close',(code,signal)=>resolveExit({code,signal}));});
+  const finish=async(expectedSignal=null)=>{
+    const timer=setTimeout(()=>{failure??=new Error('Phase exceeded its 90 second deadline.');stopOwnedGroup();},90000);
+    try{const exit=await exited;await writeFile(resolve(root,phase+'-process.json'),JSON.stringify({phase,pid:child.pid,exit,stdout,stderr},null,2));
+      if(failure)throw failure;if(expectedSignal)assert.equal(exit.signal,expectedSignal);else if(exit.code!==0)throw new Error(`${phase} failed: ${stderr||stdout}`);return exit;
+    }finally{clearTimeout(timer);}
+  };
+  return {child,exited,finish,stopOwnedGroup};
+}
+async function waitForBarrier(proc){
+  const deadline=Date.now()+65000;
+  while(Date.now()<deadline){
+    if(proc.child.exitCode!==null||proc.child.signalCode!==null)throw new Error('The child exited before the numerical interruption barrier.');
+    try{return await json(resolve(root,'fault/barrier.json'));}catch(error){if(error.code!=='ENOENT')throw error;}
+    await new Promise(resolveWait=>setTimeout(resolveWait,50));
+  }
+  throw new Error('No numerical interruption barrier was produced.');
+}
+console.log('Training the uninterrupted CPU control.');
+await start('baseline').finish();
+console.log('Saving checkpoint A, then interrupting real in-flight training.');
+let boundaryInventory;
+const proc=start('checkpoint',async(message,child)=>{
+  if(message.type!=='checkpoint-committed')return;
+  supervised.checkpointA=await pin(message.manifestRef);await persistSupervised();boundaryInventory=await inventory();
+  child.send({type:'checkpoint-ack'});
+});
+let interruption;
+try{
+  const barrier=await waitForBarrier(proc);
+  assert.equal(barrier.sourceStep,30);assert.equal(barrier.step,40);assert.equal(barrier.completedSteps,10);assert.equal(barrier.requestedSteps,70);
+  assert.equal(barrier.resumeCheckpoint,false);assert.equal(barrier.parentPid,proc.child.pid);assert.equal(barrier.processGroupId,proc.child.pid);
+  assert.ok(boundaryInventory);const before=await inventory();assert.deepEqual(before,boundaryInventory);
+  const partial=await json(resolve(root,'interrupted/trace.json'));assert.equal(partial.partial,true);
+  const killedAt=Date.now();proc.stopOwnedGroup();const exit=await proc.finish('SIGKILL');const after=await inventory();assert.deepEqual(after,before);
+  interruption={schema:'footprint-owned-process-interruption/v1',runId:experiment.runId,spawnedNodePID:proc.child.pid,workerPID:barrier.pid,
+    killSignal:'SIGKILL',killedAt,barrierObservedBeforeKill:true,barrier,childExit:exit,
+    checkpointsAtSavedBoundary:boundaryInventory,checkpointsBeforeKill:before,checkpointsAfterKill:after,
+    scope:'One explicitly owned detached Node process group containing its Python worker. This is process-crash injection, not host/power failure.',
+    lostProgress:{lastCompletedCheckpointStep:30,observedPartialStep:40,discardedUpdates:10},
+    nativeCapture:'The interrupted recording contains the request start and last committed A state. The kill itself and numerical barrier are supplemental supervisor/backend evidence; no completion event is invented.'};
+  await writeFile(resolve(root,'interruption.json'),JSON.stringify(interruption,null,2));
+}catch(error){proc.stopOwnedGroup();try{await proc.finish();}catch{/* Keep the original cause and saved child diagnostics. */}throw error;}
+console.log('Restarting Node and Python, restoring A, then continuing to B.');
+await start('resume',async message=>{if(message.type==='phase-complete'&&message.manifestRef){supervised.checkpointB=await pin(message.manifestRef);await persistSupervised();}}).finish();
+// Phase completion is followed by worker shutdown; also verify the returned manifest directly.
+const resumed=await json(resolve(root,'resume/outcome.json'));
+supervised.checkpointB=await pin(resumed.manifestRef);await persistSupervised();
+const markerBefore=await readFile(resolve(root,'release.json')),checkpointInventoryBeforeReopen=await inventory();
+console.log('Reopening B in another fresh process and retrying the local marker without training.');
+await start('reopen').finish();
+assert.equal(hash(await readFile(resolve(root,'release.json'))),hash(markerBefore));
+assert.deepEqual(await inventory(),checkpointInventoryBeforeReopen);
+const baseline=await json(resolve(root,'baseline/outcome.json')),checkpoint=await json(resolve(root,'checkpoint/outcome.json')),reopened=await json(resolve(root,'reopen/outcome.json'));
+assert.notEqual(checkpoint.backend.sessionId,resumed.backend.sessionId);assert.notEqual(resumed.backend.sessionId,reopened.backend.sessionId);
+assert.equal(resumed.reloadDecision.allowed,true);assert.equal(resumed.oldHandleRejection.errorCode,'stale-runtime-reference');
+assert.equal(resumed.optimizerProbe.predictionEvidence.allowed,true);assert.equal(resumed.optimizerProbe.recoveryDecision.allowed,false);
+assert.equal(resumed.staleDecision.allowed,false);assert.equal(resumed.freshDecision.allowed,true);
+assert.equal(resumed.publicationEvidence.status,'published');assert.equal(reopened.publicationEvidence.status,'already-published');
+assert.deepEqual(baseline.modelB.inferenceIdentity,resumed.modelB.inferenceIdentity);
+assert.deepEqual(baseline.receiptB.metrics,resumed.receiptB.metrics);
+const evidence={schema:'footprint-crash-resume-evidence-manifest/v1',runId:experiment.runId,plan,
+  baseline:{root:'.',checkpointA:baseline.checkpointA,checkpointB:baseline.checkpointB,modelA:baseline.modelA,modelB:baseline.modelB,
+    datasets:baseline.datasets,receiptA:baseline.receiptA,receiptB:baseline.receiptB,backend:baseline.backend},
+  recovery:{root:'.',checkpointA:checkpoint.checkpointA,checkpointB:resumed.checkpointB,modelA:resumed.restoredA,modelB:resumed.modelB,
+    datasets:resumed.datasets,receiptA:checkpoint.receiptA,receiptB:resumed.receiptB,backend:resumed.backend,
+    resetCheckpoint:resumed.optimizerProbe.checkpoint,resetModel:resumed.optimizerProbe.modelRef},
+  fault:{barrierDirectory:'fault',supervisorRecord:'interruption.json',trace:'interrupted/trace.json'},
+  manifests:supervised,publication:{marker:'release.json',markerSha256:hash(markerBefore),unchangedOnFreshReopen:true,reopenTrainingUpdates:0}};
+await writeFile(resolve(root,'evidence-manifest.json'),JSON.stringify(evidence,null,2));
+const summary={schema:'footprint-crash-resume-summary/v1',runId:experiment.runId,
+  interruptedAtStep:40,lastSavedStep:30,resumedFinalStep:resumed.modelB.step,discardedUpdates:10,
+  distinctBackendSessions:[baseline.backend.sessionId,checkpoint.backend.sessionId,resumed.backend.sessionId,reopened.backend.sessionId],
+  resumedInferenceMatchesControl:true,resumedMetricsMatchControl:true,metrics:resumed.receiptB.metrics,
+  reloadEvidenceAllowed:resumed.reloadDecision.allowed,oldLiveHandleRejected:resumed.oldHandleRejection.rejected,
+  optimizerResetPredictionEvidenceAllowed:true,optimizerResetRecoverySourceAllowed:false,
+  staleEvidenceForBAllowed:false,freshEvidenceForBAllowed:true,
+  localPublicationCount:1,freshReopenStatus:reopened.publicationEvidence.status,publicationMarkerUnchanged:true,
+  numericalFullStateAudit:'Run backend/audit_saved.py; inference/metric comparisons here do not replace full-state array checks.'};
+await writeFile(resolve(root,'summary.json'),JSON.stringify(summary,null,2));console.log(JSON.stringify(summary,null,2));

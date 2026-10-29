@@ -1,0 +1,179 @@
+{
+  "schema": "external-gp-independent-numpy-audit/v1",
+  "passed": true,
+  "execution": {
+    "jaxImported": false,
+    "trainingInvoked": false,
+    "numpyVersion": "2.2.6"
+  },
+  "upstreamSourceUnchanged": true,
+  "numericalSource": {
+    "upstreamSourceSha256": "7bbd1574fb62fa090850546cd4092ff9bd3875370754f178939482a4254dd649",
+    "unchangedFunctionNames": [
+      "cov_map",
+      "softplus",
+      "exp_quadratic",
+      "gp",
+      "train_step"
+    ],
+    "extractedAstSha256": "dd69b83b28dbda005925855da09d77dd09060ec0287aca098d84634abbf5be44",
+    "harnessSourceSha256": "be09ff7c23d282b83fe6381050e1f36ff1eacb40e4f709992c923fee070cb6d4",
+    "adaptation": "AST-extract unchanged nested functions; supply original closure bindings externally",
+    "pluginSourceSha256": "cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd"
+  },
+  "profile": "external-jax-gaussian-process-inference/v1",
+  "auditSourceSha256": "44b6b157f73cd640783f55880c0a673adffa20d41c8712bef0c1ff72160afc00",
+  "checkpointIdentities": {
+    "A": {
+      "artifact": {
+        "bytes": 7473,
+        "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+        "kind": "artifact",
+        "path": "checkpoints/4f75c5904b3d404dac6c553214b5bbe1.npz",
+        "sha256": "610a1a7a163b1102f8a443869579f76799eddc4ea5e88301ac9410271184424c"
+      },
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "schemaVersion": 1,
+        "profile": "external-jax-gaussian-process-inference/v1",
+        "sha256": "7873207d716e6336645965e1c46b7b23c8f0787c8a2cffab273c6e4fb61fae92"
+      },
+      "trainingStateSha256": "4f3556a97fc0e999342138a25854bc633add47265279f0125e7f71b5f03dc83d",
+      "step": 30
+    },
+    "B": {
+      "artifact": {
+        "bytes": 7474,
+        "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+        "kind": "artifact",
+        "path": "checkpoints/cae75801c2d54714b439471d80a6d47e.npz",
+        "sha256": "176fd95d67bf2ea7899ceefe1137f3c7f82b4e3cd32e2fc33c73d80a4c47d134"
+      },
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "schemaVersion": 1,
+        "profile": "external-jax-gaussian-process-inference/v1",
+        "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+      },
+      "trainingStateSha256": "8e108d1c71784cedf8f45cbd7dc8e3901371936ccde4753608b94b714a0c852c",
+      "step": 100
+    },
+    "optimizerOnly": {
+      "artifact": {
+        "bytes": 7480,
+        "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+        "kind": "artifact",
+        "path": "checkpoints/9fc8b34e5b7f446d84530e58dee1a461.npz",
+        "sha256": "b3cf371c307daa20b8ac40d53ff50516ed4b338e3b63c6a50ccd0c214ad9c9ba"
+      },
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "schemaVersion": 1,
+        "profile": "external-jax-gaussian-process-inference/v1",
+        "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+      },
+      "trainingStateSha256": "84452ee9297c192ecf4b17041478fec5ff87a529f75430605420cee6e83d3391",
+      "step": 100
+    }
+  },
+  "optimizerOnlyReset": {
+    "sameActualInferenceArrays": true,
+    "momentumsZero": true,
+    "scalesOne": true,
+    "addedTrainingUpdates": 0,
+    "step": 100,
+    "fullTrainingStateChanged": true,
+    "changedArrayNames": [
+      "momentums_amplitude",
+      "momentums_lengthscale",
+      "momentums_noise",
+      "scales_amplitude",
+      "scales_lengthscale",
+      "scales_noise"
+    ],
+    "changedArrayCount": 6,
+    "unchangedInferenceArrayNames": [
+      "conditioning_x",
+      "conditioning_y",
+      "params_amplitude",
+      "params_lengthscale",
+      "params_noise"
+    ],
+    "unchangedInferenceArrayCount": 5,
+    "metadataChanges": [
+      "candidateId"
+    ]
+  },
+  "identitySensitivity": {
+    "params_amplitude": true,
+    "conditioning_x": true,
+    "conditioning_y": true,
+    "numericalCode": true
+  },
+  "evaluations": [
+    {
+      "model": "A",
+      "role": "validation",
+      "recorded": {
+        "mae": 0.05457692264462821,
+        "mse": 0.004259598336456735,
+        "rmse": 0.0652655984149133
+      },
+      "independentNumPy": {
+        "mse": 0.004259598834205885,
+        "rmse": 0.06526560222817135,
+        "mae": 0.05457716254759655
+      }
+    },
+    {
+      "model": "B",
+      "role": "validation",
+      "recorded": {
+        "mae": 0.026755881001008675,
+        "mse": 0.001700233258309988,
+        "rmse": 0.04123388483165257
+      },
+      "independentNumPy": {
+        "mse": 0.0017002386484600753,
+        "rmse": 0.04123395019228785,
+        "mae": 0.02675641856978614
+      }
+    },
+    {
+      "model": "optimizerOnly",
+      "role": "test",
+      "recorded": {
+        "mae": 0.030146896094083785,
+        "mse": 0.0019895516647118723,
+        "rmse": 0.044604390643880255
+      },
+      "independentNumPy": {
+        "mse": 0.0019895481965714135,
+        "rmse": 0.04460435176719211,
+        "mae": 0.030146985008883343
+      }
+    }
+  ],
+  "predeclaredPolicy": {
+    "metric": "mse",
+    "operator": "lte",
+    "threshold": 0.5
+  },
+  "allInputHashesUnchanged": true,
+  "inputHashes": {
+    "outcome.json": "f928812fe362dba38e286f0e1405c43324de946f08109394a9c375308875bda3",
+    "trace.json": "fa77ed3946943df22520479ed353d754ea3efb5b87487bff074c2815765d8042",
+    "release.json": "f1da3c0326d55faca612e6330c7ffba2ba0466ff1f70a9dbf098ae7dd9f2ad5a",
+    "checkpoints/4f75c5904b3d404dac6c553214b5bbe1.npz": "610a1a7a163b1102f8a443869579f76799eddc4ea5e88301ac9410271184424c",
+    "checkpoints/cae75801c2d54714b439471d80a6d47e.npz": "176fd95d67bf2ea7899ceefe1137f3c7f82b4e3cd32e2fc33c73d80a4c47d134",
+    "checkpoints/9fc8b34e5b7f446d84530e58dee1a461.npz": "b3cf371c307daa20b8ac40d53ff50516ed4b338e3b63c6a50ccd0c214ad9c9ba",
+    "datasets/000-9f86d081884c-2926ce0003b449988b9d7f786019c344.npz": "b04b1ccd34e0294a03b295b18c62fc8556378d4c6a52faef99e2efab9762211c",
+    "datasets/001-116f54c41d04-1522df1c5368463d89767a15aefb1e56.npz": "dd0ba10eee85f6677d26788fed1a8947b38acd4e8c440d496ef8f714711d7138",
+    "datasets/002-98c41dcd20b8-f2b56cc8f48744459f23409c05af858c.npz": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+  },
+  "limits": [
+    "Float64 NumPy posterior values are compared with float32 JAX outputs using an explicit numerical tolerance.",
+    "Saved protocol receipts contain aggregate metrics, not per-item predictions. A separate direct contract test compares the full NumPy/JAX prediction vectors.",
+    "This validates saved values and identities, not derivatives or the completeness of arbitrary third-party plugin profiles."
+  ]
+}

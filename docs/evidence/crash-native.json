@@ -1,0 +1,151 @@
+{
+  "schema": "footprint-crash-resume-native-verification/v1",
+  "passed": true,
+  "trainingInvoked": false,
+  "pythonStarted": false,
+  "execution": {
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false
+  },
+  "phases": [
+    {
+      "phase": "baseline",
+      "sha256": "19e78433060cf26ea4cd89a5cf17e4869593c3863dcac3e8d9c939937e529e4c",
+      "bytes": 167373,
+      "sourceUnchanged": true,
+      "finalReleaseStatus": "control-only-not-published",
+      "decisions": [
+        {
+          "stageId": "check-current-evidence#5",
+          "modelStep": 100,
+          "evaluationStep": 100,
+          "allowed": true,
+          "nativeCalls": 31,
+          "nativeWarningsPreserved": true
+        }
+      ]
+    },
+    {
+      "phase": "checkpoint",
+      "sha256": "ebc0efbfc1c9b052ef3f2e22ec05091354cea3cd2bd0891f1d57e4c85041ee4e",
+      "bytes": 102528,
+      "sourceUnchanged": true,
+      "finalReleaseStatus": "checkpoint-saved-not-published",
+      "decisions": [
+        {
+          "stageId": "check-a#3",
+          "modelStep": 30,
+          "evaluationStep": 30,
+          "allowed": true,
+          "nativeCalls": 31,
+          "nativeWarningsPreserved": true
+        }
+      ]
+    },
+    {
+      "phase": "interrupted",
+      "sha256": "e811b4c28a12d9d67a13a1555a81152304048df7840b84fde8503a005cb6ab7f",
+      "bytes": 81341,
+      "sourceUnchanged": true,
+      "finalReleaseStatus": "continuation-not-completed",
+      "decisions": [
+        {
+          "stageId": "restore-inflight-source#0",
+          "modelStep": 30,
+          "evaluationStep": 30,
+          "allowed": true,
+          "nativeCalls": 31,
+          "nativeWarningsPreserved": true
+        }
+      ]
+    },
+    {
+      "phase": "resume",
+      "sha256": "636582d5d838b8bae8e4dc930b69edad696796146f9650625cb3197c10e9c501",
+      "bytes": 457964,
+      "sourceUnchanged": true,
+      "finalReleaseStatus": "published-locally",
+      "decisions": [
+        {
+          "stageId": "check-full-recovery-source#4",
+          "modelStep": 30,
+          "evaluationStep": 30,
+          "allowed": true,
+          "nativeCalls": 31,
+          "nativeWarningsPreserved": true
+        },
+        {
+          "stageId": "check-stale-a-evidence#7",
+          "modelStep": 100,
+          "evaluationStep": 30,
+          "allowed": false,
+          "nativeCalls": 31,
+          "nativeWarningsPreserved": true
+        },
+        {
+          "stageId": "check-current-evidence#11",
+          "modelStep": 100,
+          "evaluationStep": 100,
+          "allowed": true,
+          "nativeCalls": 31,
+          "nativeWarningsPreserved": true
+        }
+      ]
+    },
+    {
+      "phase": "reopen",
+      "sha256": "3fab09f43b0f2f12c892aa3718c09c6b9baf4d8f4a9c0e17c74f1e9d88695bb1",
+      "bytes": 226060,
+      "sourceUnchanged": true,
+      "finalReleaseStatus": "already-published-locally",
+      "decisions": [
+        {
+          "stageId": "check-full-recovery-source#4",
+          "modelStep": 100,
+          "evaluationStep": 100,
+          "allowed": true,
+          "nativeCalls": 31,
+          "nativeWarningsPreserved": true
+        }
+      ]
+    }
+  ],
+  "manifestLinks": [
+    {
+      "from": "interrupted",
+      "to": "checkpoint",
+      "sourceTraceSha256": "ebc0efbfc1c9b052ef3f2e22ec05091354cea3cd2bd0891f1d57e4c85041ee4e",
+      "sourceTraceBytes": 102528,
+      "verified": true
+    },
+    {
+      "from": "resume",
+      "to": "checkpoint",
+      "sourceTraceSha256": "ebc0efbfc1c9b052ef3f2e22ec05091354cea3cd2bd0891f1d57e4c85041ee4e",
+      "sourceTraceBytes": 102528,
+      "verified": true
+    },
+    {
+      "from": "reopen",
+      "to": "resume",
+      "sourceTraceSha256": "636582d5d838b8bae8e4dc930b69edad696796146f9650625cb3197c10e9c501",
+      "sourceTraceBytes": 457964,
+      "verified": true
+    }
+  ],
+  "nativeToolCalls": 217,
+  "resumedControlMatch": {
+    "predictionIdentity": true,
+    "metrics": true,
+    "scope": "Recorded values only; independent numerical full-state audit is separate."
+  },
+  "interruption": {
+    "sha256": "68d314930c64615b496ad82fe10161fe5e376f9ce734fbf28155f9d18a466dce",
+    "bytes": 3509,
+    "signal": "SIGKILL",
+    "lastSavedStep": 30,
+    "partialStep": 40,
+    "partialIsResumeCheckpoint": false,
+    "classification": "Supplemental supervisor and backend evidence; not an invented native completion."
+  }
+}

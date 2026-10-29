@@ -1,0 +1,97 @@
+{
+  "schema": "footprint-existing-trainer-offline-verification/v1",
+  "passed": true,
+  "checks": [
+    {
+      "name": "Recorded scope and commits contain references and receipts while every artifact matches saved bytes",
+      "passed": true,
+      "detail": {
+        "distinctArtifacts": 6
+      }
+    },
+    {
+      "name": "The unmodified upstream trainer is pinned by actual Git blob and file hashes",
+      "passed": true
+    },
+    {
+      "name": "Actual v2 receipts reject changed predictor state and permit verified optimizer-only state changes",
+      "passed": true
+    },
+    {
+      "name": "The independent NumPy audit agrees with actual checkpoints, identity framing and validation/test metrics",
+      "passed": true,
+      "detail": {
+        "report": "unified-run/independent-audit.json"
+      }
+    },
+    {
+      "name": "The reusable conformance suite passed against the actual external trainer in a separate session",
+      "passed": true,
+      "detail": {
+        "cases": 14,
+        "separateSession": true
+      }
+    },
+    {
+      "name": "Generic Lens discovers every actual decision using arbitrary bindings and exact saved writer stages",
+      "passed": true,
+      "detail": {
+        "bindings": {
+          "model": "activePredictor",
+          "receipt": "approval",
+          "decision": "policyDecision",
+          "allowed": "publishAllowed",
+          "releasedModel": "releasedPredictor"
+        },
+        "decisions": [
+          {
+            "stage": "old-approval-check#4",
+            "allowed": false,
+            "checkpointMatches": false,
+            "inferenceMatches": false,
+            "nativeCalls": 10
+          },
+          {
+            "stage": "current-approval-check#8",
+            "allowed": true,
+            "checkpointMatches": true,
+            "inferenceMatches": true,
+            "nativeCalls": 10
+          },
+          {
+            "stage": "inference-approval-check#11",
+            "allowed": true,
+            "checkpointMatches": false,
+            "inferenceMatches": true,
+            "nativeCalls": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "Publication records the current inspected predictor and a matching receipt independently of held-out selection",
+      "passed": true
+    },
+    {
+      "name": "All inspected source and saved input bytes remain unchanged",
+      "passed": true
+    }
+  ],
+  "totals": {
+    "passed": 8,
+    "failed": 0,
+    "artifacts": 6
+  },
+  "execution": {
+    "pythonStarted": false,
+    "trainingInvoked": false,
+    "llmInvoked": false,
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false
+  },
+  "limitations": [
+    "The suite verifies this retained trainer/plugin/profile, not arbitrary third-party semantic completeness.",
+    "Independent authorship applies to the upstream numerical source; the integration was built in this workspace.",
+    "No human investigation study or GPU/large-model overhead measurement was performed."
+  ]
+}

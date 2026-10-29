@@ -1,0 +1,136 @@
+import {flowChart,FlowChartExecutor,decide} from 'footprintjs';
+import type {CombinedRecorder,TypedScope} from 'footprintjs';
+import {checkRelease} from '../footprintjs-ml/dist/index.js';
+import {mkdir,readFile,writeFile,access} from 'node:fs/promises';
+import {resolve,dirname} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
+import {projectLogs,verifyParity} from './evidence.mjs';
+
+// These new orchestration runs use existing, independently audited numerical
+// artifacts. Historical handles are evidence only: no live trainer is opened.
+const here=dirname(fileURLToPath(import.meta.url));
+const retained=resolve(here,'../footprint-ml-crash-resume/run');
+const root=resolve(process.argv[2]??resolve(here,'private/cases'));
+const clone=<T>(v:T):T=>JSON.parse(JSON.stringify(v));
+const sha=(bytes:Uint8Array|string)=>createHash('sha256').update(bytes).digest('hex');
+const read=async(path:string)=>JSON.parse(await readFile(path,'utf8'));
+const inputDigests:Record<string,string>={};
+async function source(path:string){const bytes=await readFile(resolve(retained,path));inputDigests[path]=sha(bytes);return JSON.parse(bytes.toString());}
+const a=await source('checkpoint/outcome.json'),b=await source('resume/outcome.json');
+const audit=await source('independent-audit.json');
+if(audit.passed!==true||audit.modelDatasetReceiptArtifactsVerified!==true||audit.allInputHashesUnchanged!==true||audit.fullStateMatchesUninterrupted?.allElevenArraysEqual!==true)throw new Error('The retained numerical audit did not pass.');
+const auditor=await readFile(resolve(here,'../footprint-ml-crash-resume/backend/audit_saved.py'));
+if(sha(auditor)!==audit.auditSourceSha256)throw new Error('Retained auditor source differs from its recorded fingerprint.');
+for(const [path,digest]of Object.entries(audit.inputHashes) as [string,string][]){const bytes=await readFile(resolve(retained,path));if(sha(bytes)!==digest)throw new Error('Retained audit input changed: '+path);inputDigests[path]=digest;}
+async function verifyArtifact(artifact:any){const bytes=await readFile(resolve(retained,artifact.path));if(bytes.length!==artifact.bytes||sha(bytes)!==artifact.sha256)throw new Error('Saved artifact differs from its reference.');inputDigests[artifact.path]=sha(bytes);}
+for(const item of [{model:a.modelA,receipt:a.receiptA},{model:b.modelB,receipt:b.receiptB}]){
+  await verifyArtifact(item.model.originArtifact);await verifyArtifact(item.receipt.datasetRef.artifact);
+  if(item.model.inferenceIdentity.sha256!==item.receipt.inferenceIdentity.sha256)throw new Error('A saved model differs from its own validation evidence.');
+  if(!(item.receipt.metrics.mse<0.01))throw new Error('A candidate does not satisfy the predeclared absolute gate.');
+}
+if(a.receiptA.datasetRef.artifact.sha256!==b.receiptB.datasetRef.artifact.sha256)throw new Error('Validation data differs across candidates.');
+if(!(a.receiptA.metrics.mse>b.receiptB.metrics.mse))throw new Error('Saved candidate MSE ordering differs from the retained proof.');
+
+type Candidate={candidateId:string;modelRef:any;receipt:any;validationMse:number};
+type State={caseId:string;declaredPolicy:any;runtimeRanking:any;settingsInput:any;candidates:Candidate[];artifactInspection:any;
+  ranking:any;selectedCandidateId:string;selectedCandidate:Candidate;activePredictor:any;approval:any;policyDecision:any;publishAllowed:boolean;
+  releasedPredictor:any;releasedCandidateId:string|null;releaseStatus:string;releaseFile:any;guardContract:any;requestMetadata:any};
+type Config={id:string;direction:'min'|'max';aliases:[string,string]};
+const configs:Config[]=[{id:'K4R7',direction:'max',aliases:['model-q14','model-c62']},{id:'N8T2',direction:'min',aliases:['model-m73','model-r09']}];
+const summaries=[];
+for(const config of configs){
+  const out=resolve(root,config.id);try{await access(resolve(out,'trace.json'));throw new Error('Use a fresh capture root; saved cases are preserved.');}catch(error:any){if(error.code!=='ENOENT')throw error;}
+  await mkdir(out,{recursive:true});
+  const candidates:Candidate[]=[{candidateId:config.aliases[0],modelRef:a.modelA,receipt:a.receiptA,validationMse:a.receiptA.metrics.mse},
+    {candidateId:config.aliases[1],modelRef:b.modelB,receipt:b.receiptB,validationMse:b.receiptB.metrics.mse}].map(clone);
+  const rows:any[]=[];const retain=(type:string)=>(event:any)=>rows.push({type,event:clone(event)});
+  const recorder:CombinedRecorder={id:'trial-capture',onRead:retain('read'),onWrite:retain('write'),onDecision:retain('decision'),
+    onError:retain('error'),onEmit:retain('emitted'),onStageRetry:retain('retry')};
+  const call=(fn:(s:TypedScope<State>)=>void|Promise<void>)=>async(s:TypedScope<State>)=>fn(s);
+  let chart=flowChart<State>('Declare model selection and release policy',call(s=>{
+    s.caseId=config.id;s.declaredPolicy={metric:'mse',direction:'min',threshold:0.01,tieBreak:'candidateId-ascending',
+      selectionRule:'Choose the candidate with the smallest validation MSE.',evaluationRole:'validation'};
+    s.runtimeRanking={metric:'mse',direction:'min',tieBreak:'candidateId-ascending'};
+    s.guardContract={checks:['model-inference identity','validation dataset identity','preprocessing version','evaluation method','evaluation parameters','mse <= 0.01'],
+      selectionRankingCheck:false,scope:'Evaluation consistency and an absolute metric gate, not best-candidate selection.'};
+    s.releasedCandidateId=null;s.releasedPredictor=null;s.releaseStatus='pending';
+    s.requestMetadata={requestId:'review-'+config.id,artifactMode:'retained-numerical-evidence',numericalTrainingInvoked:false};
+    s.$emit('audit.request',{caseId:s.caseId,policy:s.declaredPolicy,artifactMode:s.requestMetadata.artifactMode});
+  }),'declare-policy');
+  chart.addFunction('Import evaluated model references',call(s=>{s.candidates=clone(candidates);s.$emit('catalog.imported',{candidates:s.candidates.map(c=>({candidateId:c.candidateId,artifact:c.modelRef.originArtifact,inference:c.modelRef.inferenceIdentity,validationMse:c.validationMse}))});}),'import-candidates');
+  chart.addFunction('Apply runtime configuration',call(s=>{
+    s.settingsInput={source:'runtime-profile',metric:'mse',direction:config.direction,profileVersion:'selection-profile/v1'};
+    s.runtimeRanking={metric:s.settingsInput.metric,direction:s.settingsInput.direction,tieBreak:'candidateId-ascending'};
+    s.$emit('configuration.applied',{input:s.settingsInput,ranking:s.runtimeRanking});
+  }),'apply-runtime-settings');
+  chart.addFunction('Inspect retained artifact references',call(s=>{
+    s.artifactInspection={verified:true,sourceAuditSha256:inputDigests['independent-audit.json'],candidates:s.candidates.map(c=>({candidateId:c.candidateId,checkpointSha256:c.modelRef.originArtifact.sha256,datasetSha256:c.receipt.datasetRef.artifact.sha256}))};
+    s.$emit('artifacts.inspected',s.artifactInspection);
+  }),'inspect-artifacts');
+  chart.addFunction('Rank candidate validation results',call(s=>{
+    const ranking=clone(s.runtimeRanking),rows=s.candidates.map(c=>({candidateId:c.candidateId,value:c.receipt.metrics[ranking.metric]}));
+    rows.sort((x,y)=>(ranking.direction==='min'?x.value-y.value:y.value-x.value)||x.candidateId.localeCompare(y.candidateId));
+    s.ranking={metric:ranking.metric,direction:ranking.direction,orderedCandidates:rows};s.selectedCandidateId=rows[0].candidateId;
+    s.$emit('selection.completed',{ranking:s.ranking,selectedCandidateId:s.selectedCandidateId});
+  }),'rank-candidates');
+  chart.addFunction('Resolve selected model artifact',call(s=>{
+    const candidate=s.candidates.find(c=>c.candidateId===s.selectedCandidateId);if(!candidate)throw new Error('Selection references an absent candidate.');
+    s.selectedCandidate=clone(candidate);s.activePredictor=clone(candidate.modelRef);
+  }),'resolve-selection');
+  chart.addFunction('Bind the selected validation record',call(s=>{s.approval=clone(s.selectedCandidate.receipt);s.$emit('evaluation.bound',{candidateId:s.selectedCandidate.candidateId,evaluationId:s.approval.evaluationId,metrics:s.approval.metrics});}),'bind-evaluation');
+  chart.addFunction('Check model evidence and metric threshold',call(s=>{
+    const receipt=clone(s.approval);s.policyDecision=checkRelease({modelRef:clone(s.activePredictor),datasetRef:receipt.datasetRef,
+      preprocessingVersion:receipt.preprocessingVersion,evaluationMethodVersion:receipt.evaluationMethodVersion,parameters:receipt.parameters,
+      receipt,policy:{metric:s.declaredPolicy.metric,operator:'lte',threshold:s.declaredPolicy.threshold}} as any);
+    s.publishAllowed=s.policyDecision.allowed;
+  }),'check-release');
+  const route=chart.addDeciderFunction('Route the recorded release permission',s=>decide(s,[{when:{publishAllowed:{eq:true}},then:'publish',label:'The model and its own validation satisfy the absolute release gate.'}],'retain'),'release-route');
+  route.addFunctionBranch('publish','Write the selected local release',call(async s=>{
+    const marker={schema:'trial-local-release/v1',candidateId:s.selectedCandidateId,modelRef:clone(s.activePredictor),evaluation:clone(s.approval),decision:clone(s.policyDecision)};
+    const bytes=JSON.stringify(marker,null,2)+'\n';await writeFile(resolve(out,'release.json'),bytes,{flag:'wx'});
+    s.releaseFile={kind:'artifact',path:'release.json',format:'application/json',bytes:Buffer.byteLength(bytes),sha256:sha(bytes)};
+    s.releasedPredictor=clone(s.activePredictor);s.releasedCandidateId=s.selectedCandidateId;s.releaseStatus='released-locally';
+    s.$emit('release.written',{candidateId:s.releasedCandidateId,artifact:s.releaseFile});
+  }),'publish-locally');
+  route.addFunctionBranch('retain','Retain an unapproved selection',call(s=>{s.releaseStatus='quarantined';}),'retain-selection');
+  chart=route.end();
+  chart.addFunction('Record release audit context',call(s=>{s.$emit('release.audit-context',{candidateId:s.releasedCandidateId,status:s.releaseStatus,declaredPolicy:s.declaredPolicy,runtimeRanking:s.runtimeRanking,ranking:s.ranking,guardContract:s.guardContract});}),'audit-release');
+  const executor=new FlowChartExecutor(chart.build());executor.setReadTracking('full');executor.setWriteTracking('full');executor.attachCombinedRecorder(recorder);
+  await executor.run();
+  const snapshot=executor.getSnapshot();const state=snapshot.sharedState as State;
+  if(!state.policyDecision.allowed||state.releaseStatus!=='released-locally')throw new Error('The captured workflow did not produce its declared gate outcome.');
+  const trace={schema:'footprint-ml-investigation-trial/recording-v1',workflow:{kind:'ml-adapter-workflow/v1'},
+    mlInvestigation:{schemaVersion:1,bindings:{model:'activePredictor',receipt:'approval',decision:'policyDecision',allowed:'publishAllowed',releasedModel:'releasedPredictor'}},
+    provenance:{sourceKind:'retained-independent-JAX-audit',sourceRunId:a.runId,sourceSha256:inputDigests,
+      currentExecution:'New FootPrint orchestration over audited saved identities. No live model handles or numerical work.',trainingInvoked:false},footprint:snapshot,rows};
+  const logs=projectLogs(trace),parity=verifyParity(trace,logs);if(!parity.passed)throw new Error('Trace/log fact parity failed.');
+  await writeFile(resolve(out,'trace.json'),JSON.stringify(trace));await writeFile(resolve(out,'events.jsonl'),logs.map((e:any)=>JSON.stringify(e)).join('\n')+'\n');
+  await writeFile(resolve(out,'parity.json'),JSON.stringify(parity,null,2)+'\n');
+  const publicCase={id:config.id,title:'Model release review '+config.id,
+    brief:'A regression pipeline selected one of two evaluated checkpoints and wrote a local release. Review whether that selection followed the declared policy. The run may be consistent, inconsistent, or lack enough evidence. Mean squared error (MSE) measures prediction error; lower is better. Numerical training and validation happened previously; this recording captures the later selection and release workflow.',
+    policy:{metric:'mse',direction:'min',threshold:0.01},questions:[
+      'Which candidate did the local release use, and which candidate should the declared selection policy prefer?',
+      'Does the release follow the declared policy? Identify the first stage where evidence diverges, or explain why no divergence is supported.',
+      'Cite the recorded model references, validation MSE values and decision inputs supporting your conclusion.',
+      'Why did the model/evaluation release guard allow or refuse the result? What does that guard actually check?',
+      'What correction or further check is justified? Distinguish the recorded facts from what remains unknown.']};
+  await writeFile(resolve(out,'public-case.json'),JSON.stringify(publicCase,null,2)+'\n');
+  const correct=[...candidates].sort((x,y)=>x.validationMse-y.validationMse||x.candidateId.localeCompare(y.candidateId))[0];
+  const divergence=snapshot.commitLog.find((c:any)=>c.stageId==='apply-runtime-settings');
+  const key={schema:'trial-facilitator-key/v1',caseId:config.id,kind:config.direction==='max'?'ranking-configuration':'control',
+    expected:{verdict:config.direction==='max'?'inconsistent':'consistent',releasedCandidateId:state.releasedCandidateId,
+      preferredCandidateId:correct.candidateId,firstDivergenceStageId:config.direction==='max'?divergence!.runtimeStageId:'none',
+      runtimeDirection:config.direction,metrics:Object.fromEntries(candidates.map(c=>[c.candidateId,c.validationMse])),guardAllowed:state.policyDecision.allowed},
+    evidenceStageIds:Object.fromEntries(snapshot.commitLog.map((c:any)=>[c.stageId,c.runtimeStageId])),
+    explanation:config.direction==='max'?'Runtime configuration changed ranking from declared min to max. The higher-MSE candidate retained its own valid validation and satisfied mse<=0.01, so the consistency/absolute-threshold guard allowed it without checking best-candidate selection.':'Runtime min ranking selected the lower-MSE candidate and its own validation met the absolute gate. No recorded selection-policy divergence is established.',
+    correction:config.direction==='max'?'Keep MSE ranking direction min and enforce agreement with the declared selection policy before publishing. Existing models need no retraining to rerank these saved results.':'No corrective change is supported by this recording. Additional safety guarantees require additional evidence.',
+    candidateAliases:candidates.map(c=>({candidateId:c.candidateId,originalCandidateId:c.modelRef.candidateId,checkpointSha256:c.modelRef.originArtifact.sha256})),
+    limits:['Only the saved declared policy and captured workflow are audited.','Valid receipts do not establish best-candidate selection.','No numerical model was reloaded into a live runtime or retrained.','Local publication is not external deployment.']};
+  await writeFile(resolve(out,'key.json'),JSON.stringify(key,null,2)+'\n');
+  summaries.push({caseId:config.id,commits:snapshot.commitLog.length,callbacks:rows.length,logEvents:logs.length,traceSha256:sha(JSON.stringify(trace)),parityPassed:parity.passed});
+}
+for(const [path,digest]of Object.entries(inputDigests)){if(sha(await readFile(resolve(retained,path)))!==digest)throw new Error('Source mutated during capture.');}
+await writeFile(resolve(root,'capture-report.json'),JSON.stringify({schema:'trial-capture-report/v1',passed:true,sourceHashes:inputDigests,cases:summaries,
+  execution:{newNativeFootPrintRuns:2,pythonStarted:false,trainingInvoked:false,numericalAuditRerun:false},logScope:'Lossless journal-derived structured logs compare investigation interfaces, not separately maintained instrumentation.'},null,2)+'\n');
+console.log(JSON.stringify({passed:true,output:root,cases:summaries,trainingInvoked:false}));

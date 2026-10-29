@@ -1,0 +1,73 @@
+{
+  "schema": "footprint-ml-investigation-trial/verification-v1",
+  "passed": true,
+  "groupsPassed": 8,
+  "groups": [
+    {
+      "name": "Same complete retained evidence in both representations",
+      "passed": true
+    },
+    {
+      "name": "Actual native releases obey recorded selections, including the seeded selection mistake",
+      "passed": true
+    },
+    {
+      "name": "Native Lens tools and foottrace reopen both cases without numerical execution",
+      "passed": true
+    },
+    {
+      "name": "Four fixed pilot cells, exact submitted diagnoses and retained primary observations",
+      "passed": true
+    },
+    {
+      "name": "Preregistered protocol and amendment precede pilot starts",
+      "passed": true
+    },
+    {
+      "name": "Human assignments remain separate from completed pilot conclusions",
+      "passed": true
+    },
+    {
+      "name": "Private routes, deadline boundaries and participant isolation passed service QA",
+      "passed": true
+    },
+    {
+      "name": "Bundled public investigation runtime retains original bytes",
+      "passed": true
+    }
+  ],
+  "sourceSha256": {
+    "verify.mjs": "77262db8b2b5d56164261dd8799b7b1e5d4266517b19df3c8df2c62b8b1d7c35",
+    "server.mjs": "3c661bb95863efcc47c2c835db256a38a1792e4f2b5294beb1d5ab8de86480f9",
+    "client.mjs": "dee5517d6c5e33a5bf04188a54b5c7ac73bd3316a4246a2bc8c464fcb3a8eb56",
+    "manage.mjs": "c7dc21e6a943fbae8c0810ecaf7dec5ac9e9563a160894e7afdfb8c37785d88e",
+    "evidence.mjs": "e0ee5f04feabe327bb4b76ef7d204a6637f72b9420fa7e078b4165a065571d67",
+    "capture.ts": "e63aadbf2b2ab7a2dfd7c8343d68e9cd146adff4ed2873313c6af96c87a5fa74",
+    "pilot-results.json": "c6fc9d202332dac68f03c1a5ac999d326f8bc39ba239c939a191e014fc0169d9",
+    "pilot-submissions.json": "a21697ffc1bc0f694fda40ac7a59382fc133f1f046e8cce4ce94b73b0db48168",
+    "PROTOCOL-DRAFT.md": "4d8da75ff52be4aca8c9fed13a0113f0e6626c69116e0d4b74ae33b49f9c7b34",
+    "capture-verification.json": "c237cdf24f95aaa0b2b33720e3f55cfd5c6b266c0fa2c3d337422227b4efb7d9",
+    "api-verification.json": "2d32ac8fc5b84e9ddadb8cfa3a9542985704d365fa7047321277ce748a366d1b",
+    "public/index.html": "567155656a66973694eba1cffb748b06c4d61e136c0de3e228c1895cd9f12424",
+    "public/app.js": "9e84054579ad80a4aa1e1c19163f4120f1012b5a6949f21a208bc125f146901c",
+    "public/style.css": "e0db82b566aeb00eebf94f5b54c0fb2fc7d83730e51e55caa4bd3d56ccd93622",
+    "vendor/lens.node.mjs": "32c5915a422ae1e981879e6c83e695bcc4f9a65d5d9d4e9e3be1b7cbc19fd2cb",
+    "vendor/ml-session.mjs": "727cd26109b7788bfe9018affb794bca4ee5a3617d2efaf4d246463ee7d57eef"
+  },
+  "execution": {
+    "trainingInvoked": false,
+    "pythonStarted": false,
+    "childProcessesAllowed": false,
+    "savedEvidenceOnly": true
+  },
+  "humanStatus": {
+    "assignments": 4,
+    "started": 0,
+    "submitted": 0
+  },
+  "boundaries": [
+    "This verifies retained facts, recorded pilot observations and the apparatus.",
+    "Four API agents and case-author rubric review do not establish independent human debugging advantage.",
+    "Live service tests and browser QA are retained separately."
+  ]
+}

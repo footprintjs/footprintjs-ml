@@ -1,0 +1,558 @@
+{
+  "schema": "footprint-existing-trainer-outcome/v1",
+  "backend": {
+    "code": {
+      "adaptation": "AST-extract unchanged nested functions; supply original closure bindings externally",
+      "extractedAstSha256": "dd69b83b28dbda005925855da09d77dd09060ec0287aca098d84634abbf5be44",
+      "harnessSourceSha256": "be09ff7c23d282b83fe6381050e1f36ff1eacb40e4f709992c923fee070cb6d4",
+      "pluginSourceSha256": "cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+      "unchangedFunctionNames": [
+        "cov_map",
+        "softplus",
+        "exp_quadratic",
+        "gp",
+        "train_step"
+      ],
+      "upstreamSourceSha256": "7bbd1574fb62fa090850546cd4092ff9bd3875370754f178939482a4254dd649"
+    },
+    "conditioningRows": 24,
+    "devices": [
+      {
+        "deviceKind": "cpu",
+        "platform": "cpu"
+      }
+    ],
+    "dtype": "float32",
+    "evaluationMethodVersion": "gp-posterior-mean-regression/v1;plugin=cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+    "identityProtocol": "footprint-ml-adapter-kit/identity/v1",
+    "pluginSourceSha256": "cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+    "preprocessing": "none",
+    "preprocessingVersion": "none/raw-scalar-input/v1",
+    "profile": "external-jax-gaussian-process-inference/v1",
+    "runtime": "footprint-ml-adapter-kit/python-v1",
+    "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+    "trainer": "official-jax-gaussian-process/AST-harness-v1",
+    "versions": {
+      "jax": "0.7.2",
+      "jaxlib": "0.7.2",
+      "numpy": "2.2.6",
+      "python": "3.11.5"
+    }
+  },
+  "policy": {
+    "metric": "mse",
+    "operator": "lte",
+    "threshold": 0.5
+  },
+  "checkpointA": {
+    "kind": "checkpoint",
+    "artifact": {
+      "bytes": 7473,
+      "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+      "kind": "artifact",
+      "path": "checkpoints/4f75c5904b3d404dac6c553214b5bbe1.npz",
+      "sha256": "610a1a7a163b1102f8a443869579f76799eddc4ea5e88301ac9410271184424c"
+    }
+  },
+  "checkpointB": {
+    "kind": "checkpoint",
+    "artifact": {
+      "bytes": 7474,
+      "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+      "kind": "artifact",
+      "path": "checkpoints/cae75801c2d54714b439471d80a6d47e.npz",
+      "sha256": "176fd95d67bf2ea7899ceefe1137f3c7f82b4e3cd32e2fc33c73d80a4c47d134"
+    }
+  },
+  "forkedCheckpoint": {
+    "kind": "checkpoint",
+    "artifact": {
+      "bytes": 7480,
+      "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+      "kind": "artifact",
+      "path": "checkpoints/9fc8b34e5b7f446d84530e58dee1a461.npz",
+      "sha256": "b3cf371c307daa20b8ac40d53ff50516ed4b338e3b63c6a50ccd0c214ad9c9ba"
+    }
+  },
+  "inferenceA": {
+    "kind": "inference-identity",
+    "profile": "external-jax-gaussian-process-inference/v1",
+    "schemaVersion": 1,
+    "sha256": "7873207d716e6336645965e1c46b7b23c8f0787c8a2cffab273c6e4fb61fae92"
+  },
+  "inferenceB": {
+    "kind": "inference-identity",
+    "profile": "external-jax-gaussian-process-inference/v1",
+    "schemaVersion": 1,
+    "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+  },
+  "inferenceFork": {
+    "kind": "inference-identity",
+    "profile": "external-jax-gaussian-process-inference/v1",
+    "schemaVersion": 1,
+    "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+  },
+  "validationA": {
+    "mae": 0.05457692264462821,
+    "mse": 0.004259598336456735,
+    "rmse": 0.0652655984149133
+  },
+  "validationB": {
+    "mae": 0.026755881001008675,
+    "mse": 0.001700233258309988,
+    "rmse": 0.04123388483165257
+  },
+  "heldOut": {
+    "mae": 0.030146896094083785,
+    "mse": 0.0019895516647118723,
+    "rmse": 0.044604390643880255
+  },
+  "staleDecision": {
+    "kind": "release-decision",
+    "schemaVersion": 1,
+    "allowed": false,
+    "status": "deny",
+    "reasons": [
+      {
+        "code": "inference-mismatch",
+        "message": "The proposed inference profile or digest differs from the evaluated inference identity."
+      }
+    ],
+    "checkedAt": 1793202031666,
+    "receiptId": "de4a4512-9475-4e9e-b9d0-d2c53d82fd91",
+    "policy": {
+      "metric": "mse",
+      "operator": "lte",
+      "threshold": 0.5
+    },
+    "bindings": {
+      "coverage": "inference",
+      "proposed": {
+        "modelRef": {
+          "candidateId": "gp-B",
+          "conditioningRows": 24,
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+          },
+          "kind": "model",
+          "learningRate": 0.01,
+          "originArtifact": {
+            "bytes": 7474,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/cae75801c2d54714b439471d80a6d47e.npz",
+            "sha256": "176fd95d67bf2ea7899ceefe1137f3c7f82b4e3cd32e2fc33c73d80a4c47d134"
+          },
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "step": 100
+        },
+        "checkpoint": {
+          "bytes": 7474,
+          "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/cae75801c2d54714b439471d80a6d47e.npz",
+          "sha256": "176fd95d67bf2ea7899ceefe1137f3c7f82b4e3cd32e2fc33c73d80a4c47d134"
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "external-jax-gaussian-process-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 1543,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-f2b56cc8f48744459f23409c05af858c.npz",
+            "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 32,
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "shape": [
+            32,
+            1
+          ]
+        },
+        "preprocessingVersion": "none/raw-scalar-input/v1",
+        "evaluationMethodVersion": "gp-posterior-mean-regression/v1;plugin=cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+        "parameters": {}
+      },
+      "receipt": {
+        "evaluationId": "de4a4512-9475-4e9e-b9d0-d2c53d82fd91",
+        "createdAt": 1793202031637,
+        "checkpoint": {
+          "bytes": 7473,
+          "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/4f75c5904b3d404dac6c553214b5bbe1.npz",
+          "sha256": "610a1a7a163b1102f8a443869579f76799eddc4ea5e88301ac9410271184424c"
+        },
+        "modelRef": {
+          "candidateId": "gp-A",
+          "conditioningRows": 24,
+          "handle": 4,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "7873207d716e6336645965e1c46b7b23c8f0787c8a2cffab273c6e4fb61fae92"
+          },
+          "kind": "model",
+          "learningRate": 0.01,
+          "originArtifact": {
+            "bytes": 7473,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/4f75c5904b3d404dac6c553214b5bbe1.npz",
+            "sha256": "610a1a7a163b1102f8a443869579f76799eddc4ea5e88301ac9410271184424c"
+          },
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "step": 30
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "external-jax-gaussian-process-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "7873207d716e6336645965e1c46b7b23c8f0787c8a2cffab273c6e4fb61fae92"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 1543,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-f2b56cc8f48744459f23409c05af858c.npz",
+            "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 32,
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "shape": [
+            32,
+            1
+          ]
+        },
+        "preprocessingVersion": "none/raw-scalar-input/v1",
+        "evaluationMethodVersion": "gp-posterior-mean-regression/v1;plugin=cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+        "parameters": {},
+        "metrics": {
+          "mae": 0.05457692264462821,
+          "mse": 0.004259598336456735,
+          "rmse": 0.0652655984149133
+        }
+      }
+    }
+  },
+  "freshDecision": {
+    "kind": "release-decision",
+    "schemaVersion": 1,
+    "allowed": true,
+    "status": "allow",
+    "reasons": [
+      {
+        "code": "inference-identity-matches",
+        "message": "The proposed inference profile and digest match the evaluated model."
+      },
+      {
+        "code": "receipt-matches-policy",
+        "message": "Inference identity, dataset, preprocessing, evaluation method, parameters, and metric policy match."
+      }
+    ],
+    "checkedAt": 1793202031672,
+    "receiptId": "0f7bbe1f-87d0-40fe-9b21-93bac28cbd80",
+    "policy": {
+      "metric": "mse",
+      "operator": "lte",
+      "threshold": 0.5
+    },
+    "bindings": {
+      "coverage": "inference",
+      "proposed": {
+        "modelRef": {
+          "candidateId": "gp-B",
+          "conditioningRows": 24,
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+          },
+          "kind": "model",
+          "learningRate": 0.01,
+          "originArtifact": {
+            "bytes": 7474,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/cae75801c2d54714b439471d80a6d47e.npz",
+            "sha256": "176fd95d67bf2ea7899ceefe1137f3c7f82b4e3cd32e2fc33c73d80a4c47d134"
+          },
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "step": 100
+        },
+        "checkpoint": {
+          "bytes": 7474,
+          "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/cae75801c2d54714b439471d80a6d47e.npz",
+          "sha256": "176fd95d67bf2ea7899ceefe1137f3c7f82b4e3cd32e2fc33c73d80a4c47d134"
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "external-jax-gaussian-process-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 1543,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-f2b56cc8f48744459f23409c05af858c.npz",
+            "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 32,
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "shape": [
+            32,
+            1
+          ]
+        },
+        "preprocessingVersion": "none/raw-scalar-input/v1",
+        "evaluationMethodVersion": "gp-posterior-mean-regression/v1;plugin=cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+        "parameters": {}
+      },
+      "receipt": {
+        "evaluationId": "0f7bbe1f-87d0-40fe-9b21-93bac28cbd80",
+        "createdAt": 1793202031671,
+        "checkpoint": {
+          "bytes": 7474,
+          "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/cae75801c2d54714b439471d80a6d47e.npz",
+          "sha256": "176fd95d67bf2ea7899ceefe1137f3c7f82b4e3cd32e2fc33c73d80a4c47d134"
+        },
+        "modelRef": {
+          "candidateId": "gp-B",
+          "conditioningRows": 24,
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+          },
+          "kind": "model",
+          "learningRate": 0.01,
+          "originArtifact": {
+            "bytes": 7474,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/cae75801c2d54714b439471d80a6d47e.npz",
+            "sha256": "176fd95d67bf2ea7899ceefe1137f3c7f82b4e3cd32e2fc33c73d80a4c47d134"
+          },
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "step": 100
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "external-jax-gaussian-process-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 1543,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-f2b56cc8f48744459f23409c05af858c.npz",
+            "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 32,
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "shape": [
+            32,
+            1
+          ]
+        },
+        "preprocessingVersion": "none/raw-scalar-input/v1",
+        "evaluationMethodVersion": "gp-posterior-mean-regression/v1;plugin=cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+        "parameters": {},
+        "metrics": {
+          "mae": 0.026755881001008675,
+          "mse": 0.001700233258309988,
+          "rmse": 0.04123388483165257
+        }
+      }
+    }
+  },
+  "optimizerDecision": {
+    "kind": "release-decision",
+    "schemaVersion": 1,
+    "allowed": true,
+    "status": "allow",
+    "reasons": [
+      {
+        "code": "inference-identity-matches",
+        "message": "The proposed inference profile and digest match the evaluated model."
+      },
+      {
+        "code": "checkpoint-differs-inference-matches",
+        "message": "The full training checkpoint differs; this v2 receipt covers the matching inference identity and retains its evaluated checkpoint for audit."
+      },
+      {
+        "code": "receipt-matches-policy",
+        "message": "Inference identity, dataset, preprocessing, evaluation method, parameters, and metric policy match."
+      }
+    ],
+    "checkedAt": 1793202031681,
+    "receiptId": "0f7bbe1f-87d0-40fe-9b21-93bac28cbd80",
+    "policy": {
+      "metric": "mse",
+      "operator": "lte",
+      "threshold": 0.5
+    },
+    "bindings": {
+      "coverage": "inference",
+      "proposed": {
+        "modelRef": {
+          "candidateId": "gp-B-reset",
+          "conditioningRows": 24,
+          "handle": 7,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+          },
+          "kind": "model",
+          "learningRate": 0.01,
+          "originArtifact": {
+            "bytes": 7480,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/9fc8b34e5b7f446d84530e58dee1a461.npz",
+            "sha256": "b3cf371c307daa20b8ac40d53ff50516ed4b338e3b63c6a50ccd0c214ad9c9ba"
+          },
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "step": 100
+        },
+        "checkpoint": {
+          "bytes": 7480,
+          "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/9fc8b34e5b7f446d84530e58dee1a461.npz",
+          "sha256": "b3cf371c307daa20b8ac40d53ff50516ed4b338e3b63c6a50ccd0c214ad9c9ba"
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "external-jax-gaussian-process-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 1543,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-f2b56cc8f48744459f23409c05af858c.npz",
+            "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 32,
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "shape": [
+            32,
+            1
+          ]
+        },
+        "preprocessingVersion": "none/raw-scalar-input/v1",
+        "evaluationMethodVersion": "gp-posterior-mean-regression/v1;plugin=cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+        "parameters": {}
+      },
+      "receipt": {
+        "evaluationId": "0f7bbe1f-87d0-40fe-9b21-93bac28cbd80",
+        "createdAt": 1793202031671,
+        "checkpoint": {
+          "bytes": 7474,
+          "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+          "kind": "artifact",
+          "path": "checkpoints/cae75801c2d54714b439471d80a6d47e.npz",
+          "sha256": "176fd95d67bf2ea7899ceefe1137f3c7f82b4e3cd32e2fc33c73d80a4c47d134"
+        },
+        "modelRef": {
+          "candidateId": "gp-B",
+          "conditioningRows": 24,
+          "handle": 5,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "external-jax-gaussian-process-inference/v1",
+            "schemaVersion": 1,
+            "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+          },
+          "kind": "model",
+          "learningRate": 0.01,
+          "originArtifact": {
+            "bytes": 7474,
+            "format": "footprint-ml-adapter-kit/trainstate-npz-v1",
+            "kind": "artifact",
+            "path": "checkpoints/cae75801c2d54714b439471d80a6d47e.npz",
+            "sha256": "176fd95d67bf2ea7899ceefe1137f3c7f82b4e3cd32e2fc33c73d80a4c47d134"
+          },
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "step": 100
+        },
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "external-jax-gaussian-process-inference/v1",
+          "schemaVersion": 1,
+          "sha256": "bb1644e839daf50f7e6ef67e9e86b7967dee367e7098367d1065c415fbd46824"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 1543,
+            "format": "footprint-ml-adapter-kit/dataset-npz-v1",
+            "kind": "artifact",
+            "path": "datasets/002-98c41dcd20b8-f2b56cc8f48744459f23409c05af858c.npz",
+            "sha256": "f318fc2437bc65986bc4318bdd0ea55b08e9e804277bca5a34f4c430d0682352"
+          },
+          "handle": 3,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 32,
+          "sessionId": "57ca0cab-9a3e-4acb-9a35-bb92e0aa467a",
+          "shape": [
+            32,
+            1
+          ]
+        },
+        "preprocessingVersion": "none/raw-scalar-input/v1",
+        "evaluationMethodVersion": "gp-posterior-mean-regression/v1;plugin=cf7bd5f2f113cd175628e5437729f00726f3ffb5800584796c5eefef0bd4fcbd",
+        "parameters": {},
+        "metrics": {
+          "mae": 0.026755881001008675,
+          "mse": 0.001700233258309988,
+          "rmse": 0.04123388483165257
+        }
+      }
+    }
+  },
+  "releaseStatus": "released-locally"
+}

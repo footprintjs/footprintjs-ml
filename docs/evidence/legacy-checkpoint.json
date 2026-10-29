@@ -1,0 +1,58 @@
+{
+  "schema": "checkpoint-debug-proof-summary/v1",
+  "backend": {
+    "sessionId": "ade37d4e-1635-41d7-8223-aa0145fd1194",
+    "python": "3.11.5",
+    "sklearn": "1.3.0",
+    "numpy": "1.24.3",
+    "trainer": "sklearn.linear_model.SGDRegressor"
+  },
+  "workload": "scikit-learn SGDRegressor; synthetic y=3*x+2; train once, reload two saved models",
+  "expectedEpochs": 80,
+  "wrongEpochs": 1,
+  "validationMse": 7.846248309056834e-23,
+  "faulty": {
+    "finding": "checkpoint-mismatch",
+    "mse": 22.439845749232525,
+    "probe": {
+      "x": 4,
+      "target": 14,
+      "prediction": 4.967349513575715
+    },
+    "releaseStatus": "quarantined",
+    "expectedSha256": "83e08453f379efd9fb218b88708451c272ec13d64d2897438c58de1d5969ef71",
+    "actualSha256": "e385fe5a6d31b23778a39b3e098dbd569d8ae1b53cf251912472b535b97e852e",
+    "sourceOfLoadedPath": {
+      "stage": "Resolve checkpoint path",
+      "runtimeStageId": "resolve-checkpoint#1",
+      "commitIndex": 1,
+      "value": "checkpoints/epoch-001.pkl"
+    }
+  },
+  "fixed": {
+    "finding": "match",
+    "mse": 8.240034104579614e-23,
+    "probe": {
+      "x": 4,
+      "target": 14,
+      "prediction": 13.999999999989756
+    },
+    "releaseStatus": "accepted-locally",
+    "actualSha256": "83e08453f379efd9fb218b88708451c272ec13d64d2897438c58de1d5969ef71"
+  },
+  "sameTestDataset": true,
+  "freshBackendForEachAttempt": true,
+  "maxPredictionDifference": 9.032650486414042,
+  "ordinaryLogsAlsoDetectMismatch": true,
+  "progressOnlyFinding": {
+    "status": "unknown",
+    "reason": "Checkpoint intent, load identity, or evaluation facts are missing"
+  },
+  "boundaries": {
+    "trainer": "scikit-learn performs every update and prediction in Python; arrays and estimator stay there",
+    "footprint": "records scope reads/writes, stage identity and branch evidence; explicitly emitted backend facts attach model/artifact identities",
+    "detector": "Application code implements digest comparison and investigation queries; not a built-in FootPrint ML detector",
+    "comparison": "Rich ordinary logs retain the same backend facts and also solve the mismatch. FootPrint adds recorded scope history and automatic stage/decision context.",
+    "limits": "Tiny deterministic CPU example; no GPU/autograd graph tracing, production benchmark, or measured debugging-time advantage"
+  }
+}

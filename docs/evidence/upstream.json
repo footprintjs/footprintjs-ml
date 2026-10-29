@@ -1,0 +1,18 @@
+{
+  "schema": "retained-upstream-source/v1",
+  "project": "JAX",
+  "tag": "jax-v0.7.2",
+  "sourcePath": "examples/gaussian_process_regression.py",
+  "sourceUrl": "https://github.com/jax-ml/jax/blob/jax-v0.7.2/examples/gaussian_process_regression.py",
+  "gitBlob": "75f7398d12cafea7d5f67a11237928c7271e6612",
+  "vendoredPath": "vendor/gaussian_process_regression.py",
+  "sha256": "7bbd1574fb62fa090850546cd4092ff9bd3875370754f178939482a4254dd649",
+  "license": "Apache-2.0",
+  "licensePath": "vendor/JAX-LICENSE",
+  "licenseSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+  "sourceFileModified": false,
+  "adapterHarness": "example/external_trainer.py",
+  "harnessModifiedAdaptation": true,
+  "extractedFunctions": ["cov_map", "softplus", "exp_quadratic", "gp", "train_step"],
+  "extraction": "Compile the original nested AST function nodes unchanged; provide numpts, eye, lr, grad_fun and JAX imports as their original closure/global bindings. Skip plotting, absl application shell and upstream demo dataset generation."
+}

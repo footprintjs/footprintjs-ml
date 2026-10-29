@@ -1,0 +1,123 @@
+{
+  "schema": "footprintjs-ml-unified-build/v1",
+  "version": "0.3.0",
+  "published": false,
+  "privatePreview": true,
+  "node": "v24.19.0",
+  "typescript": "5.4.5",
+  "exports": [
+    ".",
+    "./adapter",
+    "./lens",
+    "./conformance"
+  ],
+  "bin": {
+    "footprint-ml-conformance": "./dist/conformance/cli.js"
+  },
+  "sourceSha256": {
+    "src/adapter/client.ts": "64659e2779626ffc55996e8e99be483f5104fd9c8490056c804d9224b382be32",
+    "src/adapter/contracts.ts": "8ddb7332a5defba95f1c4cb61efff17e2c46c31c6f1a0097676534ba7dd70679",
+    "src/adapter/index.ts": "cfeeb09b9a752c93138f01fca42ec9cbc634d914fb4dc7697b74e4a3e37766c4",
+    "src/adapter.ts": "5fe3f6d6e209874edc2790d8f78a2a4754b148eb777df8f2c8da95b35bc59437",
+    "src/conformance/cli.ts": "72c39f2779681a688d5783a160f9085f4657223673297da7a2c739991a34c17f",
+    "src/conformance/index.ts": "58697f372d6a293fae36d2b8f3bf6b88dfe68b5115bb295cb6015a5d7a5ed8fe",
+    "src/contracts.ts": "29e11f0a987db1dc5cca1ec4716069daec0beeec8ee699e05244d074e3825c6e",
+    "src/guard.ts": "1748b08a94316cc21a5e410882559e5748f9801e4ab6f10d794c49a8bac3d712",
+    "src/index.ts": "893504fe3b340a3b006e239e4d399737c4e80cc0a5109baeb56850e88afa96e3",
+    "src/receipts.ts": "f8473393d7374fad0b308f48c07a56c7a5dd496ec0bf017827e9ce3b293c774b"
+  },
+  "distSha256": {
+    "dist/adapter/client.d.ts": "d21fd3648f8ec36d26fb3baad96bccef20a1e11b7103b2e68b30cb5892428d9d",
+    "dist/adapter/client.js": "b5fb151b530267f5ca93f763ca76cd22f7d9055bfde8550904a58362caf567d7",
+    "dist/adapter/contracts.d.ts": "afa427eae1a1e36e4ce766077ea52d3d2a118057e16520d1386fa303d2e538f3",
+    "dist/adapter/contracts.js": "f63dabd47fd347909d15c504c46b08aaf6f333427e768e7971f6b4691fb36696",
+    "dist/adapter/index.d.ts": "6fb9bc453f9df40476298d2fa679f576d5cee9d1b842a80034019038459623f8",
+    "dist/adapter/index.js": "1e469bb3955e5963a7a55a03277784445c424d0e275c71fc09dadc943345de24",
+    "dist/adapter.d.ts": "108ea80caf8b4abd0e7a95fadf5201faea5adc2974fd2c493915b8de259c099f",
+    "dist/adapter.js": "fd70bb933f6c76abd2061ddb2b0a544b0d453a5d5cdf2c718593f6546522fbd5",
+    "dist/conformance/cli.d.ts": "2fec0742894e23081af676d3735674e359f9e3a66748b4eb735a49e25e73e395",
+    "dist/conformance/cli.js": "971d481d61d8b5fe5cfde7f1b7fdf5f4b7dbf350b06725b7903a63f5be718d2f",
+    "dist/conformance/index.d.ts": "ad04a51aacd4e1e09b0c4830c7892690961f9ab00b9c5f721dbd37c6194a214a",
+    "dist/conformance/index.js": "b7e11eab0758addd875058f57f9943ea72c11447c64d011b1e2e98120ae5a254",
+    "dist/contracts.d.ts": "2330707a3fefb5efb59e302a3ad7adf8a6e835afba6588bbca7ab30fa8d927f6",
+    "dist/contracts.js": "588d0ea4d444fc4b699d7965242be1275cf4e43e06e9234cd304aa8c2a1711e6",
+    "dist/guard.d.ts": "dc105c868f3d2ee79d8aaa91df5ef3a2dc3501a77719ef461f3fa0414048de59",
+    "dist/guard.js": "37e9dd02a6d6ac07720fe89988dba081ddfe10d24e96ecf45b946d39c2dceffb",
+    "dist/index.d.ts": "dc410ed6c59bf81f6a0b629e40563a42264ce13f579f3f635f740c3bb9c0df98",
+    "dist/index.js": "efdd960ff7a4e740579bfeca728652ce309aa95f89c1135182c84ee4be499d75",
+    "dist/receipts.d.ts": "d52623a55aae4d9be83cefe9c3f7eaa168cef65b5817dff7e4041572b218ce3f",
+    "dist/receipts.js": "0a5a057f1d2d31d80654860b00c5bb00af2c20a0b084f9b6af01cfd6bd586300"
+  },
+  "pythonSha256": {
+    "python/worker.py": "e1f87e886f1adcca73b4d7b85025d7583f52fecb49eb2b16a473938c4c8ec4dc",
+    "python/conformance.py": "1260c93af6c130efadade24f7d890003c45a7f98e643cc262e564047fdb79ef1",
+    "python/footprint_ml_adapter/__init__.py": "360a0d90cc1d46b39aba3bc628bdf72d2b48c60fd2ad72fe1f6a6823c35d125f",
+    "python/footprint_ml_adapter/conformance.py": "aa281b4f575769380ffcfd819ecee2e21d6b9d878a4706faa80b1d048fb2dae0",
+    "python/footprint_ml_adapter/identity.py": "7d6ea50661da619a0928516b11a17bde2e5d6299abe976720fd6e351f15161ff",
+    "python/footprint_ml_adapter/runtime.py": "051d5579eddf9ed8f1b3a918907c4a67353e05d92e94c8a3a3c4313f9aaa00a9"
+  },
+  "lensSha256": {
+    "lens/session.mjs": "6fb36b04894440843e0f71bdc9907e333751d56f658240fd4784773fd1e5a763",
+    "lens/session.d.ts": "209eff1a9566536299723295cd5ac46f3ad766303ab9b3ad8770ac09ae643ec0"
+  },
+  "legacyCoreUnchanged": {
+    "version": "0.2.0",
+    "modules": [
+      "index.js",
+      "adapter.js",
+      "contracts.js",
+      "receipts.js",
+      "guard.js"
+    ],
+    "archivedBuild": "compat/v0.2.0/build-info.json"
+  },
+  "tests": {
+    "node": {
+      "passed": 67,
+      "failed": 0,
+      "breakdown": {
+        "core": 39,
+        "optionalAdapter": 9,
+        "optionalLens": 7,
+        "loadingIsolation": 2,
+        "optionalConformance": 10
+      },
+      "report": "tests/test-report.unified.json"
+    },
+    "python": {
+      "tests": 11,
+      "passed": 11,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "python": "3.11.5",
+      "numpy": "2.2.6",
+      "report": "python/unified-test-report.json"
+    },
+    "browserCore": "tests/browser-entry-verification.json",
+    "externalTrainerOffline": {
+      "passed": 8,
+      "failed": 0,
+      "report": "../footprint-ml-external-trainer/unified-verification.json"
+    },
+    "actualConformance": {
+      "passed": 14,
+      "failed": 0,
+      "report": "../footprint-ml-external-trainer/unified-conformance-run/conformance-report.json"
+    }
+  },
+  "consumerVerification": "consumer-verification.unified.json",
+  "archive": {
+    "path": "../footprintjs-ml-0.3.0.tgz",
+    "bytes": 73885,
+    "sha256": "b65345a9b0eb0de4faf5e8bf6c4982be4659825725d9bba3082e22b9a53dc1e5"
+  },
+  "proofExample": "../footprint-ml-external-trainer/build-info.unified.json",
+  "limitations": [
+    "The plugin is trusted executable Python; this runner is not a sandbox.",
+    "Structural conformance cannot prove the plugin included every inference component, schema or code dependency in its declared profile.",
+    "Numerical checks exercise only the supplied plan and datasets; they are not a general proof of trainer correctness or model quality.",
+    "Fingerprint inspection is an operation-boundary observation, not continuous attestation, an atomic serving lease, or cryptographic authentication.",
+    "This report is adapter conformance evidence. It does not fabricate a FootPrint execution trace or replace a native FootPrint recording."
+  ]
+}

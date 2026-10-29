@@ -1,0 +1,144 @@
+import assert from 'node:assert/strict';
+import { readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
+import { resolve, relative, isAbsolute } from 'node:path';
+import { checkRelease, readEvaluationReceipt, receiptCheckpoint } from 'footprintjs-ml';
+import { openAdapterWorkflowRun } from 'footprintjs-ml/lens';
+import * as bridge from '../footprint-realistic-ml-benchmark/lens/vendor/lens.node.mjs';
+
+const here = fileURLToPath(new URL('.', import.meta.url));
+const root = resolve(process.argv[2] ?? resolve(here, 'unified-run'));
+const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+const before = new Map();
+const read = async path => { const bytes = await readFile(path); before.set(path, hash(bytes)); return bytes; };
+const json = async path => JSON.parse(await read(path));
+const trace = await json(resolve(root, 'trace.json'));
+assert.equal(trace.implementation?.package, 'footprintjs-ml@0.3.0', 'Choose a unified 0.3 recording; historical split-package evidence is retained separately.');
+const outcome = await json(resolve(root, 'outcome.json'));
+const snapshot = trace.footprint, state = bridge.stateAt(snapshot, snapshot.commitLog.length - 1).state;
+const cases = [];
+const check = async (name, fn) => { const detail = await fn(); cases.push({ name, passed: true, ...(detail ? { detail } : {}) }); };
+const artifacts = new Set();
+
+function walk(value, fn) {
+  if (!value || typeof value !== 'object') return;
+  fn(value); for (const child of Object.values(value)) walk(child, fn);
+}
+function referencesOnly(value) {
+  walk(value, item => {
+    for (const name of ['params', 'momentums', 'scales', 'conditioning_x', 'conditioning_y'])
+      assert.ok(!Object.hasOwn(item, name), `Numerical payload entered FootPrint scope: ${name}`);
+  });
+}
+const propose = (modelRef, receipt, now) => ({ modelRef, receipt, datasetRef: state.partitions.validation,
+  preprocessingVersion: state.backend.preprocessingVersion, evaluationMethodVersion: state.backend.evaluationMethodVersion,
+  parameters: {}, policy: outcome.policy, now });
+
+await check('Recorded scope and commits contain references and receipts while every artifact matches saved bytes', async () => {
+  assert.deepEqual(state, snapshot.sharedState);
+  referencesOnly(state); for (const commit of snapshot.commitLog) referencesOnly(commit);
+  const refs = [];
+  walk(trace, item => { if (item.kind === 'artifact') refs.push(item); });
+  for (const ref of refs) {
+    const path = resolve(root, ref.path), rel = relative(root, path);
+    assert.ok(rel !== '..' && !rel.startsWith('../') && !isAbsolute(rel));
+    const bytes = await read(path); assert.equal(bytes.length, ref.bytes); assert.equal(hash(bytes), ref.sha256);
+    artifacts.add(path);
+  }
+  return { distinctArtifacts: artifacts.size };
+});
+
+await check('The unmodified upstream trainer is pinned by actual Git blob and file hashes', async () => {
+  const manifest = await json(resolve(here, 'upstream-source.json'));
+  const source = await read(resolve(here, 'vendor/gaussian_process_regression.py'));
+  const gitBlob = createHash('sha1').update(Buffer.from(`blob ${source.length}\0`)).update(source).digest('hex');
+  assert.equal(gitBlob, '75f7398d12cafea7d5f67a11237928c7271e6612');
+  assert.equal(hash(source), '7bbd1574fb62fa090850546cd4092ff9bd3875370754f178939482a4254dd649');
+  assert.ok(JSON.stringify(manifest).includes(gitBlob));
+  const numericalSource = (await read(resolve(here, 'example/external_trainer.py'))).toString();
+  assert.doesNotMatch(numericalSource, /^\s*(?:from|import)\s+footprint/m);
+  assert.equal(hash(await read(resolve(here, 'example/plugin.py'))), state.backend.pluginSourceSha256);
+  for (const [path, expected] of Object.entries(trace.implementation.sourceSha256))
+    assert.equal(hash(await read(resolve(here, path))), expected, `Saved implementation changed: ${path}`);
+});
+
+await check('Actual v2 receipts reject changed predictor state and permit verified optimizer-only state changes', async () => {
+  const a = readEvaluationReceipt(state.approvalA), b = readEvaluationReceipt(state.approvalB);
+  assert.equal(a.schemaVersion, 2); assert.equal(b.schemaVersion, 2);
+  assert.notDeepEqual(state.predictorA.inferenceIdentity, state.predictorB.inferenceIdentity);
+  assert.deepEqual(state.predictorB.inferenceIdentity, state.optimizerFork.inferenceIdentity);
+  assert.equal(checkRelease(propose(state.predictorB, a, state.staleDecision.checkedAt)).allowed, false);
+  assert.equal(checkRelease(propose(state.predictorB, b, state.freshDecision.checkedAt)).allowed, true);
+  const decision = checkRelease(propose(state.optimizerFork, b, state.optimizerDecision.checkedAt));
+  assert.equal(decision.allowed, true);
+  assert.ok(decision.reasons.some(reason => reason.code === 'checkpoint-differs-inference-matches'));
+  assert.notEqual(state.savedFork.artifact.sha256, receiptCheckpoint(b).artifact.sha256);
+  assert.equal(state.releaseStatus, 'released-locally');
+});
+
+await check('The independent NumPy audit agrees with actual checkpoints, identity framing and validation/test metrics', async () => {
+  const audit = await json(resolve(root, 'independent-audit.json'));
+  assert.equal(audit.passed, true);
+  assert.ok(JSON.stringify(audit).includes(state.backend.pluginSourceSha256));
+  // Auditor schema and numerical details are retained verbatim for review.
+  return { report: relative(here, resolve(root, 'independent-audit.json')) };
+});
+
+await check('The reusable conformance suite passed against the actual external trainer in a separate session', async () => {
+  const conformance = await json(resolve(here, 'unified-conformance-run/conformance-report.json'));
+  assert.equal(conformance.passed, true); assert.equal(conformance.structuralPassed, true); assert.equal(conformance.numericalPassed, true);
+  assert.equal(conformance.backend.pluginSourceSha256, state.backend.pluginSourceSha256);
+  assert.ok(conformance.cases.every(item => item.passed));
+  return { cases: conformance.cases.length, separateSession: conformance.backend.sessionId !== state.backend.sessionId };
+});
+
+await check('Generic Lens discovers every actual decision using arbitrary bindings and exact saved writer stages', async () => {
+  const session = openAdapterWorkflowRun(trace, bridge);
+  assert.equal(session.decisionChoices.length, 3);
+  const decisions = [];
+  for (const choice of session.decisionChoices) {
+    const nativeReturns = [];
+    const observedBridge = { ...bridge, callTraceTool: async (...args) => {
+      const value = await bridge.callTraceTool(...args); nativeReturns.push(value); return value;
+    } };
+    const selected = openAdapterWorkflowRun(trace, observedBridge, { decisionStageId: choice.runtimeStageId });
+    await selected.investigate();
+    assert.equal(selected.summary.releaseDecision.allowed, choice.allowed);
+    const response = selected.transcript.find(entry => entry.tool === 'get_value' && entry.args.key === 'policyDecision');
+    assert.ok(response?.result.includes('"kind":"release-decision"'));
+    assert.ok(selected.transcript.some(entry => entry.result.includes('control-dependence lookup not provided')));
+    assert.deepEqual(selected.transcript.map(entry => entry.result), nativeReturns);
+    decisions.push({ stage: choice.runtimeStageId, allowed: selected.summary.releaseDecision.allowed,
+      checkpointMatches: selected.summary.checkpointMatches, inferenceMatches: selected.summary.inferenceMatches,
+      nativeCalls: selected.transcript.length });
+  }
+  assert.deepEqual(decisions.map(item => item.allowed), [false, true, true]);
+  assert.deepEqual(decisions.map(item => item.inferenceMatches), [false, true, true]);
+  assert.deepEqual(decisions.map(item => item.checkpointMatches), [false, true, false]);
+  return { bindings: session.bindings, decisions };
+});
+
+await check('Publication records the current inspected predictor and a matching receipt independently of held-out selection', async () => {
+  const publication = await json(resolve(root, 'release.json'));
+  assert.deepEqual(publication.modelRef, state.inspectedBeforePublication);
+  assert.deepEqual(publication.modelRef, state.releasedPredictor);
+  assert.equal(publication.decision.allowed, true);
+  assert.deepEqual(publication.receipt, state.approvalB);
+  assert.deepEqual(outcome.policy, { metric: 'mse', operator: 'lte', threshold: 0.5 });
+  const writeIndex = key => snapshot.commitLog.findIndex(commit => commit.overwrite && Object.hasOwn(commit.overwrite, key));
+  assert.ok(writeIndex('heldOutReceipt') > writeIndex('releasedPredictor'));
+});
+
+await check('All inspected source and saved input bytes remain unchanged', async () => {
+  for (const [path, expected] of before) assert.equal(hash(await readFile(path)), expected, path);
+});
+const report = { schema: 'footprint-existing-trainer-offline-verification/v1', passed: true, checks: cases,
+  totals: { passed: cases.length, failed: 0, artifacts: artifacts.size },
+  execution: { pythonStarted: false, trainingInvoked: false, llmInvoked: false,
+    nodePermissionMode: process.permission !== undefined, childProcessesAllowed: process.permission?.has('child') ?? null },
+  limitations: ['The suite verifies this retained trainer/plugin/profile, not arbitrary third-party semantic completeness.',
+    'Independent authorship applies to the upstream numerical source; the integration was built in this workspace.',
+    'No human investigation study or GPU/large-model overhead measurement was performed.'] };
+await writeFile(resolve(here, 'unified-verification.json'), JSON.stringify(report, null, 2));
+console.log(JSON.stringify({ passed: true, totals: report.totals, execution: report.execution }));

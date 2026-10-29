@@ -1,0 +1,148 @@
+import { flowChart, FlowChartExecutor, decide } from 'footprintjs';
+import type { CombinedRecorder, TypedScope } from 'footprintjs';
+import { checkRelease, checkpointRef } from 'footprintjs-ml';
+import type { CheckpointRef, DatasetRef, EvaluationReceipt, ReleaseDecision } from 'footprintjs-ml';
+import type { PythonModelRef, PythonTrainer } from 'footprintjs-ml/adapter';
+import { mkdir, readFile, writeFile, access } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
+
+// Workflow names deliberately differ from the older digit-classifier example.
+type State = {
+  backend: any; partitions: Record<string, DatasetRef>;
+  activePredictor: PythonModelRef; predictorA: PythonModelRef; predictorB: PythonModelRef; optimizerFork: PythonModelRef;
+  savedA: CheckpointRef; savedB: CheckpointRef; savedFork: CheckpointRef;
+  approval: EvaluationReceipt; approvalA: EvaluationReceipt; approvalB: EvaluationReceipt;
+  policyDecision: ReleaseDecision; staleDecision: ReleaseDecision; freshDecision: ReleaseDecision; optimizerDecision: ReleaseDecision;
+  publishAllowed: boolean; releaseStatus: string; releasedPredictor: PythonModelRef | null;
+  publicationCheck: ReleaseDecision; inspectedBeforePublication: PythonModelRef; heldOutReceipt: EvaluationReceipt;
+};
+const plain = <T>(value: T): T => JSON.parse(JSON.stringify(value));
+const args = process.argv.slice(2);
+const flag = (name: string) => { const index = args.indexOf(name); return index < 0 ? undefined : args[index + 1]; };
+const here = fileURLToPath(new URL('.', import.meta.url));
+const implementationPaths = ['../footprintjs-ml/python/worker.py',
+  '../footprintjs-ml/python/footprint_ml_adapter/runtime.py',
+  '../footprintjs-ml/python/footprint_ml_adapter/identity.py',
+  '../footprintjs-ml/dist/adapter/client.js', '../footprintjs-ml/dist/adapter.js',
+  'example/plugin.py', 'example/external_trainer.py', 'workflow.ts', 'run.mjs'];
+const implementation = Object.fromEntries(await Promise.all(implementationPaths.map(async path =>
+  [path, createHash('sha256').update(await readFile(resolve(here, path))).digest('hex')])));
+const root = resolve(flag('--out') ?? resolve(here, 'unified-run'));
+const config = JSON.parse(await readFile(resolve(here, 'config.json'), 'utf8'));
+const plan = JSON.parse(await readFile(resolve(here, 'plan.json'), 'utf8'));
+const policy = { metric: plan.metric as string, operator: plan.operator as 'lte', threshold: plan.threshold as number };
+try { await access(resolve(root, 'trace.json')); throw new Error('Use a fresh --out directory to preserve the saved proof.'); }
+catch (error: any) { if (error.code !== 'ENOENT') throw error; }
+await mkdir(root, { recursive: true });
+let trainer: PythonTrainer | undefined;
+let emit: (name: string, payload: any) => void = () => {};
+const adapter = () => { if (!trainer) throw new Error('Trainer not initialized'); return trainer.adapter; };
+const stage = (fn: (scope: TypedScope<State>) => void | Promise<void>) => async (scope: TypedScope<State>) => {
+  emit = (name, payload) => scope.$emit(name, payload); await fn(scope);
+};
+const evaluation = (s: TypedScope<State>) => ({ modelRef: plain(s.activePredictor), datasetRef: plain(s.partitions.validation),
+  preprocessingVersion: s.backend.preprocessingVersion as string, evaluationMethodVersion: s.backend.evaluationMethodVersion as string, parameters: {} });
+const guard = async (s: TypedScope<State>) => {
+  const verified = await adapter().verifyModel({ modelRef: plain(s.activePredictor) });
+  return checkRelease({ ...evaluation(s), modelRef: verified, receipt: plain(s.approval), policy });
+};
+const rows: { type: string; event: any }[] = [];
+const retain = (type: string) => (event: any) => rows.push({ type, event: plain(event) });
+const recorder: CombinedRecorder = { id: 'external-trainer-proof', onRead: retain('read'), onWrite: retain('write'),
+  onDecision: retain('decision'), onStageRetry: retain('retry'), onEmit: retain('backend') };
+
+let chart = flowChart<State>('Connect the existing Gaussian-process trainer', stage(async s => {
+  const { createPythonTrainerAdapter } = await import('footprintjs-ml/adapter');
+  trainer = await createPythonTrainerAdapter({ root, pluginPath: resolve(here, 'example/plugin.py'), config,
+    expectedProfile: 'external-jax-gaussian-process-inference/v1' }, {
+    python: process.env.JAX_PYTHON ?? process.env.PYTHON,
+    workerPath: fileURLToPath(new URL('../footprintjs-ml/python/worker.py', import.meta.url)),
+    emit: (name, payload) => emit(name, payload),
+  });
+  s.backend = plain(trainer.backend); s.partitions = plain(trainer.datasets);
+  s.releaseStatus = 'pending'; s.releasedPredictor = null;
+  emit('external-trainer.plan', { config, plan, policy });
+}), 'connect-gp');
+chart.addFunction('Fit Gaussian-process checkpoint A', stage(async s => {
+  const trained = await adapter().train({ ...plan.train, candidateId: 'gp-A' });
+  s.predictorA = plain(trained.modelRef); s.activePredictor = plain(trained.modelRef);
+  s.savedA = plain(checkpointRef(trained.checkpoint));
+}), 'fit-kernel');
+chart.addFunction('Evaluate A on the validation partition', stage(async s => {
+  const { receipt } = await adapter().evaluate(evaluation(s));
+  s.approval = plain(receipt); s.approvalA = plain(receipt);
+}), 'score-initial');
+chart.addFunction('Continue the existing optimizer to checkpoint B', stage(async s => {
+  const trained = await adapter().train({ ...plan.continue, candidateId: 'gp-B', modelRef: plain(s.activePredictor) as any });
+  s.predictorB = plain(trained.modelRef); s.activePredictor = plain(trained.modelRef);
+  s.savedB = plain(checkpointRef(trained.checkpoint));
+}), 'fit-further');
+chart.addFunction('Test the older approval against the current predictor', stage(async s => {
+  const decision = plain(await guard(s));
+  s.policyDecision = decision; s.staleDecision = decision; s.publishAllowed = decision.allowed;
+}), 'old-approval-check');
+const stale = chart.addDeciderFunction('Read the recorded release permission', s => decide(s,
+  [{ when: { publishAllowed: { eq: true } }, then: 'unexpected', label: 'An old receipt must not approve changed predictor state' }], 'blocked'), 'old-approval-route');
+stale.addFunctionBranch('unexpected', 'Refuse an invalid proof result', stage(() => { throw new Error('Stale approval unexpectedly succeeded'); }));
+stale.addFunctionBranch('blocked', 'Retain the rejected publication attempt', stage(s => {
+  s.releaseStatus = 'stale-approval-blocked'; emit('external-trainer.publication-blocked', { decision: plain(s.policyDecision) });
+}));
+chart = stale.end();
+chart.addFunction('Evaluate B to obtain its own approval', stage(async s => {
+  const { receipt } = await adapter().evaluate(evaluation(s)); s.approval = plain(receipt); s.approvalB = plain(receipt);
+}), 'score-current');
+chart.addFunction('Check the newly evaluated predictor', stage(async s => {
+  const decision = plain(await guard(s));
+  s.policyDecision = decision; s.freshDecision = decision; s.publishAllowed = decision.allowed;
+}), 'current-approval-check');
+chart.addFunction('Reload the saved B checkpoint through the common adapter', stage(async s => {
+  s.activePredictor = plain(await adapter().loadCheckpoint({ checkpoint: plain(s.savedB) }));
+}), 'restore-predictor');
+chart.addFunction('Reset only the existing trainer optimizer state', stage(async s => {
+  const trained = await adapter().train({ ...plan.trainingOnly, candidateId: 'gp-B-reset', modelRef: plain(s.activePredictor) as any });
+  s.activePredictor = plain(trained.modelRef); s.optimizerFork = plain(trained.modelRef);
+  s.savedFork = plain(checkpointRef(trained.checkpoint));
+}), 'reset-optimizer');
+chart.addFunction('Check inference coverage across changed optimizer state', stage(async s => {
+  const decision = plain(await guard(s));
+  s.policyDecision = decision; s.optimizerDecision = decision; s.publishAllowed = decision.allowed;
+}), 'inference-approval-check');
+const release = chart.addDeciderFunction('Decide whether to publish the verified predictor', s => decide(s,
+  [{ when: { publishAllowed: { eq: true } }, then: 'publish', label: 'The evaluated predictor still matches the proposal' }], 'quarantine'), 'publication-route');
+release.addFunctionBranch('publish', 'Inspect and publish the approved predictor locally', stage(async s => {
+  const verified = await adapter().verifyModel({ modelRef: plain(s.activePredictor) });
+  const decision = checkRelease({ ...evaluation(s), modelRef: verified, receipt: plain(s.approval), policy });
+  if (!decision.allowed) throw new Error('The publication-boundary check refused the current predictor');
+  s.inspectedBeforePublication = plain(verified); s.publicationCheck = plain(decision);
+  await writeFile(resolve(root, 'release.json'), JSON.stringify({ modelRef: verified, receipt: plain(s.approval), decision }, null, 2));
+  s.releasedPredictor = plain(verified); s.releaseStatus = 'released-locally';
+}));
+release.addFunctionBranch('quarantine', 'Retain the predictor for investigation', stage(s => { s.releaseStatus = 'quarantined'; }));
+chart = release.end();
+chart.addFunction('Audit the released predictor on held-out regression data', stage(async s => {
+  const { receipt } = await adapter().evaluate({ ...evaluation(s), datasetRef: plain(s.partitions.test) });
+  s.heldOutReceipt = plain(receipt);
+}), 'audit-regression');
+
+const executor = new FlowChartExecutor(chart.build());
+executor.setReadTracking('full'); executor.setWriteTracking('full'); executor.attachCombinedRecorder(recorder);
+try {
+  await executor.run();
+  const snapshot = executor.getSnapshot(), s = snapshot.sharedState as State;
+  const trace = { schema: 'footprint-existing-trainer-proof/v1', workflow: { kind: 'ml-adapter-workflow/v1' },
+    implementation: { package: 'footprintjs-ml@0.3.0', sourceSha256: implementation },
+    mlInvestigation: { schemaVersion: 1, bindings: { model: 'activePredictor', receipt: 'approval', decision: 'policyDecision',
+      allowed: 'publishAllowed', releasedModel: 'releasedPredictor' } }, footprint: snapshot, rows };
+  const outcome = { schema: 'footprint-existing-trainer-outcome/v1', backend: s.backend, policy,
+    checkpointA: s.savedA, checkpointB: s.savedB, forkedCheckpoint: s.savedFork,
+    inferenceA: s.predictorA.inferenceIdentity, inferenceB: s.predictorB.inferenceIdentity, inferenceFork: s.optimizerFork.inferenceIdentity,
+    validationA: s.approvalA.metrics, validationB: s.approvalB.metrics, heldOut: s.heldOutReceipt.metrics,
+    staleDecision: s.staleDecision, freshDecision: s.freshDecision, optimizerDecision: s.optimizerDecision, releaseStatus: s.releaseStatus };
+  await writeFile(resolve(root, 'trace.json'), JSON.stringify(trace));
+  await writeFile(resolve(root, 'outcome.json'), JSON.stringify(outcome, null, 2));
+  console.log(JSON.stringify({ validationA: outcome.validationA, validationB: outcome.validationB, heldOut: outcome.heldOut,
+    staleAllowed: outcome.staleDecision.allowed, freshAllowed: outcome.freshDecision.allowed,
+    optimizerOnlyAllowed: outcome.optimizerDecision.allowed, releaseStatus: outcome.releaseStatus }, null, 2));
+} finally { await trainer?.close(); }

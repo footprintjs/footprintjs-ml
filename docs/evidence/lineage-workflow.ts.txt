@@ -1,0 +1,197 @@
+import { flowChart, FlowChartExecutor, decide } from 'footprintjs';
+import type { CombinedRecorder, TypedScope } from 'footprintjs';
+import { checkRelease, createDataLineageReceipt, checkDataLineage } from 'footprintjs-ml';
+import type { ArtifactRef, DatasetRef, EvaluationReceipt, ReleaseDecision, DataLineageReceipt, DataLineageDecision } from 'footprintjs-ml';
+import type { PythonModelRef, PythonTrainer } from 'footprintjs-ml/adapter';
+import { mkdir, readFile, writeFile, access } from 'node:fs/promises';
+import { resolve, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
+import { performance } from 'node:perf_hooks';
+import { createStructuredLogger } from './structured-logging.js';
+
+export type Mode = 'clean' | 'faulty' | 'fixed';
+export type Capture = 'direct' | 'logs' | 'footprint-core' | 'footprint-full';
+type State = {
+  mode: Mode; backend: any; partitions: Record<string, DatasetRef>; plan: any;
+  preparedRef: PythonModelRef; activePredictor: PythonModelRef;
+  preprocessingFit: any; splitManifest: ArtifactRef; overlap: any;
+  approval: EvaluationReceipt; dataLineage: DataLineageReceipt;
+  metricDecision: ReleaseDecision; lineageDecision: DataLineageDecision;
+  policyDecision: ReleaseDecision; publishAllowed: boolean;
+  publicationCheck?: { modelEvidence: ReleaseDecision; dataLineage: DataLineageDecision };
+  releaseStatus: string; releasedPredictor: PythonModelRef | null;
+};
+type Step = { id: string; name: string; run(s: TypedScope<State>): Promise<void> };
+const here = fileURLToPath(new URL('.', import.meta.url));
+const plain = <T>(value: T): T => JSON.parse(JSON.stringify(value));
+const sha = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
+const implementationPaths = ['workflow.ts', 'structured-logging.ts', 'run.mjs', 'plan.json', 'backend/trainer.py',
+  '../footprintjs-ml/dist/lineage.js', '../footprintjs-ml/dist/guard.js', '../footprintjs-ml/dist/adapter.js',
+  '../footprintjs-ml/dist/adapter/client.js', '../footprintjs-ml/python/worker.py',
+  '../footprintjs-ml/python/footprint_ml_adapter/runtime.py', '../footprintjs-ml/python/footprint_ml_adapter/identity.py'];
+
+export async function executeCase(options: { root: string; mode: Mode; capture?: Capture; persist?: boolean }) {
+  const root = resolve(options.root), mode = options.mode, capture = options.capture ?? 'footprint-full';
+  if (!['clean', 'faulty', 'fixed'].includes(mode)) throw new Error('Choose clean, faulty or fixed.');
+  if (!['direct', 'logs', 'footprint-core', 'footprint-full'].includes(capture)) throw new Error('Unknown recording profile.');
+  try { await access(resolve(root, 'outcome.json')); throw new Error('Use a fresh output folder to preserve the saved run.'); }
+  catch (error: any) { if (error.code !== 'ENOENT') throw error; }
+  await mkdir(root, { recursive: true });
+  const plan = JSON.parse(await readFile(resolve(here, 'plan.json'), 'utf8'));
+  const sourceSha256 = Object.fromEntries(await Promise.all(implementationPaths.map(async path => [path, sha(await readFile(resolve(here, path)))])));
+  let trainer: PythonTrainer | undefined;
+  let emit: (name: string, payload: any) => void = () => {};
+  let currentStage = 'initialization';
+  const rows: { type: string; event: any }[] = [];
+  const logs = createStructuredLogger();
+  const retain = (type: string) => (event: any) => rows.push({ type, event: plain(event) });
+  const recorder: CombinedRecorder = { id: 'data-lineage-proof', onRead: retain('read'), onWrite: retain('write'),
+    onDecision: retain('decision'), onStageRetry: retain('retry'), onEmit: retain('backend') };
+  const startupStart = performance.now();
+  const { createPythonTrainerAdapter } = await import('footprintjs-ml/adapter');
+  try {
+    trainer = await createPythonTrainerAdapter({ root, pluginPath: resolve(here, 'backend/trainer.py'),
+      config: { ...plan, artifactRoot: root }, expectedProfile: 'footprint-sklearn-digits-lineage-inference/v1' }, {
+      python: process.env.PYTHON ?? 'python3',
+      workerPath: fileURLToPath(new URL('../footprintjs-ml/python/worker.py', import.meta.url)),
+      env: { OPENBLAS_NUM_THREADS: '1', OMP_NUM_THREADS: '1', MKL_NUM_THREADS: '1', VECLIB_MAXIMUM_THREADS: '1' },
+      emit: (name, payload) => emit(name, payload),
+    });
+    const startupMs = performance.now() - startupStart;
+    const adapter = trainer.adapter;
+    const evaluation = (s: TypedScope<State>) => ({ modelRef: plain(s.activePredictor), datasetRef: plain(s.partitions.validation),
+      preprocessingVersion: s.backend.preprocessingVersion as string, evaluationMethodVersion: s.backend.evaluationMethodVersion as string, parameters: {} });
+    const steps: Step[] = [
+      { id: 'declare-partitions', name: 'Declare the data partitions and fixed experiment plan', run: async s => {
+        s.mode = mode; s.backend = plain(trainer!.backend); s.partitions = plain(trainer!.datasets); s.plan = plain(plan);
+        s.releasedPredictor = null; s.releaseStatus = 'pending';
+        emit('lineage.plan', { mode, plan, boundary: 'Numerical arrays and row memberships stay in backend artifacts.' });
+      } },
+      { id: 'fit-preprocessing', name: 'Fit the data preparation and record its actual input partitions', run: async s => {
+        const prepared = await adapter.train({ operation: 'prepare', mode: s.mode, candidateId: `${mode}-prepared`, datasetRefs: plain(s.partitions) as any });
+        s.preparedRef = plain(prepared.modelRef);
+        const report = (prepared.modelRef as any).trainingReport;
+        if (!report?.preprocessingFit || !report?.overlap || !report?.splitManifest) throw new Error('Backend omitted actual fit lineage.');
+        s.preprocessingFit = plain(report.preprocessingFit); s.splitManifest = plain(report.splitManifest); s.overlap = plain(report.overlap);
+        emit('lineage.preprocessing-fit', { preprocessingFit: plain(s.preprocessingFit), overlap: plain(s.overlap), splitManifest: plain(s.splitManifest) });
+      } },
+      { id: 'fit-classifier', name: 'Train the classifier using the prepared training partition', run: async s => {
+        const trained = await adapter.train({ operation: 'fit', mode: s.mode, candidateId: `${mode}-classifier`,
+          modelRef: plain(s.preparedRef) as any, ...s.plan.training });
+        s.activePredictor = plain(trained.modelRef);
+      } },
+      { id: 'evaluate-model', name: 'Evaluate the actual classifier on validation data', run: async s => {
+        const { receipt } = await adapter.evaluate(evaluation(s)); s.approval = plain(receipt);
+      } },
+      { id: 'bind-data-lineage', name: 'Bind observed data preparation to this model and evaluation', run: async s => {
+        s.dataLineage = plain(createDataLineageReceipt({ lineageId: `${mode}-validation-lineage`, createdAt: Date.now(),
+          modelRef: plain(s.activePredictor), datasetRef: plain(s.partitions.validation), splitManifest: plain(s.splitManifest),
+          trainingDatasetRef: plain(s.partitions.train), overlap: plain(s.overlap),
+          preprocessing: { artifact: plain(s.preprocessingFit.artifact), fitDatasetRefs: plain(s.preprocessingFit.fitDatasetRefs) } }));
+      } },
+      { id: 'check-publication', name: 'Check model evidence and data lineage separately', run: async s => {
+        const modelRef = await adapter.verifyModel({ modelRef: plain(s.activePredictor) });
+        const metric = checkRelease({ ...evaluation(s), modelRef, receipt: plain(s.approval), policy: s.plan.releasePolicy });
+        const lineage = checkDataLineage({ receipt: plain(s.dataLineage), modelRef, datasetRef: plain(s.partitions.validation),
+          splitManifest: plain(s.splitManifest), policy: { trainingDatasetRef: plain(s.partitions.train) } });
+        s.metricDecision = plain(metric); s.lineageDecision = plain(lineage);
+        s.policyDecision = plain({ ...metric, allowed: metric.allowed && lineage.allowed,
+          status: metric.status === 'deny' || lineage.status === 'deny' ? 'deny' :
+            metric.status === 'unknown' || lineage.status === 'unknown' ? 'unknown' : 'allow',
+          reasons: [...metric.reasons, ...lineage.reasons],
+          dataLineage: { receiptId: lineage.receiptId, decision: lineage } });
+        s.publishAllowed = s.policyDecision.allowed;
+      } },
+    ];
+    const publish: Step = { id: 'publish-locally', name: 'Record local approval after both checks pass', run: async s => {
+      const modelRef = await adapter.verifyModel({ modelRef: plain(s.activePredictor) });
+      const metric = checkRelease({ ...evaluation(s), modelRef, receipt: plain(s.approval), policy: s.plan.releasePolicy });
+      const lineage = checkDataLineage({ receipt: plain(s.dataLineage), modelRef, datasetRef: plain(s.partitions.validation),
+        splitManifest: plain(s.splitManifest), policy: { trainingDatasetRef: plain(s.partitions.train) } });
+      if (!metric.allowed || !lineage.allowed) throw new Error('Publication boundary rejected the current evidence.');
+      s.publicationCheck = plain({ modelEvidence: metric, dataLineage: lineage });
+      await writeFile(resolve(root, 'release.json'), JSON.stringify({ modelRef, evaluation: plain(s.approval), dataLineage: plain(s.dataLineage), decision: plain(s.policyDecision), publicationCheck: plain(s.publicationCheck) }, null, 2));
+      s.releasedPredictor = plain(modelRef); s.releaseStatus = 'approved-locally';
+    } };
+    const quarantine: Step = { id: 'quarantine', name: 'Quarantine the model because its data protocol failed', run: async s => {
+      s.releasedPredictor = null; s.releaseStatus = 'quarantined';
+      emit('lineage.publication-blocked', { decision: plain(s.policyDecision) });
+    } };
+    const isFootprint = capture.startsWith('footprint-');
+    const wrap = (step: Step) => async (s: TypedScope<State>) => {
+      currentStage = step.id;
+      emit = isFootprint ? (name, payload) => s.$emit(name, payload) : capture === 'logs' ?
+        (name, payload) => logs.backend(currentStage, name, payload) : () => {};
+      await step.run(s);
+    };
+    let executor: FlowChartExecutor<State> | undefined;
+    if (isFootprint) {
+      let chart = flowChart<State>(steps[0].name, wrap(steps[0]), steps[0].id);
+      for (const step of steps.slice(1)) chart.addFunction(step.name, wrap(step), step.id);
+      const route = chart.addDeciderFunction('Choose approval or quarantine from the recorded permission', s => decide(s,
+        [{ when: { publishAllowed: { eq: true } }, then: 'publish', label: 'Model evidence and observed data lineage both pass' }],
+        { branch: 'quarantine', label: 'A required evidence check denied or could not establish approval' }), 'publication-route');
+      route.addFunctionBranch('publish', publish.name, wrap(publish), publish.id);
+      route.addFunctionBranch('quarantine', quarantine.name, wrap(quarantine), quarantine.id);
+      chart = route.end();
+      executor = new FlowChartExecutor(chart.build());
+      executor.setReadTracking(capture === 'footprint-full' ? 'full' : 'off');
+      executor.setWriteTracking(capture === 'footprint-full' ? 'full' : 'off');
+      if (capture === 'footprint-full') executor.attachCombinedRecorder(recorder);
+    }
+    const start = performance.now();
+    let state: State;
+    if (executor) { await executor.run(); state = executor.getSnapshot().sharedState as State; }
+    else {
+      const s = {} as State;
+      const run = async (step: Step) => capture === 'logs' ? logs.stage(step.id, s, () => wrap(step)(s as TypedScope<State>)) : wrap(step)(s as TypedScope<State>);
+      for (const step of steps) await run(step);
+      if (capture === 'logs') await logs.stage('publication-route', s, async () => {});
+      await run(s.publishAllowed ? publish : quarantine); state = s;
+    }
+    const executionMs = performance.now() - start;
+    const recordStart = performance.now();
+    const record = executor ? {
+      schema: 'footprint-data-lineage-recording/v1', workflow: { kind: 'ml-adapter-workflow/v1' },
+      implementation: { package: 'footprintjs-ml@0.3.0', extension: 'data-lineage-preview/v1', sourceSha256 },
+      experiment: { mode, capture, plan }, mlInvestigation: { schemaVersion: 1,
+        bindings: { model: 'activePredictor', receipt: 'approval', decision: 'policyDecision', allowed: 'publishAllowed', releasedModel: 'releasedPredictor' },
+        dataLineage: { receipt: 'dataLineage', decision: 'lineageDecision', preprocessing: 'preprocessingFit', manifest: 'splitManifest' } },
+      footprint: executor.getSnapshot(), rows,
+    } : { schema: 'data-lineage-structured-recording/v1', experiment: { mode, capture, plan }, events: logs.events, finalState: state };
+    const encoded = JSON.stringify(record);
+    const serializationMs = performance.now() - recordStart;
+    const timing = { startupAndDatasetInitializationMs: startupMs, executionMs, serializationMs,
+      executionAndSerializationMs: executionMs + serializationMs,
+      recordingBytes: Buffer.byteLength(encoded), supplementalRows: rows.length, structuredLogEvents: logs.events.length };
+    const outcome = { schema: 'footprint-data-lineage-outcome/v1', mode, capture, plan,
+      metrics: state.approval.metrics, metricDecision: state.metricDecision, lineageDecision: state.lineageDecision,
+      combinedDecision: state.policyDecision, preprocessingFit: state.preprocessingFit,
+      splitManifest: state.splitManifest, overlap: state.overlap, releaseStatus: state.releaseStatus,
+      ...(state.publicationCheck ? { publicationCheck: state.publicationCheck } : {}), timing };
+    if (options.persist !== false) {
+      await writeFile(resolve(root, executor ? 'trace.json' : 'structured-logs.json'), encoded);
+      await writeFile(resolve(root, 'outcome.json'), JSON.stringify(outcome, null, 2));
+    }
+    return { root, state, record, outcome, timing };
+  } finally { await trainer?.close(); }
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const args = process.argv.slice(2);
+  const flag = (name: string) => { const i = args.indexOf(name); return i < 0 ? undefined : args[i + 1]; };
+  const root = resolve(flag('--out') ?? resolve(here, 'run'));
+  const capture = (flag('--capture') ?? 'footprint-full') as Capture;
+  const selected = flag('--mode') ?? 'all';
+  const modes: Mode[] = selected === 'all' ? ['clean', 'faulty', 'fixed'] : [selected as Mode];
+  const result = [];
+  for (const mode of modes) {
+    const run = await executeCase({ root: selected === 'all' ? resolve(root, mode) : root, mode, capture });
+    result.push({ mode, accuracy: run.outcome.metrics.accuracy, modelEvidence: run.outcome.metricDecision.status,
+      dataLineage: run.outcome.lineageDecision.status, combined: run.outcome.combinedDecision.status,
+      releaseStatus: run.outcome.releaseStatus, record: relative(here, resolve(run.root, capture.startsWith('footprint-') ? 'trace.json' : 'structured-logs.json')) });
+  }
+  await writeFile(resolve(root, 'summary.json'), JSON.stringify({ schema: 'footprint-data-lineage-comparison/v1', runs: result }, null, 2));
+  console.log(JSON.stringify(result, null, 2));
+}

@@ -1,0 +1,243 @@
+{
+  "schema": "footprintjs-ml-integration-verification/v1",
+  "root": "retained-examples/footprint-realistic-ml-benchmark/library-run",
+  "passed": true,
+  "totals": {
+    "passed": 31,
+    "failed": 0,
+    "skipped": 0,
+    "distinctArtifactFilesHashed": 68
+  },
+  "execution": {
+    "trainerStarted": false,
+    "pythonStarted": false,
+    "llmInvoked": false,
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false
+  },
+  "limits": [
+    "This verifier reads saved predictions and hashes artifact bytes; it does not deserialize checkpoints or retrain models.",
+    "Existing independent-audit.json results are corroborating saved evidence; this invocation does not rerun that Python audit.",
+    "Dataset source row IDs were not retained, so source-row partition disjointness is not established here.",
+    "Evaluation receipts are trusted-backend consistency records, not cryptographic attestations.",
+    "Historical recording-overhead benchmark measurements do not measure this library integration."
+  ],
+  "runs": [
+    {
+      "id": "legacy-wrong",
+      "releaseStatus": "released-locally",
+      "releaseAllowed": false,
+      "validatedCandidate": "logistic-C-3",
+      "activeCandidate": "cached-baseline",
+      "validatedHandle": 8,
+      "activeHandle": 10,
+      "checkpointMatches": false,
+      "nativeLensCalls": 14,
+      "pythonAuditAggregateDigestCoverage": true
+    },
+    {
+      "id": "guarded-wrong",
+      "releaseStatus": "quarantined",
+      "releaseAllowed": false,
+      "validatedCandidate": "logistic-C-3",
+      "activeCandidate": "cached-baseline",
+      "validatedHandle": 8,
+      "activeHandle": 10,
+      "checkpointMatches": false,
+      "nativeLensCalls": 13,
+      "pythonAuditAggregateDigestCoverage": true
+    },
+    {
+      "id": "guarded-reload",
+      "releaseStatus": "released-locally",
+      "releaseAllowed": true,
+      "validatedCandidate": "logistic-C-3",
+      "activeCandidate": "logistic-C-3",
+      "validatedHandle": 8,
+      "activeHandle": 10,
+      "checkpointMatches": true,
+      "nativeLensCalls": 14,
+      "pythonAuditAggregateDigestCoverage": false
+    }
+  ],
+  "checks": [
+    {
+      "name": "legacy-wrong: saved manifest, outcome, and committed state agree",
+      "status": "passed"
+    },
+    {
+      "name": "legacy-wrong: every artifact reference matches retained bytes, including the unused cached baseline",
+      "status": "passed",
+      "detail": {
+        "referenceOccurrences": 600,
+        "distinctCheckpoints": 5
+      }
+    },
+    {
+      "name": "legacy-wrong: dataset artifacts have the declared rows, roles, and feature dimensions",
+      "status": "passed"
+    },
+    {
+      "name": "legacy-wrong: evaluation receipts bind observed model, data, fitted preprocessing, method, and saved predictions",
+      "status": "passed",
+      "detail": {
+        "evaluationsVerified": 7,
+        "metricsRecomputedFromSavedPredictions": true
+      }
+    },
+    {
+      "name": "legacy-wrong: guard rejects changed bytes and accepts identical bytes under a new runtime handle",
+      "status": "passed"
+    },
+    {
+      "name": "legacy-wrong: publication follows the selected policy, with an explicit legacy bypass",
+      "status": "passed"
+    },
+    {
+      "name": "legacy-wrong: failed retry is discarded from scope and its backend handle is explicitly disposed",
+      "status": "passed"
+    },
+    {
+      "name": "legacy-wrong: all committed scopes contain references, receipts, and small metadata rather than numerical buffers",
+      "status": "passed"
+    },
+    {
+      "name": "legacy-wrong: new saved record reopens through native Lens tools without fabricating agent events",
+      "status": "passed",
+      "detail": {
+        "nativeToolCalls": 14,
+        "typedAgentEventsSupplied": false
+      }
+    },
+    {
+      "name": "legacy-wrong: existing independent Python audit corroborates saved model results",
+      "status": "passed",
+      "detail": {
+        "auditWasReadOnlyEvidence": true,
+        "aggregateDigestCoverage": true,
+        "allSnapshotReferencedCheckpointsHashedByThisVerifier": true
+      }
+    },
+    {
+      "name": "guarded-wrong: saved manifest, outcome, and committed state agree",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-wrong: every artifact reference matches retained bytes, including the unused cached baseline",
+      "status": "passed",
+      "detail": {
+        "referenceOccurrences": 565,
+        "distinctCheckpoints": 5
+      }
+    },
+    {
+      "name": "guarded-wrong: dataset artifacts have the declared rows, roles, and feature dimensions",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-wrong: evaluation receipts bind observed model, data, fitted preprocessing, method, and saved predictions",
+      "status": "passed",
+      "detail": {
+        "evaluationsVerified": 7,
+        "metricsRecomputedFromSavedPredictions": true
+      }
+    },
+    {
+      "name": "guarded-wrong: guard rejects changed bytes and accepts identical bytes under a new runtime handle",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-wrong: publication follows the selected policy, with an explicit legacy bypass",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-wrong: failed retry is discarded from scope and its backend handle is explicitly disposed",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-wrong: all committed scopes contain references, receipts, and small metadata rather than numerical buffers",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-wrong: new saved record reopens through native Lens tools without fabricating agent events",
+      "status": "passed",
+      "detail": {
+        "nativeToolCalls": 13,
+        "typedAgentEventsSupplied": false
+      }
+    },
+    {
+      "name": "guarded-wrong: existing independent Python audit corroborates saved model results",
+      "status": "passed",
+      "detail": {
+        "auditWasReadOnlyEvidence": true,
+        "aggregateDigestCoverage": true,
+        "allSnapshotReferencedCheckpointsHashedByThisVerifier": true
+      }
+    },
+    {
+      "name": "guarded-reload: saved manifest, outcome, and committed state agree",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-reload: every artifact reference matches retained bytes, including the unused cached baseline",
+      "status": "passed",
+      "detail": {
+        "referenceOccurrences": 600,
+        "distinctCheckpoints": 5
+      }
+    },
+    {
+      "name": "guarded-reload: dataset artifacts have the declared rows, roles, and feature dimensions",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-reload: evaluation receipts bind observed model, data, fitted preprocessing, method, and saved predictions",
+      "status": "passed",
+      "detail": {
+        "evaluationsVerified": 7,
+        "metricsRecomputedFromSavedPredictions": true
+      }
+    },
+    {
+      "name": "guarded-reload: guard rejects changed bytes and accepts identical bytes under a new runtime handle",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-reload: publication follows the selected policy, with an explicit legacy bypass",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-reload: failed retry is discarded from scope and its backend handle is explicitly disposed",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-reload: all committed scopes contain references, receipts, and small metadata rather than numerical buffers",
+      "status": "passed"
+    },
+    {
+      "name": "guarded-reload: new saved record reopens through native Lens tools without fabricating agent events",
+      "status": "passed",
+      "detail": {
+        "nativeToolCalls": 14,
+        "typedAgentEventsSupplied": false
+      }
+    },
+    {
+      "name": "guarded-reload: existing independent Python audit corroborates saved model results",
+      "status": "passed",
+      "detail": {
+        "auditWasReadOnlyEvidence": true,
+        "aggregateDigestCoverage": false,
+        "allSnapshotReferencedCheckpointsHashedByThisVerifier": true
+      }
+    },
+    {
+      "name": "all inputs remain byte-for-byte unchanged after offline verification",
+      "status": "passed",
+      "detail": {
+        "filesRechecked": 79
+      }
+    }
+  ]
+}

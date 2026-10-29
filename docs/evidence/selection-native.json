@@ -1,0 +1,81 @@
+{
+  "schema": "footprint-selection-native-lens-verification/v1",
+  "passed": true,
+  "trainingInvoked": false,
+  "pythonStarted": false,
+  "execution": {
+    "nodePermissionMode": true,
+    "childProcessesAllowed": false
+  },
+  "source": {
+    "path": "run/trace.json",
+    "sha256": "22b370b278ad8f5c87d1fc056dcbb4056f576e34029799a1d9bb0872037600fb",
+    "bytes": 1414507
+  },
+  "nativeToolCalls": 57,
+  "decisions": [
+    {
+      "stageId": "guard-wrong-winner#3",
+      "commitIdx": 3,
+      "proposedCandidate": "steps-30",
+      "expectedCandidate": "steps-100",
+      "qualityAllowed": true,
+      "selectionAllowed": false,
+      "releaseAllowed": false,
+      "writers": {
+        "manifest": "declare-experiment#0",
+        "results": "train-candidates#1",
+        "receipt": "reverse-ranking#2",
+        "decision": "guard-wrong-winner#3",
+        "candidate": "reverse-ranking#2"
+      },
+      "calls": 19,
+      "nativeResultsVerbatim": true,
+      "warningsPreserved": true
+    },
+    {
+      "stageId": "guard-correct-winner#7",
+      "commitIdx": 7,
+      "proposedCandidate": "steps-100",
+      "expectedCandidate": "steps-100",
+      "qualityAllowed": true,
+      "selectionAllowed": true,
+      "releaseAllowed": true,
+      "writers": {
+        "manifest": "declare-experiment#0",
+        "results": "train-candidates#1",
+        "receipt": "correct-ranking#6",
+        "decision": "guard-correct-winner#7",
+        "candidate": "correct-ranking#6"
+      },
+      "calls": 19,
+      "nativeResultsVerbatim": true,
+      "warningsPreserved": true
+    },
+    {
+      "stageId": "release#9",
+      "commitIdx": 9,
+      "proposedCandidate": "steps-100",
+      "expectedCandidate": "steps-100",
+      "qualityAllowed": true,
+      "selectionAllowed": true,
+      "releaseAllowed": true,
+      "writers": {
+        "manifest": "declare-experiment#0",
+        "results": "train-candidates#1",
+        "receipt": "correct-ranking#6",
+        "decision": "release#9",
+        "candidate": "correct-ranking#6"
+      },
+      "calls": 19,
+      "nativeResultsVerbatim": true,
+      "warningsPreserved": true
+    }
+  ],
+  "sourceUnchanged": true,
+  "code": {
+    "verifier": "9cd19f26243bcdf575d746c2841b5960e95f97991f727bb2cb0edf83cc977ac0",
+    "session": "e3770f5887b72a7704d5daf49367168fbe08f720a349169792ae9e9e259a41d6",
+    "bridge": "32c5915a422ae1e981879e6c83e695bcc4f9a65d5d9d4e9e3be1b7cbc19fd2cb"
+  }
+}

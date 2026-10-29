@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "trainingInvoked": false,
+  "verification": "Actual saved clean/faulty/fixed traces queried through native Lens and foottrace; no training or Python invoked.",
+  "summaries": [
+    {
+      "mode": "clean",
+      "metricAllowed": true,
+      "checkpointMatches": true,
+      "lineageAllowed": true,
+      "releaseAllowed": true,
+      "fitRows": 1149,
+      "preprocessingEvaluationRows": 0,
+      "trainEvaluationRows": 0,
+      "firstCapturedFitWriter": "fit-preprocessing#1",
+      "nativeToolCalls": 18,
+      "nativeWarningsPreserved": true,
+      "sourceSha256": "36e4b4373e2f9695c8ae310585fa62435e769b046dcb99ccc30ddcca986b5e26",
+      "sourceUnchanged": true
+    },
+    {
+      "mode": "faulty",
+      "metricAllowed": true,
+      "checkpointMatches": true,
+      "lineageAllowed": false,
+      "releaseAllowed": false,
+      "fitRows": 1437,
+      "preprocessingEvaluationRows": 288,
+      "trainEvaluationRows": 0,
+      "firstCapturedFitWriter": "fit-preprocessing#1",
+      "nativeToolCalls": 18,
+      "nativeWarningsPreserved": true,
+      "sourceSha256": "9c605455cb83f414ee8645b5009d7985ee2d598398df9d96aaeca3e52dc17d9b",
+      "sourceUnchanged": true
+    },
+    {
+      "mode": "fixed",
+      "metricAllowed": true,
+      "checkpointMatches": true,
+      "lineageAllowed": true,
+      "releaseAllowed": true,
+      "fitRows": 1149,
+      "preprocessingEvaluationRows": 0,
+      "trainEvaluationRows": 0,
+      "firstCapturedFitWriter": "fit-preprocessing#1",
+      "nativeToolCalls": 18,
+      "nativeWarningsPreserved": true,
+      "sourceSha256": "8a92f81620d3086aff5df1346e9aacccebc2365fb76aedfb2c721c10063bdaf2",
+      "sourceUnchanged": true
+    }
+  ]
+}

@@ -1,0 +1,2887 @@
+{
+  "schema": "real-ml-recording-benchmark/v1",
+  "measuredAt": "2026-10-27T23:11:28.908Z",
+  "environment": {
+    "node": "v24.21.0",
+    "os": "darwin",
+    "osRelease": "25.5.0",
+    "cpu": "Apple M5 Pro",
+    "logicalCpuCount": 18,
+    "ramBytes": 51539607552,
+    "python": "trainer.py metadata in example traces",
+    "numericalThreads": 1
+  },
+  "methodology": {
+    "blocks": 20,
+    "measuredRuns": 100,
+    "additionalWarmupsPerMode": 2,
+    "representativeRunsBeforeWarmup": 1,
+    "orderSeed": 41421,
+    "order": "Seeded shuffled base every five blocks; cyclic Latin rotations balance each mode at every position",
+    "worker": "One persistent Python worker; reset data/model registry each run; Python startup/imports excluded; numerical threads fixed at one",
+    "execution": "Includes graph/runner setup, dataset split and JSON artifacts, preprocessing, five fits including cached baseline, validation, retry/load, local release and held-out audits",
+    "export": "Snapshot materialization measured separately, then compact JSON serialization, gzip level 6 and raw+gzip write completion; no fsync",
+    "excluded": "Process startup, directory creation before each run, artifact cleanup after timing, report queries and benchmark analysis",
+    "captureProfiles": {
+      "plain-off": "Plain draft/retry semantics; no evidence retained or trace export",
+      "logs-delta": "Compact committed/discarded patches plus backend facts, decisions, retry and stage-start metadata",
+      "fp-minimal": "FootPrint read/write retention off and no attached collector; core commit/snapshot recording remains",
+      "fp-summary": "Summary read/write retention; collector retains read/write keys plus full backend/decision/retry events",
+      "fp-full": "Full read/write retention and collector values; snapshot plus events include redundant values, explicitly priced as this profile"
+    },
+    "comparability": "Scope contains refs, small candidate summaries and scalars. Full/summary retain additional read evidence; payloads are not identical across profiles. All numerical outcomes checked equal.",
+    "limits": "Single local machine, small real dataset, warm single-process benchmark; p10/p90 describe observed runs, bootstrap is local uncertainty; no production/GPU/distributed extrapolation"
+  },
+  "outcome": {
+    "selected": "logistic-C-3",
+    "current": "cached-baseline",
+    "candidateScores": [
+      {
+        "id": "logistic-C-0.03",
+        "accuracy": 0.9722222222222222,
+        "logLoss": 0.2543424595806353
+      },
+      {
+        "id": "logistic-C-0.1",
+        "accuracy": 0.9722222222222222,
+        "logLoss": 0.15856966211763393
+      },
+      {
+        "id": "logistic-C-1",
+        "accuracy": 0.9756944444444444,
+        "logLoss": 0.08865070603563492
+      },
+      {
+        "id": "logistic-C-3",
+        "accuracy": 0.9756944444444444,
+        "logLoss": 0.08250649450261135
+      }
+    ],
+    "validationPassed": true,
+    "sameValidatedArtifact": false,
+    "releaseStatus": "released-locally",
+    "activeTestAccuracy": 0.1,
+    "validatedTestAccuracy": 0.9583333333333334,
+    "datasets": [
+      {
+        "role": "train",
+        "rows": 1149,
+        "sha256": "8b39f296f77dc0263ca25a33e6c9bb282f7310922eeb7390d7986b241cffe0fb"
+      },
+      {
+        "role": "validation",
+        "rows": 288,
+        "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+      },
+      {
+        "role": "test",
+        "rows": 360,
+        "sha256": "f98393307be069c3ea263b0a67e0c56886635cafbda103bcb3947967bf690bd7"
+      }
+    ]
+  },
+  "guardedOutcome": {
+    "selected": "logistic-C-3",
+    "current": "cached-baseline",
+    "candidateScores": [
+      {
+        "id": "logistic-C-0.03",
+        "accuracy": 0.9722222222222222,
+        "logLoss": 0.2543424595806353
+      },
+      {
+        "id": "logistic-C-0.1",
+        "accuracy": 0.9722222222222222,
+        "logLoss": 0.15856966211763393
+      },
+      {
+        "id": "logistic-C-1",
+        "accuracy": 0.9756944444444444,
+        "logLoss": 0.08865070603563492
+      },
+      {
+        "id": "logistic-C-3",
+        "accuracy": 0.9756944444444444,
+        "logLoss": 0.08250649450261135
+      }
+    ],
+    "validationPassed": true,
+    "sameValidatedArtifact": false,
+    "releaseStatus": "quarantined",
+    "activeTestAccuracy": 0.1,
+    "validatedTestAccuracy": 0.9583333333333334,
+    "datasets": [
+      {
+        "role": "train",
+        "rows": 1149,
+        "sha256": "8b39f296f77dc0263ca25a33e6c9bb282f7310922eeb7390d7986b241cffe0fb"
+      },
+      {
+        "role": "validation",
+        "rows": 288,
+        "sha256": "d154fdb508129e6ffa161aa48d08779173a994ff59ec9c16b20ee5c756289f15"
+      },
+      {
+        "role": "test",
+        "rows": 360,
+        "sha256": "f98393307be069c3ea263b0a67e0c56886635cafbda103bcb3947967bf690bd7"
+      }
+    ]
+  },
+  "profiles": {
+    "plain-off": {
+      "n": 20,
+      "timingsMs": {
+        "executeMs": {
+          "median": 176.492104500001,
+          "p10": 150.18398720000013,
+          "p90": 188.4385784999984,
+          "min": 120.27020799999991,
+          "max": 198.4456250000003
+        },
+        "backendWaitMs": {
+          "median": 175.02149900000495,
+          "p10": 148.88447930000112,
+          "p90": 186.56535959999712,
+          "min": 119.35279299999956,
+          "max": 196.71762400000443
+        },
+        "hostResidualMs": {
+          "median": 1.5713734999990265,
+          "p10": 1.2995078999990257,
+          "p90": 2.3128353999987667,
+          "min": 0.9174150000003465,
+          "max": 2.7923740000023827
+        },
+        "hostCpuMs": {
+          "median": 3.569,
+          "p10": 2.836,
+          "p90": 3.9195,
+          "min": 2.1,
+          "max": 6.248
+        },
+        "exportMs": {
+          "median": 0.0014999999993960955,
+          "p10": 0.0011871999997310923,
+          "p90": 0.0018380999995315506,
+          "min": 0.0004170000001977314,
+          "max": 0.001958000000740867
+        },
+        "serializeMs": {
+          "median": 0.00008300000172312139,
+          "p10": 0.00004199999966658652,
+          "p90": 0.00021310000156518077,
+          "min": 0.000041000000237545464,
+          "max": 0.0002920000006270129
+        },
+        "gzipMs": {
+          "median": 0.0032294999991790974,
+          "p10": 0.0026585999997223555,
+          "p90": 0.004728899999963687,
+          "min": 0.002375000000029104,
+          "max": 0.00670799999988958
+        },
+        "writeMs": {
+          "median": 0.00006250000069485395,
+          "p10": 0.00004099999932805076,
+          "p90": 0.0002952000002551359,
+          "min": 0.00004099999932805076,
+          "max": 0.00033400000029359944
+        },
+        "totalMeasuredMs": {
+          "median": 176.4970840000001,
+          "p10": 150.18995830000023,
+          "p90": 188.4438706999983,
+          "min": 120.27404100000012,
+          "max": 198.4502059999977
+        }
+      },
+      "traceBytes": {
+        "raw": {
+          "median": 0,
+          "p10": 0,
+          "p90": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gzip": {
+          "median": 0,
+          "p10": 0,
+          "p90": 0,
+          "min": 0,
+          "max": 0
+        }
+      }
+    },
+    "logs-delta": {
+      "n": 20,
+      "timingsMs": {
+        "executeMs": {
+          "median": 180.87395849999984,
+          "p10": 158.28009969999994,
+          "p90": 192.60552910000152,
+          "min": 118.45974999999999,
+          "max": 201.39208300000246
+        },
+        "backendWaitMs": {
+          "median": 177.54285349999873,
+          "p10": 155.03901129999971,
+          "p90": 189.7488343999965,
+          "min": 116.92883299999949,
+          "max": 196.83820699999706
+        },
+        "hostResidualMs": {
+          "median": 2.6369584999974904,
+          "p10": 2.0320676000000732,
+          "p90": 3.994850299999235,
+          "min": 1.499250000000302,
+          "max": 4.553876000005403
+        },
+        "hostCpuMs": {
+          "median": 4.276,
+          "p10": 3.5277000000000003,
+          "p90": 5.252900000000002,
+          "min": 2.641,
+          "max": 8.278
+        },
+        "exportMs": {
+          "median": 0.0031664999996792176,
+          "p10": 0.00240029999977196,
+          "p90": 0.00382439999957569,
+          "min": 0.002250000000003638,
+          "max": 0.004208000002108747
+        },
+        "serializeMs": {
+          "median": 0.0751879999997982,
+          "p10": 0.06279549999871961,
+          "p90": 0.08940829999883136,
+          "min": 0.05616700000018682,
+          "max": 0.09275000000070577
+        },
+        "gzipMs": {
+          "median": 0.28700000000026193,
+          "p10": 0.22148719999986496,
+          "p90": 0.3223583000006329,
+          "min": 0.20183399999996254,
+          "max": 0.35354200000074343
+        },
+        "writeMs": {
+          "median": 0.7538954999999987,
+          "p10": 0.5466047000002618,
+          "p90": 1.8558631000001706,
+          "min": 0.3198339999999007,
+          "max": 2.850125000000844
+        },
+        "totalMeasuredMs": {
+          "median": 181.95150099999955,
+          "p10": 159.11781729999774,
+          "p90": 193.9402151000004,
+          "min": 119.0621670000005,
+          "max": 202.65029100000538
+        }
+      },
+      "traceBytes": {
+        "raw": {
+          "median": 43839,
+          "p10": 43835,
+          "p90": 43845.2,
+          "min": 43834,
+          "max": 43849
+        },
+        "gzip": {
+          "median": 4664,
+          "p10": 4656.8,
+          "p90": 4669,
+          "min": 4655,
+          "max": 4672
+        }
+      }
+    },
+    "fp-minimal": {
+      "n": 20,
+      "timingsMs": {
+        "executeMs": {
+          "median": 178.49589549999928,
+          "p10": 158.1384539000002,
+          "p90": 193.37616279999983,
+          "min": 125.39745799999992,
+          "max": 196.06495800000084
+        },
+        "backendWaitMs": {
+          "median": 175.70348049999848,
+          "p10": 155.59628009999815,
+          "p90": 190.43639030000196,
+          "min": 123.45683599999984,
+          "max": 193.4545820000003
+        },
+        "hostResidualMs": {
+          "median": 2.7273980000045412,
+          "p10": 2.3650125000052866,
+          "p90": 3.0124481999993806,
+          "min": 1.6936249999994288,
+          "max": 4.143834000001334
+        },
+        "hostCpuMs": {
+          "median": 4.878,
+          "p10": 4.5559,
+          "p90": 7.189100000000001,
+          "min": 3.885,
+          "max": 8.994
+        },
+        "exportMs": {
+          "median": 0.02179200000136916,
+          "p10": 0.01838360000101602,
+          "p90": 0.02933720000037283,
+          "min": 0.017875000000003638,
+          "max": 0.04116599999997561
+        },
+        "serializeMs": {
+          "median": 0.1157920000005106,
+          "p10": 0.09342110000011417,
+          "p90": 0.124429799999416,
+          "min": 0.08320800000001327,
+          "max": 0.1453750000000582
+        },
+        "gzipMs": {
+          "median": 0.3002500000006876,
+          "p10": 0.23835420000032173,
+          "p90": 0.3417794000003596,
+          "min": 0.20362500000010186,
+          "max": 0.36758300000292365
+        },
+        "writeMs": {
+          "median": 0.7073334999995495,
+          "p10": 0.47489170000048947,
+          "p90": 0.9819499999979598,
+          "min": 0.2728750000001128,
+          "max": 2.479624999999942
+        },
+        "totalMeasuredMs": {
+          "median": 179.6535004999996,
+          "p10": 159.3196270999998,
+          "p90": 195.55896670000158,
+          "min": 125.99966700000004,
+          "max": 197.12820800000554
+        }
+      },
+      "traceBytes": {
+        "raw": {
+          "median": 37111,
+          "p10": 37104,
+          "p90": 37114,
+          "min": 37102,
+          "max": 37116
+        },
+        "gzip": {
+          "median": 4024,
+          "p10": 4019.7,
+          "p90": 4029.1,
+          "min": 4017,
+          "max": 4031
+        }
+      }
+    },
+    "fp-summary": {
+      "n": 20,
+      "timingsMs": {
+        "executeMs": {
+          "median": 175.6285829999997,
+          "p10": 157.68605029999904,
+          "p90": 196.76087910000044,
+          "min": 120.04429200000004,
+          "max": 212.7425000000003
+        },
+        "backendWaitMs": {
+          "median": 171.58712399999877,
+          "p10": 154.49782199999936,
+          "p90": 192.7889228000002,
+          "min": 117.95504300000039,
+          "max": 208.59954199999265
+        },
+        "hostResidualMs": {
+          "median": 3.6682500000015352,
+          "p10": 3.0317020999952096,
+          "p90": 4.373783799999728,
+          "min": 2.089248999999654,
+          "max": 5.481372999987798
+        },
+        "hostCpuMs": {
+          "median": 5.673,
+          "p10": 4.6426,
+          "p90": 7.159800000000001,
+          "min": 3.857,
+          "max": 7.823
+        },
+        "exportMs": {
+          "median": 0.030541500000254018,
+          "p10": 0.022999399999980595,
+          "p90": 0.039591300000483914,
+          "min": 0.020916000000397617,
+          "max": 0.07820799999899464
+        },
+        "serializeMs": {
+          "median": 0.23285399999986112,
+          "p10": 0.18749609999990752,
+          "p90": 0.2908208000009836,
+          "min": 0.1744579999999587,
+          "max": 0.31966599999941536
+        },
+        "gzipMs": {
+          "median": 0.5685204999999769,
+          "p10": 0.40649170000051527,
+          "p90": 0.6013336000000891,
+          "min": 0.38720799999964584,
+          "max": 0.7208749999999782
+        },
+        "writeMs": {
+          "median": 1.019042000000809,
+          "p10": 0.5577288999994381,
+          "p90": 1.4023121999999608,
+          "min": 0.3764160000000629,
+          "max": 5.594499999999243
+        },
+        "totalMeasuredMs": {
+          "median": 177.21837500000038,
+          "p10": 162.48765920000062,
+          "p90": 198.87357559999873,
+          "min": 121.02683200000001,
+          "max": 215.21675000000323
+        }
+      },
+      "traceBytes": {
+        "raw": {
+          "median": 73195.5,
+          "p10": 73189,
+          "p90": 73199,
+          "min": 73189,
+          "max": 73200
+        },
+        "gzip": {
+          "median": 6933,
+          "p10": 6919.7,
+          "p90": 6940.3,
+          "min": 6906,
+          "max": 6944
+        }
+      }
+    },
+    "fp-full": {
+      "n": 20,
+      "timingsMs": {
+        "executeMs": {
+          "median": 184.76597949999905,
+          "p10": 165.4534749999998,
+          "p90": 205.0931538999983,
+          "min": 127.51687500000025,
+          "max": 207.79412500000035
+        },
+        "backendWaitMs": {
+          "median": 179.499312500001,
+          "p10": 161.41936529999913,
+          "p90": 201.17429559998965,
+          "min": 124.69762499999933,
+          "max": 203.28658400000495
+        },
+        "hostResidualMs": {
+          "median": 4.131396500000847,
+          "p10": 3.619583200000443,
+          "p90": 5.2813851000000795,
+          "min": 2.8192500000009204,
+          "max": 5.663208999996641
+        },
+        "hostCpuMs": {
+          "median": 6.4305,
+          "p10": 5.7712,
+          "p90": 11.536600000000002,
+          "min": 5.185,
+          "max": 17.803
+        },
+        "exportMs": {
+          "median": 0.033854499999506515,
+          "p10": 0.02138779999986582,
+          "p90": 0.04942469999987225,
+          "min": 0.018416999999772088,
+          "max": 0.055458000000726315
+        },
+        "serializeMs": {
+          "median": 0.3571874999988722,
+          "p10": 0.30082949999978154,
+          "p90": 0.545500600000014,
+          "min": 0.2328339999999116,
+          "max": 0.6933749999989232
+        },
+        "gzipMs": {
+          "median": 0.8591249999999491,
+          "p10": 0.6299167000001489,
+          "p90": 0.9993003000003228,
+          "min": 0.5893750000000182,
+          "max": 1.1312090000028547
+        },
+        "writeMs": {
+          "median": 0.9930414999998902,
+          "p10": 0.7706036000001859,
+          "p90": 1.3644247000003826,
+          "min": 0.46745899999996254,
+          "max": 2.5136249999995925
+        },
+        "totalMeasuredMs": {
+          "median": 187.4513539999998,
+          "p10": 167.32386290000062,
+          "p90": 207.23250449999668,
+          "min": 128.86833500000012,
+          "max": 210.35587499999747
+        }
+      },
+      "traceBytes": {
+        "raw": {
+          "median": 137781,
+          "p10": 137771.7,
+          "p90": 137798.3,
+          "min": 137761,
+          "max": 137806
+        },
+        "gzip": {
+          "median": 8438,
+          "p10": 8426.9,
+          "p90": 8447.2,
+          "min": 8425,
+          "max": 8472
+        }
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "a": "fp-full",
+      "b": "fp-minimal",
+      "metric": "executeMs",
+      "medianPairedDifferenceMs": 4.803812999999991,
+      "bootstrap95PercentIntervalMs": [
+        0.669000000001688,
+        13.047104000001127
+      ],
+      "medianPairedRelativePercent": 2.8364690713465035,
+      "nBlocks": 20,
+      "interpretation": "Paired differences within randomized balanced blocks. Bootstrap resamples block differences; local observational timing, not universal performance."
+    },
+    {
+      "a": "fp-summary",
+      "b": "fp-minimal",
+      "metric": "executeMs",
+      "medianPairedDifferenceMs": -2.7472705000009228,
+      "bootstrap95PercentIntervalMs": [
+        -4.938103500000125,
+        3.7808744999992996
+      ],
+      "medianPairedRelativePercent": -1.5079471559263424,
+      "nBlocks": 20,
+      "interpretation": "Paired differences within randomized balanced blocks. Bootstrap resamples block differences; local observational timing, not universal performance."
+    },
+    {
+      "a": "logs-delta",
+      "b": "plain-off",
+      "metric": "executeMs",
+      "medianPairedDifferenceMs": 2.1430624999993597,
+      "bootstrap95PercentIntervalMs": [
+        -2.290853999999854,
+        10.016854000000421
+      ],
+      "medianPairedRelativePercent": 1.2481122861315086,
+      "nBlocks": 20,
+      "interpretation": "Paired differences within randomized balanced blocks. Bootstrap resamples block differences; local observational timing, not universal performance."
+    },
+    {
+      "a": "fp-full",
+      "b": "plain-off",
+      "metric": "executeMs",
+      "medianPairedDifferenceMs": 9.02079200000162,
+      "bootstrap95PercentIntervalMs": [
+        -1.794832999999926,
+        16.80620850000014
+      ],
+      "medianPairedRelativePercent": 5.1090011229991905,
+      "nBlocks": 20,
+      "interpretation": "Paired differences within randomized balanced blocks. Bootstrap resamples block differences; local observational timing, not universal performance."
+    },
+    {
+      "a": "fp-summary",
+      "b": "logs-delta",
+      "metric": "executeMs",
+      "medianPairedDifferenceMs": -2.5065835000000334,
+      "bootstrap95PercentIntervalMs": [
+        -6.274874499999896,
+        3.660479500000065
+      ],
+      "medianPairedRelativePercent": -1.411652420273446,
+      "nBlocks": 20,
+      "interpretation": "Paired differences within randomized balanced blocks. Bootstrap resamples block differences; local observational timing, not universal performance."
+    },
+    {
+      "a": "fp-full",
+      "b": "fp-minimal",
+      "metric": "hostCpuMs",
+      "medianPairedDifferenceMs": 1.4445000000000001,
+      "bootstrap95PercentIntervalMs": [
+        0.931,
+        2.199
+      ],
+      "medianPairedRelativePercent": 31.37547309877148,
+      "nBlocks": 20,
+      "interpretation": "Paired differences within randomized balanced blocks. Bootstrap resamples block differences; local observational timing, not universal performance."
+    },
+    {
+      "a": "fp-full",
+      "b": "fp-minimal",
+      "metric": "totalMeasuredMs",
+      "medianPairedDifferenceMs": 5.641292500000873,
+      "bootstrap95PercentIntervalMs": [
+        1.4559170000011363,
+        14.386521000001267
+      ],
+      "medianPairedRelativePercent": 3.2958183952134124,
+      "nBlocks": 20,
+      "interpretation": "Paired differences within randomized balanced blocks. Bootstrap resamples block differences; local observational timing, not universal performance."
+    },
+    {
+      "a": "logs-delta",
+      "b": "plain-off",
+      "metric": "totalMeasuredMs",
+      "medianPairedDifferenceMs": 3.483999499996571,
+      "bootstrap95PercentIntervalMs": [
+        -1.4190845000021,
+        11.291458500000772
+      ],
+      "medianPairedRelativePercent": 2.0285953848877103,
+      "nBlocks": 20,
+      "interpretation": "Paired differences within randomized balanced blocks. Bootstrap resamples block differences; local observational timing, not universal performance."
+    },
+    {
+      "a": "fp-full",
+      "b": "plain-off",
+      "metric": "totalMeasuredMs",
+      "medianPairedDifferenceMs": 11.644354500000645,
+      "bootstrap95PercentIntervalMs": [
+        1.316791999999623,
+        19.127707499997996
+      ],
+      "medianPairedRelativePercent": 6.5859822849167475,
+      "nBlocks": 20,
+      "interpretation": "Paired differences within randomized balanced blocks. Bootstrap resamples block differences; local observational timing, not universal performance."
+    },
+    {
+      "a": "fp-summary",
+      "b": "plain-off",
+      "metric": "totalMeasuredMs",
+      "medianPairedDifferenceMs": 2.615812500002903,
+      "bootstrap95PercentIntervalMs": [
+        -4.666626000003816,
+        9.653373999998621
+      ],
+      "medianPairedRelativePercent": 1.5274846362168248,
+      "nBlocks": 20,
+      "interpretation": "Paired differences within randomized balanced blocks. Bootstrap resamples block differences; local observational timing, not universal performance."
+    }
+  ],
+  "samples": [
+    {
+      "block": 0,
+      "position": 0,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 125.62029200000006,
+        "backendWaitMs": 123.92666700000063,
+        "hostResidualMs": 1.6936249999994288,
+        "hostCpuMs": 3.885,
+        "exportMs": 0.020375000000058208,
+        "serializeMs": 0.08320800000001327,
+        "gzipMs": 0.20362500000010186,
+        "writeMs": 0.28604200000017954,
+        "totalMeasuredMs": 126.21354200000042
+      },
+      "sizes": {
+        "rawBytes": 37112,
+        "gzipBytes": 4024
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 0,
+      "position": 1,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 122.16875000000027,
+        "backendWaitMs": 119.87058299999899,
+        "hostResidualMs": 2.2981670000012855,
+        "hostCpuMs": 4.081,
+        "exportMs": 0.0215000000002874,
+        "serializeMs": 0.1744579999999587,
+        "gzipMs": 0.38720799999964584,
+        "writeMs": 0.3767920000000231,
+        "totalMeasuredMs": 123.12870800000019
+      },
+      "sizes": {
+        "rawBytes": 73193,
+        "gzipBytes": 6906
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 0,
+      "position": 2,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 151.46783300000016,
+        "backendWaitMs": 150.13016700000117,
+        "hostResidualMs": 1.3376659999989897,
+        "hostCpuMs": 2.885,
+        "exportMs": 0.001209000000017113,
+        "serializeMs": 0.00004200000012133387,
+        "gzipMs": 0.004707999999936874,
+        "writeMs": 0.00008299999990413198,
+        "totalMeasuredMs": 151.47387500000013
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 0,
+      "position": 3,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 127.51687500000025,
+        "backendWaitMs": 124.69762499999933,
+        "hostResidualMs": 2.8192500000009204,
+        "hostCpuMs": 12.649,
+        "exportMs": 0.018416999999772088,
+        "serializeMs": 0.2328339999999116,
+        "gzipMs": 0.6327500000002146,
+        "writeMs": 0.46745899999996254,
+        "totalMeasuredMs": 128.86833500000012
+      },
+      "sizes": {
+        "rawBytes": 137772,
+        "gzipBytes": 8427
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 0,
+      "position": 4,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 118.45974999999999,
+        "backendWaitMs": 116.92883299999949,
+        "hostResidualMs": 1.5309170000004997,
+        "hostCpuMs": 2.641,
+        "exportMs": 0.0035000000002582965,
+        "serializeMs": 0.05616700000018682,
+        "gzipMs": 0.20183399999996254,
+        "writeMs": 0.3409160000001066,
+        "totalMeasuredMs": 119.0621670000005
+      },
+      "sizes": {
+        "rawBytes": 43845,
+        "gzipBytes": 4667
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 1,
+      "position": 0,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 120.04429200000004,
+        "backendWaitMs": 117.95504300000039,
+        "hostResidualMs": 2.089248999999654,
+        "hostCpuMs": 3.857,
+        "exportMs": 0.020916000000397617,
+        "serializeMs": 0.17583299999978408,
+        "gzipMs": 0.40937499999972715,
+        "writeMs": 0.3764160000000629,
+        "totalMeasuredMs": 121.02683200000001
+      },
+      "sizes": {
+        "rawBytes": 73194,
+        "gzipBytes": 6925
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 1,
+      "position": 1,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 120.27020799999991,
+        "backendWaitMs": 119.35279299999956,
+        "hostResidualMs": 0.9174150000003465,
+        "hostCpuMs": 2.1,
+        "exportMs": 0.0004170000001977314,
+        "serializeMs": 0.000041000000237545464,
+        "gzipMs": 0.0032919999998739513,
+        "writeMs": 0.00008299999990413198,
+        "totalMeasuredMs": 120.27404100000012
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 1,
+      "position": 2,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 153.87474999999995,
+        "backendWaitMs": 150.35529000000088,
+        "hostResidualMs": 3.5194599999990714,
+        "hostCpuMs": 5.848,
+        "exportMs": 0.029416999999739346,
+        "serializeMs": 0.3147919999996702,
+        "gzipMs": 0.5893750000000182,
+        "writeMs": 0.6766670000001795,
+        "totalMeasuredMs": 155.48500099999956
+      },
+      "sizes": {
+        "rawBytes": 137797,
+        "gzipBytes": 8425
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 1,
+      "position": 3,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 124.37612499999977,
+        "backendWaitMs": 122.87687499999947,
+        "hostResidualMs": 1.499250000000302,
+        "hostCpuMs": 2.769,
+        "exportMs": 0.002250000000003638,
+        "serializeMs": 0.0650829999999587,
+        "gzipMs": 0.23649999999997817,
+        "writeMs": 0.3198339999999007,
+        "totalMeasuredMs": 124.99979199999962
+      },
+      "sizes": {
+        "rawBytes": 43845,
+        "gzipBytes": 4664
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 1,
+      "position": 4,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 125.39745799999992,
+        "backendWaitMs": 123.45683599999984,
+        "hostResidualMs": 1.9406220000000758,
+        "hostCpuMs": 4.222,
+        "exportMs": 0.017875000000003638,
+        "serializeMs": 0.0935420000000704,
+        "gzipMs": 0.21791699999994307,
+        "writeMs": 0.2728750000001128,
+        "totalMeasuredMs": 125.99966700000004
+      },
+      "sizes": {
+        "rawBytes": 37116,
+        "gzipBytes": 4021
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 2,
+      "position": 0,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 138.62937499999998,
+        "backendWaitMs": 137.67329000000063,
+        "hostResidualMs": 0.9560849999993479,
+        "hostCpuMs": 2.395,
+        "exportMs": 0.0010000000002037268,
+        "serializeMs": 0.00020800000038434519,
+        "gzipMs": 0.004083000000264292,
+        "writeMs": 0.00004200000012133387,
+        "totalMeasuredMs": 138.63470800000096
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 2,
+      "position": 1,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 166.73999999999978,
+        "backendWaitMs": 162.64870699999892,
+        "hostResidualMs": 4.09129300000086,
+        "hostCpuMs": 7.773,
+        "exportMs": 0.03679199999987759,
+        "serializeMs": 0.3832079999992857,
+        "gzipMs": 0.8550420000001395,
+        "writeMs": 1.1761250000008658,
+        "totalMeasuredMs": 169.19116699999995
+      },
+      "sizes": {
+        "rawBytes": 137798,
+        "gzipBytes": 8434
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 2,
+      "position": 2,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 169.73549999999977,
+        "backendWaitMs": 166.8805829999992,
+        "hostResidualMs": 2.854917000000569,
+        "hostCpuMs": 4.619,
+        "exportMs": 0.0027920000002268353,
+        "serializeMs": 0.08662499999991269,
+        "gzipMs": 0.29820899999958783,
+        "writeMs": 1.7919590000001335,
+        "totalMeasuredMs": 171.91508499999964
+      },
+      "sizes": {
+        "rawBytes": 43842,
+        "gzipBytes": 4657
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 2,
+      "position": 3,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 187.45374999999967,
+        "backendWaitMs": 184.4429140000002,
+        "hostResidualMs": 3.010835999999472,
+        "hostCpuMs": 5.701,
+        "exportMs": 0.018082999999933236,
+        "serializeMs": 0.09962499999983265,
+        "gzipMs": 0.2578750000002401,
+        "writeMs": 0.6906249999992724,
+        "totalMeasuredMs": 188.51995799999895
+      },
+      "sizes": {
+        "rawBytes": 37112,
+        "gzipBytes": 4017
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 2,
+      "position": 4,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 168.39208400000007,
+        "backendWaitMs": 165.211084999999,
+        "hostResidualMs": 3.1809990000010657,
+        "hostCpuMs": 4.895,
+        "exportMs": 0.030125000000225555,
+        "serializeMs": 0.24158399999942048,
+        "gzipMs": 0.5537080000003698,
+        "writeMs": 1.2865420000007362,
+        "totalMeasuredMs": 170.50404300000082
+      },
+      "sizes": {
+        "rawBytes": 73198,
+        "gzipBytes": 6926
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 3,
+      "position": 0,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 175.71037499999966,
+        "backendWaitMs": 171.26779100000113,
+        "hostResidualMs": 4.442583999998533,
+        "hostCpuMs": 10.324,
+        "exportMs": 0.03979200000048877,
+        "serializeMs": 0.5438340000000608,
+        "gzipMs": 0.8598750000001019,
+        "writeMs": 0.9362499999997453,
+        "totalMeasuredMs": 178.09012600000005
+      },
+      "sizes": {
+        "rawBytes": 137772,
+        "gzipBytes": 8439
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 3,
+      "position": 1,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 180.6132090000001,
+        "backendWaitMs": 177.9229159999968,
+        "hostResidualMs": 2.690293000003294,
+        "hostCpuMs": 6.395,
+        "exportMs": 0.0022500000004583853,
+        "serializeMs": 0.09275000000070577,
+        "gzipMs": 0.28800000000046566,
+        "writeMs": 0.594583999999486,
+        "totalMeasuredMs": 181.5907930000012
+      },
+      "sizes": {
+        "rawBytes": 43835,
+        "gzipBytes": 4665
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 3,
+      "position": 2,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 193.98250000000007,
+        "backendWaitMs": 189.83866599999874,
+        "hostResidualMs": 4.143834000001334,
+        "hostCpuMs": 7.145,
+        "exportMs": 0.04116599999997561,
+        "serializeMs": 0.1453750000000582,
+        "gzipMs": 0.325209000000541,
+        "writeMs": 0.982625000000553,
+        "totalMeasuredMs": 195.4768750000012
+      },
+      "sizes": {
+        "rawBytes": 37110,
+        "gzipBytes": 4023
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 3,
+      "position": 3,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 176.94345799999974,
+        "backendWaitMs": 172.7299989999965,
+        "hostResidualMs": 4.21345900000324,
+        "hostCpuMs": 7.099,
+        "exportMs": 0.03858300000047166,
+        "serializeMs": 0.25112499999977445,
+        "gzipMs": 0.7208749999999782,
+        "writeMs": 1.15099999999984,
+        "totalMeasuredMs": 179.1050409999998
+      },
+      "sizes": {
+        "rawBytes": 73189,
+        "gzipBytes": 6930
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 3,
+      "position": 4,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 166.6681669999998,
+        "backendWaitMs": 165.19670899999983,
+        "hostResidualMs": 1.4714579999999842,
+        "hostCpuMs": 2.893,
+        "exportMs": 0.001833999999689695,
+        "serializeMs": 0.00008399999933317304,
+        "gzipMs": 0.004917000000205007,
+        "writeMs": 0.000041000000237545464,
+        "totalMeasuredMs": 166.67504299999928
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 4,
+      "position": 0,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 170.18979199999922,
+        "backendWaitMs": 168.1020409999992,
+        "hostResidualMs": 2.0877510000000257,
+        "hostCpuMs": 3.612,
+        "exportMs": 0.003291999999419204,
+        "serializeMs": 0.07491699999991397,
+        "gzipMs": 0.2860000000000582,
+        "writeMs": 0.6368329999995694,
+        "totalMeasuredMs": 171.19083399999818
+      },
+      "sizes": {
+        "rawBytes": 43838,
+        "gzipBytes": 4663
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 4,
+      "position": 1,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 168.38287500000024,
+        "backendWaitMs": 165.40879099999893,
+        "hostResidualMs": 2.9740840000013122,
+        "hostCpuMs": 4.693,
+        "exportMs": 0.02937500000007276,
+        "serializeMs": 0.11329099999966274,
+        "gzipMs": 0.3040000000000873,
+        "writeMs": 0.9168339999996533,
+        "totalMeasuredMs": 169.74637499999972
+      },
+      "sizes": {
+        "rawBytes": 37110,
+        "gzipBytes": 4024
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 4,
+      "position": 2,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 173.61862500000007,
+        "backendWaitMs": 169.1890429999994,
+        "hostResidualMs": 4.429582000000664,
+        "hostCpuMs": 7.823,
+        "exportMs": 0.024083999999675143,
+        "serializeMs": 0.18879199999992125,
+        "gzipMs": 0.6084579999997004,
+        "writeMs": 1.3665829999999914,
+        "totalMeasuredMs": 175.80654199999935
+      },
+      "sizes": {
+        "rawBytes": 73198,
+        "gzipBytes": 6917
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 4,
+      "position": 3,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 168.27500000000055,
+        "backendWaitMs": 166.70212600000104,
+        "hostResidualMs": 1.5728739999995014,
+        "hostCpuMs": 2.915,
+        "exportMs": 0.0014160000000629225,
+        "serializeMs": 0.00004199999966658652,
+        "gzipMs": 0.00670799999988958,
+        "writeMs": 0.00004199999966658652,
+        "totalMeasuredMs": 168.28320799999983
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 4,
+      "position": 4,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 178.7297499999995,
+        "backendWaitMs": 175.07153800000015,
+        "hostResidualMs": 3.6582119999993665,
+        "hostCpuMs": 5.185,
+        "exportMs": 0.04783399999996618,
+        "serializeMs": 0.334208000000217,
+        "gzipMs": 0.6372080000001006,
+        "writeMs": 0.7810410000001866,
+        "totalMeasuredMs": 180.53004099999998
+      },
+      "sizes": {
+        "rawBytes": 137778,
+        "gzipBytes": 8435
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 5,
+      "position": 0,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 169.06341599999996,
+        "backendWaitMs": 165.78308299999844,
+        "hostResidualMs": 3.2803330000015194,
+        "hostCpuMs": 7.707,
+        "exportMs": 0.023165999999946507,
+        "serializeMs": 0.23608299999978044,
+        "gzipMs": 0.4542089999995369,
+        "writeMs": 0.9231659999995827,
+        "totalMeasuredMs": 170.7000399999988
+      },
+      "sizes": {
+        "rawBytes": 73198,
+        "gzipBytes": 6933
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 5,
+      "position": 1,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 166.8152909999999,
+        "backendWaitMs": 164.51533100000051,
+        "hostResidualMs": 2.2999599999993734,
+        "hostCpuMs": 3.88,
+        "exportMs": 0.003208000000086031,
+        "serializeMs": 0.08233300000028976,
+        "gzipMs": 0.27658400000018446,
+        "writeMs": 2.4310000000004948,
+        "totalMeasuredMs": 169.60841600000094
+      },
+      "sizes": {
+        "rawBytes": 43845,
+        "gzipBytes": 4665
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 5,
+      "position": 2,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 186.6929170000003,
+        "backendWaitMs": 181.56575000000066,
+        "hostResidualMs": 5.127166999999645,
+        "hostCpuMs": 6.429,
+        "exportMs": 0.049082999999882304,
+        "serializeMs": 0.43270899999970425,
+        "gzipMs": 0.8752500000000509,
+        "writeMs": 1.0178329999998823,
+        "totalMeasuredMs": 189.06779199999983
+      },
+      "sizes": {
+        "rawBytes": 137784,
+        "gzipBytes": 8446
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 5,
+      "position": 3,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 165.26129200000014,
+        "backendWaitMs": 162.37887299999966,
+        "hostResidualMs": 2.882419000000482,
+        "hostCpuMs": 6.586,
+        "exportMs": 0.023624999999810825,
+        "serializeMs": 0.12129100000038306,
+        "gzipMs": 0.3008330000002388,
+        "writeMs": 0.6471670000000813,
+        "totalMeasuredMs": 166.35420800000065
+      },
+      "sizes": {
+        "rawBytes": 37108,
+        "gzipBytes": 4020
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 5,
+      "position": 4,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 173.52950000000055,
+        "backendWaitMs": 171.959627000002,
+        "hostResidualMs": 1.5698729999985517,
+        "hostCpuMs": 2.946,
+        "exportMs": 0.0013330000001587905,
+        "serializeMs": 0.00008299999990413198,
+        "gzipMs": 0.0028750000001309672,
+        "writeMs": 0.00004200000057608122,
+        "totalMeasuredMs": 173.53383300000132
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 6,
+      "position": 0,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 176.94841700000052,
+        "backendWaitMs": 174.61366499999895,
+        "hostResidualMs": 2.334752000001572,
+        "hostCpuMs": 4.276,
+        "exportMs": 0.0033750000002328306,
+        "serializeMs": 0.07487500000024738,
+        "gzipMs": 0.2888750000001892,
+        "writeMs": 0.9659169999995356,
+        "totalMeasuredMs": 178.28145900000072
+      },
+      "sizes": {
+        "rawBytes": 43847,
+        "gzipBytes": 4669
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 6,
+      "position": 1,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 166.87737500000003,
+        "backendWaitMs": 162.7615850000002,
+        "hostResidualMs": 4.1157899999998335,
+        "hostCpuMs": 6.187,
+        "exportMs": 0.023708000000624452,
+        "serializeMs": 0.2932920000002923,
+        "gzipMs": 0.6044169999995574,
+        "writeMs": 0.8405000000002474,
+        "totalMeasuredMs": 168.63929200000075
+      },
+      "sizes": {
+        "rawBytes": 137806,
+        "gzipBytes": 8426
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 6,
+      "position": 2,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 161.7515830000002,
+        "backendWaitMs": 159.11512599999787,
+        "hostResidualMs": 2.6364570000023377,
+        "hostCpuMs": 4.608,
+        "exportMs": 0.020499999999628926,
+        "serializeMs": 0.11341600000014296,
+        "gzipMs": 0.35179100000004837,
+        "writeMs": 0.7607909999996991,
+        "totalMeasuredMs": 162.99808099999973
+      },
+      "sizes": {
+        "rawBytes": 37114,
+        "gzipBytes": 4023
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 6,
+      "position": 3,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 174.57708400000047,
+        "backendWaitMs": 173.11362199999894,
+        "hostResidualMs": 1.4634620000015275,
+        "hostCpuMs": 3.651,
+        "exportMs": 0.0017079999997804407,
+        "serializeMs": 0.00016600000071775867,
+        "gzipMs": 0.002666999999746622,
+        "writeMs": 0.00004200000057608122,
+        "totalMeasuredMs": 174.5816670000013
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 6,
+      "position": 4,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 161.6324169999989,
+        "backendWaitMs": 158.3452929999994,
+        "hostResidualMs": 3.287123999999494,
+        "hostCpuMs": 5.383,
+        "exportMs": 0.030457999999271124,
+        "serializeMs": 0.2296249999999418,
+        "gzipMs": 0.59520799999882,
+        "writeMs": 5.594499999999243,
+        "totalMeasuredMs": 168.08220799999617
+      },
+      "sizes": {
+        "rawBytes": 73198,
+        "gzipBytes": 6933
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 7,
+      "position": 0,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 183.46812499999942,
+        "backendWaitMs": 177.80491600000278,
+        "hostResidualMs": 5.663208999996641,
+        "hostCpuMs": 10.028,
+        "exportMs": 0.021124999999301508,
+        "serializeMs": 0.3016669999997248,
+        "gzipMs": 0.9595410000001721,
+        "writeMs": 1.0844580000011774,
+        "totalMeasuredMs": 185.8349159999998
+      },
+      "sizes": {
+        "rawBytes": 137776,
+        "gzipBytes": 8432
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 7,
+      "position": 1,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 178.98629099999926,
+        "backendWaitMs": 176.11491899999783,
+        "hostResidualMs": 2.871372000001429,
+        "hostCpuMs": 8.994,
+        "exportMs": 0.024957999999969616,
+        "serializeMs": 0.11758399999962421,
+        "gzipMs": 0.3406670000003942,
+        "writeMs": 0.7240419999998267,
+        "totalMeasuredMs": 180.19354199999907
+      },
+      "sizes": {
+        "rawBytes": 37114,
+        "gzipBytes": 4028
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 7,
+      "position": 2,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 184.28908299999966,
+        "backendWaitMs": 181.97395799999686,
+        "hostResidualMs": 2.3151250000028085,
+        "hostCpuMs": 3.664,
+        "exportMs": 0.0017920000009326031,
+        "serializeMs": 0.0002920000006270129,
+        "gzipMs": 0.00316700000075798,
+        "writeMs": 0.00004199999966658652,
+        "totalMeasuredMs": 184.29437600000165
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 7,
+      "position": 3,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 169.4668330000004,
+        "backendWaitMs": 165.86612699999932,
+        "hostResidualMs": 3.6007060000010824,
+        "hostCpuMs": 6.861,
+        "exportMs": 0.023959000000104425,
+        "serializeMs": 0.1954170000008162,
+        "gzipMs": 0.4068750000005821,
+        "writeMs": 0.7352499999997235,
+        "totalMeasuredMs": 170.82833400000163
+      },
+      "sizes": {
+        "rawBytes": 73196,
+        "gzipBytes": 6935
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 7,
+      "position": 4,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 181.645708,
+        "backendWaitMs": 178.4172069999986,
+        "hostResidualMs": 3.2285010000014154,
+        "hostCpuMs": 4.065,
+        "exportMs": 0.0032910000008996576,
+        "serializeMs": 0.06379200000083074,
+        "gzipMs": 0.24983400000019174,
+        "writeMs": 0.5762080000004062,
+        "totalMeasuredMs": 182.53883300000234
+      },
+      "sizes": {
+        "rawBytes": 43838,
+        "gzipBytes": 4663
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 8,
+      "position": 0,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 170.18220800000017,
+        "backendWaitMs": 167.15525000000162,
+        "hostResidualMs": 3.026957999998558,
+        "hostCpuMs": 6.546,
+        "exportMs": 0.02070800000001327,
+        "serializeMs": 0.10079100000075414,
+        "gzipMs": 0.2406250000003638,
+        "writeMs": 0.8170410000002448,
+        "totalMeasuredMs": 171.36137300000155
+      },
+      "sizes": {
+        "rawBytes": 37112,
+        "gzipBytes": 4026
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 8,
+      "position": 1,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 163.985541,
+        "backendWaitMs": 161.6729600000017,
+        "hostResidualMs": 2.3125809999983176,
+        "hostCpuMs": 4.005,
+        "exportMs": 0.0017090000001189765,
+        "serializeMs": 0.00004200000148557592,
+        "gzipMs": 0.00370900000052643,
+        "writeMs": 0.00033400000029359944,
+        "totalMeasuredMs": 163.99133500000244
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 8,
+      "position": 2,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 165.6591669999998,
+        "backendWaitMs": 162.46041899999727,
+        "hostResidualMs": 3.1987480000025243,
+        "hostCpuMs": 5.314,
+        "exportMs": 0.029209000000264496,
+        "serializeMs": 0.19162500000129512,
+        "gzipMs": 0.40304199999991397,
+        "writeMs": 0.577832999999373,
+        "totalMeasuredMs": 166.86087600000064
+      },
+      "sizes": {
+        "rawBytes": 73193,
+        "gzipBytes": 6929
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 8,
+      "position": 3,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 162.04720799999996,
+        "backendWaitMs": 158.61258199999975,
+        "hostResidualMs": 3.4346260000002076,
+        "hostCpuMs": 4.223,
+        "exportMs": 0.002624999999170541,
+        "serializeMs": 0.06708399999843095,
+        "gzipMs": 0.22233299999970768,
+        "writeMs": 0.569459000000279,
+        "totalMeasuredMs": 162.90870899999754
+      },
+      "sizes": {
+        "rawBytes": 43841,
+        "gzipBytes": 4664
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 8,
+      "position": 4,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 178.18637499999932,
+        "backendWaitMs": 174.30258400000275,
+        "hostResidualMs": 3.883790999996563,
+        "hostCpuMs": 6.093,
+        "exportMs": 0.03854200000023411,
+        "serializeMs": 0.35187500000029104,
+        "gzipMs": 0.834500000000844,
+        "writeMs": 1.292583000000377,
+        "totalMeasuredMs": 180.70387500000106
+      },
+      "sizes": {
+        "rawBytes": 137761,
+        "gzipBytes": 8447
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 9,
+      "position": 0,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 181.32849999999962,
+        "backendWaitMs": 179.76049800000328,
+        "hostResidualMs": 1.5680019999963406,
+        "hostCpuMs": 3.577,
+        "exportMs": 0.001958000000740867,
+        "serializeMs": 0.00004199999966658652,
+        "gzipMs": 0.004124999999476131,
+        "writeMs": 0.00004099999932805076,
+        "totalMeasuredMs": 181.33466599999883
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 9,
+      "position": 1,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 181.16237499999988,
+        "backendWaitMs": 176.82012600000417,
+        "hostResidualMs": 4.342248999995718,
+        "hostCpuMs": 7.056,
+        "exportMs": 0.037749999999505235,
+        "serializeMs": 0.2665419999993901,
+        "gzipMs": 0.5736249999990832,
+        "writeMs": 1.2884160000012344,
+        "totalMeasuredMs": 183.3287079999991
+      },
+      "sizes": {
+        "rawBytes": 73196,
+        "gzipBytes": 6932
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 9,
+      "position": 2,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 191.44154200000048,
+        "backendWaitMs": 188.723751000005,
+        "hostResidualMs": 2.7177909999954863,
+        "hostCpuMs": 4.072,
+        "exportMs": 0.0031249999992724042,
+        "serializeMs": 0.09195800000088639,
+        "gzipMs": 0.35354200000074343,
+        "writeMs": 0.7446249999993597,
+        "totalMeasuredMs": 192.63479200000074
+      },
+      "sizes": {
+        "rawBytes": 43836,
+        "gzipBytes": 4655
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 9,
+      "position": 3,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 178.55979200000002,
+        "backendWaitMs": 174.41278899999816,
+        "hostResidualMs": 4.14700300000186,
+        "hostCpuMs": 7.292,
+        "exportMs": 0.03229199999987031,
+        "serializeMs": 0.3557920000002923,
+        "gzipMs": 0.9023329999999987,
+        "writeMs": 0.9197079999994457,
+        "totalMeasuredMs": 180.76991699999962
+      },
+      "sizes": {
+        "rawBytes": 137784,
+        "gzipBytes": 8449
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 9,
+      "position": 4,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 185.22516600000017,
+        "backendWaitMs": 182.3329589999994,
+        "hostResidualMs": 2.8922070000007807,
+        "hostCpuMs": 7.586,
+        "exportMs": 0.022957999999562162,
+        "serializeMs": 0.10720799999944575,
+        "gzipMs": 0.29845899999963876,
+        "writeMs": 0.6075839999994059,
+        "totalMeasuredMs": 186.26137499999822
+      },
+      "sizes": {
+        "rawBytes": 37104,
+        "gzipBytes": 4029
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 10,
+      "position": 0,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 164.8911250000001,
+        "backendWaitMs": 162.47895799999424,
+        "hostResidualMs": 2.4121670000058657,
+        "hostCpuMs": 6.528,
+        "exportMs": 0.01937499999985448,
+        "serializeMs": 0.09233300000050804,
+        "gzipMs": 0.24766599999929895,
+        "writeMs": 0.49587500000052387,
+        "totalMeasuredMs": 165.7463740000003
+      },
+      "sizes": {
+        "rawBytes": 37112,
+        "gzipBytes": 4026
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 10,
+      "position": 1,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 168.65074999999888,
+        "backendWaitMs": 164.77529200000572,
+        "hostResidualMs": 3.8754579999931593,
+        "hostCpuMs": 5.517,
+        "exportMs": 0.030625000001236913,
+        "serializeMs": 0.22320899999976973,
+        "gzipMs": 0.5634160000008706,
+        "writeMs": 1.0204170000015438,
+        "totalMeasuredMs": 170.4884170000023
+      },
+      "sizes": {
+        "rawBytes": 73189,
+        "gzipBytes": 6939
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 10,
+      "position": 2,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 182.40099999999984,
+        "backendWaitMs": 180.28166599999895,
+        "hostResidualMs": 2.1193340000008902,
+        "hostCpuMs": 3.888,
+        "exportMs": 0.002540999999837368,
+        "serializeMs": 0.06133299999964947,
+        "gzipMs": 0.21387500000128057,
+        "writeMs": 0.5768750000006548,
+        "totalMeasuredMs": 183.25562400000126
+      },
+      "sizes": {
+        "rawBytes": 43835,
+        "gzipBytes": 4664
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 10,
+      "position": 3,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 180.8236250000009,
+        "backendWaitMs": 179.41612499999974,
+        "hostResidualMs": 1.4075000000011642,
+        "hostCpuMs": 3.159,
+        "exportMs": 0.0014590000009775395,
+        "serializeMs": 0.00016700000014679972,
+        "gzipMs": 0.0033750000002328306,
+        "writeMs": 0.00008399999933317304,
+        "totalMeasuredMs": 180.8287100000016
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 10,
+      "position": 4,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 176.7691250000007,
+        "backendWaitMs": 172.97624799999903,
+        "hostResidualMs": 3.792877000001681,
+        "hostCpuMs": 6.188,
+        "exportMs": 0.055458000000726315,
+        "serializeMs": 0.41837500000110595,
+        "gzipMs": 0.8780419999984588,
+        "writeMs": 1.0417919999999867,
+        "totalMeasuredMs": 179.162792000001
+      },
+      "sizes": {
+        "rawBytes": 137801,
+        "gzipBytes": 8439
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 11,
+      "position": 0,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 175.84495799999968,
+        "backendWaitMs": 171.47737400000005,
+        "hostResidualMs": 4.367583999999624,
+        "hostCpuMs": 4.801,
+        "exportMs": 0.037749999999505235,
+        "serializeMs": 0.20729199999914272,
+        "gzipMs": 0.5320840000003955,
+        "writeMs": 0.7257079999999405,
+        "totalMeasuredMs": 177.34779199999866
+      },
+      "sizes": {
+        "rawBytes": 73189,
+        "gzipBytes": 6935
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 11,
+      "position": 1,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 164.40770900000098,
+        "backendWaitMs": 161.95658400000138,
+        "hostResidualMs": 2.4511249999995925,
+        "hostCpuMs": 4.433,
+        "exportMs": 0.0024169999996956903,
+        "serializeMs": 0.08591700000033597,
+        "gzipMs": 0.31925000000046566,
+        "writeMs": 2.850125000000844,
+        "totalMeasuredMs": 167.66541800000232
+      },
+      "sizes": {
+        "rawBytes": 43849,
+        "gzipBytes": 4655
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 11,
+      "position": 2,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 186.36437500000102,
+        "backendWaitMs": 184.6013739999962,
+        "hostResidualMs": 1.763001000004806,
+        "hostCpuMs": 3.637,
+        "exportMs": 0.0015829999993002275,
+        "serializeMs": 0.00008300000081362668,
+        "gzipMs": 0.0032090000004245667,
+        "writeMs": 0.00008399999933317304,
+        "totalMeasuredMs": 186.3693340000009
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 11,
+      "position": 3,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 192.22170800000094,
+        "backendWaitMs": 186.9442480000016,
+        "hostResidualMs": 5.277459999999337,
+        "hostCpuMs": 6.277,
+        "exportMs": 0.05249999999978172,
+        "serializeMs": 0.3696250000011787,
+        "gzipMs": 0.8580000000001746,
+        "writeMs": 0.9682499999998981,
+        "totalMeasuredMs": 194.47008300000198
+      },
+      "sizes": {
+        "rawBytes": 137793,
+        "gzipBytes": 8442
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 11,
+      "position": 4,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 178.0054999999993,
+        "backendWaitMs": 175.29204199999913,
+        "hostResidualMs": 2.7134580000001733,
+        "hostCpuMs": 4.593,
+        "exportMs": 0.029333000000406173,
+        "serializeMs": 0.12320899999940593,
+        "gzipMs": 0.34025000000110595,
+        "writeMs": 0.6151669999999285,
+        "totalMeasuredMs": 179.11345900000015
+      },
+      "sizes": {
+        "rawBytes": 37104,
+        "gzipBytes": 4030
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 12,
+      "position": 0,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 170.30566699999872,
+        "backendWaitMs": 167.85937600000034,
+        "hostResidualMs": 2.446290999998382,
+        "hostCpuMs": 4.276,
+        "exportMs": 0.003457999999227468,
+        "serializeMs": 0.08912499999860302,
+        "gzipMs": 0.2792909999989206,
+        "writeMs": 1.2324580000004062,
+        "totalMeasuredMs": 171.90999899999588
+      },
+      "sizes": {
+        "rawBytes": 43834,
+        "gzipBytes": 4663
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 12,
+      "position": 1,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 168.63758400000006,
+        "backendWaitMs": 165.84520999999768,
+        "hostResidualMs": 2.7923740000023827,
+        "hostCpuMs": 6.248,
+        "exportMs": 0.0015000000003055902,
+        "serializeMs": 0.00008300000081362668,
+        "gzipMs": 0.0025829999995039543,
+        "writeMs": 0.00004200000148557592,
+        "totalMeasuredMs": 168.64179200000217
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 12,
+      "position": 2,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 188.04916700000103,
+        "backendWaitMs": 184.04237200000352,
+        "hostResidualMs": 4.00679499999751,
+        "hostCpuMs": 11.413,
+        "exportMs": 0.03220799999871815,
+        "serializeMs": 0.34441700000024866,
+        "gzipMs": 0.940374999998312,
+        "writeMs": 0.8185000000012224,
+        "totalMeasuredMs": 190.18466699999954
+      },
+      "sizes": {
+        "rawBytes": 137776,
+        "gzipBytes": 8441
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 12,
+      "position": 3,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 187.38016699999935,
+        "backendWaitMs": 184.6487479999996,
+        "hostResidualMs": 2.7314189999997325,
+        "hostCpuMs": 4.678,
+        "exportMs": 0.029332999998587184,
+        "serializeMs": 0.13541699999950652,
+        "gzipMs": 0.32770800000071176,
+        "writeMs": 0.8561250000002474,
+        "totalMeasuredMs": 188.7287499999984
+      },
+      "sizes": {
+        "rawBytes": 37114,
+        "gzipBytes": 4020
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 12,
+      "position": 4,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 187.23504199999843,
+        "backendWaitMs": 183.43824999999742,
+        "hostResidualMs": 3.7967920000010054,
+        "hostCpuMs": 5.468,
+        "exportMs": 0.07820799999899464,
+        "serializeMs": 0.2461249999996653,
+        "gzipMs": 0.5946249999997235,
+        "writeMs": 1.017667000000074,
+        "totalMeasuredMs": 189.1716669999969
+      },
+      "sizes": {
+        "rawBytes": 73191,
+        "gzipBytes": 6920
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 13,
+      "position": 0,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 173.41620799999873,
+        "backendWaitMs": 171.8727059999983,
+        "hostResidualMs": 1.5435020000004442,
+        "hostCpuMs": 3.182,
+        "exportMs": 0.0017079999997804407,
+        "serializeMs": 0.00008300000081362668,
+        "gzipMs": 0.0027500000014697434,
+        "writeMs": 0.00004099999932805076,
+        "totalMeasuredMs": 173.42079000000012
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 13,
+      "position": 1,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 205.5539170000011,
+        "backendWaitMs": 201.9232090000005,
+        "hostResidualMs": 3.6307080000005953,
+        "hostCpuMs": 5.777,
+        "exportMs": 0.02141699999992852,
+        "serializeMs": 0.3050419999999576,
+        "gzipMs": 0.68145800000093,
+        "writeMs": 0.9347080000006827,
+        "totalMeasuredMs": 207.4965420000026
+      },
+      "sizes": {
+        "rawBytes": 137769,
+        "gzipBytes": 8442
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 13,
+      "position": 2,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 175.73858400000063,
+        "backendWaitMs": 173.07541400000082,
+        "hostResidualMs": 2.663169999999809,
+        "hostCpuMs": 4.751,
+        "exportMs": 0.02237500000046566,
+        "serializeMs": 0.11929199999940465,
+        "gzipMs": 0.30658299999959127,
+        "writeMs": 0.7416249999987485,
+        "totalMeasuredMs": 176.92845899999884
+      },
+      "sizes": {
+        "rawBytes": 37114,
+        "gzipBytes": 4025
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 13,
+      "position": 3,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 196.10950000000048,
+        "backendWaitMs": 192.09345600000051,
+        "hostResidualMs": 4.016043999999965,
+        "hostCpuMs": 6.816,
+        "exportMs": 0.034749999998894054,
+        "serializeMs": 0.2537499999998545,
+        "gzipMs": 0.6005420000001322,
+        "writeMs": 1.23529199999939,
+        "totalMeasuredMs": 198.23383399999875
+      },
+      "sizes": {
+        "rawBytes": 73199,
+        "gzipBytes": 6944
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 13,
+      "position": 4,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 181.5517919999984,
+        "backendWaitMs": 179.0515849999938,
+        "hostResidualMs": 2.5002070000045933,
+        "hostCpuMs": 5.126,
+        "exportMs": 0.0030000000006111804,
+        "serializeMs": 0.0674589999998716,
+        "gzipMs": 0.249707999999373,
+        "writeMs": 1.5967909999999392,
+        "totalMeasuredMs": 183.46874999999818
+      },
+      "sizes": {
+        "rawBytes": 43837,
+        "gzipBytes": 4660
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 14,
+      "position": 0,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 186.06383399999868,
+        "backendWaitMs": 181.19370899999922,
+        "hostResidualMs": 4.870124999999462,
+        "hostCpuMs": 7.566,
+        "exportMs": 0.026041999999506515,
+        "serializeMs": 0.5604999999995925,
+        "gzipMs": 0.8583749999997963,
+        "writeMs": 2.011000000000422,
+        "totalMeasuredMs": 189.519750999998
+      },
+      "sizes": {
+        "rawBytes": 137780,
+        "gzipBytes": 8435
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 14,
+      "position": 1,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 191.0684999999994,
+        "backendWaitMs": 188.19583400000556,
+        "hostResidualMs": 2.872665999993842,
+        "hostCpuMs": 4.886,
+        "exportMs": 0.021292000001267297,
+        "serializeMs": 0.11900000000059663,
+        "gzipMs": 0.28058299999975134,
+        "writeMs": 0.8375000000014552,
+        "totalMeasuredMs": 192.32687500000247
+      },
+      "sizes": {
+        "rawBytes": 37112,
+        "gzipBytes": 4031
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 14,
+      "position": 2,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 175.41220799999974,
+        "backendWaitMs": 171.69687399999748,
+        "hostResidualMs": 3.715334000002258,
+        "hostCpuMs": 6.216,
+        "exportMs": 0.03633300000001327,
+        "serializeMs": 0.2891250000011496,
+        "gzipMs": 0.5783330000012938,
+        "writeMs": 0.7729589999999007,
+        "totalMeasuredMs": 177.0889580000021
+      },
+      "sizes": {
+        "rawBytes": 73199,
+        "gzipBytes": 6926
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 14,
+      "position": 3,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 181.1347079999996,
+        "backendWaitMs": 177.16279100000065,
+        "hostResidualMs": 3.971916999998939,
+        "hostCpuMs": 8.278,
+        "exportMs": 0.002624999999170541,
+        "serializeMs": 0.06295799999861629,
+        "gzipMs": 0.28270899999915855,
+        "writeMs": 0.8292090000013559,
+        "totalMeasuredMs": 182.3122089999979
+      },
+      "sizes": {
+        "rawBytes": 43845,
+        "gzipBytes": 4672
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 14,
+      "position": 4,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 194.44191599999976,
+        "backendWaitMs": 192.4362089999995,
+        "hostResidualMs": 2.005707000000257,
+        "hostCpuMs": 3.91,
+        "exportMs": 0.0012079999996785773,
+        "serializeMs": 0.00008299999899463728,
+        "gzipMs": 0.002375000000029104,
+        "writeMs": 0.0001250000004802132,
+        "totalMeasuredMs": 194.44570699999895
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 15,
+      "position": 0,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 185.60904200000004,
+        "backendWaitMs": 181.98787599999923,
+        "hostResidualMs": 3.6211660000008123,
+        "hostCpuMs": 5.829,
+        "exportMs": 0.04866600000059407,
+        "serializeMs": 0.3060829999994894,
+        "gzipMs": 0.5980420000014419,
+        "writeMs": 1.3006249999998545,
+        "totalMeasuredMs": 187.86245800000142
+      },
+      "sizes": {
+        "rawBytes": 73200,
+        "gzipBytes": 6940
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 15,
+      "position": 1,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 196.06495800000084,
+        "backendWaitMs": 193.4545820000003,
+        "hostResidualMs": 2.6103760000005423,
+        "hostCpuMs": 4.599,
+        "exportMs": 0.01841700000113633,
+        "serializeMs": 0.11400000000139698,
+        "gzipMs": 0.29966700000113633,
+        "writeMs": 0.6311660000010306,
+        "totalMeasuredMs": 197.12820800000554
+      },
+      "sizes": {
+        "rawBytes": 37106,
+        "gzipBytes": 4024
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 15,
+      "position": 2,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 192.43629099999998,
+        "backendWaitMs": 189.583625999996,
+        "hostResidualMs": 2.852665000003981,
+        "hostCpuMs": 4.361,
+        "exportMs": 0.0037909999991825316,
+        "serializeMs": 0.07941700000083074,
+        "gzipMs": 0.3118330000015703,
+        "writeMs": 0.9720829999987473,
+        "totalMeasuredMs": 193.8034150000003
+      },
+      "sizes": {
+        "rawBytes": 43836,
+        "gzipBytes": 4664
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 15,
+      "position": 3,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 188.47925000000032,
+        "backendWaitMs": 184.05495699999483,
+        "hostResidualMs": 4.424293000005491,
+        "hostCpuMs": 5.909,
+        "exportMs": 0.03404199999931734,
+        "serializeMs": 0.3687919999974838,
+        "gzipMs": 0.9024580000004789,
+        "writeMs": 1.1074170000028971,
+        "totalMeasuredMs": 190.8919590000005
+      },
+      "sizes": {
+        "rawBytes": 137779,
+        "gzipBytes": 8447
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 15,
+      "position": 4,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 182.515625,
+        "backendWaitMs": 180.7109999999957,
+        "hostResidualMs": 1.8046250000043074,
+        "hostCpuMs": 3.57,
+        "exportMs": 0.0017499999994470272,
+        "serializeMs": 0.0002500000009604264,
+        "gzipMs": 0.0027079999999841675,
+        "writeMs": 0.00029100000028847717,
+        "totalMeasuredMs": 182.52062400000068
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 16,
+      "position": 0,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 185.0017910000024,
+        "backendWaitMs": 182.1015829999924,
+        "hostResidualMs": 2.900208000010025,
+        "hostCpuMs": 4.883,
+        "exportMs": 0.02916700000059791,
+        "serializeMs": 0.11787499999991269,
+        "gzipMs": 0.32195799999681185,
+        "writeMs": 0.6072910000002594,
+        "totalMeasuredMs": 186.078082
+      },
+      "sizes": {
+        "rawBytes": 37108,
+        "gzipBytes": 4029
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 16,
+      "position": 1,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 192.445125000002,
+        "backendWaitMs": 188.24387500000012,
+        "hostResidualMs": 4.201250000001892,
+        "hostCpuMs": 4.367,
+        "exportMs": 0.0033750000002328306,
+        "serializeMs": 0.0800840000010794,
+        "gzipMs": 0.30412499999874854,
+        "writeMs": 0.5938749999986612,
+        "totalMeasuredMs": 193.42658400000073
+      },
+      "sizes": {
+        "rawBytes": 43840,
+        "gzipBytes": 4658
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 16,
+      "position": 2,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 205.04195799999798,
+        "backendWaitMs": 201.09108299998843,
+        "hostResidualMs": 3.950875000009546,
+        "hostCpuMs": 5.719,
+        "exportMs": 0.026666999998269603,
+        "serializeMs": 0.35320900000078836,
+        "gzipMs": 0.8407079999997222,
+        "writeMs": 0.9406249999992724,
+        "totalMeasuredMs": 207.20316699999603
+      },
+      "sizes": {
+        "rawBytes": 137794,
+        "gzipBytes": 8437
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 16,
+      "position": 3,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 180.9758750000001,
+        "backendWaitMs": 179.16162600000462,
+        "hostResidualMs": 1.8142489999954705,
+        "hostCpuMs": 3.568,
+        "exportMs": 0.0014999999984866008,
+        "serializeMs": 0.00008300000263261609,
+        "gzipMs": 0.003249999997933628,
+        "writeMs": 0.00016599999798927456,
+        "totalMeasuredMs": 180.98087399999713
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 16,
+      "position": 4,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 181.6677920000002,
+        "backendWaitMs": 178.55458600000566,
+        "hostResidualMs": 3.113205999994534,
+        "hostCpuMs": 4.705,
+        "exportMs": 0.03512500000215368,
+        "serializeMs": 0.24233300000196323,
+        "gzipMs": 0.5737909999988915,
+        "writeMs": 0.8239170000015292,
+        "totalMeasuredMs": 183.34295800000473
+      },
+      "sizes": {
+        "rawBytes": 73189,
+        "gzipBytes": 6934
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 17,
+      "position": 0,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 194.04916599999706,
+        "backendWaitMs": 191.23571000000084,
+        "hostResidualMs": 2.813455999996222,
+        "hostCpuMs": 4.115,
+        "exportMs": 0.0026670000006561168,
+        "serializeMs": 0.06679200000144192,
+        "gzipMs": 0.28962500000125146,
+        "writeMs": 0.7631660000006377,
+        "totalMeasuredMs": 195.17141600000105
+      },
+      "sizes": {
+        "rawBytes": 43840,
+        "gzipBytes": 4669
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 17,
+      "position": 1,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 207.79412500000035,
+        "backendWaitMs": 203.28658400000495,
+        "hostResidualMs": 4.507540999995399,
+        "hostCpuMs": 17.803,
+        "exportMs": 0.03366699999969569,
+        "serializeMs": 0.35858299999745213,
+        "gzipMs": 1.0421249999999418,
+        "writeMs": 1.127375000000029,
+        "totalMeasuredMs": 210.35587499999747
+      },
+      "sizes": {
+        "rawBytes": 137782,
+        "gzipBytes": 8436
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 17,
+      "position": 2,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 178.40712500000154,
+        "backendWaitMs": 176.92937600001096,
+        "hostResidualMs": 1.477748999990581,
+        "hostCpuMs": 3.241,
+        "exportMs": 0.0014999999984866008,
+        "serializeMs": 0.00020900000163237564,
+        "gzipMs": 0.0034999999988940544,
+        "writeMs": 0.00016699999832781032,
+        "totalMeasuredMs": 178.41250099999888
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 17,
+      "position": 3,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 188.37712499999907,
+        "backendWaitMs": 182.89575200001127,
+        "hostResidualMs": 5.481372999987798,
+        "hostCpuMs": 6.057,
+        "exportMs": 0.034916999997221865,
+        "serializeMs": 0.31966599999941536,
+        "gzipMs": 0.5835409999999683,
+        "writeMs": 0.8806660000009288,
+        "totalMeasuredMs": 190.1959149999966
+      },
+      "sizes": {
+        "rawBytes": 73195,
+        "gzipBytes": 6943
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 17,
+      "position": 4,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 174.22350000000006,
+        "backendWaitMs": 171.6447539999972,
+        "hostResidualMs": 2.578746000002866,
+        "hostCpuMs": 4.593,
+        "exportMs": 0.018749999999272404,
+        "serializeMs": 0.11170800000036252,
+        "gzipMs": 0.2727089999971213,
+        "writeMs": 0.6149169999989681,
+        "totalMeasuredMs": 175.24158399999578
+      },
+      "sizes": {
+        "rawBytes": 37110,
+        "gzipBytes": 4026
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 18,
+      "position": 0,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 195.40012500000012,
+        "backendWaitMs": 191.06795700000293,
+        "hostResidualMs": 4.332167999997182,
+        "hostCpuMs": 6.432,
+        "exportMs": 0.04695799999899464,
+        "serializeMs": 0.4513329999972484,
+        "gzipMs": 1.1312090000028547,
+        "writeMs": 2.5136249999995925,
+        "totalMeasuredMs": 199.5432499999988
+      },
+      "sizes": {
+        "rawBytes": 137788,
+        "gzipBytes": 8435
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 18,
+      "position": 1,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 198.4456250000003,
+        "backendWaitMs": 196.71762400000443,
+        "hostResidualMs": 1.7280009999958565,
+        "hostCpuMs": 3.588,
+        "exportMs": 0.0013330000001587905,
+        "serializeMs": 0.00016599999798927456,
+        "gzipMs": 0.003040999999939231,
+        "writeMs": 0.00004099999932805076,
+        "totalMeasuredMs": 198.4502059999977
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 18,
+      "position": 2,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 202.62329099999988,
+        "backendWaitMs": 199.0481239999972,
+        "hostResidualMs": 3.5751670000026934,
+        "hostCpuMs": 5.061,
+        "exportMs": 0.0290000000022701,
+        "serializeMs": 0.22524999999950523,
+        "gzipMs": 0.4913749999977881,
+        "writeMs": 1.2623339999991003,
+        "totalMeasuredMs": 204.63124999999854
+      },
+      "sizes": {
+        "rawBytes": 73197,
+        "gzipBytes": 6936
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 18,
+      "position": 3,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 192.9489169999979,
+        "backendWaitMs": 190.41983200000323,
+        "hostResidualMs": 2.529084999994666,
+        "hostCpuMs": 5.327,
+        "exportMs": 0.02125000000160071,
+        "serializeMs": 0.12162499999976717,
+        "gzipMs": 0.27804200000173296,
+        "writeMs": 0.9818749999976717,
+        "totalMeasuredMs": 194.35170899999866
+      },
+      "sizes": {
+        "rawBytes": 37106,
+        "gzipBytes": 4020
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 18,
+      "position": 4,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 191.45020799999838,
+        "backendWaitMs": 188.8665840000067,
+        "hostResidualMs": 2.583623999991687,
+        "hostCpuMs": 4.506,
+        "exportMs": 0.004208000002108747,
+        "serializeMs": 0.08187499999985448,
+        "gzipMs": 0.30858399999851827,
+        "writeMs": 0.6750410000022384,
+        "totalMeasuredMs": 192.5199160000011
+      },
+      "sizes": {
+        "rawBytes": 43836,
+        "gzipBytes": 4664
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 19,
+      "position": 0,
+      "mode": "plain-off",
+      "timing": {
+        "executeMs": 187.77154099999825,
+        "backendWaitMs": 185.91304299999683,
+        "hostResidualMs": 1.8584980000014184,
+        "hostCpuMs": 3.653,
+        "exportMs": 0.001874999998108251,
+        "serializeMs": 0.00008400000297115184,
+        "gzipMs": 0.0031669999989389908,
+        "writeMs": 0.0003329999999550637,
+        "totalMeasuredMs": 187.77699999999822
+      },
+      "sizes": {
+        "rawBytes": 0,
+        "gzipBytes": 0
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 19,
+      "position": 1,
+      "mode": "fp-summary",
+      "timing": {
+        "executeMs": 212.7425000000003,
+        "backendWaitMs": 208.59954199999265,
+        "hostResidualMs": 4.1429580000076385,
+        "hostCpuMs": 7.065,
+        "exportMs": 0.026458000000275206,
+        "serializeMs": 0.2185830000016722,
+        "gzipMs": 0.5053340000013122,
+        "writeMs": 1.7238749999996799,
+        "totalMeasuredMs": 215.21675000000323
+      },
+      "sizes": {
+        "rawBytes": 73191,
+        "gzipBytes": 6934
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 19,
+      "position": 2,
+      "mode": "fp-minimal",
+      "timing": {
+        "executeMs": 193.3087919999998,
+        "backendWaitMs": 190.58541499999046,
+        "hostResidualMs": 2.72337700000935,
+        "hostCpuMs": 4.873,
+        "exportMs": 0.022292000001471024,
+        "serializeMs": 0.11950000000069849,
+        "gzipMs": 0.36758300000292365,
+        "writeMs": 2.479624999999942,
+        "totalMeasuredMs": 196.29779200000485
+      },
+      "sizes": {
+        "rawBytes": 37102,
+        "gzipBytes": 4017
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 19,
+      "position": 3,
+      "mode": "logs-delta",
+      "timing": {
+        "executeMs": 201.39208300000246,
+        "backendWaitMs": 196.83820699999706,
+        "hostResidualMs": 4.553876000005403,
+        "hostCpuMs": 4.733,
+        "exportMs": 0.00412500000311411,
+        "serializeMs": 0.07545899999968242,
+        "gzipMs": 0.35033300000213785,
+        "writeMs": 0.8282909999979893,
+        "totalMeasuredMs": 202.65029100000538
+      },
+      "sizes": {
+        "rawBytes": 43837,
+        "gzipBytes": 4661
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    },
+    {
+      "block": 19,
+      "position": 4,
+      "mode": "fp-full",
+      "timing": {
+        "executeMs": 196.77091700000165,
+        "backendWaitMs": 191.45420599999488,
+        "hostResidualMs": 5.316711000006762,
+        "hostCpuMs": 7.199,
+        "exportMs": 0.03858300000138115,
+        "serializeMs": 0.6933749999989232,
+        "gzipMs": 0.9945420000003651,
+        "writeMs": 1.1532089999964228,
+        "totalMeasuredMs": 199.65062599999874
+      },
+      "sizes": {
+        "rawBytes": 137775,
+        "gzipBytes": 8472
+      },
+      "backendCalls": 16,
+      "outcomesVerifiedIdentical": true
+    }
+  ]
+}

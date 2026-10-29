@@ -1,0 +1,162 @@
+import {flowChart,FlowChartExecutor,decide} from 'footprintjs';
+import {checkRelease,createSelectionReceipt,checkSelection,readSelectionManifest,runExperiment} from 'footprintjs-ml';
+import type {JsonObject,JsonValue,ModelRef,EvaluationReceipt,ReleaseDecision,SelectionManifest,SelectionCandidateResult,SelectionDecision} from 'footprintjs-ml';
+import type {PythonTrainer} from 'footprintjs-ml/adapter';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
+
+const here=fileURLToPath(new URL('.',import.meta.url));
+const args=process.argv.slice(2),at=args.indexOf('--out');
+const root=resolve(at<0?resolve(here,'run'):args[at+1]);
+const plain=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
+const config=JSON.parse(await readFile(resolve(here,'config.json'),'utf8'));
+const qualityPolicy={metric:'mse',operator:'lte' as const,threshold:0.01};
+try{await readFile(resolve(root,'trace.json'));throw new Error('Choose a fresh --out directory; saved evidence is preserved.');}
+catch(error:any){if(error.code!=='ENOENT')throw error;}
+await mkdir(root,{recursive:true});
+
+type State={
+  backend:any;datasets:any;experimentManifest:SelectionManifest;runtimeManifest:SelectionManifest;
+  candidateResults:SelectionCandidateResult[];selectedCandidateId:string;modelRef:ModelRef;
+  evaluationReceipt:EvaluationReceipt;selectionReceipt:any;selectionDecision:SelectionDecision;
+  qualityDecision:ReleaseDecision;releaseDecision:ReleaseDecision;releaseAllowed:boolean;
+  releasedModel:ModelRef|null;releaseStatus:string;wrongAttempt:any;correctedAttempt:any;
+  testReceipt?:EvaluationReceipt;releaseArtifactRef?:any;
+};
+let trainer:PythonTrainer|undefined;
+let emit:(name:string,payload:any)=>void=()=>{};
+let expectedManifest:SelectionManifest;
+let observedResults:readonly SelectionCandidateResult[]=[];
+const adapter=()=>{if(!trainer)throw new Error('Numerical trainer is not connected');return trainer.adapter;};
+const rows:any[]=[];
+const retain=(type:string)=>(event:any)=>rows.push({type,event:plain(event)});
+const recorder={id:'model-selection-evidence',onRead:retain('read'),onWrite:retain('write'),
+  onDecision:retain('decision'),onStageRetry:retain('retry'),onEmit:retain('backend')};
+const stage=(fn:(s:any)=>Promise<void>|void)=>async(s:any)=>{emit=(name,payload)=>s.$emit(name,payload);await fn(s);};
+
+function combined(quality:ReleaseDecision,selection:SelectionDecision):ReleaseDecision{
+  const allowed=quality.allowed&&selection.allowed;
+  const status=allowed?'allow':quality.status==='deny'||selection.status==='deny'?'deny':'unknown';
+  return plain({...quality,allowed,status,reasons:[...quality.reasons,...selection.reasons],
+    selection:{kind:'selection-check-binding',selectedCandidateId:selection.selectedCandidateId,allowed:selection.allowed,
+      status:selection.status,reasons:selection.reasons}});
+}
+const selectedResult=(id:string)=>{const result=observedResults.find(result=>result.candidateId===id);if(!result)throw new Error('Unknown selected candidate: '+id);return result;};
+async function checkBoundary(s:any){
+  const verified=await adapter().verifyModel({modelRef:plain(s.modelRef) as any});
+  s.modelRef=plain(verified);
+  const quality=checkRelease({modelRef:verified,datasetRef:trainer!.datasets.validation,
+    preprocessingVersion:trainer!.backend.preprocessingVersion,evaluationMethodVersion:trainer!.backend.evaluationMethodVersion,
+    parameters:{},receipt:plain(s.evaluationReceipt),policy:qualityPolicy});
+  const selection=checkSelection({receipt:plain(s.selectionReceipt),manifest:expectedManifest,results:observedResults,modelRef:verified});
+  s.qualityDecision=plain(quality);s.selectionDecision=plain(selection);s.releaseDecision=combined(quality,selection);
+  s.releaseAllowed=s.releaseDecision.allowed;
+  emit('ml.selection.release-checked',{quality,selection,combined:s.releaseDecision});
+}
+
+let chart=flowChart<State>('Declare the three-candidate JAX experiment',stage(async s=>{
+  const {createPythonTrainerAdapter}=await import('footprintjs-ml/adapter');
+  trainer=await createPythonTrainerAdapter({root,pluginPath:resolve(here,'backend/plugin.py'),config,
+    expectedProfile:'external-jax-gaussian-process-inference/v1'},
+    {python:process.env.JAX_PYTHON??process.env.PYTHON??resolve(here,'../../work/jax-env/bin/python'),
+      env:{JAX_PLATFORMS:'cpu',OPENBLAS_NUM_THREADS:'1',OMP_NUM_THREADS:'1',VECLIB_MAXIMUM_THREADS:'1'},
+      emit:(name,payload)=>emit(name,payload)});
+  s.backend=plain(trainer.backend);s.datasets=plain(trainer.datasets);
+  expectedManifest=readSelectionManifest({kind:'selection-manifest',schemaVersion:1,experimentId:'jax-gp-compute-budget/v1',
+    candidates:[30,60,100].map(steps=>({candidateId:'steps-'+steps,configuration:{steps,learningRate:config.learningRate,
+      initialization:'fresh-identical-parameters',trainDatasetSha256:trainer!.datasets.train.artifact.sha256}})),
+    comparison:{datasetRef:trainer.datasets.validation,preprocessingVersion:trainer.backend.preprocessingVersion,
+      evaluationMethodVersion:trainer.backend.evaluationMethodVersion,parameters:{}},
+    policy:{metric:'mse',direction:'min',tieBreak:'candidate-id-ascending'}});
+  s.experimentManifest=plain(expectedManifest);s.candidateResults=[];s.releasedModel=null;s.releaseStatus='pending';
+  await writeFile(resolve(root,'experiment-manifest.json'),JSON.stringify(expectedManifest,null,2)+'\n',{flag:'wx'});
+  emit('ml.experiment.declared',{manifest:expectedManifest,qualityPolicy,heldoutTest:'not-used-for-selection'});
+}), 'declare-experiment');
+
+chart.addFunction('Train three independent candidates and evaluate validation error',stage(async s=>{
+  observedResults=await runExperiment({manifest:expectedManifest,executeCandidate:async candidate=>{
+    const trained=await adapter().train({candidateId:candidate.candidateId,steps:candidate.configuration.steps});
+    const result=await adapter().evaluate({modelRef:trained.modelRef,datasetRef:trainer!.datasets.validation,
+      preprocessingVersion:trainer!.backend.preprocessingVersion,evaluationMethodVersion:trainer!.backend.evaluationMethodVersion,parameters:{}});
+    return {candidateId:candidate.candidateId,configuration:candidate.configuration,modelRef:trained.modelRef,evaluation:result.receipt};
+  },onResult:result=>{s.candidateResults=[...s.candidateResults,plain(result)];emit('ml.experiment.candidate-recorded',plain(result));}});
+  s.candidateResults=plain(observedResults);
+  await writeFile(resolve(root,'candidate-results.json'),JSON.stringify(observedResults,null,2)+'\n',{flag:'wx'});
+}), 'train-candidates');
+
+chart.addFunction('Inject a reversed ranking rule that chooses larger prediction error',stage(s=>{
+  s.runtimeManifest=plain({...expectedManifest,policy:{...expectedManifest.policy,direction:'max'}});
+  s.selectionReceipt=plain(createSelectionReceipt({selectionId:'selection-wrong-direction',createdAt:Date.now(),
+    manifest:plain(s.runtimeManifest),results:observedResults}));
+  s.selectedCandidateId=s.selectionReceipt.selectedCandidateId;
+  const selected=selectedResult(s.selectedCandidateId);s.modelRef=plain(selected.modelRef);s.evaluationReceipt=plain(selected.evaluation);
+  emit('ml.selection.fault-injected',{declaredDirection:'min',runtimeDirection:'max',selectedCandidateId:s.selectedCandidateId});
+}), 'reverse-ranking');
+chart.addFunction('Check the wrong winner against quality and the pinned selection rule',stage(async s=>{
+  await checkBoundary(s);s.wrongAttempt={candidateId:s.selectedCandidateId,modelRef:plain(s.modelRef),selectionReceipt:plain(s.selectionReceipt),
+    qualityDecision:plain(s.qualityDecision),selectionDecision:plain(s.selectionDecision),releaseDecision:plain(s.releaseDecision)};
+  if(!s.qualityDecision.allowed||s.selectionDecision.allowed||s.releaseDecision.allowed)
+    throw new Error('Wrong-direction proof did not distinguish a valid evaluation from an invalid selection.');
+}), 'guard-wrong-winner');
+const wrongBranch=chart.addDeciderFunction('Block the mistaken winner before publication',s=>decide(s,
+  [{when:{releaseAllowed:{eq:true}},then:'unexpected-release',label:'Both quality and selection must approve publication'}],
+  'selection-blocked'),'wrong-release-policy');
+wrongBranch.addFunctionBranch('unexpected-release','Fail if the mistaken winner reaches publication',stage(()=>{throw new Error('The wrong selection was allowed');}));
+wrongBranch.addFunctionBranch('selection-blocked','Record the blocked model selection',stage(s=>{s.releaseStatus='blocked-wrong-selection';emit('ml.selection.blocked',{candidateId:s.selectedCandidateId});}));
+chart=wrongBranch.end();
+
+chart.addFunction('Choose the lowest-error candidate using the declared comparison',stage(s=>{
+  s.runtimeManifest=plain(expectedManifest);s.selectionReceipt=plain(createSelectionReceipt({selectionId:'selection-corrected',createdAt:Date.now(),manifest:expectedManifest,results:observedResults}));
+  s.selectedCandidateId=s.selectionReceipt.selectedCandidateId;const selected=selectedResult(s.selectedCandidateId);
+  s.modelRef=plain(selected.modelRef);s.evaluationReceipt=plain(selected.evaluation);
+}), 'correct-ranking');
+chart.addFunction('Check the corrected winner and its own evaluation',stage(async s=>{
+  await checkBoundary(s);s.correctedAttempt={candidateId:s.selectedCandidateId,modelRef:plain(s.modelRef),selectionReceipt:plain(s.selectionReceipt),
+    qualityDecision:plain(s.qualityDecision),selectionDecision:plain(s.selectionDecision),releaseDecision:plain(s.releaseDecision)};
+  if(!s.releaseAllowed)throw new Error('The correctly selected evaluated candidate was rejected');
+}), 'guard-correct-winner');
+const releaseBranch=chart.addDeciderFunction('Release only the candidate approved by both guards',s=>decide(s,
+  [{when:{releaseAllowed:{eq:true}},then:'release',label:'Matching evaluation and correct declared candidate selection'}],'quarantine'),'correct-release-policy');
+releaseBranch.addFunctionBranch('release','Verify the winner again and record a local release',stage(async s=>{
+  // The publication boundary checks current backend content and both receipts again.
+  await checkBoundary(s);if(!s.releaseAllowed)throw new Error('Publication boundary rejected the selected model');
+  const document={schema:'footprint-model-selection-local-release/v1',modelRef:plain(s.modelRef),candidateId:s.selectedCandidateId,
+    evaluationReceipt:plain(s.evaluationReceipt),selectionReceipt:plain(s.selectionReceipt),
+    qualityDecision:plain(s.qualityDecision),selectionDecision:plain(s.selectionDecision),decision:plain(s.releaseDecision)};
+  const encoded=JSON.stringify(document,null,2)+'\n';await writeFile(resolve(root,'release.json'),encoded,{flag:'wx'});
+  s.releaseArtifactRef={kind:'artifact',path:'release.json',sha256:createHash('sha256').update(encoded).digest('hex'),bytes:Buffer.byteLength(encoded),format:'footprint-model-selection/local-release-json/v1'};
+  s.releasedModel=plain(s.modelRef);s.releaseStatus='released-locally';emit('ml.selection.local-release',{candidateId:s.selectedCandidateId,artifact:s.releaseArtifactRef});
+}));
+releaseBranch.addFunctionBranch('quarantine','Keep an unapproved candidate quarantined',stage(s=>{s.releaseStatus='quarantined';}));
+chart=releaseBranch.end();
+chart.addFunction('Audit the fixed winner on held-out test data after selection',stage(async s=>{
+  const result=await adapter().evaluate({modelRef:plain(s.modelRef) as any,datasetRef:trainer!.datasets.test,
+    preprocessingVersion:trainer!.backend.preprocessingVersion,evaluationMethodVersion:trainer!.backend.evaluationMethodVersion,parameters:{}});
+  s.testReceipt=plain(result.receipt);emit('ml.selection.test-audit',{notUsedForSelection:true,receipt:result.receipt});
+}), 'test-after-selection');
+
+const executor=new FlowChartExecutor(chart.build());executor.setReadTracking('full');executor.setWriteTracking('full');executor.attachCombinedRecorder(recorder);
+try{
+  const started=performance.now();await executor.run();const elapsedMs=performance.now()-started;
+  const footprint=executor.getSnapshot(),state=footprint.sharedState as State;
+  const mlInvestigation={schemaVersion:1,bindings:{model:'modelRef',receipt:'evaluationReceipt',decision:'releaseDecision',allowed:'releaseAllowed',releasedModel:'releasedModel'},
+    selection:{manifest:'experimentManifest',results:'candidateResults',receipt:'selectionReceipt',decision:'selectionDecision',candidate:'selectedCandidateId'}};
+  const trace={schema:'footprint-model-selection/v1',workflow:{kind:'model-selection-experiment/v1'},mlInvestigation,footprint,rows};
+  const traceBytes=JSON.stringify(trace);await writeFile(resolve(root,'trace.json'),traceBytes);
+  const results={schema:'footprint-model-selection-outcome/v1',recordedAt:new Date().toISOString(),root,backend:state.backend,
+    qualityPolicy,experimentManifest:state.experimentManifest,candidateResults:state.candidateResults,
+    wrongAttempt:state.wrongAttempt,correctedAttempt:state.correctedAttempt,
+    releasedModel:state.releasedModel,releaseStatus:state.releaseStatus,releaseArtifactRef:state.releaseArtifactRef,testReceipt:state.testReceipt,
+    measurements:{elapsedMs,traceBytes:Buffer.byteLength(traceBytes),commits:footprint.commitLog.length,callbackRows:rows.length},
+    boundaries:['Three declared compute budgets, not a general optimizer or a claim of global best performance.',
+      'Quality and ranking guards enforce supplied evidence and declared policy; they do not prove trainer mathematics or data suitability.',
+      'One local publication marker; no external registry or serving deployment.',
+      'Held-out test metrics are recorded after the selected local release and do not influence candidate ranking.']};
+  const output=JSON.stringify(results,null,2)+'\n';await writeFile(resolve(root,'outcome.json'),output);await writeFile(resolve(here,'results.json'),output);
+  console.log(JSON.stringify({candidates:state.candidateResults.map(c=>({candidateId:c.candidateId,mse:c.evaluation.metrics.mse})),
+    wrongCandidate:state.wrongAttempt.candidateId,wrongQualityAllowed:state.wrongAttempt.qualityDecision.allowed,
+    wrongSelectionAllowed:state.wrongAttempt.selectionDecision.allowed,releasedCandidate:state.selectedCandidateId,
+    releaseStatus:state.releaseStatus,testMse:state.testReceipt!.metrics.mse,elapsedMs,traceBytes:Buffer.byteLength(traceBytes)},null,2));
+}finally{await trainer?.close();}

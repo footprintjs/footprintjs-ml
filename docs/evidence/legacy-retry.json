@@ -1,0 +1,76 @@
+{
+  "workload": "Existing scikit-learn SGDRegressor; validation followed by branched session recovery and one retry",
+  "fault": "The successful recovery retry loads cached epoch 1 while validationPassed still belongs to epoch 80",
+  "checkpoints": {
+    "trained": {
+      "kind": "artifact",
+      "path": "checkpoints/epoch-080.pkl",
+      "sha256": "83e08453f379efd9fb218b88708451c272ec13d64d2897438c58de1d5969ef71",
+      "bytes": 818,
+      "format": "trusted-sklearn-pickle/v1"
+    },
+    "cached": {
+      "kind": "artifact",
+      "path": "checkpoints/epoch-001.pkl",
+      "sha256": "e385fe5a6d31b23778a39b3e098dbd569d8ae1b53cf251912472b535b97e852e",
+      "bytes": 818,
+      "format": "trusted-sklearn-pickle/v1"
+    }
+  },
+  "outcomes": [
+    {
+      "variant": "footprint",
+      "label": "footprint-buggy",
+      "releaseStatus": "released-locally",
+      "currentEpochs": 1,
+      "validatedEpochs": 80,
+      "validationPassed": true,
+      "modelMatchesValidation": false,
+      "validationMse": 7.846248309056834e-23,
+      "testMse": 22.439845749232525,
+      "probePrediction": 4.967349513575715,
+      "retriedAttempts": 1
+    },
+    {
+      "variant": "logs",
+      "label": "logs-buggy",
+      "releaseStatus": "released-locally",
+      "currentEpochs": 1,
+      "validatedEpochs": 80,
+      "validationPassed": true,
+      "modelMatchesValidation": false,
+      "validationMse": 7.846248309056834e-23,
+      "testMse": 22.439845749232525,
+      "probePrediction": 4.967349513575715,
+      "retriedAttempts": 1
+    },
+    {
+      "variant": "footprint",
+      "label": "footprint-guarded",
+      "releaseStatus": "quarantined",
+      "currentEpochs": 1,
+      "validatedEpochs": 80,
+      "validationPassed": true,
+      "modelMatchesValidation": false,
+      "validationMse": 7.846248309056834e-23,
+      "testMse": null,
+      "probePrediction": null,
+      "retriedAttempts": 1
+    },
+    {
+      "variant": "logs",
+      "label": "logs-guarded",
+      "releaseStatus": "quarantined",
+      "currentEpochs": 1,
+      "validatedEpochs": 80,
+      "validationPassed": true,
+      "modelMatchesValidation": false,
+      "validationMse": 7.846248309056834e-23,
+      "testMse": null,
+      "probePrediction": null,
+      "retriedAttempts": 1
+    }
+  ],
+  "conclusion": "Both records explain the mistake. FootPrint also observes actual tracked reads/writes and supplies native commit, retry and decision context. The log baseline implements reusable stage snapshots and explicit decision evidence.",
+  "limits": "Local synthetic CPU demonstration; no external deployment, GPU tracing, measured debugging speed or runtime-overhead claim"
+}

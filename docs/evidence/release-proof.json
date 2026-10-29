@@ -1,0 +1,141 @@
+{
+  "schema": "footprint-ml-release-proof-checks/v1",
+  "passed": true,
+  "trainingInvoked": false,
+  "publicationInvoked": false,
+  "checks": [
+    {
+      "name": "Actual wrong live model is denied against the pinned release plan",
+      "passed": true
+    },
+    {
+      "name": "Correct exact model has both quality and complete selection approval",
+      "passed": true
+    },
+    {
+      "name": "Storage-side swapped checkpoint bytes are observed and refused",
+      "passed": true
+    },
+    {
+      "name": "Publisher receiver independently refuses alternative bytes without mutation",
+      "passed": true
+    },
+    {
+      "name": "The first actual durable publication preceded the deliberately lost acknowledgment",
+      "passed": true
+    },
+    {
+      "name": "Native FootPrint retry recovers the same publication receipt",
+      "passed": true
+    },
+    {
+      "name": "Retry starts a new numerical backend process and reloads the same predictor",
+      "passed": true
+    },
+    {
+      "name": "One durable publication, target and idempotency outcome remain",
+      "passed": true
+    },
+    {
+      "name": "Same idempotency key cannot authorize another otherwise valid payload",
+      "passed": true
+    },
+    {
+      "name": "A fresh key cannot overwrite a target with a stale expected revision",
+      "passed": true
+    },
+    {
+      "name": "Only the successful retry becomes the committed publication stage state",
+      "passed": true
+    },
+    {
+      "name": "No training or new evaluation was invoked in this release workflow",
+      "passed": true
+    },
+    {
+      "name": "Pinned plan, source evidence, preparation and approved model bytes match their content references",
+      "passed": true,
+      "artifacts": [
+        {
+          "sha256": "4976f281411dbaf573ec98a0e7556f672a538321ce274c7fe0ea62e7ab0ac63e",
+          "bytes": 1562,
+          "format": "footprint-ml/model-release-plan-json/v1"
+        },
+        {
+          "sha256": "d22aa75b8f0ec59d66cedfaaa3f3fd395a3e3875f576dc65f69558f84b42efdf",
+          "bytes": 55281,
+          "format": "footprintjs-ml/prepared-model-release-json/v1"
+        },
+        {
+          "sha256": "22f3acbed72ce24f2f5e146cbfcb4efa843709ecc88a84edcd489df7fd0e3da7",
+          "bytes": 7479,
+          "format": "footprint-ml-adapter-kit/trainstate-npz-v1"
+        },
+        {
+          "sha256": "78d5e3003e6423fe9c0288856ea1e5a66d5797637ebc311782177818cbceba54",
+          "bytes": 1411,
+          "format": "footprint-ml/selection-manifest-json/v1"
+        },
+        {
+          "sha256": "44718b3203ec60f6f825dfb63276c083d2f2e0e94dbd2b51dc4a6624e1009db2",
+          "bytes": 8123,
+          "format": "footprint-ml/selection-results-json/v1"
+        },
+        {
+          "sha256": "22530b494c7cb30d5383dde450fb061d38fb5103aa12aadf3cfc13b42a60aa13",
+          "bytes": 10495,
+          "format": "footprint-ml/selection-receipt-json/v1"
+        },
+        {
+          "sha256": "29605534e99f7502cbe3b139559899f0954fe409893a9019cb07473660497f60",
+          "bytes": 1577,
+          "format": "footprint-ml/model-release-plan-json/v1"
+        },
+        {
+          "sha256": "c4b39d558fa2610ff193dc98b739fc78bb65d9389cab302d0e2f52aaed239fdd",
+          "bytes": 1575,
+          "format": "footprint-ml/model-release-plan-json/v1"
+        },
+        {
+          "sha256": "bf774b2aeb47e8a19d9028be4d88387f70774bba84475f3e180ee0fb8961442d",
+          "bytes": 55343,
+          "format": "footprintjs-ml/prepared-model-release-json/v1"
+        },
+        {
+          "sha256": "fc83c6e3b104157a3dd836302e9c39f7b9aaad1740bc8b6d8bfbde4d6d8aa71b",
+          "bytes": 55341,
+          "format": "footprintjs-ml/prepared-model-release-json/v1"
+        }
+      ]
+    },
+    {
+      "name": "Saved registry bytes match the actual publisher-client readback and target",
+      "passed": true
+    },
+    {
+      "name": "The receiver retained the exact approved checkpoint bytes",
+      "passed": true
+    },
+    {
+      "name": "Saved final state keeps the original pin and successful publication",
+      "passed": true
+    },
+    {
+      "name": "A real-clock expiry permits historical acknowledgement without a live backend",
+      "passed": true
+    },
+    {
+      "name": "No existing publication plus expired evidence does not authorize a new effect",
+      "passed": true
+    },
+    {
+      "name": "The separate expiry registry retains only its original publication",
+      "passed": true
+    },
+    {
+      "name": "Retained JAX source evidence and every imported numerical artifact match their pinned bytes",
+      "passed": true,
+      "artifacts": 6
+    }
+  ]
+}

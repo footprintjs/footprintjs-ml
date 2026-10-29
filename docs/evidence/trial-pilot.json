@@ -1,0 +1,327 @@
+{
+  "schema": "footprint-ml-investigation-pilot/v1",
+  "completedAt": "2026-10-28",
+  "studyType": "Automated-agent apparatus pilot; CLI/API navigation, not human or GUI productivity study.",
+  "passed": true,
+  "preregistration": {
+    "protocolSha256": "4d8da75ff52be4aca8c9fed13a0113f0e6626c69116e0d4b74ae33b49f9c7b34",
+    "rubricFixedBeforePilot": true,
+    "assignmentFixedBeforePilot": true,
+    "implementationClarificationBeforeStarts": [
+      {
+        "at": "2026-10-28T21:49:31.791925+00:00",
+        "previousSha256": "c5fc278fec998fa23caafe9cc651fe2ec1b7e6cc3ac771dcc3c1313fdf371412",
+        "newSha256": "4d8da75ff52be4aca8c9fed13a0113f0e6626c69116e0d4b74ae33b49f9c7b34",
+        "pilotStarts": 0,
+        "pilotSubmissions": 0,
+        "changedCasesOrRubric": false,
+        "reason": "Align promised interface features with implementation before investigators begin."
+      }
+    ]
+  },
+  "population": {
+    "automatedAgents": 4,
+    "independentDevelopers": 0,
+    "inheritedConversation": false,
+    "oneCaseAndInterfacePerInvestigator": true,
+    "blinding": "Packet/instruction blinding. Shared filesystem access was not technically isolated."
+  },
+  "participants": [
+    {
+      "participantId": "pilot-01",
+      "participantKind": "automated-agent-pilot",
+      "interface": "lens",
+      "caseId": "N8T2",
+      "caseType": "clean-control",
+      "submitted": true,
+      "diagnosisCorrect": true,
+      "factChecks": {
+        "verdict": true,
+        "releasedCandidateId": true,
+        "preferredCandidateId": true,
+        "firstDivergenceStageId": true
+      },
+      "elapsedMs": 51411,
+      "queryActions": 8,
+      "nativeLensCalls": 5,
+      "foottraceStateActions": 3,
+      "timedOut": false,
+      "confidence": 5,
+      "rubricScore": 10,
+      "rubricMaximum": 10,
+      "rubricReview": [
+        {
+          "item": "Released model and validation binding",
+          "points": 2,
+          "reason": "Names the released candidate, its own model/receipt and exact validation MSE with recorded stage references."
+        },
+        {
+          "item": "Selection objective and comparison",
+          "points": 2,
+          "reason": "Compares both recorded MSE values under the declared minimum rule and correctly accepts or rejects the recorded choice."
+        },
+        {
+          "item": "First divergence and guard scope",
+          "points": 2,
+          "reason": "Finds apply-runtime-settings#2 for the ranking mistake, or supports no divergence in control; distinguishes the matching-receipt/absolute-threshold guard from best-candidate selection."
+        },
+        {
+          "item": "Proportionate correction and regression check",
+          "points": 2,
+          "reason": "Proposes policy-aligned reranking without retraining for the mistake, or no corrective change for control, with a concrete selection/binding regression check."
+        },
+        {
+          "item": "Evidence and limits",
+          "points": 2,
+          "reason": "Cites actual stages/values and respects missing integrity/control evidence, historical numerical facts and local-publication scope."
+        }
+      ],
+      "source": {
+        "submission": "private/sessions/pilot-01/submission.json",
+        "submissionSha256": "ac6429f69b5df9fba291d1ff37604f2e450e1325c18069eb36c78b9041b0f7e7",
+        "actions": "private/sessions/pilot-01/actions.jsonl",
+        "actionsSha256": "2b92dc375e2f7e843fd7fe9320990b36ff497426cf79cfcb85ea0bb4e33af1ec"
+      },
+      "accessAudit": {
+        "basis": "Investigator final self-report plus assigned-server action trail. No technical filesystem isolation.",
+        "outsideAccessReported": false,
+        "ownResponseFileOnly": true
+      }
+    },
+    {
+      "participantId": "pilot-02",
+      "participantKind": "automated-agent-pilot",
+      "interface": "lens",
+      "caseId": "K4R7",
+      "caseType": "ranking-mistake",
+      "submitted": true,
+      "diagnosisCorrect": true,
+      "factChecks": {
+        "verdict": true,
+        "releasedCandidateId": true,
+        "preferredCandidateId": true,
+        "firstDivergenceStageId": true
+      },
+      "elapsedMs": 73391,
+      "queryActions": 8,
+      "nativeLensCalls": 7,
+      "foottraceStateActions": 1,
+      "timedOut": false,
+      "confidence": 5,
+      "rubricScore": 10,
+      "rubricMaximum": 10,
+      "rubricReview": [
+        {
+          "item": "Released model and validation binding",
+          "points": 2,
+          "reason": "Names the released candidate, its own model/receipt and exact validation MSE with recorded stage references."
+        },
+        {
+          "item": "Selection objective and comparison",
+          "points": 2,
+          "reason": "Compares both recorded MSE values under the declared minimum rule and correctly accepts or rejects the recorded choice."
+        },
+        {
+          "item": "First divergence and guard scope",
+          "points": 2,
+          "reason": "Finds apply-runtime-settings#2 for the ranking mistake, or supports no divergence in control; distinguishes the matching-receipt/absolute-threshold guard from best-candidate selection."
+        },
+        {
+          "item": "Proportionate correction and regression check",
+          "points": 2,
+          "reason": "Proposes policy-aligned reranking without retraining for the mistake, or no corrective change for control, with a concrete selection/binding regression check."
+        },
+        {
+          "item": "Evidence and limits",
+          "points": 2,
+          "reason": "Cites actual stages/values and respects missing integrity/control evidence, historical numerical facts and local-publication scope."
+        }
+      ],
+      "source": {
+        "submission": "private/sessions/pilot-02/submission.json",
+        "submissionSha256": "d31a3be0e11b034b0050195e21b51b8bade01992d2bd77a563e4708477be9b4e",
+        "actions": "private/sessions/pilot-02/actions.jsonl",
+        "actionsSha256": "51292456d1c93dd31239aa644b30315a42eb541dc42d126e5620834314ada8ae"
+      },
+      "accessAudit": {
+        "basis": "Investigator final self-report plus assigned-server action trail. No technical filesystem isolation.",
+        "outsideAccessReported": false,
+        "ownResponseFileOnly": true
+      }
+    },
+    {
+      "participantId": "pilot-03",
+      "participantKind": "automated-agent-pilot",
+      "interface": "logs",
+      "caseId": "K4R7",
+      "caseType": "ranking-mistake",
+      "submitted": true,
+      "diagnosisCorrect": true,
+      "factChecks": {
+        "verdict": true,
+        "releasedCandidateId": true,
+        "preferredCandidateId": true,
+        "firstDivergenceStageId": true
+      },
+      "elapsedMs": 78026,
+      "queryActions": 10,
+      "nativeLensCalls": 1,
+      "foottraceStateActions": 0,
+      "timedOut": false,
+      "confidence": 5,
+      "rubricScore": 10,
+      "rubricMaximum": 10,
+      "rubricReview": [
+        {
+          "item": "Released model and validation binding",
+          "points": 2,
+          "reason": "Names the released candidate, its own model/receipt and exact validation MSE with recorded stage references."
+        },
+        {
+          "item": "Selection objective and comparison",
+          "points": 2,
+          "reason": "Compares both recorded MSE values under the declared minimum rule and correctly accepts or rejects the recorded choice."
+        },
+        {
+          "item": "First divergence and guard scope",
+          "points": 2,
+          "reason": "Finds apply-runtime-settings#2 for the ranking mistake, or supports no divergence in control; distinguishes the matching-receipt/absolute-threshold guard from best-candidate selection."
+        },
+        {
+          "item": "Proportionate correction and regression check",
+          "points": 2,
+          "reason": "Proposes policy-aligned reranking without retraining for the mistake, or no corrective change for control, with a concrete selection/binding regression check."
+        },
+        {
+          "item": "Evidence and limits",
+          "points": 2,
+          "reason": "Cites actual stages/values and respects missing integrity/control evidence, historical numerical facts and local-publication scope."
+        }
+      ],
+      "source": {
+        "submission": "private/sessions/pilot-03/submission.json",
+        "submissionSha256": "6936de68db0f290fa5111b9ef1c3100fde8bf183b8cfe81c4c51e7cc4740aebd",
+        "actions": "private/sessions/pilot-03/actions.jsonl",
+        "actionsSha256": "adb294acdc38c3945703468033ba8be3308bce27b9e3be56810152d516726b95"
+      },
+      "accessAudit": {
+        "basis": "Investigator final self-report plus assigned-server action trail. No technical filesystem isolation.",
+        "outsideAccessReported": false,
+        "ownResponseFileOnly": true
+      }
+    },
+    {
+      "participantId": "pilot-04",
+      "participantKind": "automated-agent-pilot",
+      "interface": "logs",
+      "caseId": "N8T2",
+      "caseType": "clean-control",
+      "submitted": true,
+      "diagnosisCorrect": true,
+      "factChecks": {
+        "verdict": true,
+        "releasedCandidateId": true,
+        "preferredCandidateId": true,
+        "firstDivergenceStageId": true
+      },
+      "elapsedMs": 88496,
+      "queryActions": 13,
+      "nativeLensCalls": 1,
+      "foottraceStateActions": 0,
+      "timedOut": false,
+      "confidence": 5,
+      "rubricScore": 10,
+      "rubricMaximum": 10,
+      "rubricReview": [
+        {
+          "item": "Released model and validation binding",
+          "points": 2,
+          "reason": "Names the released candidate, its own model/receipt and exact validation MSE with recorded stage references."
+        },
+        {
+          "item": "Selection objective and comparison",
+          "points": 2,
+          "reason": "Compares both recorded MSE values under the declared minimum rule and correctly accepts or rejects the recorded choice."
+        },
+        {
+          "item": "First divergence and guard scope",
+          "points": 2,
+          "reason": "Finds apply-runtime-settings#2 for the ranking mistake, or supports no divergence in control; distinguishes the matching-receipt/absolute-threshold guard from best-candidate selection."
+        },
+        {
+          "item": "Proportionate correction and regression check",
+          "points": 2,
+          "reason": "Proposes policy-aligned reranking without retraining for the mistake, or no corrective change for control, with a concrete selection/binding regression check."
+        },
+        {
+          "item": "Evidence and limits",
+          "points": 2,
+          "reason": "Cites actual stages/values and respects missing integrity/control evidence, historical numerical facts and local-publication scope."
+        }
+      ],
+      "source": {
+        "submission": "private/sessions/pilot-04/submission.json",
+        "submissionSha256": "45f0356b7cc66dcb2aac96934a35e346a79f86581270024d830e83f0577362a4",
+        "actions": "private/sessions/pilot-04/actions.jsonl",
+        "actionsSha256": "3ee9ea712a30fee362d95a38518791167ee4d8b32f537e5efc5b0257e2782063"
+      },
+      "accessAudit": {
+        "basis": "Investigator final self-report plus assigned-server action trail. No technical filesystem isolation.",
+        "outsideAccessReported": false,
+        "ownResponseFileOnly": true
+      }
+    }
+  ],
+  "byInterface": [
+    {
+      "interface": "lens",
+      "correct": 2,
+      "attempts": 2,
+      "faultyCasesCorrect": 1,
+      "controlCasesCorrect": 1,
+      "falsePositiveControlDiagnoses": 0
+    },
+    {
+      "interface": "logs",
+      "correct": 2,
+      "attempts": 2,
+      "faultyCasesCorrect": 1,
+      "controlCasesCorrect": 1,
+      "falsePositiveControlDiagnoses": 0
+    }
+  ],
+  "scoring": {
+    "method": "Case-author review against the fixed five-item, ten-point rubric; exact field checks corroborated by saved key.",
+    "independentReviewer": false,
+    "toolBlinded": false,
+    "automaticFactsAreNotCausalExplanationGrading": true
+  },
+  "findings": [
+    "Both interfaces exposed enough evidence for both a correct ranking-fault diagnosis and a justified no-fault control conclusion.",
+    "A matching model-bound evaluation and mse<=0.01 do not enforce the declared best-candidate ranking policy.",
+    "Complete logs retained the same facts and were sufficient for this diagnosis; the comparison establishes no exclusive detection advantage."
+  ],
+  "limitations": [
+    "Two agents per interface and one per case cell provide no defensible tool-effect estimate.",
+    "Agent elapsed time includes reasoning, service and tool/approval latency; it is not human investigation time.",
+    "Agents used the API client, not the graphical participant interface. Browser QA is separate.",
+    "The logs are a lossless projection of the same journal; this does not measure independent logger instrumentation effort.",
+    "Blinding relied on instructions and reported access, not an enforced per-agent filesystem capability.",
+    "The case author scored the pilot. Independent developers and blinded human scoring remain outstanding.",
+    "Candidates and validation are reused audited JAX artifacts; the new executions perform selection and local release, not training."
+  ],
+  "nextStep": {
+    "status": "OPEN",
+    "action": "Eligible independent developers unfamiliar with these cases complete one assigned interface/case, followed by tool-blind scoring."
+  },
+  "apparatusReview": {
+    "pilotDataPreserved": true,
+    "queryCountDefinition": "Successful server evidence-query requests only; Begin, initial overview, file writes and UI gestures are excluded.",
+    "notes": [
+      "The pilot native cursor was shared per case. Folded state at a target remained correct, but navigation changedKeys could reflect another session. Delivered cursors are participant-local.",
+      "Parallel pilot-03 requests retained all ten records but duplicated ordinal2. Counts use retained record count, not maximum ordinal. Delivered requests are serialized per participant.",
+      "The delivered server also withholds overview data on expired/submitted session reload and audits downloads. Late submissions remain explicitly censored timeouts."
+    ],
+    "humanEfficacyInference": false
+  }
+}
