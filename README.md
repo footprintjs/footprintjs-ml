@@ -1,5 +1,7 @@
 # footprintjs-ml
 
+**Status: Beta — APIs may change.** This repository currently presents the interactive story and saved evidence. An installable SDK has not been published yet.
+
 [**Open the interactive ML story →**](https://footprintjs.github.io/footprintjs-ml/#1)
 
 A visual exploration of how FootPrint can coordinate ML workflows and explain model-release mistakes using saved execution evidence. The twelve-chapter story builds a growing map of model references, evaluation receipts, trainer adapters, release guards and investigation tools.

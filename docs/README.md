@@ -1,5 +1,7 @@
 # FootPrint in ML: the story
 
+**Status: Beta — library APIs may change.** This page presents the current exploration and saved evidence. An installable SDK has not been published yet.
+
 [Open the twelve-chapter visual story](index.html#1), or [read the full technical story](technical-story.html#1). The animated map shows the reusable ML pieces explored around FootPrint. Next and Back move through the chapters. Pause motion stops the floating graph; reduced-motion preferences and the motion=off query option are respected. More detail opens the retained lessons and linked evidence.
 
 ## Hosting
