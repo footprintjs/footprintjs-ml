@@ -1,31 +1,76 @@
 # footprintjs-ml
 
-**Status: Beta — APIs may change.** This repository currently presents the interactive story and saved evidence. An installable SDK has not been published yet.
+**Beta — APIs may change.** Check that a proposed model has matching evaluation evidence, then reopen the recorded release decision after training has stopped.
 
-[**Open the interactive ML story →**](https://footprintjs.github.io/footprintjs-ml/#1)
+FootPrint coordinates the workflow. Your trainer keeps its models, tensors and numerical code. Scope holds small references, evaluation receipts and decisions. Lens and foottrace inspect the saved execution record.
 
-A visual exploration of how FootPrint can coordinate ML workflows and explain model-release mistakes using saved execution evidence. The twelve-chapter story builds a growing map of model references, evaluation receipts, trainer adapters, release guards and investigation tools.
+[Try the quickstart](QUICKSTART.md) · [Explore the visual story](https://footprintjs.github.io/footprintjs-ml/#1) · [Compatibility](COMPATIBILITY.md)
 
-This initial repository publishes the story and its supporting evidence. The experimental library described in the examples is a private v0.5.0 prototype; this repository does not yet provide an installable SDK or an npm release.
+## Try the beta
 
-## Explore
+The beta is distributed as a versioned GitHub release tarball. These commands do not depend on an npm registry release of `footprintjs-ml`:
 
-- [Visual story](https://footprintjs.github.io/footprintjs-ml/#1)
-- [Full technical story](https://footprintjs.github.io/footprintjs-ml/technical-story.html#1)
-- [Evidence ledger](docs/EVIDENCE.md)
-- [Public file integrity manifest](docs/publication-manifest.json)
+```sh
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.1/footprintjs-ml-0.6.0-beta.1.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+python3 -m venv .venv
+.venv/bin/python -m pip install numpy==2.2.6
+npx --no-install footprint-ml demo --out ./quickstart-run --python .venv/bin/python
+npx --no-install footprint-ml investigate --run ./quickstart-run --decision stale
+```
+
+Use Node.js 22+ and Python 3.11 or 3.12 for this pinned NumPy reference trainer. See [QUICKSTART.md](QUICKSTART.md) for Windows paths and full setup. The three workflow/investigation packages above are used by the example; the SDK core has no runtime dependencies.
+
+## What the example does
+
+1. Train model A and evaluate it.
+2. Continue training to model B.
+3. Reject A’s evaluation receipt when B is proposed for release.
+4. Evaluate B and accept its matching evidence.
+5. Stop the Python worker and investigate the saved decisions in a separate process.
+
+The example supplies a small NumPy reference trainer so the full path is reproducible on a CPU. An allowed decision here does not upload or deploy a model to a registry. To connect your own training code, implement the documented [Python hooks](python/README.md) behind the same [trainer adapter](ADAPTER.md). The numerical trainer can stay in Python.
+
+## Package entry points
+
+| Import | Purpose |
+| --- | --- |
+| `footprintjs-ml` | References, evaluation receipts, trainer contract, selection and release checks. |
+| `footprintjs-ml/adapter` | Optional local Python worker and existing-trainer hooks. |
+| `footprintjs-ml/lens` | Saved-run investigation bindings for an existing Lens/foottrace bridge. |
+| `footprintjs-ml/conformance` | Explicit adapter conformance runner. |
+| `footprintjs-ml/release` | Optional local artifact store and single-host publisher. |
+
+Optional entry points start no processes on import. Applications explicitly create a trainer and provide the recording/investigation tools they use. Python and numerical dependencies are explicit installations.
+
+## What the evidence establishes
+
+FootPrint records stage execution, tracked scope changes and decisions. The trainer adapter reports model, dataset, checkpoint and numerical evaluation facts; the ML layer validates their declared bindings and applies the requested guards. It does not automatically inspect arbitrary uninstrumented Python code or prove that an adapter’s identity profile includes every relevant component.
+
+Saved replay reconstructs recorded state. It does not resume training or recreate numerical arrays. A passing guard establishes the checks configured for that operation, not general model suitability, authenticated evidence, production readiness or distributed release guarantees. The examples have not established a human investigation advantage over complete structured logs.
+
+## Develop and verify
+
+```sh
+git clone https://github.com/footprintjs/footprintjs-ml.git
+cd footprintjs-ml
+npm ci
+npm run build
+npm test
+python3 -m venv .venv
+.venv/bin/python -m pip install -r examples/quickstart/requirements.txt
+PYTHON="$PWD/.venv/bin/python" npm run beta:smoke
+```
+
+The smoke check packs the SDK, installs it into a temporary consumer, runs the model-swap example, and reopens its saved record in a separate process. See [COMPATIBILITY.md](COMPATIBILITY.md) for CI targets and limits.
+
+## Guides and evidence
+
+- [Quickstart](QUICKSTART.md) and [supported/tested environments](COMPATIBILITY.md)
+- [Trainer adapter](ADAPTER.md) and [Python plugin protocol](python/README.md)
+- [Data-use checks](DATA-LINEAGE.md), [model selection](SELECTION.md), [checked release](RELEASE.md)
+- [Visual story](https://footprintjs.github.io/footprintjs-ml/#1), [technical story](https://footprintjs.github.io/footprintjs-ml/technical-story.html#1), [saved evidence ledger](docs/EVIDENCE.md)
 - [FootPrint](https://github.com/footprintjs/footPrint)
 
-Use Next and Back to move through the story. The graph supports dragging, revisiting earlier chapters, and pausing motion. More detail opens the technical explanation and recorded evidence.
+GitHub Pages serves the presentation in `docs/`. Its historical experiments and original versions remain evidence for that story; they are separate from the current beta quickstart. The [publication manifest](docs/publication-manifest.json) distinguishes original retained-source fingerprints from public copies with personal paths removed.
 
-## Hosting and updates
-
-GitHub Pages serves `docs/` from `main`. The HTML views embed their scripts, styles and diagrams; viewing them does not run training or call a backend. Keep the evidence files beside the HTML views.
-
-To update the story, replace `docs/` with a fresh verified public export, check the files against `docs/publication-manifest.json`, then push the update. The published-copy checksums cover the public bytes. Original retained-source checksums are labeled separately because personal local paths were removed from nine evidence JSON copies.
-
-## Scope
-
-Numerical tools perform training and determine accuracy. These local examples explore evidence identity, data use, model selection, release checks and saved investigation. They do not establish distributed release guarantees, production readiness, or a measured human debugging advantage over complete structured logs.
-
-The project is MIT licensed. The embedded StoryDeck runtime has its [MIT notice](docs/STORYDECK-LICENSE.txt).
+MIT licensed. The presentation includes the [StoryDeck MIT notice](docs/STORYDECK-LICENSE.txt).

@@ -1,0 +1,2 @@
+# Reference trainer only. Core FootPrint ML does not install Python dependencies.
+numpy==2.2.6

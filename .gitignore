@@ -1,1 +1,10 @@
 .DS_Store
+/node_modules/
+/dist/
+*.tgz
+/.venv/
+/artifacts/
+/.artifacts/
+/reports/
+**/__pycache__/
+*.py[cod]

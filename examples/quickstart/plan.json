@@ -1,0 +1,8 @@
+{
+  "profile": "footprintjs-ml/quickstart-linear-inference/v1",
+  "config": {},
+  "trainA": { "steps": 20 },
+  "continueB": { "steps": 20 },
+  "evaluationParameters": {},
+  "policy": { "metric": "mse", "operator": "lte", "threshold": 0.05 }
+}
