@@ -1,0 +1,2391 @@
+{
+  "approvalDecision": {
+    "allowed": true,
+    "checkedAt": 1793307886647,
+    "kind": "release-decision",
+    "policy": {
+      "metric": "accuracy",
+      "operator": "gte",
+      "threshold": 0.9
+    },
+    "reasons": [
+      {
+        "code": "inference-identity-matches",
+        "message": "The proposed inference profile and digest match the evaluated model."
+      },
+      {
+        "code": "receipt-matches-policy",
+        "message": "Inference identity, dataset, preprocessing, evaluation method, parameters, and metric policy match."
+      }
+    ],
+    "receiptId": "e088038e-cc1c-450b-81ac-952540b87ac7",
+    "schemaVersion": 1,
+    "status": "allow"
+  },
+  "approvedModelRef": {
+    "handle": 1,
+    "inferenceIdentity": {
+      "kind": "inference-identity",
+      "profile": "digits-logistic-standardscaler/actual-memory/v1",
+      "schemaVersion": 1,
+      "sha256": "c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead"
+    },
+    "kind": "model",
+    "originArtifact": {
+      "bytes": 12942,
+      "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+      "kind": "artifact",
+      "path": "backend/model-A.json",
+      "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+    },
+    "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+  },
+  "backend": {
+    "fixedModelBC": 0.0001,
+    "inputRef": {
+      "bytes": 18216,
+      "format": "footprint-ml/fixed-inference-input/v1",
+      "kind": "artifact",
+      "path": "backend/input-first-64.json",
+      "sha256": "14f4312219930cd3f29e16f2e4b0d2ee9a466da582c6b747ddd9635c09cd7667"
+    },
+    "modelARef": {
+      "handle": 1,
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "profile": "digits-logistic-standardscaler/actual-memory/v1",
+        "schemaVersion": 1,
+        "sha256": "c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead"
+      },
+      "kind": "model",
+      "originArtifact": {
+        "bytes": 12942,
+        "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+        "kind": "artifact",
+        "path": "backend/model-A.json",
+        "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+      },
+      "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+    },
+    "modelBRef": {
+      "handle": 2,
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "profile": "digits-logistic-standardscaler/actual-memory/v1",
+        "schemaVersion": 1,
+        "sha256": "4d07b2de53779ba4780c7003009ec445c68958d1567432a843a0be2e3d4a073a"
+      },
+      "kind": "model",
+      "originArtifact": {
+        "bytes": 13931,
+        "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+        "kind": "artifact",
+        "path": "backend/model-B.json",
+        "sha256": "27bd8910c0d511a937fe08e92a8ee9410ee35608cc430c4f2c9750a249250c1d"
+      },
+      "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+    },
+    "rows": 64,
+    "scalerRef": {
+      "bytes": 3697,
+      "format": "footprint-ml/sklearn-standard-scaler-json/v1",
+      "kind": "artifact",
+      "path": "backend/scaler-S1.json",
+      "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54"
+    },
+    "scalerStateSha256": "4ddc4d87f7f648daf03f13554a851e2bb6a0fc1a0339224aa2f156cb79dfc07b",
+    "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e",
+    "sourceManifestSha256": "ba42a2ad9c47b1d1d01e1ac6a4e9adec0fb129cbbb7fd2e630ac90f6e758b2e0",
+    "trainingCalls": 1,
+    "versions": {
+      "numpy": "2.2.6",
+      "sklearn": "1.7.2"
+    },
+    "workerPid": 72486
+  },
+  "backendLifecycle": {
+    "closed": true,
+    "stderrArtifact": {
+      "bytes": 3909,
+      "format": "text/plain",
+      "kind": "artifact",
+      "path": "backend.stderr.log",
+      "sha256": "4fb814dfe026c0ec3f2cd40891926d397f3f9553970054453c84f248df291859"
+    },
+    "stderrTruncated": false,
+    "workerPid": 72486
+  },
+  "backendPlan": {
+    "fixtureManifestSha256": "ba42a2ad9c47b1d1d01e1ac6a4e9adec0fb129cbbb7fd2e630ac90f6e758b2e0",
+    "modelBC": 0.0001,
+    "predictionRows": 64
+  },
+  "boundaries": [
+    "Controlled stale-cache and field-order failures in one local numerical worker, not a deployed serving system.",
+    "A's configured evaluation approval and the prediction-observation check are separate decisions; passing either does not establish general model suitability.",
+    "Model source file hashes are checked on load. Prediction identity is separately measured from the actual in-memory classifier/scaler before and after computation.",
+    "Blocked output artifacts remain private debugging evidence. Only the accepted A output reference is exposed by the application's handoff scope key.",
+    "Label differences are an observed result of the fixed models/batch, not a precondition for denying the wrong model.",
+    "Numerical warnings are retained and forwarded, not suppressed or automatically diagnosed."
+  ],
+  "cases": {
+    "corrected": {
+      "backendObservation": {
+        "actualStateArtifact": {
+          "bytes": 32594,
+          "format": "footprint-ml/actual-inference-state-json/v1",
+          "kind": "artifact",
+          "path": "backend/private/921bdb12-c91f-4736-95e2-b822c45e572f-actual-state.json",
+          "sha256": "8fe7fc3411cb64bccabc7ecdbd301fbba0b6b2e42b0fa91a048a98712738aa7d"
+        },
+        "afterModelRef": {
+          "handle": 1,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-logistic-standardscaler/actual-memory/v1",
+            "schemaVersion": 1,
+            "sha256": "c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "backend/model-A.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+        },
+        "beforeModelRef": {
+          "handle": 1,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-logistic-standardscaler/actual-memory/v1",
+            "schemaVersion": 1,
+            "sha256": "c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "backend/model-A.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+        },
+        "cacheGeneration": 3,
+        "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e",
+        "stateUnchangedDuringPrediction": true,
+        "workerPid": 72486
+      },
+      "decision": {
+        "allowed": true,
+        "checkedAt": 1793307886670,
+        "inferenceId": "921bdb12-c91f-4736-95e2-b822c45e572f",
+        "kind": "inference-decision",
+        "reasons": [
+          {
+            "code": "inference-identity-matches",
+            "message": "The observed model inference profile and digest match the expected model."
+          },
+          {
+            "code": "inference-matches-expectation",
+            "message": "Observed inference identity, contract, input, invocation and row counts match the independently supplied expectation."
+          }
+        ],
+        "schemaVersion": 1,
+        "status": "allow"
+      },
+      "receipt": {
+        "contract": {
+          "classLabels": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "input": {
+            "fields": [
+              {
+                "dtype": "float64",
+                "name": "pixel_0",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_1",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_2",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_3",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_4",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_5",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_6",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_7",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_8",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_9",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_10",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_11",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_12",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_13",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_14",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_15",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_16",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_17",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_18",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_19",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_20",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_21",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_22",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_23",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_24",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_25",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_26",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_27",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_28",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_29",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_30",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_31",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_32",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_33",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_34",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_35",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_36",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_37",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_38",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_39",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_40",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_41",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_42",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_43",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_44",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_45",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_46",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_47",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_48",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_49",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_50",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_51",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_52",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_53",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_54",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_55",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_56",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_57",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_58",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_59",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_60",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_61",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_62",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_63",
+                "unit": "intensity-0-to-16"
+              }
+            ]
+          },
+          "kind": "prediction-contract",
+          "output": {
+            "fields": [
+              {
+                "dtype": "int64",
+                "name": "digit"
+              }
+            ]
+          },
+          "parameters": {
+            "method": "ordered-class-argmax"
+          },
+          "preprocessingVersion": "standardscaler-state/sha256:4ddc4d87f7f648daf03f13554a851e2bb6a0fc1a0339224aa2f156cb79dfc07b",
+          "profile": "digits-64-named-pixels-to-class-label/v1",
+          "schemaVersion": 1
+        },
+        "createdAt": 1793307886665,
+        "inferenceId": "921bdb12-c91f-4736-95e2-b822c45e572f",
+        "inputRef": {
+          "bytes": 18216,
+          "format": "footprint-ml/fixed-inference-input/v1",
+          "kind": "artifact",
+          "path": "backend/input-first-64.json",
+          "sha256": "14f4312219930cd3f29e16f2e4b0d2ee9a466da582c6b747ddd9635c09cd7667"
+        },
+        "inputRows": 64,
+        "kind": "inference-receipt",
+        "modelRef": {
+          "handle": 1,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-logistic-standardscaler/actual-memory/v1",
+            "schemaVersion": 1,
+            "sha256": "c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "backend/model-A.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+        },
+        "outputRef": {
+          "bytes": 734,
+          "format": "footprint-ml/digit-prediction-output/v1",
+          "kind": "artifact",
+          "path": "backend/private/921bdb12-c91f-4736-95e2-b822c45e572f-output.json",
+          "sha256": "f7a2826caf10e50fe5ac578756a896723643d896c90039ac611859dd8d466a4b"
+        },
+        "outputRows": 64,
+        "schemaVersion": 1
+      }
+    },
+    "reversed": {
+      "backendObservation": {
+        "actualStateArtifact": {
+          "bytes": 32594,
+          "format": "footprint-ml/actual-inference-state-json/v1",
+          "kind": "artifact",
+          "path": "backend/private/28d427fc-e13e-4d42-b67c-59e89e394ab4-actual-state.json",
+          "sha256": "8fe7fc3411cb64bccabc7ecdbd301fbba0b6b2e42b0fa91a048a98712738aa7d"
+        },
+        "afterModelRef": {
+          "handle": 1,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-logistic-standardscaler/actual-memory/v1",
+            "schemaVersion": 1,
+            "sha256": "c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "backend/model-A.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+        },
+        "beforeModelRef": {
+          "handle": 1,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-logistic-standardscaler/actual-memory/v1",
+            "schemaVersion": 1,
+            "sha256": "c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "backend/model-A.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+        },
+        "cacheGeneration": 3,
+        "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e",
+        "stateUnchangedDuringPrediction": true,
+        "workerPid": 72486
+      },
+      "decision": {
+        "allowed": false,
+        "checkedAt": 1793307886681,
+        "inferenceId": "28d427fc-e13e-4d42-b67c-59e89e394ab4",
+        "kind": "inference-decision",
+        "reasons": [
+          {
+            "code": "inference-identity-matches",
+            "message": "The observed model inference profile and digest match the expected model."
+          },
+          {
+            "code": "prediction-input-fields-mismatch",
+            "message": "The ordered input field names differ from the independently expected fields."
+          }
+        ],
+        "schemaVersion": 1,
+        "status": "deny"
+      },
+      "receipt": {
+        "contract": {
+          "classLabels": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "input": {
+            "fields": [
+              {
+                "dtype": "float64",
+                "name": "pixel_63",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_62",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_61",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_60",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_59",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_58",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_57",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_56",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_55",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_54",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_53",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_52",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_51",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_50",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_49",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_48",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_47",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_46",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_45",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_44",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_43",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_42",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_41",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_40",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_39",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_38",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_37",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_36",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_35",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_34",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_33",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_32",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_31",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_30",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_29",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_28",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_27",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_26",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_25",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_24",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_23",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_22",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_21",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_20",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_19",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_18",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_17",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_16",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_15",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_14",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_13",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_12",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_11",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_10",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_9",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_8",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_7",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_6",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_5",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_4",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_3",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_2",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_1",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_0",
+                "unit": "intensity-0-to-16"
+              }
+            ]
+          },
+          "kind": "prediction-contract",
+          "output": {
+            "fields": [
+              {
+                "dtype": "int64",
+                "name": "digit"
+              }
+            ]
+          },
+          "parameters": {
+            "method": "ordered-class-argmax"
+          },
+          "preprocessingVersion": "standardscaler-state/sha256:4ddc4d87f7f648daf03f13554a851e2bb6a0fc1a0339224aa2f156cb79dfc07b",
+          "profile": "digits-64-named-pixels-to-class-label/v1",
+          "schemaVersion": 1
+        },
+        "createdAt": 1793307886676,
+        "inferenceId": "28d427fc-e13e-4d42-b67c-59e89e394ab4",
+        "inputRef": {
+          "bytes": 18216,
+          "format": "footprint-ml/fixed-inference-input/v1",
+          "kind": "artifact",
+          "path": "backend/input-first-64.json",
+          "sha256": "14f4312219930cd3f29e16f2e4b0d2ee9a466da582c6b747ddd9635c09cd7667"
+        },
+        "inputRows": 64,
+        "kind": "inference-receipt",
+        "modelRef": {
+          "handle": 1,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-logistic-standardscaler/actual-memory/v1",
+            "schemaVersion": 1,
+            "sha256": "c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "backend/model-A.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+        },
+        "outputRef": {
+          "bytes": 734,
+          "format": "footprint-ml/digit-prediction-output/v1",
+          "kind": "artifact",
+          "path": "backend/private/28d427fc-e13e-4d42-b67c-59e89e394ab4-output.json",
+          "sha256": "22fc43633ec1e0c95ae13c96d2c704919ff2b5d23a6f948aa817ed2a13026c71"
+        },
+        "outputRows": 64,
+        "schemaVersion": 1
+      }
+    },
+    "stale": {
+      "backendObservation": {
+        "actualStateArtifact": {
+          "bytes": 34566,
+          "format": "footprint-ml/actual-inference-state-json/v1",
+          "kind": "artifact",
+          "path": "backend/private/084fded0-9ba0-4508-bd73-b7120db67779-actual-state.json",
+          "sha256": "b305aebe3b4f6158e1e76764e0688d6d9a138976ccd9d3cc63225fab7517cef4"
+        },
+        "afterModelRef": {
+          "handle": 2,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-logistic-standardscaler/actual-memory/v1",
+            "schemaVersion": 1,
+            "sha256": "4d07b2de53779ba4780c7003009ec445c68958d1567432a843a0be2e3d4a073a"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 13931,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "backend/model-B.json",
+            "sha256": "27bd8910c0d511a937fe08e92a8ee9410ee35608cc430c4f2c9750a249250c1d"
+          },
+          "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+        },
+        "beforeModelRef": {
+          "handle": 2,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-logistic-standardscaler/actual-memory/v1",
+            "schemaVersion": 1,
+            "sha256": "4d07b2de53779ba4780c7003009ec445c68958d1567432a843a0be2e3d4a073a"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 13931,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "backend/model-B.json",
+            "sha256": "27bd8910c0d511a937fe08e92a8ee9410ee35608cc430c4f2c9750a249250c1d"
+          },
+          "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+        },
+        "cacheGeneration": 2,
+        "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e",
+        "stateUnchangedDuringPrediction": true,
+        "workerPid": 72486
+      },
+      "decision": {
+        "allowed": false,
+        "checkedAt": 1793307886657,
+        "inferenceId": "084fded0-9ba0-4508-bd73-b7120db67779",
+        "kind": "inference-decision",
+        "reasons": [
+          {
+            "code": "inference-model-mismatch",
+            "message": "The observed model inference profile or digest differs from the independently expected model."
+          }
+        ],
+        "schemaVersion": 1,
+        "status": "deny"
+      },
+      "receipt": {
+        "contract": {
+          "classLabels": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "input": {
+            "fields": [
+              {
+                "dtype": "float64",
+                "name": "pixel_0",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_1",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_2",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_3",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_4",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_5",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_6",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_7",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_8",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_9",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_10",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_11",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_12",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_13",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_14",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_15",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_16",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_17",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_18",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_19",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_20",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_21",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_22",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_23",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_24",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_25",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_26",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_27",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_28",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_29",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_30",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_31",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_32",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_33",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_34",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_35",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_36",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_37",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_38",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_39",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_40",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_41",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_42",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_43",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_44",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_45",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_46",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_47",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_48",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_49",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_50",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_51",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_52",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_53",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_54",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_55",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_56",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_57",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_58",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_59",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_60",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_61",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_62",
+                "unit": "intensity-0-to-16"
+              },
+              {
+                "dtype": "float64",
+                "name": "pixel_63",
+                "unit": "intensity-0-to-16"
+              }
+            ]
+          },
+          "kind": "prediction-contract",
+          "output": {
+            "fields": [
+              {
+                "dtype": "int64",
+                "name": "digit"
+              }
+            ]
+          },
+          "parameters": {
+            "method": "ordered-class-argmax"
+          },
+          "preprocessingVersion": "standardscaler-state/sha256:4ddc4d87f7f648daf03f13554a851e2bb6a0fc1a0339224aa2f156cb79dfc07b",
+          "profile": "digits-64-named-pixels-to-class-label/v1",
+          "schemaVersion": 1
+        },
+        "createdAt": 1793307886652,
+        "inferenceId": "084fded0-9ba0-4508-bd73-b7120db67779",
+        "inputRef": {
+          "bytes": 18216,
+          "format": "footprint-ml/fixed-inference-input/v1",
+          "kind": "artifact",
+          "path": "backend/input-first-64.json",
+          "sha256": "14f4312219930cd3f29e16f2e4b0d2ee9a466da582c6b747ddd9635c09cd7667"
+        },
+        "inputRows": 64,
+        "kind": "inference-receipt",
+        "modelRef": {
+          "handle": 2,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-logistic-standardscaler/actual-memory/v1",
+            "schemaVersion": 1,
+            "sha256": "4d07b2de53779ba4780c7003009ec445c68958d1567432a843a0be2e3d4a073a"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 13931,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "backend/model-B.json",
+            "sha256": "27bd8910c0d511a937fe08e92a8ee9410ee35608cc430c4f2c9750a249250c1d"
+          },
+          "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+        },
+        "outputRef": {
+          "bytes": 734,
+          "format": "footprint-ml/digit-prediction-output/v1",
+          "kind": "artifact",
+          "path": "backend/private/084fded0-9ba0-4508-bd73-b7120db67779-output.json",
+          "sha256": "51ebf484c80f2b9977dd14996deb95ac24ee7b90024269b4dd9b6d2bdbaaa0ad"
+        },
+        "outputRows": 64,
+        "schemaVersion": 1
+      }
+    }
+  },
+  "checks": {
+    "AApprovedByFreshEvaluation": true,
+    "correctedActualA": true,
+    "correctedOutputAccepted": true,
+    "distinctModelParameters": true,
+    "missingObservationUnknown": true,
+    "onlyApprovedOutputExposed": true,
+    "reorderedFieldsBlocked": true,
+    "sameAStateForReorderedFields": true,
+    "sameWorkerAcrossRepair": true,
+    "staleActualB": true,
+    "staleOutputBlocked": true,
+    "stateMeasuredBeforeAndAfter": true,
+    "workerClosed": true
+  },
+  "evaluationReceipt": {
+    "checkpointForAudit": {
+      "artifact": {
+        "bytes": 12942,
+        "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+        "kind": "artifact",
+        "path": "backend/model-A.json",
+        "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+      },
+      "kind": "checkpoint"
+    },
+    "createdAt": 1793307886645,
+    "datasetRef": {
+      "artifact": {
+        "bytes": 124969,
+        "format": "footprint-ml/digits-split-json/v1",
+        "kind": "artifact",
+        "path": "backend/validation.json",
+        "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+      },
+      "handle": 1,
+      "kind": "dataset",
+      "role": "validation",
+      "rows": 450,
+      "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e",
+      "shape": [
+        450,
+        64
+      ]
+    },
+    "evaluationId": "e088038e-cc1c-450b-81ac-952540b87ac7",
+    "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+    "inferenceIdentity": {
+      "kind": "inference-identity",
+      "profile": "digits-logistic-standardscaler/actual-memory/v1",
+      "schemaVersion": 1,
+      "sha256": "c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead"
+    },
+    "kind": "evaluation-receipt",
+    "metrics": {
+      "accuracy": 0.98
+    },
+    "modelRef": {
+      "handle": 1,
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "profile": "digits-logistic-standardscaler/actual-memory/v1",
+        "schemaVersion": 1,
+        "sha256": "c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead"
+      },
+      "kind": "model",
+      "originArtifact": {
+        "bytes": 12942,
+        "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+        "kind": "artifact",
+        "path": "backend/model-A.json",
+        "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+      },
+      "sessionId": "fb361808-39de-414c-9c43-b6af93b84a6e"
+    },
+    "parameters": {},
+    "preprocessingVersion": "standardscaler-state/sha256:4ddc4d87f7f648daf03f13554a851e2bb6a0fc1a0339224aa2f156cb79dfc07b",
+    "schemaVersion": 2
+  },
+  "execution": {
+    "backendModelTrainingCalls": 1,
+    "freshValidationCalls": 1,
+    "hostedInferencePlatform": false,
+    "persistentNumericalWorker": true,
+    "pythonOrchestration": true,
+    "realPredictionCalls": 3,
+    "registryWrites": false
+  },
+  "expectedContract": {
+    "classLabels": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "input": {
+      "fields": [
+        {
+          "dtype": "float64",
+          "name": "pixel_0",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_1",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_2",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_3",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_4",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_5",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_6",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_7",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_8",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_9",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_10",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_11",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_12",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_13",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_14",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_15",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_16",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_17",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_18",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_19",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_20",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_21",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_22",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_23",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_24",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_25",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_26",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_27",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_28",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_29",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_30",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_31",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_32",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_33",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_34",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_35",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_36",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_37",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_38",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_39",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_40",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_41",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_42",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_43",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_44",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_45",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_46",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_47",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_48",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_49",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_50",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_51",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_52",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_53",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_54",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_55",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_56",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_57",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_58",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_59",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_60",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_61",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_62",
+          "unit": "intensity-0-to-16"
+        },
+        {
+          "dtype": "float64",
+          "name": "pixel_63",
+          "unit": "intensity-0-to-16"
+        }
+      ]
+    },
+    "kind": "prediction-contract",
+    "output": {
+      "fields": [
+        {
+          "dtype": "int64",
+          "name": "digit"
+        }
+      ]
+    },
+    "parameters": {
+      "method": "ordered-class-argmax"
+    },
+    "preprocessingVersion": "standardscaler-state/sha256:4ddc4d87f7f648daf03f13554a851e2bb6a0fc1a0339224aa2f156cb79dfc07b",
+    "profile": "digits-64-named-pixels-to-class-label/v1",
+    "schemaVersion": 1
+  },
+  "missingObservation": {
+    "control": "Derived by removing actual model evidence; this was not another backend prediction",
+    "decision": {
+      "allowed": false,
+      "checkedAt": 1793307886688,
+      "inferenceId": "921bdb12-c91f-4736-95e2-b822c45e572f",
+      "kind": "inference-decision",
+      "reasons": [
+        {
+          "code": "inference-model-unavailable",
+          "message": "The backend did not observe the model actually used."
+        },
+        {
+          "code": "inference-identity-unavailable",
+          "message": "Expected and observed models both need a measured inference profile and digest; checkpoint-only evidence is insufficient."
+        }
+      ],
+      "schemaVersion": 1,
+      "status": "unknown"
+    },
+    "receipt": {
+      "contract": {
+        "classLabels": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "input": {
+          "fields": [
+            {
+              "dtype": "float64",
+              "name": "pixel_0",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_1",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_2",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_3",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_4",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_5",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_6",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_7",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_8",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_9",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_10",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_11",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_12",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_13",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_14",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_15",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_16",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_17",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_18",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_19",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_20",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_21",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_22",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_23",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_24",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_25",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_26",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_27",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_28",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_29",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_30",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_31",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_32",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_33",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_34",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_35",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_36",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_37",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_38",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_39",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_40",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_41",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_42",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_43",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_44",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_45",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_46",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_47",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_48",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_49",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_50",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_51",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_52",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_53",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_54",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_55",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_56",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_57",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_58",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_59",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_60",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_61",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_62",
+              "unit": "intensity-0-to-16"
+            },
+            {
+              "dtype": "float64",
+              "name": "pixel_63",
+              "unit": "intensity-0-to-16"
+            }
+          ]
+        },
+        "kind": "prediction-contract",
+        "output": {
+          "fields": [
+            {
+              "dtype": "int64",
+              "name": "digit"
+            }
+          ]
+        },
+        "parameters": {
+          "method": "ordered-class-argmax"
+        },
+        "preprocessingVersion": "standardscaler-state/sha256:4ddc4d87f7f648daf03f13554a851e2bb6a0fc1a0339224aa2f156cb79dfc07b",
+        "profile": "digits-64-named-pixels-to-class-label/v1",
+        "schemaVersion": 1
+      },
+      "createdAt": 1793307886665,
+      "inferenceId": "921bdb12-c91f-4736-95e2-b822c45e572f",
+      "inputRef": {
+        "bytes": 18216,
+        "format": "footprint-ml/fixed-inference-input/v1",
+        "kind": "artifact",
+        "path": "backend/input-first-64.json",
+        "sha256": "14f4312219930cd3f29e16f2e4b0d2ee9a466da582c6b747ddd9635c09cd7667"
+      },
+      "inputRows": 64,
+      "kind": "inference-receipt",
+      "outputRef": {
+        "bytes": 734,
+        "format": "footprint-ml/digit-prediction-output/v1",
+        "kind": "artifact",
+        "path": "backend/private/921bdb12-c91f-4736-95e2-b822c45e572f-output.json",
+        "sha256": "f7a2826caf10e50fe5ac578756a896723643d896c90039ac611859dd8d466a4b"
+      },
+      "outputRows": 64,
+      "schemaVersion": 1
+    }
+  },
+  "observedOutputComparison": {
+    "differentLabels": 11,
+    "rows": 64
+  },
+  "releasedPredictionRef": {
+    "bytes": 734,
+    "format": "footprint-ml/digit-prediction-output/v1",
+    "kind": "artifact",
+    "path": "backend/private/921bdb12-c91f-4736-95e2-b822c45e572f-output.json",
+    "sha256": "f7a2826caf10e50fe5ac578756a896723643d896c90039ac611859dd8d466a4b"
+  },
+  "schema": "footprint-ml-inference-proof-outcome/v1",
+  "source": {
+    "files": {
+      "model-A.json": {
+        "bytes": 12942,
+        "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+        "sourceArtifact": "source-artifacts/model/weights.json"
+      },
+      "scaler-S1.json": {
+        "bytes": 3697,
+        "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+        "sourceArtifact": "source-artifacts/preprocessing/s1.json"
+      },
+      "train.json": {
+        "bytes": 373762,
+        "sha256": "b055aeaad391639681e941d0ef6f95ba7f1aaa372893b5fa73542f0bb9c61162",
+        "sourceArtifact": "source-artifacts/data/train.json"
+      },
+      "validation.json": {
+        "bytes": 124969,
+        "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+        "sourceArtifact": "source-artifacts/data/validation.json"
+      }
+    },
+    "outcomeSha256": "e460a6ed9344b690dd6a6a1faec57bb65b4099b72889e52c577637ed7bdc55cb",
+    "schema": "footprint-ml-inference-fixtures/v1",
+    "sourceLabel": "footprint-ml-mlflow-proof"
+  }
+}

@@ -256,7 +256,7 @@ def main(arguments: list[str] | None = None) -> int:
     install.add_argument("--runtime-dir")
     inspect = commands.add_parser("doctor")
     inspect.add_argument("--runtime-dir")
-    for name in ("example-mlflow", "example-guards"):
+    for name in ("example-mlflow", "example-guards", "example-inference"):
         example = commands.add_parser(name)
         example.add_argument("--out", required=True)
         example.add_argument("--runtime-dir")
@@ -271,9 +271,9 @@ def main(arguments: list[str] | None = None) -> int:
             result = setup(args.runtime_dir, args.archive)
         elif args.command == "doctor":
             result = doctor(args.runtime_dir)
-        elif args.command in ("example-mlflow", "example-guards"):
+        elif args.command in ("example-mlflow", "example-guards", "example-inference"):
             root, ready = _ready(args.runtime_dir)
-            folder = "mlflow" if args.command == "example-mlflow" else "python-guards"
+            folder = {"example-mlflow": "mlflow", "example-guards": "python-guards", "example-inference": "inference"}[args.command]
             script = sdk_directory(root) / "examples" / folder / "run.py"
             if not script.is_file():
                 raise SetupError(f"The installed {folder} example is missing")

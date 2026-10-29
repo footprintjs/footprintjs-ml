@@ -1,0 +1,173 @@
+{
+  "schema": "footprint-ml-inference-verification/v1",
+  "passed": true,
+  "checks": {
+    "installedPythonVersionMatches": true,
+    "installedNativeVersionMatches": true,
+    "exampleBytesMatchSourceWheelArchiveAndBothInstallLocations": true,
+    "compiledAndSourceContractBytesMatchArchiveAndInstalledRuntime": true,
+    "installedPythonModulesMatchWheelAndSource": true,
+    "coldPythonInstallChecksPass": true,
+    "coldNativeConsumerPasses": true,
+    "sameArchiveUsedForBothConsumerTests": true,
+    "capturedOutcomeMatchesSidecar": true,
+    "allThirteenRealWorkflowChecksPass": true,
+    "actualStaleAndCorrectedModelsDiffer": true,
+    "onePersistentWorkerAndOneBTrainingCall": true,
+    "onlyCorrectedOutputHandedOff": true,
+    "nativeSavedInvestigationPasses": true,
+    "recordAndOutcomeUnchangedDuringInvestigation": true,
+    "savedInvestigationRunsNoModelOrGuard": true,
+    "independentNumericalAuditPasses": true,
+    "fullValidationMatchesIndependentAudit": true,
+    "warningsPreservedWithoutDiagnosisOrSuppression": true,
+    "recordingContainsNoNumericModelArrays": true,
+    "nativeRecordingClosedWithSeventeenCommittedStages": true
+  },
+  "installation": {
+    "npmVersion": "0.6.0-beta.7",
+    "pythonVersion": "0.6.0b7",
+    "wheel": {
+      "file": "footprintjs_ml-0.6.0b7-py3-none-any.whl",
+      "sha256": "74dbdddf664e413a4abfde212470c007b9c88a6962b32512fc9f8fcd03ab7b56",
+      "bytes": 384724
+    },
+    "package": {
+      "file": "footprintjs-ml-0.6.0-beta.7.tgz",
+      "sha256": "05238dfe3d7992f10a0c63d58f1f2a2648fbef38a7f716a11fb8e9758ea9229a",
+      "bytes": 337214
+    },
+    "numericalExamplePackages": {
+      "numpy": "2.2.6",
+      "scikit-learn": "1.7.2",
+      "scipy": "1.18.1",
+      "joblib": "1.6.0",
+      "threadpoolctl": "3.7.0",
+      "cloudpickle": "3.1.2"
+    }
+  },
+  "sources": {
+    "recording": {
+      "sha256": "9f50f10d017da829a4b14f4b4321615dbdd8d9640af0e79339f9a353c92eea08",
+      "bytes": 615774
+    },
+    "outcome": {
+      "sha256": "5fb1347533b17b74d28bf6d1b336c9ee062422dd0e8a9d2c4f7e96d62a9abd24",
+      "bytes": 72497
+    },
+    "audit": {
+      "sha256": "057579d9068d18f7fad54244a30ff9e819910199b2da5cf196af45fbec585c42",
+      "bytes": 5484
+    },
+    "investigation": {
+      "sha256": "1f4ae123e0c522f86bb415d8ec2f4fc0c2fd9e03075b2ef22254f2889748ce9f",
+      "bytes": 18360
+    }
+  },
+  "exampleSourceBytes": [
+    {
+      "path": "examples/inference/DATASET.md",
+      "sha256": "076ba688bb9f93cfa639fc4b3ad77a02423fdd7ef8e0fe1c450374b547f253c4",
+      "bytes": 1668
+    },
+    {
+      "path": "examples/inference/README.md",
+      "sha256": "71cdcc485a3e961964304224e68783373ebce53a38b646e315fbea1050bcf712",
+      "bytes": 4008
+    },
+    {
+      "path": "examples/inference/audit.py",
+      "sha256": "9e52cef2ec09012f4304930a04a72f6a2d50ee991543766cc19dcd8e5ce09851",
+      "bytes": 12591
+    },
+    {
+      "path": "examples/inference/backend_client.py",
+      "sha256": "6ee925af093be05cf30921c2a051266999249c9ab8555e90ecd5257eb1ee0d6e",
+      "bytes": 3611
+    },
+    {
+      "path": "examples/inference/fixtures/model-A.json",
+      "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+      "bytes": 12942
+    },
+    {
+      "path": "examples/inference/fixtures/scaler-S1.json",
+      "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+      "bytes": 3697
+    },
+    {
+      "path": "examples/inference/fixtures/source.json",
+      "sha256": "ba42a2ad9c47b1d1d01e1ac6a4e9adec0fb129cbbb7fd2e630ac90f6e758b2e0",
+      "bytes": 997
+    },
+    {
+      "path": "examples/inference/fixtures/train.json",
+      "sha256": "b055aeaad391639681e941d0ef6f95ba7f1aaa372893b5fa73542f0bb9c61162",
+      "bytes": 373762
+    },
+    {
+      "path": "examples/inference/fixtures/validation.json",
+      "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+      "bytes": 124969
+    },
+    {
+      "path": "examples/inference/investigate.mjs",
+      "sha256": "ce91042b9359dd96a4521e73f6c1aa1bda20ed3c53147f34cb1fd6af1fb595f8",
+      "bytes": 6819
+    },
+    {
+      "path": "examples/inference/numerical.py",
+      "sha256": "4b2a936d49cacda9521a245ee35a238e73d8bc9e7d12597d7f83192cbf4ff1dc",
+      "bytes": 4882
+    },
+    {
+      "path": "examples/inference/prepare_fixtures.py",
+      "sha256": "5b1a05ffdc6898c62c98cfc1c62adba6d5ed4ef08a44ee6d35dc698e18584791",
+      "bytes": 2207
+    },
+    {
+      "path": "examples/inference/requirements.txt",
+      "sha256": "00219b6519e22db3cf54d42a24ee307341bd0b305b18cdef6f93f19a03f69d07",
+      "bytes": 33
+    },
+    {
+      "path": "examples/inference/run.py",
+      "sha256": "b3750c844f8659ccf1af2d5e8f7fa06227f724405b2b7910b9b8be579bdbb582",
+      "bytes": 15972
+    },
+    {
+      "path": "examples/inference/worker.py",
+      "sha256": "fc4bae2530b163b5915ce72de90bd560ea6c40fed0839caae4b086b50eceaecf",
+      "bytes": 11616
+    }
+  ],
+  "results": {
+    "validationAccuracy": 0.98,
+    "batchRows": 64,
+    "observedDifferentLabels": 11,
+    "commits": 17,
+    "nativeQueries": 13,
+    "numericalAuditChecks": 25
+  },
+  "execution": {
+    "installedCli": true,
+    "numericalTrainingCalls": 1,
+    "freshValidationCalls": 1,
+    "actualPredictionCalls": 3,
+    "savedInvestigation": {
+      "childProcessesPermitted": false,
+      "backendArtifactsReadable": false,
+      "recordAndOutcomeOnly": true
+    },
+    "separateAuditUsesSavedArrays": true
+  },
+  "boundaries": [
+    "Controlled stale-cache and field-order failures in one local numerical worker, not a deployed serving system.",
+    "A's configured evaluation approval and the prediction-observation check are separate decisions; passing either does not establish general model suitability.",
+    "Model source file hashes are checked on load. Prediction identity is separately measured from the actual in-memory classifier/scaler before and after computation.",
+    "Blocked output artifacts remain private debugging evidence. Only the accepted A output reference is exposed by the application's handoff scope key.",
+    "Label differences are an observed result of the fixed models/batch, not a precondition for denying the wrong model.",
+    "Numerical warnings are retained and forwarded, not suppressed or automatically diagnosed.",
+    "The scalar audit verifies saved labels and validation aggregate only; it does not validate the training algorithm, exact retained logits, producer authenticity, or diagnose backend warnings."
+  ]
+}

@@ -8,6 +8,7 @@ import {checkRelease} from '../guard.js';
 import {createDataLineageReceipt,readDataLineageReceipt,checkDataLineage} from '../lineage.js';
 import {createEvaluationReceipt,readEvaluationReceipt} from '../receipts.js';
 import {readSelectionManifest,createSelectionReceipt,readSelectionReceipt,checkSelection} from '../selection.js';
+import {createPredictionContract,readPredictionContract,createInferenceReceipt,readInferenceReceipt,checkInference} from '../inference.js';
 
 export interface PythonCaptureServeOptions {
   readonly input?: Readable;
@@ -92,7 +93,8 @@ export async function servePythonCapture(options: PythonCaptureServeOptions={}):
     const fields:Record<string,readonly string[]>={open:['path','runId','initialState'],begin:['stageId','name','attempt','retryOf'],
       get:['key'],set:['key','value'],commit:[],discard:['error'],snapshot:[],close:[],check_release:['input'],create_evaluation_receipt:['input'],
       read_evaluation_receipt:['input'],create_data_lineage_receipt:['input'],read_data_lineage_receipt:['input'],check_data_lineage:['input'],
-      read_selection_manifest:['input'],create_selection_receipt:['input'],read_selection_receipt:['input'],check_selection:['input']};
+      read_selection_manifest:['input'],create_selection_receipt:['input'],read_selection_receipt:['input'],check_selection:['input'],
+      create_prediction_contract:['input'],read_prediction_contract:['input'],create_inference_receipt:['input'],read_inference_receipt:['input'],check_inference:['input']};
     const allowed=Object.hasOwn(fields,String(request.op))?fields[String(request.op)]:undefined;
     if(!allowed)throw new CaptureError('protocol','Unknown capture operation.');
     if(Object.keys(request).some(key=>key!=='id'&&key!=='op'&&!allowed.includes(key)))throw new CaptureError('protocol','Capture request has an unsupported field.');
@@ -167,6 +169,16 @@ export async function servePythonCapture(options: PythonCaptureServeOptions={}):
         opened();return readSelectionReceipt(boundedJson(request.input,limits.maxPacketBytes,'selection receipt'));
       case 'check_selection':
         opened();return checkSelection(boundedJson(request.input,limits.maxPacketBytes,'selection request') as unknown as Parameters<typeof checkSelection>[0]);
+      case 'create_prediction_contract':
+        opened();return createPredictionContract(boundedJson(request.input,limits.maxPacketBytes,'prediction contract input') as unknown as Parameters<typeof createPredictionContract>[0]);
+      case 'read_prediction_contract':
+        opened();return readPredictionContract(boundedJson(request.input,limits.maxPacketBytes,'prediction contract'));
+      case 'create_inference_receipt':
+        opened();return createInferenceReceipt(boundedJson(request.input,limits.maxPacketBytes,'inference input') as unknown as Parameters<typeof createInferenceReceipt>[0]);
+      case 'read_inference_receipt':
+        opened();return readInferenceReceipt(boundedJson(request.input,limits.maxPacketBytes,'inference receipt'));
+      case 'check_inference':
+        opened();return checkInference(boundedJson(request.input,limits.maxPacketBytes,'inference request') as unknown as Parameters<typeof checkInference>[0]);
       case 'close':{
         const s=opened();if(active)throw new CaptureError('state','Commit or discard the active stage before close.');
         s.log.close('ok');s.lifecycle='closed';await save();ended=true;

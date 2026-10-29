@@ -19,3 +19,6 @@ export type { ReleaseArtifactStore, ModelReleasePlan, ReleaseArtifactIdentity, M
   ModelPublicationRequest, ModelPublicationLookupRequest, ModelPublicationReceipt, ModelPublisherResult, ModelPublisher,
   ModelReleaseDecision, PreparedModelRelease, PrepareModelReleaseRequest, ModelReleasePreparation,
   PublishModelReleaseRequest, ReleaseModelRequest, ModelReleasePublication } from './release.js';
+export { createPredictionContract, readPredictionContract, createInferenceReceipt, readInferenceReceipt, checkInference } from './inference.js';
+export type { PredictionField, PredictionFields, PredictionContractInput, PredictionContract,
+  InferenceReceiptInput, InferenceReceipt, InferenceRequest, InferenceReason, InferenceDecision } from './inference.js';

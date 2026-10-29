@@ -21,6 +21,8 @@ METHODS = (
     "read_evaluation_receipt", "create_data_lineage_receipt", "read_data_lineage_receipt",
     "check_data_lineage", "read_selection_manifest", "create_selection_receipt",
     "read_selection_receipt", "check_selection",
+    "create_prediction_contract", "read_prediction_contract", "create_inference_receipt",
+    "read_inference_receipt", "check_inference",
 )
 
 
@@ -51,14 +53,15 @@ class NativeMLContractTests(unittest.TestCase):
         self.addCleanup(self.capture.close)
 
     def test_native_guards_return_unknown_while_readers_reject_malformed_saved_evidence(self):
-        for name in ("check_data_lineage", "check_selection"):
+        for name in ("check_data_lineage", "check_selection", "check_inference"):
             with self.subTest(guard=name):
                 decision = getattr(self.capture, name)({})
                 self.assertEqual(decision["status"], "unknown")
                 self.assertIs(decision["allowed"], False)
                 self.assertTrue(decision["reasons"])
         for name in ("read_evaluation_receipt", "create_data_lineage_receipt", "read_data_lineage_receipt",
-                     "read_selection_manifest", "create_selection_receipt", "read_selection_receipt"):
+                     "read_selection_manifest", "create_selection_receipt", "read_selection_receipt",
+                     "create_prediction_contract", "read_prediction_contract", "create_inference_receipt", "read_inference_receipt"):
             with self.subTest(reader=name), self.assertRaises(CaptureError) as failure:
                 getattr(self.capture, name)({})
             self.assertIsNotNone(failure.exception.code)

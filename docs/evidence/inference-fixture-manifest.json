@@ -1,0 +1,27 @@
+{
+  "files": {
+    "model-A.json": {
+      "bytes": 12942,
+      "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+      "sourceArtifact": "source-artifacts/model/weights.json"
+    },
+    "scaler-S1.json": {
+      "bytes": 3697,
+      "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+      "sourceArtifact": "source-artifacts/preprocessing/s1.json"
+    },
+    "train.json": {
+      "bytes": 373762,
+      "sha256": "b055aeaad391639681e941d0ef6f95ba7f1aaa372893b5fa73542f0bb9c61162",
+      "sourceArtifact": "source-artifacts/data/train.json"
+    },
+    "validation.json": {
+      "bytes": 124969,
+      "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+      "sourceArtifact": "source-artifacts/data/validation.json"
+    }
+  },
+  "outcomeSha256": "e460a6ed9344b690dd6a6a1faec57bb65b4099b72889e52c577637ed7bdc55cb",
+  "schema": "footprint-ml-inference-fixtures/v1",
+  "sourceLabel": "footprint-ml-mlflow-proof"
+}

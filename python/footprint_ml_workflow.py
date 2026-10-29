@@ -397,6 +397,26 @@ class WorkflowCapture:
         """Check offered evidence against independent manifest and observations."""
         return self._rpc("check_selection", input=input)
 
+    def create_prediction_contract(self, input: dict[str, Any]) -> Any:
+        """Describe named tabular prediction semantics; no data is inspected."""
+        return self._rpc("create_prediction_contract", input=input)
+
+    def read_prediction_contract(self, input: dict[str, Any]) -> Any:
+        """Validate a persisted prediction contract through the native SDK."""
+        return self._rpc("read_prediction_contract", input=input)
+
+    def create_inference_receipt(self, input: dict[str, Any]) -> Any:
+        """Record actual backend observations, including unavailable identity."""
+        return self._rpc("create_inference_receipt", input=input)
+
+    def read_inference_receipt(self, input: dict[str, Any]) -> Any:
+        """Validate saved prediction observations without repeating inference."""
+        return self._rpc("read_inference_receipt", input=input)
+
+    def check_inference(self, input: dict[str, Any]) -> Any:
+        """Compare observed prediction use with independent request context."""
+        return self._rpc("check_inference", input=input)
+
     def snapshot(self) -> dict[str, Any]:
         return self._rpc("snapshot")
 

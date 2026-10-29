@@ -84,3 +84,9 @@ jobs:
         run: node --permission --allow-fs-read=. --allow-fs-write=.artifacts/mlflow-proof examples/mlflow/investigate.mjs --run .artifacts/mlflow-proof
       - name: Independently audit the saved numerical predictions
         run: python -I -S examples/mlflow/audit.py --run .artifacts/mlflow-proof
+      - name: Exercise the persistent inference cache and ordered contract
+        run: python examples/inference/run.py --out .artifacts/inference-proof
+      - name: Investigate saved inference evidence with backend spawning forbidden
+        run: node --permission --allow-fs-read=. --allow-fs-write=.artifacts/inference-proof examples/inference/investigate.mjs --run .artifacts/inference-proof
+      - name: Independently audit inference labels without numerical packages
+        run: python -I -S examples/inference/audit.py --run .artifacts/inference-proof

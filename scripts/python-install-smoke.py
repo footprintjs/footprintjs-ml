@@ -33,7 +33,7 @@ def smoke(wheel, archive):
                           if name.startswith(prefix) and not name.endswith("/")}
     required_guides = ["skills/footprintjs-ml/SKILL.md", "skills/footprintjs-ml/agents/openai.yaml", "features/README.md"]
     required_guides += ["features/" + name + "/README.md" for name in
-                       ("references", "evaluation", "trainer-adapter", "approval", "investigation", "data-lineage", "selection", "publication")]
+                       ("references", "evaluation", "trainer-adapter", "approval", "inference", "investigation", "data-lineage", "selection", "publication")]
     if not all(name in guidance_bytes for name in required_guides):
         raise ValueError("Wheel is missing the skill or an individual feature guide")
     with tempfile.TemporaryDirectory(prefix="footprint-python-install-") as temporary:
@@ -181,13 +181,42 @@ with WorkflowCapture(path) as capture:
     with capture.stage('installed-lineage-selection-contracts') as scope:
         scope['syntheticLineageContractCheckPassed']=True
         scope['syntheticSelectionContractCheckPassed']=True
+    raw_contract={'profile':'synthetic-predictor/v1',
+      'input':{'fields':[{'name':'distance','dtype':'float64','unit':'m'},{'name':'duration','dtype':'float64','unit':'s'}]},
+      'output':{'fields':[{'name':'negative_probability','dtype':'float64'},{'name':'positive_probability','dtype':'float64'}]},
+      'preprocessingVersion':'synthetic-scaler/v1','classLabels':['negative','positive']}
+    expected_contract=capture.create_prediction_contract(raw_contract)
+    assert expected_contract['parameters']=={} and capture.read_prediction_contract(expected_contract)==expected_contract
+    reversed_contract=capture.create_prediction_contract({**raw_contract,
+      'input':{'fields':list(reversed(raw_contract['input']['fields']))}})
+    actual_inference={'inferenceId':'synthetic-inference','createdAt':1,
+      'inputRef':make_artifact('a','synthetic-inference-input'),'outputRef':make_artifact('b','synthetic-inference-output'),
+      'inputRows':2,'outputRows':2}
+    observed_inferences={
+      'correct':capture.create_inference_receipt({**actual_inference,'modelRef':model,'contract':expected_contract}),
+      'wrongModel':capture.create_inference_receipt({**actual_inference,'modelRef':model_b,'contract':expected_contract}),
+      'wrongOrder':capture.create_inference_receipt({**actual_inference,'modelRef':model,'contract':reversed_contract}),
+      'unknown':capture.create_inference_receipt(actual_inference),
+    }
+    for inference_receipt in observed_inferences.values():
+        assert capture.read_inference_receipt(inference_receipt)==inference_receipt
+    inference_expected={'modelRef':model,'contract':expected_contract,'inputRef':actual_inference['inputRef'],
+      'rows':2,'inferenceId':actual_inference['inferenceId'],'now':1}
+    inference_requests={name:{**inference_expected,'receipt':value} for name,value in observed_inferences.items()}
+    inference_decisions={name:capture.check_inference(request) for name,request in inference_requests.items()}
+    assert inference_decisions['correct']['allowed'] is True
+    assert all(inference_decisions[name]['allowed'] is False and inference_decisions[name]['status']=='deny'
+      for name in ('wrongModel','wrongOrder'))
+    assert inference_decisions['unknown']['allowed'] is False and inference_decisions['unknown']['status']=='unknown'
+    with capture.stage('installed-inference-contracts') as scope:
+        scope['syntheticInferenceContractCheckPassed']=True
 recording=json.loads(path.read_bytes())
 print(json.dumps({'recordingWritten':True,'schema':recording['schema'],'state':recording['snapshot']['sharedState'],
-  'guardRequests':{'lineage':lineage_requests,'selection':selection_requests},
-  'guardDecisions':{'lineage':lineage_decisions,'selection':selection_decisions}}))
+  'guardRequests':{'lineage':lineage_requests,'selection':selection_requests,'inference':inference_requests},
+  'guardDecisions':{'lineage':lineage_decisions,'selection':selection_decisions,'inference':inference_decisions}}))
 ''', recording], root))
         if execution["state"]["result"] != 14 or not all(execution["state"].get(key) is True for key in
-                ("syntheticContractCheckPassed", "syntheticLineageContractCheckPassed", "syntheticSelectionContractCheckPassed")):
+                ("syntheticContractCheckPassed", "syntheticLineageContractCheckPassed", "syntheticSelectionContractCheckPassed", "syntheticInferenceContractCheckPassed")):
             raise ValueError("Installed Python capture did not preserve tracked state")
         original_recording = recording.read_bytes()
         # Exercise the installed SDK's real CLI under Node's permission model.
@@ -199,10 +228,10 @@ print(json.dumps({'recordingWritten':True,'schema':recording['schema'],'state':r
         # Compare the facade's JSON decisions with direct public TypeScript
         # guards from the installed SDK, using the same explicit inputs/time.
         direct_guards = json.loads(run(node, ["--input-type=module", "-e", r"""
-import {checkDataLineage,checkSelection} from 'footprintjs-ml';
+import {checkDataLineage,checkSelection,checkInference} from 'footprintjs-ml';
 const requests=JSON.parse(process.argv[1]);
 const apply=(values,guard)=>Object.fromEntries(Object.entries(values).map(([name,input])=>[name,guard(input)]));
-console.log(JSON.stringify({lineage:apply(requests.lineage,checkDataLineage),selection:apply(requests.selection,checkSelection)}));
+console.log(JSON.stringify({lineage:apply(requests.lineage,checkDataLineage),selection:apply(requests.selection,checkSelection),inference:apply(requests.inference,checkInference)}));
 """, json.dumps(execution["guardRequests"])], runtime))
         if direct_guards != execution["guardDecisions"]:
             raise ValueError("Installed Python guard decisions differ from the direct TypeScript contracts")
@@ -236,6 +265,9 @@ console.log(JSON.stringify({lineage:apply(requests.lineage,checkDataLineage),sel
                            "nativePythonLineageAllowUnknownAndDeny": True,
                            "nativePythonSelectionWrongDeniedWinnerAllowed": True,
                            "pythonGuardDecisionsMatchPublicTypeScript": True,
+                           "nativePredictionContractAndInferenceReceiptRoundTrip": True,
+                           "nativeInferenceMismatchControlsAndMissingEvidence": True,
+                           "pythonInferenceDecisionsMatchPublicTypeScript": True,
                            "nativeCliBacktracking": True, "investigatorChildProcessesForbidden": True,
                            "installedPythonInvestigationCommand": True,
                            "recordingUnchangedAfterInvestigation": True,
@@ -243,13 +275,13 @@ console.log(JSON.stringify({lineage:apply(requests.lineage,checkDataLineage),sel
                            "npmAndWheelGuidanceAgree": True},
                 "guidance": {"files": len(guidance_bytes), "localLinks": guidance_links,
                              "skillSha256": hashlib.sha256(guidance_bytes["skills/footprintjs-ml/SKILL.md"]).hexdigest(),
-                             "featureCount": 8, "nativeCompiledRuntimeBundled": False},
+                             "featureCount": 9, "nativeCompiledRuntimeBundled": False},
                 "import": imported, "nativeVersions": versions, "setup": setup, "repeatedSetup": repeated_setup,
                 "doctor": doctor, "missingRuntime": missing,
                 "investigation": {"report": native_report, "stdout": native_stdout,
                                   "pythonCommand": python_investigation},
                 "guardParity": {"sameJsonDecisions": True, "directTypeScript": direct_guards,
-                                "syntheticCases": {"lineage": 3, "selection": 2}},
+                                "syntheticCases": {"lineage": 3, "selection": 2, "inference": 4}},
                 "execution": execution, "boundaries": ["This install smoke starts no numerical trainer or MLflow service.",
                     "Explicit native setup may fetch the pinned Node runtime dependencies; importing the wheel never installs them."]}
 

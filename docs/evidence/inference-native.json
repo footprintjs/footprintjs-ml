@@ -1,0 +1,190 @@
+{
+  "schema": "footprint-ml-inference-investigation/v1",
+  "passed": true,
+  "checks": {
+    "capturedOutcomeMatchesSidecar": true,
+    "approvedAIsSeparateFromActualB": true,
+    "staleOutputDenied": true,
+    "correctedOutputAllowed": true,
+    "reversedOrderDenied": true,
+    "sameAUnderWrongFieldOrder": true,
+    "missingActualModelUnknown": true,
+    "permittedHandoffIsOnlyCorrectedOutput": true,
+    "staleDecisionReachesActualPrediction": true,
+    "staleDecisionReachesCacheLoad": true,
+    "staleDecisionReachesIndependentApproval": true,
+    "approvalReachesFreshEvaluation": true,
+    "laterRepairExcludedFromStaleSlice": true,
+    "correctedDecisionReachesRepair": true,
+    "reversedDecisionReachesObservedInput": true,
+    "missingControlReachesOriginalObservation": true,
+    "handoffReachesCorrectedDecision": true,
+    "measuredIdentitiesVisible": true,
+    "nativeWriterAndCacheEvidenceVisible": true,
+    "sameWorkerAcrossRepair": true,
+    "nativeMissingControlWarningPreserved": true,
+    "captureLimitRemainsVisible": true,
+    "recordingUnchanged": true,
+    "outcomeUnchanged": true
+  },
+  "sources": {
+    "recording": {
+      "sha256": "9f50f10d017da829a4b14f4b4321615dbdd8d9640af0e79339f9a353c92eea08",
+      "bytes": 615774
+    },
+    "outcome": {
+      "sha256": "5fb1347533b17b74d28bf6d1b336c9ee062422dd0e8a9d2c4f7e96d62a9abd24",
+      "bytes": 72497,
+      "capturedOutcomeMatches": true
+    }
+  },
+  "nativeQueries": 13,
+  "transcript": [
+    {
+      "ordinal": 1,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "staleDecision"
+      },
+      "result": "SLICE for 'staleDecision' — reads via: custom-fn\nBlock B's actual output from the independently approved A request (guard-stale-output#7) [wrote: staleDecision, staleOutputExposed]\n  Request the fixed input; the worker actually predicts with cached B (predict-from-stale-cache#6) ← via staleReceipt [wrote: staleInferenceId, staleReceipt, staleBackendObservation]\n    Load retained A and fit distinct B once in one long-lived worker (start-persistent-backend#1) ← via expectedContract [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n      Pin the model, input and contract proof settings before evaluation (declare-inference-plan#0) ← via qualityPolicy [wrote: backendPlan, fixtureSource, qualityPolicy, releasedPredictionRef]\n    Inject the stale-cache mistake: cache B while A remains approved (load-wrong-cache#5) ← via cacheObservation [wrote: cacheBinding, cacheObservation]\n      ↳ start-persistent-backend#1 (see above)\n      Load A and observe its actual in-memory state (load-A-for-validation#2) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        ↳ start-persistent-backend#1 (see above)\n  Approve A only against its own fresh evaluation and fixed policy (approve-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n    Run a fresh real validation of A using S1 (evaluate-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n    ↳ start-persistent-backend#1 (see above)\n    ↳ declare-inference-plan#0 (see above)\n  ↳ start-persistent-backend#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 2,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "correctedDecision"
+      },
+      "result": "SLICE for 'correctedDecision' — reads via: custom-fn\nExpose only the new A output whose observations match the request (guard-corrected-output#10) [wrote: correctedDecision, releasedPredictionRef]\n  Produce a new prediction with actual cached A (predict-after-repair#9) ← via correctedReceipt [wrote: correctedInferenceId, correctedReceipt, correctedBackendObservation]\n    Load retained A and fit distinct B once in one long-lived worker (start-persistent-backend#1) ← via expectedContract [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n      Pin the model, input and contract proof settings before evaluation (declare-inference-plan#0) ← via qualityPolicy [wrote: backendPlan, fixtureSource, qualityPolicy, releasedPredictionRef]\n    Repair the same worker's cache using approved A (repair-cache-with-A#8) ← via cacheObservation [wrote: cacheBinding, cacheObservation]\n      Approve A only against its own fresh evaluation and fixed policy (approve-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n        Run a fresh real validation of A using S1 (evaluate-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n        ↳ start-persistent-backend#1 (see above)\n        ↳ declare-inference-plan#0 (see above)\n      Inject the stale-cache mistake: cache B while A remains approved (load-wrong-cache#5) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        ↳ start-persistent-backend#1 (see above)\n  ↳ approve-A#4 (see above)\n  ↳ start-persistent-backend#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 3,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "reversedDecision"
+      },
+      "result": "SLICE for 'reversedDecision' — reads via: custom-fn\nReject A output produced with the wrong observed field order (guard-reversed-fields#12) [wrote: reversedDecision]\n  Keep actual A but deliberately reverse the columns sent to it (predict-with-reversed-fields#11) ← via reversedReceipt [wrote: reversedInferenceId, reversedReceipt, reversedBackendObservation]\n    Load retained A and fit distinct B once in one long-lived worker (start-persistent-backend#1) ← via expectedContract [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n      Pin the model, input and contract proof settings before evaluation (declare-inference-plan#0) ← via qualityPolicy [wrote: backendPlan, fixtureSource, qualityPolicy, releasedPredictionRef]\n    Repair the same worker's cache using approved A (repair-cache-with-A#8) ← via cacheObservation [wrote: cacheBinding, cacheObservation]\n      Approve A only against its own fresh evaluation and fixed policy (approve-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n        Run a fresh real validation of A using S1 (evaluate-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n        ↳ start-persistent-backend#1 (see above)\n        ↳ declare-inference-plan#0 (see above)\n      Inject the stale-cache mistake: cache B while A remains approved (load-wrong-cache#5) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        ↳ start-persistent-backend#1 (see above)\n  ↳ approve-A#4 (see above)\n  ↳ start-persistent-backend#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 4,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "missingDecision"
+      },
+      "result": "SLICE for 'missingDecision' — reads via: custom-fn\nKeep a derived missing-model-observation control unknown (check-missing-observation#13) [wrote: missingReceipt, missingDecision, missingObservationControl]\n  Produce a new prediction with actual cached A (predict-after-repair#9) ← via correctedReceipt [wrote: correctedInferenceId, correctedReceipt, correctedBackendObservation]\n    Load retained A and fit distinct B once in one long-lived worker (start-persistent-backend#1) ← via expectedContract [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n      Pin the model, input and contract proof settings before evaluation (declare-inference-plan#0) ← via qualityPolicy [wrote: backendPlan, fixtureSource, qualityPolicy, releasedPredictionRef]\n    Repair the same worker's cache using approved A (repair-cache-with-A#8) ← via cacheObservation [wrote: cacheBinding, cacheObservation]\n      Approve A only against its own fresh evaluation and fixed policy (approve-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n        Run a fresh real validation of A using S1 (evaluate-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n        ↳ start-persistent-backend#1 (see above)\n        ↳ declare-inference-plan#0 (see above)\n      Inject the stale-cache mistake: cache B while A remains approved (load-wrong-cache#5) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        ↳ start-persistent-backend#1 (see above)\n  ↳ approve-A#4 (see above)\n  ↳ start-persistent-backend#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 5,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 18,
+        "maxNodes": 100,
+        "variable": "releasedPredictionRef"
+      },
+      "result": "SLICE for 'releasedPredictionRef' — reads via: custom-fn\nExpose only the new A output whose observations match the request (guard-corrected-output#10) [wrote: correctedDecision, releasedPredictionRef]\n  Produce a new prediction with actual cached A (predict-after-repair#9) ← via correctedReceipt [wrote: correctedInferenceId, correctedReceipt, correctedBackendObservation]\n    Load retained A and fit distinct B once in one long-lived worker (start-persistent-backend#1) ← via expectedContract [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n      Pin the model, input and contract proof settings before evaluation (declare-inference-plan#0) ← via qualityPolicy [wrote: backendPlan, fixtureSource, qualityPolicy, releasedPredictionRef]\n    Repair the same worker's cache using approved A (repair-cache-with-A#8) ← via cacheObservation [wrote: cacheBinding, cacheObservation]\n      Approve A only against its own fresh evaluation and fixed policy (approve-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n        Run a fresh real validation of A using S1 (evaluate-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n        ↳ start-persistent-backend#1 (see above)\n        ↳ declare-inference-plan#0 (see above)\n      Inject the stale-cache mistake: cache B while A remains approved (load-wrong-cache#5) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        ↳ start-persistent-backend#1 (see above)\n  ↳ approve-A#4 (see above)\n  ↳ start-persistent-backend#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 6,
+      "tool": "who_wrote",
+      "args": {
+        "key": "staleReceipt",
+        "beforeStageId": "guard-stale-output#7"
+      },
+      "result": "'staleReceipt' was last written by predict-from-stale-cache#6 — \"Request the fixed input; the worker actually predicts with cached B\" (verb: set): {\"kind\":\"inference-receipt\",\"schemaVersion\":1,\"inferenceId\":\"084fded0-9ba0-4508-bd73-b7120db67779\",\"createdAt\":1793307886652,\"inputRef\":{\"kind\":\"artifact\",\"path… (5656 chars total — get_value('predict-from-stale-cache#6', 'staleReceipt') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 7,
+      "tool": "who_wrote",
+      "args": {
+        "key": "cacheObservation",
+        "beforeStageId": "predict-from-stale-cache#6"
+      },
+      "result": "'cacheObservation' was last written by load-wrong-cache#5 — \"Inject the stale-cache mistake: cache B while A remains approved\" (verb: set): {\"modelRef\":{\"kind\":\"model\",\"sessionId\":\"fb361808-39de-414c-9c43-b6af93b84a6e\",\"handle\":2,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"backend/model-B.json\",\"sha… (598 chars total — get_value('load-wrong-cache#5', 'cacheObservation') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 8,
+      "tool": "who_wrote",
+      "args": {
+        "key": "approvedModelRef",
+        "beforeStageId": "guard-stale-output#7"
+      },
+      "result": "'approvedModelRef' was last written by approve-A#4 — \"Approve A only against its own fresh evaluation and fixed policy\" (verb: set): {\"kind\":\"model\",\"sessionId\":\"fb361808-39de-414c-9c43-b6af93b84a6e\",\"handle\":1,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"backend/model-A.json\",\"sha256\":\"12d283… (496 chars total — get_value('approve-A#4', 'approvedModelRef') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 9,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "guard-stale-output#7",
+        "key": "staleReceipt\u001fmodelRef\u001finferenceIdentity\u001fsha256"
+      },
+      "result": "VALUE of 'staleReceipt.modelRef.inferenceIdentity.sha256' as of guard-stale-output#7:\n\"4d07b2de53779ba4780c7003009ec445c68958d1567432a843a0be2e3d4a073a\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 10,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "guard-stale-output#7",
+        "key": "approvedModelRef\u001finferenceIdentity\u001fsha256"
+      },
+      "result": "VALUE of 'approvedModelRef.inferenceIdentity.sha256' as of guard-stale-output#7:\n\"c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 11,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "guard-reversed-fields#12",
+        "key": "reversedReceipt\u001fcontract\u001finput\u001ffields\u001f0\u001fname"
+      },
+      "result": "VALUE of 'reversedReceipt.contract.input.fields.0.name' as of guard-reversed-fields#12:\n\"pixel_63\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 12,
+      "tool": "trace_node",
+      "args": {
+        "runtimeStageId": "load-wrong-cache#5"
+      },
+      "result": "STEP load-wrong-cache#5 — \"Inject the stale-cache mistake: cache B while A remains approved\"\nwrote (2):\n- cacheBinding (set): {\"kind\":\"model\",\"sessionId\":\"fb361808-39de-414c-9c43-b6af93b84a6e\",\"handle\":2,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"backend/model-B.json\",\"sha256\":\"27bd89… (496 chars total — get_value('load-wrong-cache#5', 'cacheBinding') for full)\n- cacheObservation (set): {\"modelRef\":{\"kind\":\"model\",\"sessionId\":\"fb361808-39de-414c-9c43-b6af93b84a6e\",\"handle\":2,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"backend/model-B.json\",\"sha… (598 chars total — get_value('load-wrong-cache#5', 'cacheObservation') for full)\nread (2): modelBRef, cacheBinding\nparents:\n- data: modelBRef ← start-persistent-backend#1 \"Load retained A and fit distinct B once in one long-lived worker\"\n- data: cacheBinding ← load-A-for-validation#2 \"Load A and observe its actual in-memory state\"\n⚠ control-dependence lookup not provided — the decision that routed here is unknown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 13,
+      "tool": "attention_list",
+      "args": {},
+      "result": "{\"tool\":\"attention_list\",\"mode\":\"recorded-evidence\",\"confidence\":\"incomplete\",\"gaps\":[{\"code\":\"truncated\",\"evidence\":[]}],\"capture\":{\"status\":\"incomplete\",\"reason\":\"missing-attestation\",\"scope\":\"root-log\",\"persistence\":\"memory-only\",\"readSources\":\"not-collected\"},\"interpretation\":\"Not sure: the requested evidence is incomplete. No root cause is asserted. Snapshot-only records have no engine-written capture/end attestation. This reader cannot prove a root cause from them, even after a normally finished run.\"}",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    }
+  ],
+  "execution": {
+    "savedJsonOnly": true,
+    "trainingStarted": false,
+    "predictionRepeated": false,
+    "numericalEvaluationRepeated": false,
+    "guardRecomputed": false,
+    "publicationPerformed": false
+  },
+  "boundaries": [
+    "Python owns stage order, retries and numerical operations. The optional host records live scope requests with the native foottrace writer.",
+    "Stage reads describe actual capture.get requests, not arbitrary Python variable or backend tensor reads. No FootPrint executor capture attestation is claimed.",
+    "Discarded stages have no committed writes. Attempt and retry labels are supplied by the Python caller; no native retry policy is inferred.",
+    "The file is replaced after commits, discards and close. This is not a write-ahead log or a promise of crash durability.",
+    "No control-dependency lookup is supplied. Numerical correctness and unobserved backend dependencies remain outside this record."
+  ]
+}

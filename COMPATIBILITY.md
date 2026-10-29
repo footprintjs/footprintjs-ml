@@ -1,12 +1,14 @@
 # Beta compatibility
 
-The current SDK beta is `0.6.0-beta.6`. APIs and supported integration profiles may change during the beta.
+The current SDK beta is `0.6.0-beta.7`. APIs and supported integration profiles may change during the beta.
 
 Beta 2 adds a saved-record entry point without release bindings and explicit CLI investigation targets. It reuses the existing FootPrint/foottrace toolpack. Its selection proof recomputes ranking from retained JAX evaluations; it does not repeat numerical training. The reference quickstart separately trains its NumPy model. See [BACKTRACKING.md](BACKTRACKING.md) for capture requirements and limits.
 
 Beta 3 adds an optional standard-library Python workflow helper and injected MLflow artifact binding. Python controls its own stages and retries; an explicitly started Node helper records reference reads and writes through the native foottrace writer. This path uses no FootPrint executor and does not capture arbitrary Python locals. MLflow and numerical packages are application dependencies, not SDK runtime dependencies. The reference MLflow proof uses Python 3.12, MLflow 3.17.2, scikit-learn 1.7.2 and NumPy 2.2.6 with a local SQLite store. See [MLFLOW.md](MLFLOW.md).
 
 ## Runtime scope
+
+Beta 7 adds prediction contracts, inference receipts and `checkInference`, also available as five snake_case methods on a started Python `WorkflowCapture`. The guard compares actual backend observations with independently expected model/input/invocation context and ordered input/output meaning. Missing evidence stays unknown; no producer authentication, numerical correctness, cache instrumentation or output-delivery service is implied. The [inference example](examples/inference/README.md) explicitly installs NumPy/scikit-learn for its local numerical worker; these remain application dependencies. Scope retains references rather than model/input/output buffers. See [INFERENCE.md](INFERENCE.md).
 
 Beta 6 exposes the existing evaluation readers, data-lineage receipts/checks and selection manifest/receipt/checks through a started Python `WorkflowCapture`. Method names use snake_case; their JSON fields and returned decisions preserve the existing TypeScript contracts. Python owns numerical work, candidate loops and retries. No Python `run_experiment` or checked-publication facade is added. These calls add no required Python packages or separate guard implementation. The [Python guard example](examples/python-guards/README.md) uses retained observations; its separate lineage and candidate cases do not establish shared data lineage across those original runs.
 

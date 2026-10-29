@@ -18,12 +18,13 @@ Each feature has a short README that explains its purpose, public API, example a
 | Keep a score with what was evaluated | [Evaluation receipts](features/evaluation/README.md) |
 | Connect your existing trainer | [Trainer adapter](features/trainer-adapter/README.md) |
 | Check matching evidence before release | [Model approval](features/approval/README.md) |
+| Check the model and input/output meaning used for prediction | [Inference evidence](features/inference/README.md) |
 | Explain a saved result or decision | [Investigation and backtracking](features/investigation/README.md) |
 | Check training and preprocessing data use | [Data lineage](features/data-lineage/README.md) |
 | Compare the declared model candidates | [Candidate selection](features/selection/README.md) |
 | Publish the exact approved checkpoint | [Checked publication](features/publication/README.md) |
 
-Python-owned workflows start with [Python installation](PYTHON.md) and [MLflow capture](MLFLOW.md). The Python helper exposes recording, evaluation receipts, model approval, data-lineage checks and candidate-selection checks through the existing TypeScript contracts. Python keeps its candidate loops and retries. Checked publication remains a TypeScript API. See the [Python guard example](examples/python-guards/README.md); after setup, `python -m footprint_ml_workflow example-guards --out ./guard-run` exercises retained evidence without installing a numerical framework.
+Python-owned workflows start with [Python installation](PYTHON.md) and [MLflow capture](MLFLOW.md). The Python helper exposes recording, evaluation receipts, model approval, data-lineage checks, candidate-selection checks and inference evidence through the core TypeScript contracts. Python keeps its candidate loops and retries. Checked publication remains a TypeScript API. See the [Python guard example](examples/python-guards/README.md); after setup, `python -m footprint_ml_workflow example-guards --out ./guard-run` exercises retained evidence without installing a numerical framework.
 
 ## Build with an AI coding agent
 
@@ -42,7 +43,7 @@ The npm package includes this same skill and guide tree. The Python wheel instal
 The beta is distributed as a versioned GitHub release tarball. These commands do not depend on an npm registry release of `footprintjs-ml`:
 
 ```sh
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.6/footprintjs-ml-0.6.0-beta.6.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.7/footprintjs-ml-0.6.0-beta.7.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy==2.2.6
 npx --no-install footprint-ml demo --out ./quickstart-run --python .venv/bin/python

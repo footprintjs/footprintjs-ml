@@ -8,16 +8,16 @@ Prerequisites: Python 3.11+ and Node.js 22+ with npm. The current CI targets Pyt
 
 ```sh
 python3 -m venv .venv
-.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.6/footprintjs_ml-0.6.0b6-py3-none-any.whl
+.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.7/footprintjs_ml-0.6.0b7-py3-none-any.whl
 .venv/bin/python -m footprint_ml_workflow setup
 .venv/bin/python -m footprint_ml_workflow doctor
 ```
 
-Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b6` corresponds to npm version `0.6.0-beta.6`.
+Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b7` corresponds to npm version `0.6.0-beta.7`.
 
 The wheel has no required Python packages. It does not install MLflow, NumPy, scikit-learn or JAX. Importing the module and constructing a capture object do not install dependencies or launch a process. The optional numerical trainer adapter still needs NumPy when explicitly used.
 
-`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.8.0`, `agentfootprint@11.0.0` and `footprintjs@10.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.6` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
+`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.8.0`, `agentfootprint@11.0.0` and `footprintjs@10.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.7` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
 
 The helper is checked in a temporary sibling directory before it is made available. A failed setup preserves the prior runtime. A completed matching installation can be checked again. `doctor` is read-only: it checks versions and imports without starting a trainer or connecting to MLflow. It is an environment check, not an authenticity or security certificate. Release `SHA256SUMS` identifies the distributed files.
 
@@ -48,6 +48,7 @@ A started `WorkflowCapture` exposes the same JSON contracts used by the TypeScri
 | Evaluation evidence | `create_evaluation_receipt`, `read_evaluation_receipt`, `check_release` |
 | Data-use evidence | `create_data_lineage_receipt`, `read_data_lineage_receipt`, `check_data_lineage` |
 | Candidate comparison | `read_selection_manifest`, `create_selection_receipt`, `read_selection_receipt`, `check_selection` |
+| Actual prediction context | `create_prediction_contract`, `read_prediction_contract`, `create_inference_receipt`, `read_inference_receipt`, `check_inference` |
 
 Each method takes one plain JSON object and calls the existing TypeScript implementation in the explicit Node helper. The receipt readers validate saved claims; they do not rerun numerical evaluation. No additional Python framework or copy of the guard algorithms is installed.
 
@@ -77,6 +78,24 @@ Try the retained-observation guard proof after setup, using only the Python stan
 ```
 
 This checks recorded JAX candidate results and separate digit-lineage evidence. It does not train or numerically re-evaluate a model, and it does not publish one. The second command reopens saved scope history after the example's capture worker exits. Use a new output directory for each run.
+
+## Check a prediction backend's actual model and contract
+
+`create_prediction_contract`, `read_prediction_contract`, `create_inference_receipt`, `read_inference_receipt` and `check_inference` use the same core JSON functions as TypeScript. The backend must observe the model actually loaded in its cache and the input/output contract it executed. Copying the requested model or expected feature order into a receipt does not detect a stale cache. Supply expected context independently; missing actual model/contract evidence remains unknown.
+
+Read the [inference guide](INFERENCE.md) for the complete input shape, ordered fields, dtype/unit/class-label comparisons and invocation bindings. Store only actual model/contract and input/output references plus small observations in scope. Numerical arrays stay in the backend or artifact files. Helpers do not automatically record their operands or results.
+
+The [inference example](examples/inference/README.md) uses a real local numerical worker with explicit NumPy and scikit-learn application dependencies. It checks a wrong cached model, repaired cache and same-shape feature-order control while retaining rejected output privately. Its [requirements](examples/inference/requirements.txt) do not become SDK dependencies. An inference check does not publish a model, start a hosted serving system or prove numerical correctness.
+
+After helper setup, install those example-only requirements and use a fresh output directory:
+
+```sh
+.venv/bin/python -m pip install numpy==2.2.6 scikit-learn==1.7.2
+.venv/bin/python -m footprint_ml_workflow example-inference --out ./inference-run
+.venv/bin/python -m footprint_ml_workflow investigate --run ./inference-run --variable staleDecision
+```
+
+The first run performs the example's numerical work. The investigation command only reopens its saved state after the workers exit. A matching model alone does not excuse a mismatched input/output contract; both are checked against the caller's independent request.
 
 ## Try the MLflow example
 

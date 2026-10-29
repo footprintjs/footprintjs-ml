@@ -561,9 +561,9 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **backtracking-guide** — Generic saved-result reader, native tool reuse and capture limits
   - Public copy: [evidence/backtracking-guide.md](evidence/backtracking-guide.md)
-  - Original retained source SHA-256: 618e88f4ba543b86dcb7348705aba689687c8339852cf205bf1340182de7b092
+  - Original retained source SHA-256: 1291661200f93c3f8cafa8617b7102328fed600c9e681fa08e099dae46e8976f
   - Original retained source bytes: 6502
-  - Published copy SHA-256: 7f5169c4135991dcbc1ad32f24653b9b779d162cd0105610d49b0a182ea1f300
+  - Published copy SHA-256: 7edbfd48a0ddebdbed34fb5edd023aed089c1cc7a50d0bf0138edd6da346a409
   - Published copy bytes: 6670
   - Path projection: 0 string(s); published bytes differ from retained source.
 - **backtracking-reader** — Optional generic recording reader delegating to the existing Lens toolpack
@@ -659,17 +659,17 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-capture** — Optional Node host over native foottrace write APIs and existing ML contracts
   - Public copy: [evidence/mlflow-capture.ts.txt](evidence/mlflow-capture.ts.txt)
-  - Original retained source SHA-256: fdf2755f387bf40be117accadc53a349927d0f06cadf920dbb039534061b7d54
-  - Original retained source bytes: 16377
-  - Published copy SHA-256: fdf2755f387bf40be117accadc53a349927d0f06cadf920dbb039534061b7d54
-  - Published copy bytes: 16377
+  - Original retained source SHA-256: 5ef5f4a2cd54fad4f4015e22ce2c69e8689e2e71ca145caba28ea41f4539feb0
+  - Original retained source bytes: 17637
+  - Published copy SHA-256: 5ef5f4a2cd54fad4f4015e22ce2c69e8689e2e71ca145caba28ea41f4539feb0
+  - Published copy bytes: 17637
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-python** — Standard-library Python capture facade and injected MLflow artifact binding
   - Public copy: [evidence/mlflow-python.py.txt](evidence/mlflow-python.py.txt)
-  - Original retained source SHA-256: 3ee0ea7886428dbc20707ec2adcee14bcc4dd0fd510db7b2887361c282fdbf37
-  - Original retained source bytes: 25589
-  - Published copy SHA-256: 3ee0ea7886428dbc20707ec2adcee14bcc4dd0fd510db7b2887361c282fdbf37
-  - Published copy bytes: 25589
+  - Original retained source SHA-256: cad99855e715bb47eb9247d81f5b590b31e5eab82d923a5ce35198e6c627a241
+  - Original retained source bytes: 26660
+  - Published copy SHA-256: cad99855e715bb47eb9247d81f5b590b31e5eab82d923a5ce35198e6c627a241
+  - Published copy bytes: 26660
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-python-tests** — Isolated Python imports, native capture lifecycle and checked artifact binding tests
   - Public copy: [evidence/mlflow-python-tests.py.txt](evidence/mlflow-python-tests.py.txt)
@@ -708,10 +708,10 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-package** — Current beta SDK entry points and zero npm root runtime dependencies
   - Public copy: [evidence/mlflow-package.json](evidence/mlflow-package.json)
-  - Original retained source SHA-256: d84791095f96f86867abce3fd6682212fb54b170fa70b24198af554c40bf9b62
-  - Original retained source bytes: 3665
-  - Published copy SHA-256: d84791095f96f86867abce3fd6682212fb54b170fa70b24198af554c40bf9b62
-  - Published copy bytes: 3665
+  - Original retained source SHA-256: 2a690570d301091c22a24f6228dff03645c36c2aac204a3c6d9708e5e90ed7c6
+  - Original retained source bytes: 3886
+  - Published copy SHA-256: 2a690570d301091c22a24f6228dff03645c36c2aac204a3c6d9708e5e90ed7c6
+  - Published copy bytes: 3886
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-capture-tests** — Native writer lifecycle, discarded attempts and protocol-boundary tests
   - Public copy: [evidence/mlflow-capture-tests.mjs.txt](evidence/mlflow-capture-tests.mjs.txt)
@@ -757,17 +757,17 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 26 string(s); published bytes differ from retained source.
 - **python-install-guide** — Python package installation and explicit optional Node runtime guide
   - Public copy: [evidence/python-install-guide.md](evidence/python-install-guide.md)
-  - Original retained source SHA-256: 9a4bf1782134b60f46e0b98718bede47af8d1e36da1a1e764b4d6d9f71d995a3
-  - Original retained source bytes: 9079
-  - Published copy SHA-256: f25a28c1e4ff2960c8ab6ad694f045dbf6546d2275e4298fc75a800d29518e70
-  - Published copy bytes: 9527
+  - Original retained source SHA-256: 3a073becc324c591f2cf7b57514872d867a8777eb4d2e384cd8f962e6bcae22d
+  - Original retained source bytes: 11242
+  - Published copy SHA-256: 164145513b347ca84e56d1f92e089c76e357d0c8543ec451602021421c536ff7
+  - Published copy bytes: 11858
   - Path projection: 0 string(s); published bytes differ from retained source.
 - **python-setup** — Explicit pinned helper installation and read-only doctor implementation
   - Public copy: [evidence/python-setup.py.txt](evidence/python-setup.py.txt)
-  - Original retained source SHA-256: 36bda0bd7b735f42cac4895320266a0469cbd6afbe4b42ba780ea0a8c65fb7cc
-  - Original retained source bytes: 15665
-  - Published copy SHA-256: 36bda0bd7b735f42cac4895320266a0469cbd6afbe4b42ba780ea0a8c65fb7cc
-  - Published copy bytes: 15665
+  - Original retained source SHA-256: 59c200addd30fefcfb54520eaad1206c5908539abf7c7edeed646981cb5d658a
+  - Original retained source bytes: 15753
+  - Published copy SHA-256: 59c200addd30fefcfb54520eaad1206c5908539abf7c7edeed646981cb5d658a
+  - Published copy bytes: 15753
   - Path projection: 0 string(s); byte-identical to retained source.
 - **python-baseline** — Ordinary Python evaluator driver without capture
   - Public copy: [evidence/python-baseline.py.txt](evidence/python-baseline.py.txt)
@@ -848,10 +848,10 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **python-ml-contract-python-tests** — Standard-library Python helper lifecycle, JSON and native-error/discard tests
   - Public copy: [evidence/python-ml-contract-python-tests.py.txt](evidence/python-ml-contract-python-tests.py.txt)
-  - Original retained source SHA-256: d324ba2d1b5457e4bc1e25df0ee3cabcf90a1c459880f251b3d0c17b3e9043f3
-  - Original retained source bytes: 4996
-  - Published copy SHA-256: d324ba2d1b5457e4bc1e25df0ee3cabcf90a1c459880f251b3d0c17b3e9043f3
-  - Published copy bytes: 4996
+  - Original retained source SHA-256: d8dee5d4675ece83a9a00c89e64a8054dd39b63d21c7c3276cad23aafe10c7da
+  - Original retained source bytes: 5287
+  - Published copy SHA-256: d8dee5d4675ece83a9a00c89e64a8054dd39b63d21c7c3276cad23aafe10c7da
+  - Published copy bytes: 5287
   - Path projection: 0 string(s); byte-identical to retained source.
 - **python-guards-saved-verification** — Read-only saved-result consistency checks for the Python guard proof
   - Public copy: [evidence/python-guards-saved-verification.json](evidence/python-guards-saved-verification.json)
@@ -922,6 +922,146 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Original retained source bytes: 2727
   - Published copy SHA-256: 50c0e9b1be3038d357a8c7d7d03697239e057abf857912ea95dfe5c717ac44d0
   - Published copy bytes: 2727
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-contracts** — Prediction contracts, inference observations and independent-context consistency guard
+  - Public copy: [evidence/inference-contracts.ts.txt](evidence/inference-contracts.ts.txt)
+  - Original retained source SHA-256: 2fbe53db47e3b2010d5a7c84dc6499ba8205a361591540cae5acc95ffabed02e
+  - Original retained source bytes: 14015
+  - Published copy SHA-256: 2fbe53db47e3b2010d5a7c84dc6499ba8205a361591540cae5acc95ffabed02e
+  - Published copy bytes: 14015
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-results** — Installed real-worker stale-cache, repair and reordered-field prediction outcomes
+  - Public copy: [evidence/inference-results.json](evidence/inference-results.json)
+  - Original retained source SHA-256: 5fb1347533b17b74d28bf6d1b336c9ee062422dd0e8a9d2c4f7e96d62a9abd24
+  - Original retained source bytes: 72497
+  - Published copy SHA-256: 5fb1347533b17b74d28bf6d1b336c9ee062422dd0e8a9d2c4f7e96d62a9abd24
+  - Published copy bytes: 72497
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-recording** — Live Python reference reads and inference decisions recorded by native foottrace
+  - Public copy: [evidence/inference-recording.json](evidence/inference-recording.json)
+  - Original retained source SHA-256: 9f50f10d017da829a4b14f4b4321615dbdd8d9640af0e79339f9a353c92eea08
+  - Original retained source bytes: 615774
+  - Published copy SHA-256: 9f50f10d017da829a4b14f4b4321615dbdd8d9640af0e79339f9a353c92eea08
+  - Published copy bytes: 615774
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-native** — Saved-only native investigation of actual model use, repair and field-order refusal
+  - Public copy: [evidence/inference-native.json](evidence/inference-native.json)
+  - Original retained source SHA-256: 1f4ae123e0c522f86bb415d8ec2f4fc0c2fd9e03075b2ef22254f2889748ce9f
+  - Original retained source bytes: 18360
+  - Published copy SHA-256: 1f4ae123e0c522f86bb415d8ec2f4fc0c2fd9e03075b2ef22254f2889748ce9f
+  - Published copy bytes: 18360
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-verify** — Saved inference proof verification and source/artifact bindings
+  - Public copy: [evidence/inference-verify.json](evidence/inference-verify.json)
+  - Original retained source SHA-256: 357d8e5e48be90b1c2b46d5e765b362075b50355083450057331ef01f40bbfa6
+  - Original retained source bytes: 6504
+  - Published copy SHA-256: 357d8e5e48be90b1c2b46d5e765b362075b50355083450057331ef01f40bbfa6
+  - Published copy bytes: 6504
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-workflow** — Python controller: separate approval, actual prediction observations and checked output handoff
+  - Public copy: [evidence/inference-workflow.py.txt](evidence/inference-workflow.py.txt)
+  - Original retained source SHA-256: b3750c844f8659ccf1af2d5e8f7fa06227f724405b2b7910b9b8be579bdbb582
+  - Original retained source bytes: 15972
+  - Published copy SHA-256: b3750c844f8659ccf1af2d5e8f7fa06227f724405b2b7910b9b8be579bdbb582
+  - Published copy bytes: 15972
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-worker** — Persistent numerical worker measuring its actual classifier and scaler around prediction
+  - Public copy: [evidence/inference-worker.py.txt](evidence/inference-worker.py.txt)
+  - Original retained source SHA-256: fc4bae2530b163b5915ce72de90bd560ea6c40fed0839caae4b086b50eceaecf
+  - Original retained source bytes: 11616
+  - Published copy SHA-256: fc4bae2530b163b5915ce72de90bd560ea6c40fed0839caae4b086b50eceaecf
+  - Published copy bytes: 11616
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-client** — Explicit owned numerical worker transport and forwarded diagnostics
+  - Public copy: [evidence/inference-client.py.txt](evidence/inference-client.py.txt)
+  - Original retained source SHA-256: 6ee925af093be05cf30921c2a051266999249c9ab8555e90ecd5257eb1ee0d6e
+  - Original retained source bytes: 3611
+  - Published copy SHA-256: 6ee925af093be05cf30921c2a051266999249c9ab8555e90ecd5257eb1ee0d6e
+  - Published copy bytes: 3611
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-numerical** — Numerical model formats and measured in-memory inference identity
+  - Public copy: [evidence/inference-numerical.py.txt](evidence/inference-numerical.py.txt)
+  - Original retained source SHA-256: 4b2a936d49cacda9521a245ee35a238e73d8bc9e7d12597d7f83192cbf4ff1dc
+  - Original retained source bytes: 4882
+  - Published copy SHA-256: 4b2a936d49cacda9521a245ee35a238e73d8bc9e7d12597d7f83192cbf4ff1dc
+  - Published copy bytes: 4882
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-fixture-manifest** — Retained source model and data fixture provenance; numerical artifacts remain outside scope
+  - Public copy: [evidence/inference-fixture-manifest.json](evidence/inference-fixture-manifest.json)
+  - Original retained source SHA-256: ba42a2ad9c47b1d1d01e1ac6a4e9adec0fb129cbbb7fd2e630ac90f6e758b2e0
+  - Original retained source bytes: 997
+  - Published copy SHA-256: ba42a2ad9c47b1d1d01e1ac6a4e9adec0fb129cbbb7fd2e630ac90f6e758b2e0
+  - Published copy bytes: 997
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-fixture-preparation** — Explicit fixture preparation and original artifact verification
+  - Public copy: [evidence/inference-fixture-preparation.py.txt](evidence/inference-fixture-preparation.py.txt)
+  - Original retained source SHA-256: 5b1a05ffdc6898c62c98cfc1c62adba6d5ed4ef08a44ee6d35dc698e18584791
+  - Original retained source bytes: 2207
+  - Published copy SHA-256: 5b1a05ffdc6898c62c98cfc1c62adba6d5ed4ef08a44ee6d35dc698e18584791
+  - Published copy bytes: 2207
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-guide** — Real stale-cache prediction proof and trusted-backend limits
+  - Public copy: [evidence/inference-guide.md](evidence/inference-guide.md)
+  - Original retained source SHA-256: 71cdcc485a3e961964304224e68783373ebce53a38b646e315fbea1050bcf712
+  - Original retained source bytes: 4008
+  - Published copy SHA-256: 4354bed9c4a2530f3a0aec457d12c9502e99ad28fcee90d7897046e7b77cb4c6
+  - Published copy bytes: 4083
+  - Path projection: 0 string(s); published bytes differ from retained source.
+- **inference-contract-guide** — Prediction contract and inference receipt API responsibilities and limits
+  - Public copy: [evidence/inference-contract-guide.md](evidence/inference-contract-guide.md)
+  - Original retained source SHA-256: fb61969fd8314f21be1f94294f46f69e34d5b61cc6bfcbc2006015144acd5604
+  - Original retained source bytes: 7702
+  - Published copy SHA-256: fdf5aea12cfa6a369f7e78803b193613d50576962a10ac83b7f25ceebceeae41
+  - Published copy bytes: 8150
+  - Path projection: 0 string(s); published bytes differ from retained source.
+- **inference-contract-tests** — Inference contract identity, named-field, missing-observation and malformed-evidence tests
+  - Public copy: [evidence/inference-contract-tests.mjs.txt](evidence/inference-contract-tests.mjs.txt)
+  - Original retained source SHA-256: 6f93d5b5eecd70e5b55858cd2f80a1ff77a7d2c886bc57c43988e236d427423f
+  - Original retained source bytes: 15473
+  - Published copy SHA-256: 6f93d5b5eecd70e5b55858cd2f80a1ff77a7d2c886bc57c43988e236d427423f
+  - Published copy bytes: 15473
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-python-tests** — Real Python-to-native inference contract parity and captured-input checks
+  - Public copy: [evidence/inference-python-tests.mjs.txt](evidence/inference-python-tests.mjs.txt)
+  - Original retained source SHA-256: 2f613c8bf92c608366dc0f680c87bfeffa4c6ebe9334fa2851389d6885234274
+  - Original retained source bytes: 8260
+  - Published copy SHA-256: 2f613c8bf92c608366dc0f680c87bfeffa4c6ebe9334fa2851389d6885234274
+  - Published copy bytes: 8260
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-native-investigator** — Existing Lens and foottrace tools used to reopen inference evidence without a numerical worker
+  - Public copy: [evidence/inference-native-investigator.mjs.txt](evidence/inference-native-investigator.mjs.txt)
+  - Original retained source SHA-256: ce91042b9359dd96a4521e73f6c1aa1bda20ed3c53147f34cb1fd6af1fb595f8
+  - Original retained source bytes: 6819
+  - Published copy SHA-256: ce91042b9359dd96a4521e73f6c1aa1bda20ed3c53147f34cb1fd6af1fb595f8
+  - Published copy bytes: 6819
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-requirements** — Explicit numerical dependencies for the local inference example
+  - Public copy: [evidence/inference-requirements.txt](evidence/inference-requirements.txt)
+  - Original retained source SHA-256: 00219b6519e22db3cf54d42a24ee307341bd0b305b18cdef6f93f19a03f69d07
+  - Original retained source bytes: 33
+  - Published copy SHA-256: 00219b6519e22db3cf54d42a24ee307341bd0b305b18cdef6f93f19a03f69d07
+  - Published copy bytes: 33
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-audit** — Saved numerical inference audit of private worker artifacts; no training or prediction repeated
+  - Public copy: [evidence/inference-audit.json](evidence/inference-audit.json)
+  - Original retained source SHA-256: 057579d9068d18f7fad54244a30ff9e819910199b2da5cf196af45fbec585c42
+  - Original retained source bytes: 5484
+  - Published copy SHA-256: 057579d9068d18f7fad54244a30ff9e819910199b2da5cf196af45fbec585c42
+  - Published copy bytes: 5484
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-audit-code** — Standard-library saved-artifact numerical audit and memory-identity checks
+  - Public copy: [evidence/inference-audit-code.py.txt](evidence/inference-audit-code.py.txt)
+  - Original retained source SHA-256: 9e52cef2ec09012f4304930a04a72f6a2d50ee991543766cc19dcd8e5ce09851
+  - Original retained source bytes: 12591
+  - Published copy SHA-256: 9e52cef2ec09012f4304930a04a72f6a2d50ee991543766cc19dcd8e5ce09851
+  - Published copy bytes: 12591
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **inference-dataset-notice** — Digit dataset provenance, attribution and license notice
+  - Public copy: [evidence/inference-dataset-notice.md](evidence/inference-dataset-notice.md)
+  - Original retained source SHA-256: 076ba688bb9f93cfa639fc4b3ad77a02423fdd7ef8e0fe1c450374b547f253c4
+  - Original retained source bytes: 1668
+  - Published copy SHA-256: 076ba688bb9f93cfa639fc4b3ad77a02423fdd7ef8e0fe1c450374b547f253c4
+  - Published copy bytes: 1668
   - Path projection: 0 string(s); byte-identical to retained source.
 
 ## Claims by scene
@@ -1137,7 +1277,17 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — Existing Lens and foottrace reopen the saved decision writers and scope operands without starting a numerical worker. The record retains native missing-control limitations. The Python facade strengthens existing selection, lineage and investigation capabilities and adds no new workflow engine or reusable capability node. [python-guards-native, python-guards-recording, mlflow-capture, mlflow-python, python-guards-investigator]
 - **OPEN** — The guards compare explicit retained observations with independent caller authority. They do not measure undisclosed data use, prove numerical correctness or authenticate a backend. Independent developer adoption, human investigation advantage and distributed production behavior remain untested. [python-guards-guide, lineage-contracts, selection-contracts, python-ml-contract-tests]
 
-### 30. FootPrint explained ML release mistakes through saved workflow state
+### 30. Approved A did not mean the worker used A
+
+- **VERIFIED** — The reusable inference capability adds an ordered named-field prediction contract, a receipt for the backend-observed model/input/output and a separate consistency guard. Inputs and outputs remain artifacts; numerical arrays and fitted models stay in the backend. The guard requires independent expected model, contract, input, row count and invocation context. [inference-contracts, inference-contract-guide, inference-contract-tests]
+- **VERIFIED** — The real local proof first approves model A using a fresh evaluation. The application retains A as the independent expectation, then a cache-load mistake puts B in the worker. Prediction uses that cache and the fixed input. The worker measures the actual classifier and fitted scaler around prediction and reports B, rather than receiving A as supposed model evidence. The inference guard denies the stale output. [inference-results, inference-worker, inference-numerical, inference-workflow, inference-verify]
+- **VERIFIED** — The controller repairs the cache in the same worker and performs a new prediction using A. Matching observed identity and prediction context allow only that output reference through the application handoff. Approval and inference remain separate decisions; this is a local controller policy, not an automatically hosted serving service. [inference-results, inference-workflow, inference-worker, inference-verify]
+- **VERIFIED** — A further real prediction uses the same A model state with reversed named input fields. Keeping the array dimensions unchanged does not establish the same feature meaning: the contract guard denies the changed field order. A derived receipt with actual model evidence removed returns unknown and never allows. [inference-results, inference-contracts, inference-workflow, inference-worker, inference-verify]
+- **VERIFIED** — Saved native Lens and foottrace inspection follows the stale receipt to the observed cache/model writer and the corrected receipt to its own inputs. It preserves native missing-control limitations and performs no prediction, training, cache repair or publication when the record is reopened. [inference-native, inference-native-investigator, inference-recording]
+- **VERIFIED** — A separate standard-library audit reads saved private worker artifacts and recomputes labels from the retained classifier and scaler with scalar arithmetic. The presentation retains the audit report and source, not the private model arrays or blocked prediction artifacts. Reopening or verifying this story does not run that audit again. [inference-audit, inference-audit-code, inference-fixture-manifest]
+- **OPEN** — This checks declared identity and contract consistency, not numerical output correctness, original producer authenticity or statistical causation. Complete inference profiles and honest backend observations remain trusted requirements. Numerical warnings are retained; no hosted endpoint, production reliability or faster human investigation is established. [inference-contract-guide, inference-guide, inference-results, inference-client]
+
+### 31. FootPrint explained ML release mistakes through saved workflow state
 
 - **DERIVED** — The retained experiments support using FootPrint’s flowchart stages, reference state and provenance around ML computation. They do not establish a new numerical/autodiff framework. [wasm-summary, workflow, jax-digits-verification, gp-conformance, lineage-results, lineage-verification, crash-summary, crash-audit]
 - **VERIFIED** — Complete structured logs solved the demonstrated diagnosis questions too; FootPrint’s value is a reusable connected recording/investigation pattern, not unique detectability. [legacy-checkpoint, legacy-retry, benchmark-investigation, lineage-verification, trial-pilot, trial-verify]
@@ -1148,6 +1298,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — The three-candidate JAX proof now adds explicit complete-comparison evidence and a separately checked selection rule to the model/quality guard. It refuses reversed ranking despite valid own evaluation, then approves the declared minimum-error winner. The earlier equal-evidence automated trial still establishes no Lens superiority over complete logs. [selection-results, selection-verify, selection-native, trial-pilot]
 - **VERIFIED** — The release proof extends the general flowchart pattern with explicit ML handoff contracts. It denies a wrong live model and two byte substitutions, then recovers one local publication after a deliberately lost acknowledgement and a native retry in a fresh numerical session. The publisher, rather than the general retry mechanism alone, supplies the tested idempotency and target-revision behavior. [release-results, release-proof, release-contracts, release-workflow, release-publisher]
 - **VERIFIED** — The Python facade now calls the same selection and data-lineage contracts over two independently retained experiments. The wrong candidate can pass its own metric gate and still fail selection; equal digits accuracies do not excuse using validation rows in preprocessing fit. Missing lineage evidence remains unknown. [python-guards-outcome, python-guards-native, python-guards-observations, mlflow-capture, mlflow-python]
+- **VERIFIED** — Inference evidence extends the library to actual prediction observations. The local stale-cache proof denies observed B despite approved A, allows a corrected A prediction, rejects same-shaped reordered input fields and keeps missing actual model evidence unknown. Existing backtracking reopens those saved decisions without numerical execution. [inference-results, inference-contracts, inference-native, inference-verify]
 
 ## Relationships
 
@@ -1211,6 +1362,9 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **DERIVED**: library → publication; provides ML release contracts [release-contracts, release-workflow]
 - **DERIVED**: retry → publication; reuses one approved release identity [release-results, release-publisher, release-workflow]
 - **DERIVED**: publication → lens; reopens release evidence [lens, release-workflow]
+- **DERIVED**: references → prediction; binds expected and observed model [inference-contracts]
+- **DERIVED**: library → prediction; provides prediction contracts and receipts [inference-contracts, inference-workflow]
+- **DERIVED**: prediction → lens; reopens actual prediction evidence [inference-native, inference-workflow]
 
 ## Limits
 
@@ -1454,13 +1608,21 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED · why** — A passing model score cannot establish the right winner or valid held-out data. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
 - **VERIFIED · how** — Python read actual scope inputs and called the existing TypeScript guards. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
 - **VERIFIED · learned** — The wrong winner and validation-data fit were refused; missing evidence stayed unknown. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
-- **DERIVED · next** — Test these checks in an unfamiliar team’s Python workflow. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
+- **DERIVED · next** — Check whether an approved model is the one actually used for prediction. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
+
+### Approved A did not mean the worker used A
+
+- **VERIFIED · what** — We approved A, but a long-lived worker predicted with cached B. [inference-contracts, inference-results, inference-recording, inference-native, inference-verify, inference-workflow, inference-worker, inference-client, inference-numerical, inference-fixture-manifest, inference-fixture-preparation, inference-guide, inference-contract-guide, inference-contract-tests, inference-python-tests, inference-native-investigator, inference-requirements, mlflow-capture, mlflow-python]
+- **DERIVED · why** — Model approval cannot prove which model a worker actually uses. [inference-contracts, inference-results, inference-recording, inference-native, inference-verify, inference-workflow, inference-worker, inference-client, inference-numerical, inference-fixture-manifest, inference-fixture-preparation, inference-guide, inference-contract-guide, inference-contract-tests, inference-python-tests, inference-native-investigator, inference-requirements, mlflow-capture, mlflow-python]
+- **VERIFIED · how** — The backend reported its actual model and named input contract after prediction. [inference-contracts, inference-results, inference-recording, inference-native, inference-verify, inference-workflow, inference-worker, inference-client, inference-numerical, inference-fixture-manifest, inference-fixture-preparation, inference-guide, inference-contract-guide, inference-contract-tests, inference-python-tests, inference-native-investigator, inference-requirements, mlflow-capture, mlflow-python]
+- **VERIFIED · learned** — B was refused, repaired A was allowed, and reversed fields were refused. [inference-contracts, inference-results, inference-recording, inference-native, inference-verify, inference-workflow, inference-worker, inference-client, inference-numerical, inference-fixture-manifest, inference-fixture-preparation, inference-guide, inference-contract-guide, inference-contract-tests, inference-python-tests, inference-native-investigator, inference-requirements, mlflow-capture, mlflow-python]
+- **DERIVED · next** — Test observed prediction evidence in another real application and serving environment. [inference-contracts, inference-results, inference-recording, inference-native, inference-verify, inference-workflow, inference-worker, inference-client, inference-numerical, inference-fixture-manifest, inference-fixture-preparation, inference-guide, inference-contract-guide, inference-contract-tests, inference-python-tests, inference-native-investigator, inference-requirements, mlflow-capture, mlflow-python]
 
 ### FootPrint explained ML release mistakes through saved workflow state
 
-- **DERIVED · what** — FootPrint tracked stages, state changes and retries around the model. [lineage-results, crash-summary, jax-digits-verification, trial-pilot, trial-protocol, trial-code, selection-results, selection-contracts, selection-native, release-results, release-proof, release-contracts, release-workflow, release-publisher]
+- **DERIVED · what** — Nine ML capabilities now use the existing stages, reference state and saved history. [lineage-results, crash-summary, jax-digits-verification, trial-pilot, trial-protocol, trial-code, selection-results, selection-contracts, selection-native, release-results, release-proof, release-contracts, release-workflow, release-publisher, inference-contracts, inference-results, inference-native]
 - **DERIVED · why** — ML needed evidence that the approved checkpoint reached its release target. [legacy-checkpoint, legacy-retry, lineage-results, trial-pilot, trial-protocol, trial-code, selection-results, selection-contracts, selection-native, release-results, release-proof, release-contracts, release-workflow, release-publisher]
-- **DERIVED · how** — ML contracts checked evaluations and selection; the publisher checked checkpoint bytes. [crash-native, lineage-native, workflow, lineage-workflow, trial-pilot, trial-protocol, trial-code, selection-results, selection-contracts, selection-native, release-results, release-proof, release-contracts, release-workflow, release-publisher]
+- **DERIVED · how** — ML contracts check evaluations, selection, data use, exact handoff and actual prediction observations. [crash-native, lineage-native, workflow, lineage-workflow, trial-pilot, trial-protocol, trial-code, selection-results, selection-contracts, selection-native, release-results, release-proof, release-contracts, release-workflow, release-publisher, inference-contracts, inference-results, inference-native]
 - **DERIVED · learned** — Local checks worked. Human debugging benefit over complete logs remains unmeasured. [benchmark-investigation, lineage-verification, crash-native, build, trial-pilot, trial-protocol, trial-code, selection-results, selection-contracts, selection-native, release-results, release-proof, release-contracts, release-workflow, release-publisher]
 - **OPEN · next** — Test remote registries, concurrent releases and adoption by unfamiliar developers. [build, crash-native, lineage-verification, trial-pilot, trial-protocol, trial-code, release-publisher, release-contracts]
 
@@ -1526,6 +1688,9 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED** — ML contracts connect model approval to checkpoint publication. [release-contracts, release-workflow]
 - **DERIVED** — A retry recovers the existing local publication receipt. [release-results, release-publisher, release-workflow]
 - **DERIVED** — Lens follows the saved release plan, receipt and retry. [lens, release-workflow]
+- **DERIVED** — Inference evidence compares actual model and input references with independently supplied expectations. [inference-contracts]
+- **DERIVED** — The ML library records named prediction semantics and checks actual inference observations. [inference-contracts, inference-workflow]
+- **DERIVED** — Existing Lens and foottrace inspect saved inference decisions and the references their stages consumed. [inference-native, inference-workflow]
 
 ## Opening briefing
 
@@ -1537,6 +1702,7 @@ The sequence is a derived teaching path, not a dated development history.
 - **VERIFIED** — A four-agent investigation pilot compared Lens and complete structured logs on a ranking mistake and a clean control. Both supplied correct diagnoses; independent developer performance and human debugging speed remain untested. [trial-pilot, trial-protocol, trial-verify]
 - **VERIFIED** — A later real JAX experiment trains three declared candidates, rejects an injected reversed ranking with a separate selection guard, locally releases the declared minimum-error winner and reopens its saved comparison through existing Lens tools. [selection-results, selection-contracts, selection-workflow, selection-native]
 - **DERIVED** — General FootPrint stages, shared state, decision branches and retries orchestrate the model lifecycle. The ML layer adds domain-specific references, evaluation/selection evidence and pinned release contracts; a separate local publisher validates transferred bytes and recovers an already committed publication. [release-results, release-proof, release-contracts, release-workflow, release-publisher]
+- **VERIFIED** — The inference proof separately checks what actually produced a prediction: a worker using cached B despite independently approved A is refused, corrected A is allowed, reordered named inputs are refused and missing actual model observations remain unknown. [inference-contracts, inference-results, inference-native, inference-verify]
 
 ## Next-panel explanations
 
@@ -1568,5 +1734,6 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED** — Python kept control and linked MLflow artifacts. Teams should not rewrite their ML workflow merely to inspect its history. Python kept control. MLflow kept artifacts. A Node helper recorded explicit state. [mlflow-workflow, mlflow-capture, mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-guide]
 - **DERIVED** — A retry changed preprocessing and accuracy fell. Unchanged model weights can behave differently when preparation changes. Restoring the original scaler recovered 98%. Saved evidence exposed the changed input. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
 - **DERIVED** — Install Python capture around an existing evaluator. Can a Python user add recorded history without rewriting numerical evaluation? Keep the existing evaluator, then check selection and data use from Python. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
-- **DERIVED** — Check the winner and data use from Python. Is a passing score enough to select a model? Refuse the wrong choice and contaminated fit, then inspect their saved inputs. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
+- **DERIVED** — Check the winner and data use from Python. Is a passing score enough to select a model? Keep the existing guards, then check the actual model used for prediction. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
+- **DERIVED** — Check what actually made the prediction. Does approving A mean the prediction worker used A? Compare actual model and named inputs, repair the cache, then reopen the saved decisions. [inference-contracts, inference-results, inference-recording, inference-native, inference-verify, inference-workflow, inference-worker, inference-client, inference-numerical, inference-fixture-manifest, inference-fixture-preparation, inference-guide, inference-contract-guide, inference-contract-tests, inference-python-tests, inference-native-investigator, inference-requirements, mlflow-capture, mlflow-python]
 - **DERIVED** — Review the ML debugging results. Which mistakes did these local model checks explain? Review the ML-specific checks and the still-open human comparison. [lineage-results, lineage-verification, crash-summary, crash-audit, build, trial-pilot, trial-protocol, selection-results, selection-contracts, release-results, release-contracts]
