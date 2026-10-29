@@ -26,6 +26,8 @@ Each feature has a short README that explains its purpose, public API, example a
 
 Python-owned workflows start with [Python installation](PYTHON.md) and [MLflow capture](MLFLOW.md). The Python helper exposes recording, evaluation receipts, model approval, data-lineage checks, candidate-selection checks and inference evidence through the core TypeScript contracts. Python keeps its candidate loops and retries. Checked publication remains a TypeScript API. See the [Python guard example](examples/python-guards/README.md); after setup, `python -m footprint_ml_workflow example-guards --out ./guard-run` exercises retained evidence without installing a numerical framework.
 
+For inference orchestration, the [inference guide](INFERENCE.md) distinguishes the Python-owned capture path from an actual FootPrint `FlowChartExecutor` workflow. The native example uses existing function/decider stages and a native retry policy around the same numerical backend and inference guards. This strengthens the existing inference feature; it adds no new guard or runtime dependency.
+
 ## Build with an AI coding agent
 
 The root [AGENTS.md](AGENTS.md) points repository-aware assistants to the skill. Give your agent the [FootPrint ML skill](skills/footprintjs-ml/SKILL.md) and your existing workflow. The skill routes to the relevant feature instead of requiring the agent to read every guide. It covers actual consumed references, evaluation binding, failure/retry semantics and saved investigation using existing Lens/foottrace tools.
@@ -43,7 +45,7 @@ The npm package includes this same skill and guide tree. The Python wheel instal
 The beta is distributed as a versioned GitHub release tarball. These commands do not depend on an npm registry release of `footprintjs-ml`:
 
 ```sh
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.7/footprintjs-ml-0.6.0-beta.7.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.8/footprintjs-ml-0.6.0-beta.8.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy==2.2.6
 npx --no-install footprint-ml demo --out ./quickstart-run --python .venv/bin/python

@@ -197,7 +197,7 @@
   "libraryGrowth": {
     "classification": "DERIVED",
     "chronology": "Reusable milestones in the teaching sequence, not invented development dates. Experiments before chapter 8 are prototypes; current sources establish ownership.",
-    "packageVersion": "0.6.0-beta.7",
+    "packageVersion": "0.6.0-beta.8",
     "private": false,
     "layers": [
       {
@@ -635,6 +635,19 @@
         "lens": true
       },
       {
+        "id": "native-inference",
+        "kind": "strengthened",
+        "summary": "The existing FootPrint executor chose inference branches and retried a failed stage.",
+        "focus": [
+          "prediction",
+          "adapters",
+          "investigation"
+        ],
+        "added": [],
+        "trainer": true,
+        "lens": true
+      },
+      {
         "id": "verdict",
         "kind": "verdict",
         "summary": "Nine ML capabilities above the existing FootPrint foundation.",
@@ -883,8 +896,8 @@
     "Trusted adapter/profile; no authentication or atomic deployment guarantee.",
     "FootPrint records workflow state at instrumented boundaries; it does not record every tensor operation."
   ],
-  "sceneCount": 31,
-  "clickStateCount": 61,
+  "sceneCount": 32,
+  "clickStateCount": 63,
   "nodes": [
     {
       "id": "fp",
@@ -7555,7 +7568,7 @@
       "id": "inference-evidence",
       "title": "Approved A did not mean the worker used A",
       "category": "Inference evidence joins the ML library",
-      "caption": "An application approved A, but a persistent worker still predicted with cached B. Actual model observations and named-field contracts made the mismatch inspectable.",
+      "caption": "Python chose the stage order and used native foottrace to record reference history. The guard refused a cached B prediction despite approved A; this proof did not run the FootPrint executor.",
       "visual": {
         "kind": "inference-evidence",
         "journey": "inference-evidence",
@@ -7584,6 +7597,16 @@
         "consequence": "The new inference check compares the observed model, input and named contract with independent expectations."
       },
       "claims": [
+        {
+          "classification": "VERIFIED",
+          "text": "This beta.7 proof is Python-orchestrated: its controller determines stage order, cache repair and subsequent predictions. WorkflowCapture uses the native foottrace writer for live JSON read/write history. It does not execute a FootPrint flowchart or its decider/retry machinery.",
+          "sourceIds": [
+            "inference-workflow",
+            "mlflow-capture",
+            "mlflow-python",
+            "inference-recording"
+          ]
+        },
         {
           "classification": "VERIFIED",
           "text": "The reusable inference capability adds an ordered named-field prediction contract, a receipt for the backend-observed model/input/output and a separate consistency guard. Inputs and outputs remain artifacts; numerical arrays and fitted models stay in the backend. The guard requires independent expected model, contract, input, row count and invocation context.",
@@ -7655,11 +7678,11 @@
         }
       ],
       "storyText": {
-        "what": "We approved A, but a long-lived worker predicted with cached B.",
+        "what": "Python ran the steps and recorded a worker predicting with cached B.",
         "why": "Model approval cannot prove which model a worker actually uses.",
-        "how": "The backend reported its actual model and named input contract after prediction.",
+        "how": "Python chose the order; native foottrace recorded the reference reads and writes.",
         "learned": "B was refused, repaired A was allowed, and reversed fields were refused.",
-        "next": "Test observed prediction evidence in another real application and serving environment."
+        "next": "Can FootPrint itself choose the decision branches and retry a failed stage?"
       },
       "storyTextEvidence": {
         "what": {
@@ -7788,7 +7811,7 @@
       "nextCard": {
         "title": "Check what actually made the prediction",
         "why": "Does approving A mean the prediction worker used A?",
-        "after": "Compare actual model and named inputs, repair the cache, then reopen the saved decisions.",
+        "after": "Record actual model use from Python, then test FootPrint-controlled branches and retry.",
         "classification": "DERIVED",
         "sourceIds": [
           "inference-contracts",
@@ -7814,6 +7837,293 @@
       },
       "index": 29,
       "clickIndex": 58,
+      "nodeIds": [
+        "fp",
+        "compute",
+        "references",
+        "trainer",
+        "history",
+        "retry",
+        "cost",
+        "view",
+        "lens",
+        "replay",
+        "library",
+        "evidence",
+        "guard",
+        "jax",
+        "identity",
+        "inspect",
+        "plugin",
+        "conformance",
+        "package",
+        "data-use",
+        "data-guard",
+        "audit",
+        "recovery",
+        "continuity",
+        "trial",
+        "selection",
+        "publication",
+        "prediction"
+      ],
+      "edgeIds": [
+        "fp-compute",
+        "compute-references",
+        "fp-references",
+        "compute-trainer",
+        "trainer-history",
+        "references-history",
+        "fp-retry",
+        "history-retry",
+        "fp-cost",
+        "retry-cost",
+        "history-view",
+        "retry-view",
+        "fp-lens",
+        "fp-replay",
+        "lens-replay",
+        "references-library",
+        "lens-library",
+        "library-evidence",
+        "evidence-guard",
+        "library-jax",
+        "guard-jax",
+        "jax-identity",
+        "evidence-identity",
+        "identity-inspect",
+        "library-inspect",
+        "library-plugin",
+        "plugin-conformance",
+        "library-package",
+        "package-lens",
+        "package-plugin",
+        "trainer-data-use",
+        "evidence-data-use",
+        "data-use-data-guard",
+        "guard-data-guard",
+        "data-use-audit",
+        "lens-audit",
+        "cost-audit",
+        "references-recovery",
+        "history-recovery",
+        "recovery-continuity",
+        "identity-continuity",
+        "audit-continuity",
+        "evidence-continuity",
+        "continuity-guard",
+        "recovery-lens",
+        "recovery-replay",
+        "lens-trial",
+        "history-trial",
+        "trial-selection",
+        "library-selection",
+        "evidence-selection",
+        "selection-guard",
+        "selection-lens",
+        "guard-publication",
+        "selection-publication",
+        "library-publication",
+        "retry-publication",
+        "publication-lens",
+        "references-prediction",
+        "library-prediction",
+        "prediction-lens"
+      ],
+      "nodeCount": 28,
+      "edgeCount": 61
+    },
+    {
+      "id": "native-inference",
+      "title": "FootPrint chose the repair branch and retried the stage",
+      "category": "Existing FootPrint execution strengthens inference evidence",
+      "caption": "In this inference proof, the FootPrint executor owns function stages, decision branches and retry. The Python worker keeps numerical computation; the nine ML capabilities are unchanged.",
+      "visual": {
+        "kind": "native-inference",
+        "journey": "native-inference",
+        "showMetricsInPrimaryView": false,
+        "showHashesInPrimaryView": false
+      },
+      "adds": {
+        "nodes": [],
+        "edges": []
+      },
+      "focus": [
+        "fp",
+        "prediction",
+        "retry",
+        "guard",
+        "lens"
+      ],
+      "transition": {
+        "change": "Let FootPrint control the inference workflow",
+        "why": "The preceding Python capture proof recorded data history but did not exercise the FootPrint executor.",
+        "consequence": "An actual flowchart chooses branches and retries a failed stage while the worker reports actual model use."
+      },
+      "claims": [
+        {
+          "classification": "VERIFIED",
+          "text": "This proof uses the existing FootPrint executor for ordinary function stages, actual decider branches and its native retry policy. The earlier Python-controlled proof remains separate: its native foottrace recording did not establish FootPrint-owned control flow.",
+          "sourceIds": [
+            "native-inference-run",
+            "native-inference-recording",
+            "native-inference-results",
+            "inference-workflow"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The inference guard still compares the independently approved model and prediction context with actual worker observations. A refusal drives a real repair branch, and the accepted output follows the recorded allowing branch. No new ML guard algorithm or tenth library capability is added.",
+          "sourceIds": [
+            "native-inference-run",
+            "native-inference-results",
+            "native-inference-recording",
+            "inference-contracts"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "A controlled error occurs before numerical prediction effects. The executor retries the failed function stage using its existing retry mechanism. The numerical worker continues to own models and arrays, while recorded scope holds references, receipts and decisions.",
+          "sourceIds": [
+            "native-inference-run",
+            "native-inference-worker",
+            "native-inference-results",
+            "native-inference-verify"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Saved Lens and foottrace inspection reopens the actual execution, decisions and retry evidence without rerunning the workflow. A plain saved snapshot does not automatically restore the native control lookup. This example explicitly retains actual public lookup results, validates their run and stage addresses, and supplies them to the existing toolpack control-dependency reader. Snapshot-only inspection preserves its missing-control warning; no edges are inferred from stage order.",
+          "sourceIds": [
+            "native-inference-native",
+            "native-inference-recording",
+            "native-inference-verify",
+            "native-inference-control",
+            "native-inference-control-tests",
+            "native-inference-investigator"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The separate saved numerical audit reads the retained worker artifacts. Building, viewing or verifying this story reads that report and does not repeat an audit, training, prediction, retry or publication. Historical Python proof reports and source snapshots remain unchanged.",
+          "sourceIds": [
+            "native-inference-audit",
+            "native-inference-verify",
+            "inference-worker",
+            "inference-workflow"
+          ]
+        },
+        {
+          "classification": "OPEN",
+          "text": "The demonstrated retry is a controlled failure before numerical effects. It does not establish rollback or exactly-once behavior for arbitrary training, file writes, remote registries or other external effects. The local proof is not a hosted inference platform, an authenticated backend or a measured human debugging advantage.",
+          "sourceIds": [
+            "native-inference-run",
+            "native-inference-worker",
+            "native-inference-results",
+            "native-inference-verify"
+          ]
+        }
+      ],
+      "storyText": {
+        "what": "FootPrint ran stages, chose repair and retried a failed prediction stage.",
+        "why": "Python data capture did not show FootPrint controlling the workflow.",
+        "how": "The executor used function stages, decider branches and its native retry policy.",
+        "learned": "The accepted output followed the recorded branch and successful retry.",
+        "next": "Test this flow in an unfamiliar team’s ML application."
+      },
+      "storyTextEvidence": {
+        "what": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "native-inference-results",
+            "native-inference-recording",
+            "native-inference-native",
+            "native-inference-verify",
+            "native-inference-audit",
+            "native-inference-run",
+            "native-inference-client",
+            "native-inference-worker",
+            "native-inference-package"
+          ]
+        },
+        "why": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "native-inference-results",
+            "native-inference-recording",
+            "native-inference-native",
+            "native-inference-verify",
+            "native-inference-audit",
+            "native-inference-run",
+            "native-inference-client",
+            "native-inference-worker",
+            "native-inference-package"
+          ]
+        },
+        "how": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "native-inference-results",
+            "native-inference-recording",
+            "native-inference-native",
+            "native-inference-verify",
+            "native-inference-audit",
+            "native-inference-run",
+            "native-inference-client",
+            "native-inference-worker",
+            "native-inference-package"
+          ]
+        },
+        "learned": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "native-inference-results",
+            "native-inference-recording",
+            "native-inference-native",
+            "native-inference-verify",
+            "native-inference-audit",
+            "native-inference-run",
+            "native-inference-client",
+            "native-inference-worker",
+            "native-inference-package"
+          ]
+        },
+        "next": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "native-inference-results",
+            "native-inference-recording",
+            "native-inference-native",
+            "native-inference-verify",
+            "native-inference-audit",
+            "native-inference-run",
+            "native-inference-client",
+            "native-inference-worker",
+            "native-inference-package"
+          ]
+        }
+      },
+      "teachingClassification": "DERIVED",
+      "narrativeNote": "The new chapter strengthens existing inference evidence with the already-existing FootPrint executor. Its illustration is a source-derived explanation of observed workflow choices, not an invented complete runtime control graph or a new ML capability. Persisted native control lookup is explicit example-owned wiring, not an automatic guarantee of default saved-record opening.",
+      "nextCard": {
+        "title": "Let FootPrint choose branches and retry",
+        "why": "Can the existing flowchart own the inference control flow too?",
+        "after": "Observe the real decision branch and native retry, then reopen their saved evidence.",
+        "classification": "DERIVED",
+        "sourceIds": [
+          "native-inference-results",
+          "native-inference-recording",
+          "native-inference-native",
+          "native-inference-verify",
+          "native-inference-audit",
+          "native-inference-run",
+          "native-inference-client",
+          "native-inference-worker",
+          "native-inference-package"
+        ]
+      },
+      "index": 30,
+      "clickIndex": 60,
       "nodeIds": [
         "fp",
         "compute",
@@ -8044,6 +8354,16 @@
             "inference-native",
             "inference-verify"
           ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The later native inference proof exercises the FootPrint executor itself: ordinary stages, decider branches and a native retry surround the existing inference contract and numerical worker. This strengthens the ninth capability; it does not change the historical Python proof into executor-owned orchestration.",
+          "sourceIds": [
+            "native-inference-run",
+            "native-inference-results",
+            "native-inference-recording",
+            "native-inference-native"
+          ]
         }
       ],
       "storyText": {
@@ -8173,8 +8493,8 @@
           "release-contracts"
         ]
       },
-      "index": 30,
-      "clickIndex": 60,
+      "index": 31,
+      "clickIndex": 62,
       "nodeIds": [
         "fp",
         "compute",
@@ -9791,14 +10111,14 @@
       "note": "Generic saved-result reader, native tool reuse and capture limits",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/backtracking-guide.md",
-      "sha256": "1291661200f93c3f8cafa8617b7102328fed600c9e681fa08e099dae46e8976f",
+      "sha256": "6bc5373c91f2ae0adf7b39944bf62a1a46225469559cba52d19805fc66170806",
       "bytes": 6502,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/backtracking-guide.md",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/backtracking-guide.md",
-        "sha256": "7edbfd48a0ddebdbed34fb5edd023aed089c1cc7a50d0bf0138edd6da346a409",
+        "sha256": "3630bf0d3ffeef1035d6f4ec077836f32c858705c22c8b31f29449deda2c8dc4",
         "bytes": 6670,
         "pathsProjected": 0,
         "linksProjected": 3,
@@ -10213,14 +10533,14 @@
       "note": "Current beta SDK entry points and zero npm root runtime dependencies",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/mlflow-package.json",
-      "sha256": "2a690570d301091c22a24f6228dff03645c36c2aac204a3c6d9708e5e90ed7c6",
+      "sha256": "1fbea19350ed502acd965ab094235ef57a976a0ae66f5e5fb61acdf015fb7d8b",
       "bytes": 3886,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
-      "retainedSourceLocation": "evidence/mlflow-package.json",
+      "retainedSourceLocation": "evidence/native-inference-package.json",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/mlflow-package.json",
-        "sha256": "2a690570d301091c22a24f6228dff03645c36c2aac204a3c6d9708e5e90ed7c6",
+        "sha256": "1fbea19350ed502acd965ab094235ef57a976a0ae66f5e5fb61acdf015fb7d8b",
         "bytes": 3886,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
@@ -10353,17 +10673,17 @@
       "note": "Python package installation and explicit optional Node runtime guide",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/python-install-guide.md",
-      "sha256": "3a073becc324c591f2cf7b57514872d867a8777eb4d2e384cd8f962e6bcae22d",
-      "bytes": 11242,
+      "sha256": "0a94c4057627f46b1b7341fea29422f04c9d3aa31410afd3fac986592b336829",
+      "bytes": 11605,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/python-install-guide.md",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/python-install-guide.md",
-        "sha256": "164145513b347ca84e56d1f92e089c76e357d0c8543ec451602021421c536ff7",
-        "bytes": 11858,
+        "sha256": "da8e1f1566c37aaaf6dacf7dea65738df07ff50f27d3328e0a5dd928bd899e9c",
+        "bytes": 12277,
         "pathsProjected": 0,
-        "linksProjected": 11,
+        "linksProjected": 12,
         "byteIdenticalToRetainedSource": false
       }
     },
@@ -10932,7 +11252,7 @@
       "id": "inference-workflow",
       "path": "evidence/inference-workflow.py.txt",
       "label": "Python controller: separate approval, actual prediction observations and checked output handoff",
-      "note": "Python controller: separate approval, actual prediction observations and checked output handoff",
+      "note": "Exact beta.7 source bytes preserved from the verified source ledger. Later native-executor code is retained under separate source IDs.",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/inference-workflow.py.txt",
       "sha256": "b3750c844f8659ccf1af2d5e8f7fa06227f724405b2b7910b9b8be579bdbb582",
@@ -10951,8 +11271,8 @@
     {
       "id": "inference-worker",
       "path": "evidence/inference-worker.py.txt",
-      "label": "Persistent numerical worker measuring its actual classifier and scaler around prediction",
-      "note": "Persistent numerical worker measuring its actual classifier and scaler around prediction",
+      "label": "Preserved beta.7 Python-controlled inference worker source",
+      "note": "Exact original beta.7 worker bytes retained from the verified source ledger; later native-workflow instrumentation uses a separate source ID.",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/inference-worker.py.txt",
       "sha256": "fc4bae2530b163b5915ce72de90bd560ea6c40fed0839caae4b086b50eceaecf",
@@ -10972,7 +11292,7 @@
       "id": "inference-client",
       "path": "evidence/inference-client.py.txt",
       "label": "Explicit owned numerical worker transport and forwarded diagnostics",
-      "note": "Explicit owned numerical worker transport and forwarded diagnostics",
+      "note": "Exact beta.7 source bytes preserved from the verified source ledger. Later native-executor code is retained under separate source IDs.",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/inference-client.py.txt",
       "sha256": "6ee925af093be05cf30921c2a051266999249c9ab8555e90ecd5257eb1ee0d6e",
@@ -10992,7 +11312,7 @@
       "id": "inference-numerical",
       "path": "evidence/inference-numerical.py.txt",
       "label": "Numerical model formats and measured in-memory inference identity",
-      "note": "Numerical model formats and measured in-memory inference identity",
+      "note": "Exact beta.7 source bytes preserved from the verified source ledger. Later native-executor code is retained under separate source IDs.",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/inference-numerical.py.txt",
       "sha256": "4b2a936d49cacda9521a245ee35a238e73d8bc9e7d12597d7f83192cbf4ff1dc",
@@ -11032,7 +11352,7 @@
       "id": "inference-fixture-preparation",
       "path": "evidence/inference-fixture-preparation.py.txt",
       "label": "Explicit fixture preparation and original artifact verification",
-      "note": "Explicit fixture preparation and original artifact verification",
+      "note": "Exact beta.7 source bytes preserved from the verified source ledger. Later native-executor code is retained under separate source IDs.",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/inference-fixture-preparation.py.txt",
       "sha256": "5b1a05ffdc6898c62c98cfc1c62adba6d5ed4ef08a44ee6d35dc698e18584791",
@@ -11055,17 +11375,17 @@
       "note": "Real stale-cache prediction proof and trusted-backend limits",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/inference-guide.md",
-      "sha256": "71cdcc485a3e961964304224e68783373ebce53a38b646e315fbea1050bcf712",
-      "bytes": 4008,
+      "sha256": "ed06697b2270587b47918e8e577d466cb374715868661c30b87f43d3250ea461",
+      "bytes": 6584,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/inference-guide.md",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/inference-guide.md",
-        "sha256": "4354bed9c4a2530f3a0aec457d12c9502e99ad28fcee90d7897046e7b77cb4c6",
-        "bytes": 4083,
+        "sha256": "ba519f997c71f1ed481086e5925285637782c73fb71b6757cc95b4db1f470d09",
+        "bytes": 6934,
         "pathsProjected": 0,
-        "linksProjected": 1,
+        "linksProjected": 5,
         "byteIdenticalToRetainedSource": false
       }
     },
@@ -11076,17 +11396,17 @@
       "note": "Prediction contract and inference receipt API responsibilities and limits",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/inference-contract-guide.md",
-      "sha256": "fb61969fd8314f21be1f94294f46f69e34d5b61cc6bfcbc2006015144acd5604",
-      "bytes": 7702,
+      "sha256": "c11bedfa6cdfc872f3cff8b2d5082070fbeaca5199987899f05a911883169179",
+      "bytes": 10264,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/inference-contract-guide.md",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/inference-contract-guide.md",
-        "sha256": "fdf5aea12cfa6a369f7e78803b193613d50576962a10ac83b7f25ceebceeae41",
-        "bytes": 8150,
+        "sha256": "c575b0a3e287d67c98f1bf2931cd70e9b0f40917c05d47c18763d05e25bfaaf8",
+        "bytes": 10824,
         "pathsProjected": 0,
-        "linksProjected": 8,
+        "linksProjected": 10,
         "byteIdenticalToRetainedSource": false
       }
     },
@@ -11134,7 +11454,7 @@
       "id": "inference-native-investigator",
       "path": "evidence/inference-native-investigator.mjs.txt",
       "label": "Existing Lens and foottrace tools used to reopen inference evidence without a numerical worker",
-      "note": "Existing Lens and foottrace tools used to reopen inference evidence without a numerical worker",
+      "note": "Exact beta.7 source bytes preserved from the verified source ledger. Later native-executor code is retained under separate source IDs.",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/inference-native-investigator.mjs.txt",
       "sha256": "ce91042b9359dd96a4521e73f6c1aa1bda20ed3c53147f34cb1fd6af1fb595f8",
@@ -11194,7 +11514,7 @@
       "id": "inference-audit-code",
       "path": "evidence/inference-audit-code.py.txt",
       "label": "Standard-library saved-artifact numerical audit and memory-identity checks",
-      "note": "Standard-library saved-artifact numerical audit and memory-identity checks",
+      "note": "Exact beta.7 source bytes preserved from the verified source ledger. Later native-executor code is retained under separate source IDs.",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/inference-audit-code.py.txt",
       "sha256": "9e52cef2ec09012f4304930a04a72f6a2d50ee991543766cc19dcd8e5ce09851",
@@ -11226,6 +11546,246 @@
         "path": "evidence/inference-dataset-notice.md",
         "sha256": "076ba688bb9f93cfa639fc4b3ad77a02423fdd7ef8e0fe1c450374b547f253c4",
         "bytes": 1668,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-control",
+      "path": "evidence/native-inference-control.mjs.txt",
+      "label": "Example-owned retention and validation of actual native public control-lookup results",
+      "note": "Example-owned retention and validation of actual native public control-lookup results",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-control.mjs.txt",
+      "sha256": "a805785f61401d893fd62d986c0f5afb434d79c658ef6a525571d828cf3642fa",
+      "bytes": 3396,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-control.mjs.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-control.mjs.txt",
+        "sha256": "a805785f61401d893fd62d986c0f5afb434d79c658ef6a525571d828cf3642fa",
+        "bytes": 3396,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-control-tests",
+      "path": "evidence/native-inference-control-tests.mjs.txt",
+      "label": "Restored native control versus snapshot-only warnings and invalid address coverage tests",
+      "note": "Restored native control versus snapshot-only warnings and invalid address coverage tests",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-control-tests.mjs.txt",
+      "sha256": "26a56c7abe86314ee20354893b1134c814cc5a7b7dcd65c29ebbf76ffa26c72d",
+      "bytes": 3957,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-control-tests.mjs.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-control-tests.mjs.txt",
+        "sha256": "26a56c7abe86314ee20354893b1134c814cc5a7b7dcd65c29ebbf76ffa26c72d",
+        "bytes": 3957,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-run",
+      "path": "evidence/native-inference-run.mjs.txt",
+      "label": "Real FootPrint flowchart function stages, decider branches and native retry orchestration",
+      "note": "Real FootPrint flowchart function stages, decider branches and native retry orchestration",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-run.mjs.txt",
+      "sha256": "f5317ac93c30e61cddaa881660c544b56b7c1f2e7589c0f54a595eb76e07733b",
+      "bytes": 23663,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-run.mjs.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-run.mjs.txt",
+        "sha256": "f5317ac93c30e61cddaa881660c544b56b7c1f2e7589c0f54a595eb76e07733b",
+        "bytes": 23663,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-client",
+      "path": "evidence/native-inference-client.mjs.txt",
+      "label": "Example-owned bounded numerical transport; models stay in the persistent Python worker",
+      "note": "Example-owned bounded numerical transport; models stay in the persistent Python worker",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-client.mjs.txt",
+      "sha256": "d3195ac96d22a1caed3aa214df56ca15b3ad2e143cd1ef834e444b1ee2160174",
+      "bytes": 6694,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-client.mjs.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-client.mjs.txt",
+        "sha256": "d3195ac96d22a1caed3aa214df56ca15b3ad2e143cd1ef834e444b1ee2160174",
+        "bytes": 6694,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-worker",
+      "path": "evidence/native-inference-worker.py.txt",
+      "label": "Beta8 numerical worker with a controlled once-only fault before prediction effects",
+      "note": "Beta8 numerical worker with a controlled once-only fault before prediction effects",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-worker.py.txt",
+      "sha256": "faf2f171c54995736d70573ff244939fd3554ccb9fdb89498051c959b0e030c9",
+      "bytes": 13480,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-worker.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-worker.py.txt",
+        "sha256": "faf2f171c54995736d70573ff244939fd3554ccb9fdb89498051c959b0e030c9",
+        "bytes": 13480,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-package",
+      "path": "evidence/native-inference-package.json",
+      "label": "Beta8 SDK version and explicit native FootPrint dependency boundary",
+      "note": "Beta8 SDK version and explicit native FootPrint dependency boundary",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-package.json",
+      "sha256": "1fbea19350ed502acd965ab094235ef57a976a0ae66f5e5fb61acdf015fb7d8b",
+      "bytes": 3886,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-package.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-package.json",
+        "sha256": "1fbea19350ed502acd965ab094235ef57a976a0ae66f5e5fb61acdf015fb7d8b",
+        "bytes": 3886,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-results",
+      "path": "evidence/native-inference-results.json",
+      "label": "Actual native FootPrint inference workflow results and execution observations",
+      "note": "Actual native FootPrint inference workflow results and execution observations",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-results.json",
+      "sha256": "a42ce21f2898ae1677395a371762782f14d654b2aa661265d51549c4158ad78e",
+      "bytes": 74713,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-results.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-results.json",
+        "sha256": "a42ce21f2898ae1677395a371762782f14d654b2aa661265d51549c4158ad78e",
+        "bytes": 74713,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-recording",
+      "path": "evidence/native-inference-recording.json",
+      "label": "Native executor recording with real stage, decision, retry and retained public control observations",
+      "note": "Native executor recording with real stage, decision, retry and retained public control observations",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-recording.json",
+      "sha256": "38b9ec0082f8159b767e911976b0fc9d448dbad6ea253a21994f56f4cee7b878",
+      "bytes": 1917055,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-recording.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-recording.json",
+        "sha256": "38b9ec0082f8159b767e911976b0fc9d448dbad6ea253a21994f56f4cee7b878",
+        "bytes": 1917055,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-native",
+      "path": "evidence/native-inference-native.json",
+      "label": "Saved native investigation with explicit control lookup and snapshot-only warning baseline",
+      "note": "Saved native investigation with explicit control lookup and snapshot-only warning baseline",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-native.json",
+      "sha256": "5225e5d727f483a392906a3c2fb4400c15cba2f941cc20a750bd9f419e1e137b",
+      "bytes": 38859,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-native.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-native.json",
+        "sha256": "5225e5d727f483a392906a3c2fb4400c15cba2f941cc20a750bd9f419e1e137b",
+        "bytes": 38859,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-verify",
+      "path": "evidence/native-inference-verify.json",
+      "label": "Read-only native inference proof verification and exact source bindings",
+      "note": "Read-only native inference proof verification and exact source bindings",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-verify.json",
+      "sha256": "cb1922456cec094f222415f970119fc67b3f893c1304c182d673deaeff908c6d",
+      "bytes": 8433,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-verify.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-verify.json",
+        "sha256": "cb1922456cec094f222415f970119fc67b3f893c1304c182d673deaeff908c6d",
+        "bytes": 8433,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-audit",
+      "path": "evidence/native-inference-audit.json",
+      "label": "Saved scalar numerical audit of the native-executor proof; not rerun by this story",
+      "note": "Saved scalar numerical audit of the native-executor proof; not rerun by this story",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-audit.json",
+      "sha256": "e0599c45871d2d5639d2a8ea037a2b2d747eacf2bbe1f8321e822261dc4c4872",
+      "bytes": 5484,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-audit.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-audit.json",
+        "sha256": "e0599c45871d2d5639d2a8ea037a2b2d747eacf2bbe1f8321e822261dc4c4872",
+        "bytes": 5484,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "native-inference-investigator",
+      "path": "evidence/native-inference-investigator.mjs.txt",
+      "label": "Existing Lens and foottrace toolpack calls over saved native executor and control evidence",
+      "note": "Existing Lens and foottrace toolpack calls over saved native executor and control evidence",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/native-inference-investigator.mjs.txt",
+      "sha256": "b96319cc60a451f045edc5df825279fef5b4028c58f25b422fb0f7e8e8f682d8",
+      "bytes": 9851,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/native-inference-investigator.mjs.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/native-inference-investigator.mjs.txt",
+        "sha256": "b96319cc60a451f045edc5df825279fef5b4028c58f25b422fb0f7e8e8f682d8",
+        "bytes": 9851,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
@@ -11447,6 +12007,13 @@
       },
       {
         "click": 61,
+        "type": "fade",
+        "seconds": 0.8,
+        "ease": "inOut",
+        "p": {}
+      },
+      {
+        "click": 63,
         "type": "fade",
         "seconds": 0.8,
         "ease": "inOut",

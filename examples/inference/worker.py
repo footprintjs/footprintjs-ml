@@ -19,6 +19,10 @@ from numerical import (CONTRACT_PROFILE, DATA_FORMAT, MODEL_FORMAT, PROFILE, SCA
 MAX_LINE = 262144
 
 
+class TransientInferenceFault(RuntimeError):
+    """An explicit proof-only transport fault, before numerical prediction."""
+
+
 class Backend:
     def __init__(self, root, fixtures):
         self.root, self.fixtures = root, fixtures
@@ -26,6 +30,7 @@ class Backend:
         self.session = str(uuid.uuid4())
         self.models, self.origins, self.cache = {}, {}, None
         self.cache_generation = 0
+        self.transient_predictions = {}
 
     def store(self, relative, blob, format):
         path = self.root / relative
@@ -158,6 +163,32 @@ class Backend:
             raise ValueError("Cannot compare outputs from different inputs")
         return {"rows": len(a["labels"]), "differentLabels": sum(x != y for x, y in zip(a["labels"], b["labels"]))}
 
+    def predict_transient_once(self, request):
+        """Fail once before predict(), then compute once for the same invocation.
+
+        The transient bookkeeping is local worker state, not a numerical output
+        or a claim that an executor can roll back external side effects.
+        """
+        invocation = request["inferenceId"]
+        if not isinstance(invocation, str) or not invocation or len(invocation) > 100 or not all(c.isalnum() or c == '-' for c in invocation):
+            raise ValueError("Invalid inference invocation identifier")
+        retained = self.transient_predictions.get(invocation)
+        if retained is None:
+            private_files = len(list((self.root / "private").glob("*")))
+            self.transient_predictions[invocation] = {"attempts": 1,
+                "privateArtifactsBeforeFault": private_files,
+                "privateArtifactsAfterFault": len(list((self.root / "private").glob("*")))}
+            raise TransientInferenceFault("Injected transient inference fault before prediction computation or artifact creation")
+        if retained["attempts"] != 1:
+            raise ValueError("This proof-only invocation has already consumed its single retry")
+        retained["attempts"] += 1
+        result = self.predict(request)
+        result["retryObservation"] = {**retained, "injectedFailures": 1,
+            "failedBeforeComputation": True, "actualPredictionCalls": 1,
+            "workerPid": os.getpid(), "sessionId": self.session,
+            "cacheGeneration": self.cache_generation, "inferenceId": invocation}
+        return result
+
 
 def serve(root, fixtures):
     backend = Backend(root, fixtures)
@@ -174,6 +205,7 @@ def serve(root, fixtures):
             elif command == "load_cache": result = backend.load_cache(payload["modelRef"])
             elif command == "evaluate": result = backend.evaluate()
             elif command == "predict": result = backend.predict(payload)
+            elif command == "predict_transient_once": result = backend.predict_transient_once(payload)
             elif command == "compare_outputs": result = backend.compare_outputs(payload["left"], payload["right"])
             elif command == "close": result = {"closed": True, "workerPid": os.getpid()}
             else: raise ValueError("Unknown numerical backend command")

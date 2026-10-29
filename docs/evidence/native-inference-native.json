@@ -1,0 +1,355 @@
+{
+  "schema": "footprint-ml-native-inference-investigation/v1",
+  "passed": true,
+  "checks": {
+    "capturedOutcomeMatchesSidecar": true,
+    "nativeExecutorOwnsOrchestration": true,
+    "allNineteenWorkflowChecksPass": true,
+    "approvedAIsSeparateFromActualB": true,
+    "staleOutputDenied": true,
+    "correctedOutputAllowed": true,
+    "reversedFieldsDenied": true,
+    "missingActualModelUnknown": true,
+    "exactCorrectedOutputHandedOff": true,
+    "actualRepairDecisionRecorded": true,
+    "actualHandoffDecisionRecorded": true,
+    "unselectedBranchesNeverCommitted": true,
+    "oneNativeRetryForCorrectedPrediction": true,
+    "pendingScopeWriteDiscardedBeforeRetry": true,
+    "oneSuccessfulRetryCommit": true,
+    "failedAttemptPrecedesNumericalEffect": true,
+    "sameInvocationUsedForBothAttempts": true,
+    "sameWorkerRemainsAcrossRepair": true,
+    "staleDecisionReachesActualPrediction": true,
+    "staleDecisionReachesActualBCache": true,
+    "staleDecisionReachesIndependentAApproval": true,
+    "approvalReachesFreshEvaluation": true,
+    "laterRepairExcludedFromEarlierFailure": true,
+    "correctionReachesRepairedCache": true,
+    "nativeControlExplainsRepair": true,
+    "nativeControlExplainsHandoff": true,
+    "snapshotOnlyBaselinePreservesMissingControl": true,
+    "restoredLookupDoesNotClaimMissingControl": true,
+    "measuredActualAndExpectedIdentitiesVisible": true,
+    "noEngineCaptureAttestationInvented": true,
+    "snapshotCompletenessLimitRemainsVisible": true,
+    "recordingUnchanged": true,
+    "outcomeUnchanged": true
+  },
+  "sources": {
+    "recording": {
+      "sha256": "38b9ec0082f8159b767e911976b0fc9d448dbad6ea253a21994f56f4cee7b878",
+      "bytes": 1917055
+    },
+    "outcome": {
+      "sha256": "a42ce21f2898ae1677395a371762782f14d654b2aa661265d51549c4158ad78e",
+      "bytes": 74713,
+      "capturedOutcomeMatches": true
+    }
+  },
+  "nativeQueries": 17,
+  "transcript": [
+    {
+      "ordinal": 1,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "wrongInferenceDecision"
+      },
+      "result": "SLICE for 'wrongInferenceDecision' — reads via: custom-fn\nCheck stale output against independently approved A (guard-stale#7) [wrote: wrongInferenceDecision, staleAllowed, staleOutputExposed]\n  Predict with the actual stale cache (predict-stale#6) ← via staleReceipt [wrote: staleInferenceId, staleReceipt, staleBackendObservation]\n    Initialize the persistent numerical backend (initialize-backend#1) ← via expectedContract [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n      Declare fixed inference proof settings (declare-plan#0) ← via releasedPredictionRef [wrote: backendPlan, fixtureSource, qualityPolicy, nativeRetryPolicy, numericalEnvironment, releasedPredictionRef, retryScratch]\n    Mistakenly load actual B into the cache (load-wrong-cache#5) ← via cacheObservation [wrote: cacheBinding, cacheObservation]\n      ↳ initialize-backend#1 (see above)\n      Load actual A for validation (load-approved-A#2) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        ↳ initialize-backend#1 (see above)\n  Approve A against its fresh evaluation (approve-model-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n    Evaluate actual A on the held-out validation rows (evaluate-approved-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n      ↳ load-approved-A#2 (see above)\n    ↳ initialize-backend#1 (see above)\n    ↳ declare-plan#0 (see above)\n  ↳ initialize-backend#1 (see above)\n  ↳ declare-plan#0 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 2,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "correctedInferenceDecision"
+      },
+      "result": "SLICE for 'correctedInferenceDecision' — reads via: custom-fn\nCheck the new corrected prediction (guard-corrected#12) [wrote: correctedInferenceDecision, correctedAllowed]\n  Predict with A, retrying one explicit transient worker failure (predict-corrected#11) ← via correctedReceipt [wrote: retryScratch, correctedReceipt, correctedBackendObservation, correctedRetryObservation, retryScratch]\n    Declare fixed inference proof settings (declare-plan#0) ← via retryScratch [wrote: backendPlan, fixtureSource, qualityPolicy, nativeRetryPolicy, numericalEnvironment, releasedPredictionRef, retryScratch]\n    Commit one stable corrected invocation ID (prepare-corrected-invocation#10) ← via correctedInferenceId [wrote: correctedInferenceId]\n    Initialize the persistent numerical backend (initialize-backend#1) ← via expectedContract [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n      ↳ declare-plan#0 (see above)\n    Reload approved A in the same worker (repair-cache#9) ← via cacheObservation [wrote: cacheBinding, cacheObservation, repairChoice]\n      Approve A against its fresh evaluation (approve-model-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n        Evaluate actual A on the held-out validation rows (evaluate-approved-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n          Load actual A for validation (load-approved-A#2) ← via cacheObservation [wrote: cacheBinding, cacheObservation]\n            ↳ initialize-backend#1 (see above)\n        ↳ initialize-backend#1 (see above)\n        ↳ declare-plan#0 (see above)\n      Mistakenly load actual B into the cache (load-wrong-cache#5) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        ↳ initialize-backend#1 (see above)\n        ↳ load-approved-A#2 (see above)\n      Choose how to handle the stale prediction (route-stale#8) ← [control: Denied prediction: reload the approved model]\n        Check stale output against independently approved A (guard-stale#7) ← via staleAllowed [wrote: wrongInferenceDecision, staleAllowed, staleOutputExposed]\n          Predict with the actual stale cache (predict-stale#6) ← via staleReceipt [wrote: staleInferenceId, staleReceipt, staleBackendObservation]\n            ↳ initialize-backend#1 (see above)\n            ↳ load-wrong-cache#5 (see above)\n          ↳ approve-model-A#4 (see above)\n          ↳ initialize-backend#1 (see above)\n          ↳ declare-plan#0 (see above)\n  ↳ approve-model-A#4 (see above)\n  ↳ initialize-backend#1 (see above)\n  ↳ prepare-corrected-invocation#10 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 3,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "reversedInferenceDecision"
+      },
+      "result": "SLICE for 'reversedInferenceDecision' — reads via: custom-fn\nReject the observed field-order mismatch (guard-reversed#16) [wrote: reversedInferenceDecision]\n  Predict with actual A and reversed columns (predict-reversed#15) ← via reversedReceipt [wrote: reversedInferenceId, reversedReceipt, reversedBackendObservation]\n    Initialize the persistent numerical backend (initialize-backend#1) ← via expectedContract [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n      Declare fixed inference proof settings (declare-plan#0) ← via qualityPolicy [wrote: backendPlan, fixtureSource, qualityPolicy, nativeRetryPolicy, numericalEnvironment, releasedPredictionRef, retryScratch]\n    Reload approved A in the same worker (repair-cache#9) ← via cacheObservation [wrote: cacheBinding, cacheObservation, repairChoice]\n      Approve A against its fresh evaluation (approve-model-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n        Evaluate actual A on the held-out validation rows (evaluate-approved-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n          Load actual A for validation (load-approved-A#2) ← via cacheObservation [wrote: cacheBinding, cacheObservation]\n            ↳ initialize-backend#1 (see above)\n        ↳ initialize-backend#1 (see above)\n        ↳ declare-plan#0 (see above)\n      Mistakenly load actual B into the cache (load-wrong-cache#5) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        ↳ initialize-backend#1 (see above)\n        ↳ load-approved-A#2 (see above)\n      Choose how to handle the stale prediction (route-stale#8) ← [control: Denied prediction: reload the approved model]\n        Check stale output against independently approved A (guard-stale#7) ← via staleAllowed [wrote: wrongInferenceDecision, staleAllowed, staleOutputExposed]\n          Predict with the actual stale cache (predict-stale#6) ← via staleReceipt [wrote: staleInferenceId, staleReceipt, staleBackendObservation]\n            ↳ initialize-backend#1 (see above)\n            ↳ load-wrong-cache#5 (see above)\n          ↳ approve-model-A#4 (see above)\n          ↳ initialize-backend#1 (see above)\n          ↳ declare-plan#0 (see above)\n  ↳ approve-model-A#4 (see above)\n  ↳ initialize-backend#1 (see above)\n  Expose the exact accepted output reference (permit-output#14) ← via releasedPredictionRef [wrote: releasedPredictionRef, handoffChoice]\n    Predict with A, retrying one explicit transient worker failure (predict-corrected#11) ← via correctedReceipt [wrote: retryScratch, correctedReceipt, correctedBackendObservation, correctedRetryObservation, retryScratch]\n      ↳ declare-plan#0 (see above)\n      Commit one stable corrected invocation ID (prepare-corrected-invocation#10) ← via correctedInferenceId [wrote: correctedInferenceId]\n      ↳ initialize-backend#1 (see above)\n      ↳ repair-cache#9 (see above)\n    Choose whether to expose the corrected output (route-corrected#13) ← [control: Matching actual A evidence permits this exact output]\n      Check the new corrected prediction (guard-corrected#12) ← via correctedAllowed [wrote: correctedInferenceDecision, correctedAllowed]\n        ↳ predict-corrected#11 (see above)\n        ↳ approve-model-A#4 (see above)\n        ↳ initialize-backend#1 (see above)\n        ↳ prepare-corrected-invocation#10 (see above)\n  ↳ predict-corrected#11 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 4,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "missingInferenceDecision"
+      },
+      "result": "SLICE for 'missingInferenceDecision' — reads via: custom-fn\nRetain a derived missing-observation unknown control (guard-missing#17) [wrote: missingReceipt, missingInferenceDecision, missingObservationControl]\n  Predict with A, retrying one explicit transient worker failure (predict-corrected#11) ← via correctedReceipt [wrote: retryScratch, correctedReceipt, correctedBackendObservation, correctedRetryObservation, retryScratch]\n    Declare fixed inference proof settings (declare-plan#0) ← via retryScratch [wrote: backendPlan, fixtureSource, qualityPolicy, nativeRetryPolicy, numericalEnvironment, releasedPredictionRef, retryScratch]\n    Commit one stable corrected invocation ID (prepare-corrected-invocation#10) ← via correctedInferenceId [wrote: correctedInferenceId]\n    Initialize the persistent numerical backend (initialize-backend#1) ← via expectedContract [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n      ↳ declare-plan#0 (see above)\n    Reload approved A in the same worker (repair-cache#9) ← via cacheObservation [wrote: cacheBinding, cacheObservation, repairChoice]\n      Approve A against its fresh evaluation (approve-model-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n        Evaluate actual A on the held-out validation rows (evaluate-approved-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n          Load actual A for validation (load-approved-A#2) ← via cacheObservation [wrote: cacheBinding, cacheObservation]\n            ↳ initialize-backend#1 (see above)\n        ↳ initialize-backend#1 (see above)\n        ↳ declare-plan#0 (see above)\n      Mistakenly load actual B into the cache (load-wrong-cache#5) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        ↳ initialize-backend#1 (see above)\n        ↳ load-approved-A#2 (see above)\n      Choose how to handle the stale prediction (route-stale#8) ← [control: Denied prediction: reload the approved model]\n        Check stale output against independently approved A (guard-stale#7) ← via staleAllowed [wrote: wrongInferenceDecision, staleAllowed, staleOutputExposed]\n          Predict with the actual stale cache (predict-stale#6) ← via staleReceipt [wrote: staleInferenceId, staleReceipt, staleBackendObservation]\n            ↳ initialize-backend#1 (see above)\n            ↳ load-wrong-cache#5 (see above)\n          ↳ approve-model-A#4 (see above)\n          ↳ initialize-backend#1 (see above)\n          ↳ declare-plan#0 (see above)\n  ↳ approve-model-A#4 (see above)\n  ↳ initialize-backend#1 (see above)\n  ↳ prepare-corrected-invocation#10 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 5,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "releasedPredictionRef"
+      },
+      "result": "SLICE for 'releasedPredictionRef' — reads via: custom-fn\nExpose the exact accepted output reference (permit-output#14) [wrote: releasedPredictionRef, handoffChoice]\n  Predict with A, retrying one explicit transient worker failure (predict-corrected#11) ← via correctedReceipt [wrote: retryScratch, correctedReceipt, correctedBackendObservation, correctedRetryObservation, retryScratch]\n    Declare fixed inference proof settings (declare-plan#0) ← via retryScratch [wrote: backendPlan, fixtureSource, qualityPolicy, nativeRetryPolicy, numericalEnvironment, releasedPredictionRef, retryScratch]\n    Commit one stable corrected invocation ID (prepare-corrected-invocation#10) ← via correctedInferenceId [wrote: correctedInferenceId]\n    Initialize the persistent numerical backend (initialize-backend#1) ← via predictionInputRef [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n      ↳ declare-plan#0 (see above)\n    Reload approved A in the same worker (repair-cache#9) ← via cacheObservation [wrote: cacheBinding, cacheObservation, repairChoice]\n      Approve A against its fresh evaluation (approve-model-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n        Evaluate actual A on the held-out validation rows (evaluate-approved-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n          Load actual A for validation (load-approved-A#2) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n            ↳ initialize-backend#1 (see above)\n        ↳ initialize-backend#1 (see above)\n        ↳ declare-plan#0 (see above)\n      Mistakenly load actual B into the cache (load-wrong-cache#5) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        ↳ initialize-backend#1 (see above)\n        ↳ load-approved-A#2 (see above)\n      Choose how to handle the stale prediction (route-stale#8) ← [control: Denied prediction: reload the approved model]\n        Check stale output against independently approved A (guard-stale#7) ← via staleAllowed [wrote: wrongInferenceDecision, staleAllowed, staleOutputExposed]\n          Predict with the actual stale cache (predict-stale#6) ← via staleReceipt [wrote: staleInferenceId, staleReceipt, staleBackendObservation]\n            ↳ initialize-backend#1 (see above)\n            ↳ load-wrong-cache#5 (see above)\n          ↳ approve-model-A#4 (see above)\n          ↳ initialize-backend#1 (see above)\n          ↳ declare-plan#0 (see above)\n  Choose whether to expose the corrected output (route-corrected#13) ← [control: Matching actual A evidence permits this exact output]\n    Check the new corrected prediction (guard-corrected#12) ← via correctedAllowed [wrote: correctedInferenceDecision, correctedAllowed]\n      ↳ predict-corrected#11 (see above)\n      ↳ approve-model-A#4 (see above)\n      ↳ initialize-backend#1 (see above)\n      ↳ prepare-corrected-invocation#10 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 6,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "repairChoice"
+      },
+      "result": "SLICE for 'repairChoice' — reads via: custom-fn\nReload approved A in the same worker (repair-cache#9) [wrote: cacheBinding, cacheObservation, repairChoice]\n  Approve A against its fresh evaluation (approve-model-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n    Evaluate actual A on the held-out validation rows (evaluate-approved-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n      Load actual A for validation (load-approved-A#2) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        Initialize the persistent numerical backend (initialize-backend#1) ← via modelARef [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n          Declare fixed inference proof settings (declare-plan#0) ← via qualityPolicy [wrote: backendPlan, fixtureSource, qualityPolicy, nativeRetryPolicy, numericalEnvironment, releasedPredictionRef, retryScratch]\n    ↳ initialize-backend#1 (see above)\n    ↳ declare-plan#0 (see above)\n  Mistakenly load actual B into the cache (load-wrong-cache#5) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n    ↳ initialize-backend#1 (see above)\n    ↳ load-approved-A#2 (see above)\n  Choose how to handle the stale prediction (route-stale#8) ← [control: Denied prediction: reload the approved model]\n    Check stale output against independently approved A (guard-stale#7) ← via staleAllowed [wrote: wrongInferenceDecision, staleAllowed, staleOutputExposed]\n      Predict with the actual stale cache (predict-stale#6) ← via staleReceipt [wrote: staleInferenceId, staleReceipt, staleBackendObservation]\n        ↳ initialize-backend#1 (see above)\n        ↳ load-wrong-cache#5 (see above)\n      ↳ approve-model-A#4 (see above)\n      ↳ initialize-backend#1 (see above)\n      ↳ declare-plan#0 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 7,
+      "tool": "who_wrote",
+      "args": {
+        "key": "staleReceipt",
+        "beforeStageId": "guard-stale#7"
+      },
+      "result": "'staleReceipt' was last written by predict-stale#6 — \"Predict with the actual stale cache\" (verb: set): {\"kind\":\"inference-receipt\",\"schemaVersion\":1,\"inferenceId\":\"2a6e8ce5-4816-4475-a086-9029037e13fa\",\"createdAt\":1793309512248,\"inputRef\":{\"kind\":\"artifact\",\"path… (5656 chars total — get_value('predict-stale#6', 'staleReceipt') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 8,
+      "tool": "who_wrote",
+      "args": {
+        "key": "cacheObservation",
+        "beforeStageId": "predict-stale#6"
+      },
+      "result": "'cacheObservation' was last written by load-wrong-cache#5 — \"Mistakenly load actual B into the cache\" (verb: set): {\"modelRef\":{\"kind\":\"model\",\"sessionId\":\"f7eafe64-4303-47fe-8774-6a1de21ecca8\",\"handle\":2,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"backend/model-B.json\",\"sha… (598 chars total — get_value('load-wrong-cache#5', 'cacheObservation') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 9,
+      "tool": "who_wrote",
+      "args": {
+        "key": "approvedModelRef",
+        "beforeStageId": "guard-stale#7"
+      },
+      "result": "'approvedModelRef' was last written by approve-model-A#4 — \"Approve A against its fresh evaluation\" (verb: set): {\"kind\":\"model\",\"sessionId\":\"f7eafe64-4303-47fe-8774-6a1de21ecca8\",\"handle\":1,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"backend/model-A.json\",\"sha256\":\"12d283… (496 chars total — get_value('approve-model-A#4', 'approvedModelRef') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 10,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "guard-stale#7",
+        "key": "staleReceipt\u001fmodelRef\u001finferenceIdentity\u001fsha256"
+      },
+      "result": "VALUE of 'staleReceipt.modelRef.inferenceIdentity.sha256' as of guard-stale#7:\n\"4d07b2de53779ba4780c7003009ec445c68958d1567432a843a0be2e3d4a073a\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 11,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "guard-stale#7",
+        "key": "approvedModelRef\u001finferenceIdentity\u001fsha256"
+      },
+      "result": "VALUE of 'approvedModelRef.inferenceIdentity.sha256' as of guard-stale#7:\n\"c926b5bd261dcd8b519aa3dc512af825ae4a3e25fa510196c5c8bc356862eead\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 12,
+      "tool": "trace_node",
+      "args": {
+        "runtimeStageId": "repair-cache#9"
+      },
+      "result": "STEP repair-cache#9 — \"Reload approved A in the same worker\"\nwrote (3):\n- cacheBinding (set): {\"kind\":\"model\",\"sessionId\":\"f7eafe64-4303-47fe-8774-6a1de21ecca8\",\"handle\":1,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"backend/model-A.json\",\"sha256\":\"12d283… (496 chars total — get_value('repair-cache#9', 'cacheBinding') for full)\n- cacheObservation (set): {\"modelRef\":{\"kind\":\"model\",\"sessionId\":\"f7eafe64-4303-47fe-8774-6a1de21ecca8\",\"handle\":1,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"backend/model-A.json\",\"sha… (598 chars total — get_value('repair-cache#9', 'cacheObservation') for full)\n- repairChoice (set): \"reload-approved-A\"\nread (2): approvedModelRef, cacheBinding\nparents:\n- data: approvedModelRef ← approve-model-A#4 \"Approve A against its fresh evaluation\"\n- data: cacheBinding ← load-wrong-cache#5 \"Mistakenly load actual B into the cache\"\n- control: routed here by route-stale#8 — rule \"Denied prediction: reload the approved model\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 13,
+      "tool": "trace_node",
+      "args": {
+        "runtimeStageId": "permit-output#14"
+      },
+      "result": "STEP permit-output#14 — \"Expose the exact accepted output reference\"\nwrote (2):\n- releasedPredictionRef (set): {\"kind\":\"artifact\",\"path\":\"backend/private/a3e89a97-0c25-4fb3-9b00-d207386eb855-output.json\",\"sha256\":\"23519128799144433a1829ba0d57feff318fa92acb712624de6ccee0c… (232 chars total — get_value('permit-output#14', 'releasedPredictionRef') for full)\n- handoffChoice (set): \"accepted-corrected-output\"\nread (1): correctedReceipt\nparents:\n- data: correctedReceipt ← predict-corrected#11 \"Predict with A, retrying one explicit transient worker failure\"\n- control: routed here by route-corrected#13 — rule \"Matching actual A evidence permits this exact output\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 14,
+      "tool": "trace_node",
+      "args": {
+        "runtimeStageId": "predict-corrected#11"
+      },
+      "result": "STEP predict-corrected#11 — \"Predict with A, retrying one explicit transient worker failure\"\nwrote (4):\n- retryScratch (set): {\"status\":\"success\",\"inferenceId\":\"a3e89a97-0c25-4fb3-9b00-d207386eb855\",\"initialPendingValueAbsent\":true}\n- correctedReceipt (set): {\"kind\":\"inference-receipt\",\"schemaVersion\":1,\"inferenceId\":\"a3e89a97-0c25-4fb3-9b00-d207386eb855\",\"createdAt\":1793309512262,\"inputRef\":{\"kind\":\"artifact\",\"path… (5656 chars total — get_value('predict-corrected#11', 'correctedReceipt') for full)\n- correctedBackendObservation (set): {\"workerPid\":12537,\"sessionId\":\"f7eafe64-4303-47fe-8774-6a1de21ecca8\",\"cacheGeneration\":3,\"beforeModelRef\":{\"kind\":\"model\",\"sessionId\":\"f7eafe64-4303-47fe-8774-… (1422 chars total — get_value('predict-corrected#11', 'correctedBackendObservation') for full)\n- correctedRetryObservation (set): {\"attempts\":2,\"privateArtifactsBeforeFault\":2,\"privateArtifactsAfterFault\":2,\"injectedFailures\":1,\"failedBeforeComputation\":true,\"actualPredictionCalls\":1,\"work… (297 chars total — get_value('predict-corrected#11', 'correctedRetryObservation') for full)\nread (4): retryScratch, correctedInferenceId, predictionInputRef, cacheObservation\nparents:\n- data: retryScratch ← declare-plan#0 \"Declare fixed inference proof settings\"\n- data: correctedInferenceId ← prepare-corrected-invocation#10 \"Commit one stable corrected invocation ID\"\n- data: predictionInputRef ← initialize-backend#1 \"Initialize the persistent numerical backend\"\n- data: cacheObservation ← repair-cache#9 \"Reload approved A in the same worker\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 15,
+      "tool": "attention_list",
+      "args": {},
+      "result": "{\"tool\":\"attention_list\",\"mode\":\"recorded-evidence\",\"confidence\":\"incomplete\",\"gaps\":[{\"code\":\"truncated\",\"evidence\":[]}],\"capture\":{\"status\":\"incomplete\",\"reason\":\"missing-attestation\",\"scope\":\"root-log\",\"persistence\":\"memory-only\",\"readSources\":\"not-collected\"},\"interpretation\":\"Not sure: the requested evidence is incomplete. No root cause is asserted. Snapshot-only records have no engine-written capture/end attestation. This reader cannot prove a root cause from them, even after a normally finished run.\"}",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    }
+  ],
+  "snapshotOnlyBaseline": [
+    {
+      "ordinal": 1,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "releasedPredictionRef"
+      },
+      "result": "SLICE for 'releasedPredictionRef' — reads via: custom-fn\nExpose the exact accepted output reference (permit-output#14) [wrote: releasedPredictionRef, handoffChoice]\n  Predict with A, retrying one explicit transient worker failure (predict-corrected#11) ← via correctedReceipt [wrote: retryScratch, correctedReceipt, correctedBackendObservation, correctedRetryObservation, retryScratch]\n    Declare fixed inference proof settings (declare-plan#0) ← via retryScratch [wrote: backendPlan, fixtureSource, qualityPolicy, nativeRetryPolicy, numericalEnvironment, releasedPredictionRef, retryScratch]\n    Commit one stable corrected invocation ID (prepare-corrected-invocation#10) ← via correctedInferenceId [wrote: correctedInferenceId]\n    Initialize the persistent numerical backend (initialize-backend#1) ← via predictionInputRef [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n      ↳ declare-plan#0 (see above)\n    Reload approved A in the same worker (repair-cache#9) ← via cacheObservation [wrote: cacheBinding, cacheObservation, repairChoice]\n      Approve A against its fresh evaluation (approve-model-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n        Evaluate actual A on the held-out validation rows (evaluate-approved-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n          Load actual A for validation (load-approved-A#2) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n            ↳ initialize-backend#1 (see above)\n        ↳ initialize-backend#1 (see above)\n        ↳ declare-plan#0 (see above)\n      Mistakenly load actual B into the cache (load-wrong-cache#5) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        ↳ initialize-backend#1 (see above)\n        ↳ load-approved-A#2 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 2,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "repairChoice"
+      },
+      "result": "SLICE for 'repairChoice' — reads via: custom-fn\nReload approved A in the same worker (repair-cache#9) [wrote: cacheBinding, cacheObservation, repairChoice]\n  Approve A against its fresh evaluation (approve-model-A#4) ← via approvedModelRef [wrote: approvalDecision, approvedModelRef]\n    Evaluate actual A on the held-out validation rows (evaluate-approved-A#3) ← via evaluationReceipt [wrote: evaluationReceipt, validationBackendObservation]\n      Load actual A for validation (load-approved-A#2) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n        Initialize the persistent numerical backend (initialize-backend#1) ← via modelARef [wrote: backend, modelARef, modelBRef, predictionInputRef, predictionRows, expectedContract]\n          Declare fixed inference proof settings (declare-plan#0) ← via qualityPolicy [wrote: backendPlan, fixtureSource, qualityPolicy, nativeRetryPolicy, numericalEnvironment, releasedPredictionRef, retryScratch]\n    ↳ initialize-backend#1 (see above)\n    ↳ declare-plan#0 (see above)\n  Mistakenly load actual B into the cache (load-wrong-cache#5) ← via cacheBinding [wrote: cacheBinding, cacheObservation]\n    ↳ initialize-backend#1 (see above)\n    ↳ load-approved-A#2 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    }
+  ],
+  "nativeExecutionObservations": {
+    "decisions": [
+      {
+        "deciderRuntimeStageId": "route-stale#8",
+        "chosen": "Reload approved A in the same worker",
+        "evidence": {
+          "rules": [
+            {
+              "type": "filter",
+              "ruleIndex": 0,
+              "branch": "repair-cache",
+              "matched": true,
+              "label": "Denied prediction: reload the approved model",
+              "conditions": [
+                {
+                  "key": "staleAllowed",
+                  "op": "eq",
+                  "threshold": false,
+                  "actualSummary": "false",
+                  "result": true,
+                  "redacted": false
+                }
+              ]
+            }
+          ],
+          "chosen": "repair-cache",
+          "default": "unexpected-stale-handoff",
+          "defaultLabel": "Unexpected stale acceptance must stop the proof"
+        },
+        "ruleLabel": "Denied prediction: reload the approved model"
+      },
+      {
+        "deciderRuntimeStageId": "route-corrected#13",
+        "chosen": "Expose the exact accepted output reference",
+        "evidence": {
+          "rules": [
+            {
+              "type": "filter",
+              "ruleIndex": 0,
+              "branch": "permit-output",
+              "matched": true,
+              "label": "Matching actual A evidence permits this exact output",
+              "conditions": [
+                {
+                  "key": "correctedAllowed",
+                  "op": "eq",
+                  "threshold": true,
+                  "actualSummary": "true",
+                  "result": true,
+                  "redacted": false
+                }
+              ]
+            }
+          ],
+          "chosen": "permit-output",
+          "default": "refuse-corrected-output",
+          "defaultLabel": "A refused prediction must not be exposed"
+        },
+        "ruleLabel": "Matching actual A evidence permits this exact output"
+      }
+    ],
+    "retries": [
+      {
+        "type": "onStageRetry",
+        "stageName": "Predict with A, retrying one explicit transient worker failure",
+        "stageId": "predict-corrected",
+        "attempt": 1,
+        "maxAttempts": 2,
+        "delayMs": 0,
+        "message": "Numerical backend TransientInferenceFault: Injected transient inference fault before prediction computation or artifact creation",
+        "structuredError": {
+          "message": "Numerical backend TransientInferenceFault: Injected transient inference fault before prediction computation or artifact creation",
+          "name": "NumericalBackendError",
+          "raw": {
+            "name": "NumericalBackendError",
+            "backendType": "TransientInferenceFault"
+          }
+        },
+        "traversalContext": {
+          "runId": "1793309494935-0000000001",
+          "stageId": "predict-corrected",
+          "runtimeStageId": "predict-corrected#11",
+          "stageName": "Predict with A, retrying one explicit transient worker failure",
+          "parentStageId": "prepare-corrected-invocation",
+          "parentRuntimeStageId": "prepare-corrected-invocation#10",
+          "depth": 0
+        },
+        "channel": "flow",
+        "retryScratchAfterDiscard": null
+      }
+    ],
+    "retryStage": {
+      "runtimeStageId": "predict-corrected#11",
+      "nativeNodeResult": "STEP predict-corrected#11 — \"Predict with A, retrying one explicit transient worker failure\"\nwrote (4):\n- retryScratch (set): {\"status\":\"success\",\"inferenceId\":\"a3e89a97-0c25-4fb3-9b00-d207386eb855\",\"initialPendingValueAbsent\":true}\n- correctedReceipt (set): {\"kind\":\"inference-receipt\",\"schemaVersion\":1,\"inferenceId\":\"a3e89a97-0c25-4fb3-9b00-d207386eb855\",\"createdAt\":1793309512262,\"inputRef\":{\"kind\":\"artifact\",\"path… (5656 chars total — get_value('predict-corrected#11', 'correctedReceipt') for full)\n- correctedBackendObservation (set): {\"workerPid\":12537,\"sessionId\":\"f7eafe64-4303-47fe-8774-6a1de21ecca8\",\"cacheGeneration\":3,\"beforeModelRef\":{\"kind\":\"model\",\"sessionId\":\"f7eafe64-4303-47fe-8774-… (1422 chars total — get_value('predict-corrected#11', 'correctedBackendObservation') for full)\n- correctedRetryObservation (set): {\"attempts\":2,\"privateArtifactsBeforeFault\":2,\"privateArtifactsAfterFault\":2,\"injectedFailures\":1,\"failedBeforeComputation\":true,\"actualPredictionCalls\":1,\"work… (297 chars total — get_value('predict-corrected#11', 'correctedRetryObservation') for full)\nread (4): retryScratch, correctedInferenceId, predictionInputRef, cacheObservation\nparents:\n- data: retryScratch ← declare-plan#0 \"Declare fixed inference proof settings\"\n- data: correctedInferenceId ← prepare-corrected-invocation#10 \"Commit one stable corrected invocation ID\"\n- data: predictionInputRef ← initialize-backend#1 \"Initialize the persistent numerical backend\"\n- data: cacheObservation ← repair-cache#9 \"Reload approved A in the same worker\""
+    },
+    "sourcePointers": [
+      "/supplemental/flowEvents",
+      "/supplemental/nativeDecisions",
+      "/supplemental/nativeControl"
+    ]
+  },
+  "controlLookup": {
+    "restored": true,
+    "profile": "footprint-control-lookup-snapshot/v1",
+    "capturedDependencies": 2,
+    "source": "Saved outputs of the public controlDepRecorder lookup during this actual run; no edges inferred from chart order."
+  },
+  "execution": {
+    "savedJsonOnly": true,
+    "trainingStarted": false,
+    "predictionRepeated": false,
+    "numericalEvaluationRepeated": false,
+    "guardRecomputed": false,
+    "publicationPerformed": false
+  },
+  "boundaries": [
+    "Controlled stale-cache, transient-error and field-order failures in one local numerical worker, not a deployed serving system.",
+    "FootPrint executes this chart, chooses its branches and retries predict-corrected. The earlier run.py example keeps orchestration in Python and uses native data capture only.",
+    "The caller checks the worker PID, session, cache generation and actual model identity before retaining prediction evidence. Native scope tracking does not automatically observe worker internals.",
+    "The failed attempt occurs before numerical computation or artifact creation. Native retry discards staged scope writes; it does not roll back arbitrary external side effects.",
+    "The native commit log has one successful predict-corrected commit. Its retry event separately records the failed attempt; failed pending writes are not fabricated as commits.",
+    "Public controlDepRecorder lookup results are saved separately as explicit application observations. The untouched executor snapshot does not contain an engine-attested control-dependency recorder.",
+    "Evaluation approval and prediction-observation checks are separate decisions; neither establishes general model suitability or numerical quality.",
+    "Model source hashes are checked on load. Prediction identity is measured from actual in-memory classifier/scaler state before and after computation.",
+    "Blocked output artifacts remain private debugging evidence. Only the accepted A output reference is exposed by the application handoff scope key.",
+    "Label differences are observed for the fixed models and batch; they are not a precondition for denying a mismatched model.",
+    "Numerical warnings are retained and forwarded, not suppressed or automatically diagnosed."
+  ]
+}

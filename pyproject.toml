@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "footprintjs-ml"
-version = "0.6.0b7"
+version = "0.6.0b8"
 description = "Python workflow capture and ML evidence bindings over the FootPrint runtime"
 readme = "README.md"
 requires-python = ">=3.11"

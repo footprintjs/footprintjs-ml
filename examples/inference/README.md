@@ -1,6 +1,8 @@
 # Catch a stale inference cache using actual backend observations
 
-This is a local Python application with one persistent numerical worker. FootPrint records references, receipts and decisions; models and arrays stay in the worker or safe numeric artifact files. It is not a hosted inference platform.
+This folder offers two workflows over one persistent numerical worker: Python-owned capture and an actual native FootPrint chart. Both keep models and arrays in the worker or safe numeric artifact files, while scope holds references, receipts and decisions. Neither is a hosted inference platform.
+
+## Python-owned capture
 
 Install the optional example dependencies in your numerical environment and choose a fresh output directory:
 
@@ -9,7 +11,26 @@ python -m pip install -r examples/inference/requirements.txt
 python examples/inference/run.py --out ./inference-run
 ```
 
-Use the matching installed Python SDK/helper or a built source checkout. `--runtime-dir DIR` selects an explicit installed helper. The controller prefers an installed SDK before using its source fallback.
+Use the matching installed Python SDK/helper or a built source checkout. `--runtime-dir DIR` selects an explicit installed helper. The controller prefers an installed SDK before using its source fallback. In this path Python owns the stages, branches and retries. `WorkflowCapture` records its explicit scope operations through the foottrace writer; no FootPrint executor is running.
+
+## Native FootPrint stages, deciders and retry
+
+Use the explicit Node workflow packages from [the quickstart](../../QUICKSTART.md), plus the numerical requirements above. From the SDK source/package root:
+
+```sh
+node examples/inference/native-run.mjs --out ./native-inference-run --python .venv/bin/python
+node examples/inference/native-investigate.mjs --run ./native-inference-run
+```
+
+From another project, use the corresponding paths under `node_modules/footprintjs-ml/`. `--out` must be a new directory; `--python` selects the numerical environment. This command is a Node-owned workflow, not the Python `example-inference` launcher.
+
+The [native workflow](native-run.mjs), using its [numerical client](native-client.mjs), gives an actual `FlowChartExecutor` control of the chart's function and decider stages. A declared native stage retry handles a controlled transient backend failure; the corrected prediction's invocation ID stays fixed across that retry. Deciders route inference outcomes into blocked or handoff branches. The implementation retains the real executor snapshot and attached public control/decision observations rather than manufacturing a commit log from callbacks.
+
+The recording uses the native inference envelope, and the shared outcome keeps `execution.orchestration: 'footprintjs-flowchart'`. Saved keys include `wrongInferenceDecision`, `correctedInferenceDecision` and `releasedPredictionRef`. These names differ from the Python path's `staleDecision` and `correctedDecision`. The native investigator reads the saved record with backend spawning forbidden. The workflow explicitly retains public control-recorder lookup results and the [example control adapter](native-control.mjs) reopens them through the existing toolpack bridge after checking run, commit and governing-decider references. The investigator compares this control-enabled result with a snapshot-only baseline that still reports missing control lookup. This adapter supplies no producer authentication or end-to-end capture attestation.
+
+The worker remains the same numerical boundary. Native retry state rollback does not undo worker, file or external effects. This example does not establish crash durability, authenticated backend observations or production serving guarantees.
+
+## Shared numerical proof
 
 The fixtures retain the real digit classifier A, fitted scaler S1 and fixed train/validation data from the earlier MLflow proof. Their original source hashes are checked before use. Before observing B's results, the worker trains B once with the predetermined regularization setting `C=0.0001`, using the same training rows and S1. The inference batch is always the first 64 validation rows; neither setting is tuned to manufacture a difference.
 

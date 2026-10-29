@@ -1,0 +1,136 @@
+{
+  "name": "footprintjs-ml",
+  "version": "0.6.0-beta.8",
+  "description": "ML evidence, selection and release APIs with optional trainer, publisher and Lens subpaths",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./adapter": {
+      "types": "./dist/adapter/index.d.ts",
+      "import": "./dist/adapter/index.js"
+    },
+    "./lens": {
+      "types": "./lens/session.d.ts",
+      "import": "./lens/session.mjs"
+    },
+    "./conformance": {
+      "types": "./dist/conformance/index.d.ts",
+      "import": "./dist/conformance/index.js"
+    },
+    "./release": {
+      "types": "./dist/release/index.d.ts",
+      "import": "./dist/release/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "tsconfig.json",
+    "build.mjs",
+    "README.md",
+    "ADAPTER.md",
+    "DATA-LINEAGE.md",
+    "LICENSE",
+    "python/*.py",
+    "python/footprint_ml_adapter/*.py",
+    "python/tests/*.py",
+    "python/README.md",
+    "lens/session.mjs",
+    "lens/session.d.ts",
+    "SELECTION.md",
+    "RELEASE.md",
+    "QUICKSTART.md",
+    "COMPATIBILITY.md",
+    "examples/quickstart/*.mjs",
+    "examples/quickstart/*.py",
+    "examples/quickstart/*.json",
+    "examples/quickstart/*.txt",
+    "examples/quickstart/*.md",
+    "examples/quickstart/*.html",
+    "examples/quickstart/*.css",
+    "BACKTRACKING.md",
+    "examples/selection-backtracking/*.mjs",
+    "examples/selection-backtracking/*.json",
+    "examples/selection-backtracking/*.md",
+    "MLFLOW.md",
+    "examples/mlflow/*.py",
+    "examples/mlflow/*.mjs",
+    "examples/mlflow/*.txt",
+    "examples/mlflow/*.md",
+    "pyproject.toml",
+    "PYTHON.md",
+    "examples/python-adoption/*.py",
+    "examples/python-adoption/*.md",
+    "TESTING.md",
+    "features",
+    "skills",
+    "AGENTS.md",
+    "examples/python-guards/*.py",
+    "examples/python-guards/*.mjs",
+    "examples/python-guards/*.json",
+    "examples/python-guards/*.md",
+    "examples/python-guards/evidence/*.json",
+    "INFERENCE.md",
+    "examples/inference/*.py",
+    "examples/inference/*.mjs",
+    "examples/inference/*.json",
+    "examples/inference/*.md",
+    "examples/inference/*.txt",
+    "examples/inference/fixtures/*.json"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "pretest": "npm run build",
+    "test": "node --test tests/*.test.mjs",
+    "test:python": "python3 -m unittest discover -s python/tests -v",
+    "prepack": "npm run build",
+    "beta:smoke": "node scripts/beta-smoke.mjs",
+    "test:backtracking": "npm run build && node --test tests/headless-investigation.test.mjs tests/selection-backtracking.test.mjs",
+    "example:mlflow:investigate": "node examples/mlflow/investigate.mjs",
+    "test:optional-dependencies": "node scripts/check-optional-dependencies.mjs",
+    "build:python": "node scripts/build-python.mjs",
+    "beta:python": "python3 scripts/python-install-smoke.py",
+    "check:agent-docs": "node scripts/check-agent-docs.mjs"
+  },
+  "devDependencies": {
+    "typescript": "5.4.5",
+    "@types/node": "22.20.5",
+    "footprintjs": "10.0.0",
+    "foottrace": "1.8.0",
+    "agentfootprint": "11.0.0"
+  },
+  "bin": {
+    "footprint-ml-conformance": "./dist/conformance/cli.js",
+    "footprint-ml": "./examples/quickstart/cli.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/footprintjs/footprintjs-ml.git"
+  },
+  "homepage": "https://footprintjs.github.io/footprintjs-ml/",
+  "bugs": {
+    "url": "https://github.com/footprintjs/footprintjs-ml/issues"
+  },
+  "keywords": [
+    "machine-learning",
+    "provenance",
+    "model-release",
+    "footprintjs",
+    "typescript",
+    "python"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "tag": "beta"
+  }
+}

@@ -90,3 +90,9 @@ jobs:
         run: node --permission --allow-fs-read=. --allow-fs-write=.artifacts/inference-proof examples/inference/investigate.mjs --run .artifacts/inference-proof
       - name: Independently audit inference labels without numerical packages
         run: python -I -S examples/inference/audit.py --run .artifacts/inference-proof
+      - name: Run inference through FootPrint decisions and native retry
+        run: node examples/inference/native-run.mjs --out .artifacts/native-inference-proof --python python
+      - name: Reopen the executor proof without backend or process access
+        run: node --permission --allow-fs-read=node_modules --allow-fs-read=examples/inference --allow-fs-read=package.json --allow-fs-read=lens --allow-fs-read=.artifacts/native-inference-proof/recording.json --allow-fs-read=.artifacts/native-inference-proof/outcome.json --allow-fs-write=.artifacts/native-inference-proof/native-investigation.json examples/inference/native-investigate.mjs --run .artifacts/native-inference-proof
+      - name: Independently audit native-workflow prediction labels
+        run: python -I -S examples/inference/audit.py --run .artifacts/native-inference-proof

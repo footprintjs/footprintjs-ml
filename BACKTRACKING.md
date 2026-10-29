@@ -1,6 +1,6 @@
 # Backtrack a saved ML result
 
-**Beta 0.6.0-beta.7. APIs may change.** This guide covers the generic saved-recording reader and the existing ML decision reader in the same optional `/lens` entry point.
+**Beta 0.6.0-beta.8. APIs may change.** This guide covers the generic saved-recording reader and the existing ML decision reader in the same optional `/lens` entry point.
 
 A surprising ML result is a useful starting point for investigation: a selected candidate, a score, a checkpoint reference or a release decision. Reopen the saved workflow and follow the recorded value to its writer, then to the inputs that writer read. No browser or live trainer is required.
 

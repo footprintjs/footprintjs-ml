@@ -75,6 +75,26 @@ The decision has `allowed`, `status`, reasons, checked time, invocation ID and e
 
 The guard performs no output-delivery or registry effect. If the workflow gates output delivery, retain the backend output until approval and then deliver the exact observed output reference. A denied or unknown result should not be made harmless merely by changing its label. This local pattern is not a hosted serving system, distributed cache protocol or transactional deployment guarantee.
 
+## Choose workflow ownership
+
+The inference contracts are independent of the workflow host. Two examples share the numerical backend while retaining different execution evidence:
+
+| Path | Who controls stages, decisions and retries? | What creates the recording? |
+| --- | --- | --- |
+| Python-owned `run.py` | The Python application and its explicit stage contexts | `WorkflowCapture` forwards chosen scope operations to the native foottrace writer; no FootPrint executor runs. |
+| Native `native-run.mjs` | An actual FootPrint `FlowChartExecutor` runs function and decider stages, with a declared native retry policy | The executor snapshot and attached public recorders retain the execution evidence. |
+
+To use FootPrint's existing orchestration, run the native example after installing the documented Node peers and numerical example requirements:
+
+```sh
+node examples/inference/native-run.mjs --out ./native-inference-run --python .venv/bin/python
+node examples/inference/native-investigate.mjs --run ./native-inference-run
+```
+
+Function stages call the numerical worker and the same pure ML guards. Decider stages route the observed inference decision into the application's handoff or blocked path. A native stage retry handles a controlled transient backend error; it is not a manually labelled Python attempt. Models and arrays remain in the worker/artifacts, and scope holds references and small evidence. The example's output handoff is still an application operation, not a hosted serving or registry system.
+
+Retain the actual executor snapshot and recorder output. Do not reconstruct native commit logs from backend callbacks or treat application observations as automatically instrumented backend internals. Native retry state rollback does not roll back numerical work, file writes or external effects. Snapshot replay does not restart a worker, resume training or establish crash durability. A snapshot-only reader has no retained control lookup. This native example explicitly saves the public control recorder's lookup results and reopens them with its bundled [control adapter](https://github.com/footprintjs/footprintjs-ml/blob/main/examples/inference/native-control.mjs), which validates the run and committed decision/stage references before supplying the existing toolpack bridge. Its investigator compares that result with the snapshot-only baseline. This is example integration, not a new graph engine or core export. Capture-completeness, authentication and any remaining native warnings still apply. See the [example guide](https://github.com/footprintjs/footprintjs-ml/blob/main/examples/inference/README.md) for both paths and their commands.
+
 ## Use it from Python and retain its history
 
 A started `WorkflowCapture` exposes `create_prediction_contract`, `read_prediction_contract`, `create_inference_receipt`, `read_inference_receipt` and `check_inference`. Each takes the corresponding single JSON input and delegates to the same TypeScript functions. JSON fields keep their camelCase names. No numerical framework is added to the SDK or wheel dependencies.

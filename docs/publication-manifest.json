@@ -7,16 +7,16 @@
   "hashScope": "files hashes cover published bytes. originalRetainedSource hashes cover private retained authoring inputs. The manifest itself is intentionally excluded from its own hash list. These checksums are integrity references, not signatures.",
   "projection": "Only local path strings, repository-document link targets and publication-specific source/checksum descriptions are changed. Logical recorded digests, model IDs and numerical claims are retained.",
   "evidence": {
-    "count": 151,
-    "byteIdentical": 132,
+    "count": 163,
+    "byteIdentical": 144,
     "pathProjected": 13,
     "documentLinksProjected": 6
   },
   "validation": {
     "passed": true,
-    "staticLinksChecked": 158,
+    "staticLinksChecked": 170,
     "classicScriptsParsed": 9,
-    "embeddedSourceMappingsChecked": 604,
+    "embeddedSourceMappingsChecked": 652,
     "personalFilesystemPaths": 0,
     "localServerDependencies": 0,
     "credentialPatternMatches": 0,
@@ -1161,12 +1161,12 @@
     {
       "path": "evidence/backtracking-guide.md",
       "published": {
-        "sha256": "7edbfd48a0ddebdbed34fb5edd023aed089c1cc7a50d0bf0138edd6da346a409",
+        "sha256": "3630bf0d3ffeef1035d6f4ec077836f32c858705c22c8b31f29449deda2c8dc4",
         "bytes": 6670
       },
       "originalRetainedSource": {
         "path": "evidence/backtracking-guide.md",
-        "sha256": "1291661200f93c3f8cafa8617b7102328fed600c9e681fa08e099dae46e8976f",
+        "sha256": "6bc5373c91f2ae0adf7b39944bf62a1a46225469559cba52d19805fc66170806",
         "bytes": 6502
       },
       "projectionFlags": [
@@ -1465,12 +1465,12 @@
     {
       "path": "evidence/mlflow-package.json",
       "published": {
-        "sha256": "2a690570d301091c22a24f6228dff03645c36c2aac204a3c6d9708e5e90ed7c6",
+        "sha256": "1fbea19350ed502acd965ab094235ef57a976a0ae66f5e5fb61acdf015fb7d8b",
         "bytes": 3886
       },
       "originalRetainedSource": {
         "path": "evidence/mlflow-package.json",
-        "sha256": "2a690570d301091c22a24f6228dff03645c36c2aac204a3c6d9708e5e90ed7c6",
+        "sha256": "1fbea19350ed502acd965ab094235ef57a976a0ae66f5e5fb61acdf015fb7d8b",
         "bytes": 3886
       },
       "projectionFlags": [],
@@ -1569,13 +1569,13 @@
     {
       "path": "evidence/python-install-guide.md",
       "published": {
-        "sha256": "164145513b347ca84e56d1f92e089c76e357d0c8543ec451602021421c536ff7",
-        "bytes": 11858
+        "sha256": "da8e1f1566c37aaaf6dacf7dea65738df07ff50f27d3328e0a5dd928bd899e9c",
+        "bytes": 12277
       },
       "originalRetainedSource": {
         "path": "evidence/python-install-guide.md",
-        "sha256": "3a073becc324c591f2cf7b57514872d867a8777eb4d2e384cd8f962e6bcae22d",
-        "bytes": 11242
+        "sha256": "0a94c4057627f46b1b7341fea29422f04c9d3aa31410afd3fac986592b336829",
+        "bytes": 11605
       },
       "projectionFlags": [
         "repository-document-links"
@@ -2063,13 +2063,13 @@
     {
       "path": "evidence/inference-guide.md",
       "published": {
-        "sha256": "4354bed9c4a2530f3a0aec457d12c9502e99ad28fcee90d7897046e7b77cb4c6",
-        "bytes": 4083
+        "sha256": "ba519f997c71f1ed481086e5925285637782c73fb71b6757cc95b4db1f470d09",
+        "bytes": 6934
       },
       "originalRetainedSource": {
         "path": "evidence/inference-guide.md",
-        "sha256": "71cdcc485a3e961964304224e68783373ebce53a38b646e315fbea1050bcf712",
-        "bytes": 4008
+        "sha256": "ed06697b2270587b47918e8e577d466cb374715868661c30b87f43d3250ea461",
+        "bytes": 6584
       },
       "projectionFlags": [
         "repository-document-links"
@@ -2079,13 +2079,13 @@
     {
       "path": "evidence/inference-contract-guide.md",
       "published": {
-        "sha256": "fdf5aea12cfa6a369f7e78803b193613d50576962a10ac83b7f25ceebceeae41",
-        "bytes": 8150
+        "sha256": "c575b0a3e287d67c98f1bf2931cd70e9b0f40917c05d47c18763d05e25bfaaf8",
+        "bytes": 10824
       },
       "originalRetainedSource": {
         "path": "evidence/inference-contract-guide.md",
-        "sha256": "fb61969fd8314f21be1f94294f46f69e34d5b61cc6bfcbc2006015144acd5604",
-        "bytes": 7702
+        "sha256": "c11bedfa6cdfc872f3cff8b2d5082070fbeaca5199987899f05a911883169179",
+        "bytes": 10264
       },
       "projectionFlags": [
         "repository-document-links"
@@ -2191,15 +2191,183 @@
       "byteIdenticalToRetainedSource": true
     },
     {
+      "path": "evidence/native-inference-control.mjs.txt",
+      "published": {
+        "sha256": "a805785f61401d893fd62d986c0f5afb434d79c658ef6a525571d828cf3642fa",
+        "bytes": 3396
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-control.mjs.txt",
+        "sha256": "a805785f61401d893fd62d986c0f5afb434d79c658ef6a525571d828cf3642fa",
+        "bytes": 3396
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/native-inference-control-tests.mjs.txt",
+      "published": {
+        "sha256": "26a56c7abe86314ee20354893b1134c814cc5a7b7dcd65c29ebbf76ffa26c72d",
+        "bytes": 3957
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-control-tests.mjs.txt",
+        "sha256": "26a56c7abe86314ee20354893b1134c814cc5a7b7dcd65c29ebbf76ffa26c72d",
+        "bytes": 3957
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/native-inference-run.mjs.txt",
+      "published": {
+        "sha256": "f5317ac93c30e61cddaa881660c544b56b7c1f2e7589c0f54a595eb76e07733b",
+        "bytes": 23663
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-run.mjs.txt",
+        "sha256": "f5317ac93c30e61cddaa881660c544b56b7c1f2e7589c0f54a595eb76e07733b",
+        "bytes": 23663
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/native-inference-client.mjs.txt",
+      "published": {
+        "sha256": "d3195ac96d22a1caed3aa214df56ca15b3ad2e143cd1ef834e444b1ee2160174",
+        "bytes": 6694
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-client.mjs.txt",
+        "sha256": "d3195ac96d22a1caed3aa214df56ca15b3ad2e143cd1ef834e444b1ee2160174",
+        "bytes": 6694
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/native-inference-worker.py.txt",
+      "published": {
+        "sha256": "faf2f171c54995736d70573ff244939fd3554ccb9fdb89498051c959b0e030c9",
+        "bytes": 13480
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-worker.py.txt",
+        "sha256": "faf2f171c54995736d70573ff244939fd3554ccb9fdb89498051c959b0e030c9",
+        "bytes": 13480
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/native-inference-package.json",
+      "published": {
+        "sha256": "1fbea19350ed502acd965ab094235ef57a976a0ae66f5e5fb61acdf015fb7d8b",
+        "bytes": 3886
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-package.json",
+        "sha256": "1fbea19350ed502acd965ab094235ef57a976a0ae66f5e5fb61acdf015fb7d8b",
+        "bytes": 3886
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/native-inference-results.json",
+      "published": {
+        "sha256": "a42ce21f2898ae1677395a371762782f14d654b2aa661265d51549c4158ad78e",
+        "bytes": 74713
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-results.json",
+        "sha256": "a42ce21f2898ae1677395a371762782f14d654b2aa661265d51549c4158ad78e",
+        "bytes": 74713
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/native-inference-recording.json",
+      "published": {
+        "sha256": "38b9ec0082f8159b767e911976b0fc9d448dbad6ea253a21994f56f4cee7b878",
+        "bytes": 1917055
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-recording.json",
+        "sha256": "38b9ec0082f8159b767e911976b0fc9d448dbad6ea253a21994f56f4cee7b878",
+        "bytes": 1917055
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/native-inference-native.json",
+      "published": {
+        "sha256": "5225e5d727f483a392906a3c2fb4400c15cba2f941cc20a750bd9f419e1e137b",
+        "bytes": 38859
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-native.json",
+        "sha256": "5225e5d727f483a392906a3c2fb4400c15cba2f941cc20a750bd9f419e1e137b",
+        "bytes": 38859
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/native-inference-verify.json",
+      "published": {
+        "sha256": "cb1922456cec094f222415f970119fc67b3f893c1304c182d673deaeff908c6d",
+        "bytes": 8433
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-verify.json",
+        "sha256": "cb1922456cec094f222415f970119fc67b3f893c1304c182d673deaeff908c6d",
+        "bytes": 8433
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/native-inference-audit.json",
+      "published": {
+        "sha256": "e0599c45871d2d5639d2a8ea037a2b2d747eacf2bbe1f8321e822261dc4c4872",
+        "bytes": 5484
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-audit.json",
+        "sha256": "e0599c45871d2d5639d2a8ea037a2b2d747eacf2bbe1f8321e822261dc4c4872",
+        "bytes": 5484
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/native-inference-investigator.mjs.txt",
+      "published": {
+        "sha256": "b96319cc60a451f045edc5df825279fef5b4028c58f25b422fb0f7e8e8f682d8",
+        "bytes": 9851
+      },
+      "originalRetainedSource": {
+        "path": "evidence/native-inference-investigator.mjs.txt",
+        "sha256": "b96319cc60a451f045edc5df825279fef5b4028c58f25b422fb0f7e8e8f682d8",
+        "bytes": 9851
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
       "path": "index.html",
       "published": {
-        "sha256": "5084bde58b0697b024783d04d6fd3548305c07ec5f46dc34240bc2df5d3ca884",
-        "bytes": 729892
+        "sha256": "93ff37374bdb1b5882fd43faeb846aa52b348042c4f1a94cbe508e2de66f8b92",
+        "bytes": 769784
       },
       "originalRetainedSource": {
         "path": "index.html",
-        "sha256": "3c698e912f958d105c7baf8a8a8105763efb04df82336e95908dfe78a7e26cf6",
-        "bytes": 585952
+        "sha256": "81a4967e7b78f1b2f0475dece6b4415b5f0f2d4aebd4411a48a0d5f0102a89df",
+        "bytes": 613630
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -2210,13 +2378,13 @@
     {
       "path": "technical-story.html",
       "published": {
-        "sha256": "b074f18d1c56f4df5901cdbf1897318be07cda6734b5d35a83affecfff811e55",
-        "bytes": 1056034
+        "sha256": "87d0b4d5e6b5aed38a3e0f636906494ad34ca32fd866b30fb73e0f620fb72e51",
+        "bytes": 1100587
       },
       "originalRetainedSource": {
         "path": "technical-story.html",
-        "sha256": "fc293328ffe2b0a9207756caacae3ad178fa710c87963e9641111076384cc3a7",
-        "bytes": 912355
+        "sha256": "8d66b0b7c5ee65ca253b6131f754f901b103b1c94e79842374302e5d51c6c5b3",
+        "bytes": 944694
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -2228,13 +2396,13 @@
     {
       "path": "presentation-manifest.json",
       "published": {
-        "sha256": "a7e93e9f67584d8b6f2a1d93cada80a6399bce04d86544819e6351456cc3c950",
-        "bytes": 438982
+        "sha256": "4d0c881afd84271bb69b278be12000722997d7cecde153eb3c02c7d9d0a5e390",
+        "bytes": 465626
       },
       "originalRetainedSource": {
         "path": "presentation-manifest.json",
-        "sha256": "3ff2ec52aa598a39d2e0ff798bead01e57ac46980fbcf7df731a76b1a66ba0f2",
-        "bytes": 374412
+        "sha256": "9a5825d9b9499d45029bb08fa6b7cdd04211ffe3ef6e848aa843373f2d759fba",
+        "bytes": 395701
       },
       "projectionFlags": [
         "public-source-mappings",
@@ -2246,13 +2414,13 @@
     {
       "path": "EVIDENCE.md",
       "published": {
-        "sha256": "7988413de11c25711d57ee49e187afbe9e8f3ff90d3f31c8d2e4896c0fcf59f5",
-        "bytes": 187888
+        "sha256": "4180343418a4124130a6e1d0999d4514202c71a3c633ad95eb3dbab55e6866fd",
+        "bytes": 200223
       },
       "originalRetainedSource": {
         "path": "EVIDENCE.md",
-        "sha256": "688e4ba678c35020dd305e0bf8772c4b5e23bb5cebc4a6b385c1153d29442b9a",
-        "bytes": 171588
+        "sha256": "ca74bc686d847747b535d1debc37c3ea2f8ca6bd2181bfc7bca1e75633270e1c",
+        "bytes": 182715
       },
       "projectionFlags": [
         "public-evidence-links",
@@ -2287,7 +2455,7 @@
     {
       "path": "README.md",
       "published": {
-        "sha256": "24a1612addf06d4de64b8915f440eae8c1ee7f47202c3db437588953e416fa7e",
+        "sha256": "3cb08c2628c527ec9fac140173ccc75d3a7b8b7aa3b4f592cd904c586c54f8bf",
         "bytes": 2028
       },
       "projectionFlags": [],

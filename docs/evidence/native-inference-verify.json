@@ -1,0 +1,206 @@
+{
+  "schema": "footprint-ml-native-inference-verification/v1",
+  "passed": true,
+  "checks": {
+    "installedPythonVersionMatches": true,
+    "installedNativeVersionMatches": true,
+    "exampleBytesMatchSourceWheelArchiveAndBothInstallLocations": true,
+    "compiledAndSourceContractBytesMatchArchiveAndInstalledRuntime": true,
+    "installedPythonModulesMatchWheelAndSource": true,
+    "coldPythonInstallChecksPass": true,
+    "coldNativeConsumerPasses": true,
+    "sameArchiveUsedForConsumerTestsAndNumericalProof": true,
+    "capturedOutcomeMatchesSidecar": true,
+    "actualFootPrintOrchestration": true,
+    "allNineteenRealWorkflowChecksPass": true,
+    "twentyOneNativeCommits": true,
+    "twoActualNativeChoices": true,
+    "oneActualRetryForSameInvocation": true,
+    "failedScopeWritesDiscarded": true,
+    "noNumericOutputEffectOnFailedAttempt": true,
+    "nativeControlLookupRetainedDuringExecution": true,
+    "onlyCorrectedOutputHandedOff": true,
+    "nativeSavedInvestigationPasses": true,
+    "recordAndOutcomeUnchangedDuringInvestigation": true,
+    "savedInvestigationRunsNoModelOrGuard": true,
+    "independentNumericalAuditPasses": true,
+    "fullValidationMatchesIndependentAudit": true,
+    "warningsPreservedWithoutDiagnosisOrSuppression": true,
+    "recordingContainsNoNumericModelArrays": true,
+    "configuredNumericalThreadsRecorded": true
+  },
+  "installation": {
+    "npmVersion": "0.6.0-beta.8",
+    "pythonVersion": "0.6.0b8",
+    "wheel": {
+      "file": "footprintjs_ml-0.6.0b8-py3-none-any.whl",
+      "sha256": "1e124e0464afa008bba652888705504e3dfd13eb9fddc5657845b680a23b7063",
+      "bytes": 403566
+    },
+    "package": {
+      "file": "footprintjs-ml-0.6.0-beta.8.tgz",
+      "sha256": "a0ca23d9710ea314d29685389c8fca373b6c9e81acba87edc083fdaa88b2096b",
+      "bytes": 351262
+    },
+    "numericalExamplePackages": {
+      "numpy": "2.2.6",
+      "scikit-learn": "1.7.2",
+      "scipy": "1.18.1",
+      "joblib": "1.6.0",
+      "threadpoolctl": "3.7.0",
+      "cloudpickle": "3.1.2"
+    }
+  },
+  "sources": {
+    "recording": {
+      "sha256": "38b9ec0082f8159b767e911976b0fc9d448dbad6ea253a21994f56f4cee7b878",
+      "bytes": 1917055
+    },
+    "outcome": {
+      "sha256": "a42ce21f2898ae1677395a371762782f14d654b2aa661265d51549c4158ad78e",
+      "bytes": 74713
+    },
+    "audit": {
+      "sha256": "e0599c45871d2d5639d2a8ea037a2b2d747eacf2bbe1f8321e822261dc4c4872",
+      "bytes": 5484
+    },
+    "native-investigation": {
+      "sha256": "5225e5d727f483a392906a3c2fb4400c15cba2f941cc20a750bd9f419e1e137b",
+      "bytes": 38859
+    }
+  },
+  "exampleSourceBytes": [
+    {
+      "path": "examples/inference/DATASET.md",
+      "sha256": "076ba688bb9f93cfa639fc4b3ad77a02423fdd7ef8e0fe1c450374b547f253c4",
+      "bytes": 1668
+    },
+    {
+      "path": "examples/inference/README.md",
+      "sha256": "ed06697b2270587b47918e8e577d466cb374715868661c30b87f43d3250ea461",
+      "bytes": 6584
+    },
+    {
+      "path": "examples/inference/audit.py",
+      "sha256": "9e52cef2ec09012f4304930a04a72f6a2d50ee991543766cc19dcd8e5ce09851",
+      "bytes": 12591
+    },
+    {
+      "path": "examples/inference/backend_client.py",
+      "sha256": "6ee925af093be05cf30921c2a051266999249c9ab8555e90ecd5257eb1ee0d6e",
+      "bytes": 3611
+    },
+    {
+      "path": "examples/inference/fixtures/model-A.json",
+      "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+      "bytes": 12942
+    },
+    {
+      "path": "examples/inference/fixtures/scaler-S1.json",
+      "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+      "bytes": 3697
+    },
+    {
+      "path": "examples/inference/fixtures/source.json",
+      "sha256": "ba42a2ad9c47b1d1d01e1ac6a4e9adec0fb129cbbb7fd2e630ac90f6e758b2e0",
+      "bytes": 997
+    },
+    {
+      "path": "examples/inference/fixtures/train.json",
+      "sha256": "b055aeaad391639681e941d0ef6f95ba7f1aaa372893b5fa73542f0bb9c61162",
+      "bytes": 373762
+    },
+    {
+      "path": "examples/inference/fixtures/validation.json",
+      "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+      "bytes": 124969
+    },
+    {
+      "path": "examples/inference/investigate.mjs",
+      "sha256": "ce91042b9359dd96a4521e73f6c1aa1bda20ed3c53147f34cb1fd6af1fb595f8",
+      "bytes": 6819
+    },
+    {
+      "path": "examples/inference/native-client.mjs",
+      "sha256": "d3195ac96d22a1caed3aa214df56ca15b3ad2e143cd1ef834e444b1ee2160174",
+      "bytes": 6694
+    },
+    {
+      "path": "examples/inference/native-control.mjs",
+      "sha256": "a805785f61401d893fd62d986c0f5afb434d79c658ef6a525571d828cf3642fa",
+      "bytes": 3396
+    },
+    {
+      "path": "examples/inference/native-investigate.mjs",
+      "sha256": "b96319cc60a451f045edc5df825279fef5b4028c58f25b422fb0f7e8e8f682d8",
+      "bytes": 9851
+    },
+    {
+      "path": "examples/inference/native-run.mjs",
+      "sha256": "f5317ac93c30e61cddaa881660c544b56b7c1f2e7589c0f54a595eb76e07733b",
+      "bytes": 23663
+    },
+    {
+      "path": "examples/inference/numerical.py",
+      "sha256": "4b2a936d49cacda9521a245ee35a238e73d8bc9e7d12597d7f83192cbf4ff1dc",
+      "bytes": 4882
+    },
+    {
+      "path": "examples/inference/prepare_fixtures.py",
+      "sha256": "5b1a05ffdc6898c62c98cfc1c62adba6d5ed4ef08a44ee6d35dc698e18584791",
+      "bytes": 2207
+    },
+    {
+      "path": "examples/inference/requirements.txt",
+      "sha256": "00219b6519e22db3cf54d42a24ee307341bd0b305b18cdef6f93f19a03f69d07",
+      "bytes": 33
+    },
+    {
+      "path": "examples/inference/run.py",
+      "sha256": "b3750c844f8659ccf1af2d5e8f7fa06227f724405b2b7910b9b8be579bdbb582",
+      "bytes": 15972
+    },
+    {
+      "path": "examples/inference/worker.py",
+      "sha256": "faf2f171c54995736d70573ff244939fd3554ccb9fdb89498051c959b0e030c9",
+      "bytes": 13480
+    }
+  ],
+  "results": {
+    "validationAccuracy": 0.98,
+    "batchRows": 64,
+    "observedDifferentLabels": 11,
+    "commits": 21,
+    "nativeChoices": 2,
+    "nativeRetryEvents": 1,
+    "nativeQueries": 17,
+    "numericalAuditChecks": 25
+  },
+  "execution": {
+    "installedNodeCli": true,
+    "nativeFlowChartExecutor": true,
+    "numericalTrainingCalls": 1,
+    "freshValidationCalls": 1,
+    "actualPredictionCalls": 3,
+    "savedInvestigation": {
+      "childProcessesPermitted": false,
+      "backendArtifactsReadable": false,
+      "recordAndOutcomeOnly": true
+    },
+    "separateAuditUsesSavedArrays": true
+  },
+  "boundaries": [
+    "Controlled stale-cache, transient-error and field-order failures in one local numerical worker, not a deployed serving system.",
+    "FootPrint executes this chart, chooses its branches and retries predict-corrected. The earlier run.py example keeps orchestration in Python and uses native data capture only.",
+    "The caller checks the worker PID, session, cache generation and actual model identity before retaining prediction evidence. Native scope tracking does not automatically observe worker internals.",
+    "The failed attempt occurs before numerical computation or artifact creation. Native retry discards staged scope writes; it does not roll back arbitrary external side effects.",
+    "The native commit log has one successful predict-corrected commit. Its retry event separately records the failed attempt; failed pending writes are not fabricated as commits.",
+    "Public controlDepRecorder lookup results are saved separately as explicit application observations. The untouched executor snapshot does not contain an engine-attested control-dependency recorder.",
+    "Evaluation approval and prediction-observation checks are separate decisions; neither establishes general model suitability or numerical quality.",
+    "Model source hashes are checked on load. Prediction identity is measured from actual in-memory classifier/scaler state before and after computation.",
+    "Blocked output artifacts remain private debugging evidence. Only the accepted A output reference is exposed by the application handoff scope key.",
+    "Label differences are observed for the fixed models and batch; they are not a precondition for denying a mismatched model.",
+    "Numerical warnings are retained and forwarded, not suppressed or automatically diagnosed.",
+    "Control lookup hydration validates record consistency and binds the exact snapshot; it does not authenticate the original producer or invent engine capture/end attestation."
+  ]
+}
