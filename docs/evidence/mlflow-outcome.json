@@ -1,0 +1,1025 @@
+{
+  "approvedModel": {
+    "handle": 1,
+    "inferenceIdentity": {
+      "kind": "inference-identity",
+      "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+      "schemaVersion": 1,
+      "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+    },
+    "kind": "model",
+    "originArtifact": {
+      "bytes": 12942,
+      "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+      "kind": "artifact",
+      "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+      "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+    },
+    "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+  },
+  "baseline": {
+    "consumption": {
+      "datasetBinding": {
+        "artifact": {
+          "bytes": 124969,
+          "format": "footprint-ml/digits-split-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+          "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+        },
+        "artifactPath": "data/validation.json",
+        "experimentId": "1",
+        "kind": "mlflow-artifact",
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "schemaVersion": 1
+      },
+      "modelWeightsBinding": {
+        "artifact": {
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+        },
+        "artifactPath": "model/weights.json",
+        "experimentId": "1",
+        "kind": "mlflow-artifact",
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "schemaVersion": 1
+      },
+      "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+      "predictorSpecification": {
+        "classes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "featureOrder": "digits-8x8-row-major/v1",
+        "fittedScalerArtifactSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+        "inferenceMethod": "sklearn.LogisticRegression.predict(StandardScaler.transform(raw_pixels))",
+        "numpyVersion": "2.2.6",
+        "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+        "sklearnVersion": "1.7.2",
+        "weightsArtifactSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+      },
+      "preprocessorBinding": {
+        "artifact": {
+          "bytes": 3697,
+          "format": "footprint-ml/sklearn-standard-scaler-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/preprocessing/s1.json",
+          "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54"
+        },
+        "artifactPath": "preprocessing/s1.json",
+        "experimentId": "1",
+        "kind": "mlflow-artifact",
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "schemaVersion": 1
+      },
+      "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+      "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+    },
+    "decision": {
+      "allowed": true,
+      "bindings": {
+        "coverage": "inference",
+        "proposed": {
+          "checkpoint": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "datasetRef": {
+            "artifact": {
+              "bytes": 124969,
+              "format": "footprint-ml/digits-split-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+              "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+            },
+            "handle": 1,
+            "kind": "dataset",
+            "role": "validation",
+            "rows": 450,
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69",
+            "shape": [
+              450,
+              64
+            ]
+          },
+          "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+            "schemaVersion": 1,
+            "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+          },
+          "modelRef": {
+            "handle": 1,
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+              "schemaVersion": 1,
+              "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+            },
+            "kind": "model",
+            "originArtifact": {
+              "bytes": 12942,
+              "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+              "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+            },
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+          },
+          "parameters": {},
+          "preprocessingVersion": "measured-scaler/sha256:3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54"
+        },
+        "receipt": {
+          "checkpoint": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "createdAt": 1793296369958,
+          "datasetRef": {
+            "artifact": {
+              "bytes": 124969,
+              "format": "footprint-ml/digits-split-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+              "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+            },
+            "handle": 1,
+            "kind": "dataset",
+            "role": "validation",
+            "rows": 450,
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69",
+            "shape": [
+              450,
+              64
+            ]
+          },
+          "evaluationId": "0ac8ddde-1eb5-46c0-b2da-496e8030965a",
+          "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+            "schemaVersion": 1,
+            "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+          },
+          "metrics": {
+            "accuracy": 0.98
+          },
+          "modelRef": {
+            "handle": 1,
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+              "schemaVersion": 1,
+              "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+            },
+            "kind": "model",
+            "originArtifact": {
+              "bytes": 12942,
+              "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+              "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+            },
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+          },
+          "parameters": {},
+          "preprocessingVersion": "measured-scaler/sha256:3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54"
+        }
+      },
+      "checkedAt": 1793296369963,
+      "kind": "release-decision",
+      "policy": {
+        "metric": "accuracy",
+        "operator": "gte",
+        "threshold": 0.9
+      },
+      "reasons": [
+        {
+          "code": "inference-identity-matches",
+          "message": "The proposed inference profile and digest match the evaluated model."
+        },
+        {
+          "code": "receipt-matches-policy",
+          "message": "Inference identity, dataset, preprocessing, evaluation method, parameters, and metric policy match."
+        }
+      ],
+      "receiptId": "0ac8ddde-1eb5-46c0-b2da-496e8030965a",
+      "schemaVersion": 1,
+      "status": "allow"
+    },
+    "receipt": {
+      "checkpointForAudit": {
+        "artifact": {
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+        },
+        "kind": "checkpoint"
+      },
+      "createdAt": 1793296369958,
+      "datasetRef": {
+        "artifact": {
+          "bytes": 124969,
+          "format": "footprint-ml/digits-split-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+          "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+        },
+        "handle": 1,
+        "kind": "dataset",
+        "role": "validation",
+        "rows": 450,
+        "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69",
+        "shape": [
+          450,
+          64
+        ]
+      },
+      "evaluationId": "0ac8ddde-1eb5-46c0-b2da-496e8030965a",
+      "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+        "schemaVersion": 1,
+        "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+      },
+      "kind": "evaluation-receipt",
+      "metrics": {
+        "accuracy": 0.98
+      },
+      "modelRef": {
+        "handle": 1,
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+          "schemaVersion": 1,
+          "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+        },
+        "kind": "model",
+        "originArtifact": {
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+        },
+        "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+      },
+      "parameters": {},
+      "preprocessingVersion": "measured-scaler/sha256:3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+      "schemaVersion": 2
+    }
+  },
+  "boundaries": [
+    "Controlled preprocessing mismatch, not a discovered production incident.",
+    "A local MLflow registered version identifies safe weight artifacts; the composite predictor identity also binds fitted preprocessing.",
+    "The Python application supplies numerical observations. The capture library does not prove their completeness or correctness.",
+    "The controlled correction re-evaluates S1; saved evidence can subsequently be investigated without repeating any training or evaluation."
+  ],
+  "checks": {
+    "correctedApproved": true,
+    "rawValidationUnchanged": true,
+    "scalerChangedOnRetry": true,
+    "scalerRestored": true,
+    "staleReceiptDenied": true,
+    "weightsUnchanged": true
+  },
+  "corrected": {
+    "consumption": {
+      "datasetBinding": {
+        "artifact": {
+          "bytes": 124969,
+          "format": "footprint-ml/digits-split-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+          "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+        },
+        "artifactPath": "data/validation.json",
+        "experimentId": "1",
+        "kind": "mlflow-artifact",
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "schemaVersion": 1
+      },
+      "modelWeightsBinding": {
+        "artifact": {
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+        },
+        "artifactPath": "model/weights.json",
+        "experimentId": "1",
+        "kind": "mlflow-artifact",
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "schemaVersion": 1
+      },
+      "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+      "predictorSpecification": {
+        "classes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "featureOrder": "digits-8x8-row-major/v1",
+        "fittedScalerArtifactSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+        "inferenceMethod": "sklearn.LogisticRegression.predict(StandardScaler.transform(raw_pixels))",
+        "numpyVersion": "2.2.6",
+        "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+        "sklearnVersion": "1.7.2",
+        "weightsArtifactSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+      },
+      "preprocessorBinding": {
+        "artifact": {
+          "bytes": 3697,
+          "format": "footprint-ml/sklearn-standard-scaler-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/preprocessing/s1.json",
+          "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54"
+        },
+        "artifactPath": "preprocessing/s1.json",
+        "experimentId": "1",
+        "kind": "mlflow-artifact",
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "schemaVersion": 1
+      },
+      "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+      "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+    },
+    "decision": {
+      "allowed": true,
+      "bindings": {
+        "coverage": "inference",
+        "proposed": {
+          "checkpoint": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "datasetRef": {
+            "artifact": {
+              "bytes": 124969,
+              "format": "footprint-ml/digits-split-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+              "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+            },
+            "handle": 1,
+            "kind": "dataset",
+            "role": "validation",
+            "rows": 450,
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69",
+            "shape": [
+              450,
+              64
+            ]
+          },
+          "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+            "schemaVersion": 1,
+            "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+          },
+          "modelRef": {
+            "handle": 1,
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+              "schemaVersion": 1,
+              "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+            },
+            "kind": "model",
+            "originArtifact": {
+              "bytes": 12942,
+              "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+              "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+            },
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+          },
+          "parameters": {},
+          "preprocessingVersion": "measured-scaler/sha256:3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54"
+        },
+        "receipt": {
+          "checkpoint": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "createdAt": 1793296369986,
+          "datasetRef": {
+            "artifact": {
+              "bytes": 124969,
+              "format": "footprint-ml/digits-split-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+              "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+            },
+            "handle": 1,
+            "kind": "dataset",
+            "role": "validation",
+            "rows": 450,
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69",
+            "shape": [
+              450,
+              64
+            ]
+          },
+          "evaluationId": "b59b3184-075a-44d8-82a8-d9ab90f1e760",
+          "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+            "schemaVersion": 1,
+            "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+          },
+          "metrics": {
+            "accuracy": 0.98
+          },
+          "modelRef": {
+            "handle": 1,
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+              "schemaVersion": 1,
+              "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+            },
+            "kind": "model",
+            "originArtifact": {
+              "bytes": 12942,
+              "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+              "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+            },
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+          },
+          "parameters": {},
+          "preprocessingVersion": "measured-scaler/sha256:3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54"
+        }
+      },
+      "checkedAt": 1793296369990,
+      "kind": "release-decision",
+      "policy": {
+        "metric": "accuracy",
+        "operator": "gte",
+        "threshold": 0.9
+      },
+      "reasons": [
+        {
+          "code": "inference-identity-matches",
+          "message": "The proposed inference profile and digest match the evaluated model."
+        },
+        {
+          "code": "receipt-matches-policy",
+          "message": "Inference identity, dataset, preprocessing, evaluation method, parameters, and metric policy match."
+        }
+      ],
+      "receiptId": "b59b3184-075a-44d8-82a8-d9ab90f1e760",
+      "schemaVersion": 1,
+      "status": "allow"
+    },
+    "receipt": {
+      "checkpointForAudit": {
+        "artifact": {
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+        },
+        "kind": "checkpoint"
+      },
+      "createdAt": 1793296369986,
+      "datasetRef": {
+        "artifact": {
+          "bytes": 124969,
+          "format": "footprint-ml/digits-split-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+          "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+        },
+        "handle": 1,
+        "kind": "dataset",
+        "role": "validation",
+        "rows": 450,
+        "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69",
+        "shape": [
+          450,
+          64
+        ]
+      },
+      "evaluationId": "b59b3184-075a-44d8-82a8-d9ab90f1e760",
+      "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+        "schemaVersion": 1,
+        "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+      },
+      "kind": "evaluation-receipt",
+      "metrics": {
+        "accuracy": 0.98
+      },
+      "modelRef": {
+        "handle": 1,
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+          "schemaVersion": 1,
+          "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+        },
+        "kind": "model",
+        "originArtifact": {
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+        },
+        "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+      },
+      "parameters": {},
+      "preprocessingVersion": "measured-scaler/sha256:3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+      "schemaVersion": 2
+    }
+  },
+  "execution": {
+    "evaluationCalls": 3,
+    "liveFootprintCapture": true,
+    "modelDeployment": false,
+    "modelTrainingCalls": 1,
+    "pythonOrchestration": true,
+    "registryAliasChanged": false,
+    "remoteServicesUsed": false
+  },
+  "faulty": {
+    "consumption": {
+      "datasetBinding": {
+        "artifact": {
+          "bytes": 124969,
+          "format": "footprint-ml/digits-split-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+          "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+        },
+        "artifactPath": "data/validation.json",
+        "experimentId": "1",
+        "kind": "mlflow-artifact",
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "schemaVersion": 1
+      },
+      "modelWeightsBinding": {
+        "artifact": {
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+        },
+        "artifactPath": "model/weights.json",
+        "experimentId": "1",
+        "kind": "mlflow-artifact",
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "schemaVersion": 1
+      },
+      "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+      "predictorSpecification": {
+        "classes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "featureOrder": "digits-8x8-row-major/v1",
+        "fittedScalerArtifactSha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+        "inferenceMethod": "sklearn.LogisticRegression.predict(StandardScaler.transform(raw_pixels))",
+        "numpyVersion": "2.2.6",
+        "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+        "sklearnVersion": "1.7.2",
+        "weightsArtifactSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+      },
+      "preprocessorBinding": {
+        "artifact": {
+          "bytes": 3710,
+          "format": "footprint-ml/sklearn-standard-scaler-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/preprocessing/s2.json",
+          "sha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7"
+        },
+        "artifactPath": "preprocessing/s2.json",
+        "experimentId": "1",
+        "kind": "mlflow-artifact",
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "schemaVersion": 1
+      },
+      "preprocessorSha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+      "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+    },
+    "decision": {
+      "allowed": false,
+      "bindings": {
+        "coverage": "inference",
+        "proposed": {
+          "checkpoint": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "datasetRef": {
+            "artifact": {
+              "bytes": 124969,
+              "format": "footprint-ml/digits-split-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+              "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+            },
+            "handle": 1,
+            "kind": "dataset",
+            "role": "validation",
+            "rows": 450,
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69",
+            "shape": [
+              450,
+              64
+            ]
+          },
+          "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+            "schemaVersion": 1,
+            "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+          },
+          "modelRef": {
+            "handle": 2,
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+              "schemaVersion": 1,
+              "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+            },
+            "kind": "model",
+            "originArtifact": {
+              "bytes": 12942,
+              "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+              "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+            },
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+          },
+          "parameters": {},
+          "preprocessingVersion": "measured-scaler/sha256:368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7"
+        },
+        "receipt": {
+          "checkpoint": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "createdAt": 1793296369976,
+          "datasetRef": {
+            "artifact": {
+              "bytes": 124969,
+              "format": "footprint-ml/digits-split-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+              "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+            },
+            "handle": 1,
+            "kind": "dataset",
+            "role": "validation",
+            "rows": 450,
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69",
+            "shape": [
+              450,
+              64
+            ]
+          },
+          "evaluationId": "a7c56168-d1d4-400b-801e-074d35cb19c4",
+          "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+            "schemaVersion": 1,
+            "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+          },
+          "metrics": {
+            "accuracy": 0.34
+          },
+          "modelRef": {
+            "handle": 2,
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+              "schemaVersion": 1,
+              "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+            },
+            "kind": "model",
+            "originArtifact": {
+              "bytes": 12942,
+              "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+              "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+            },
+            "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+          },
+          "parameters": {},
+          "preprocessingVersion": "measured-scaler/sha256:368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7"
+        }
+      },
+      "checkedAt": 1793296369980,
+      "kind": "release-decision",
+      "policy": {
+        "metric": "accuracy",
+        "operator": "gte",
+        "threshold": 0.9
+      },
+      "reasons": [
+        {
+          "code": "inference-identity-matches",
+          "message": "The proposed inference profile and digest match the evaluated model."
+        },
+        {
+          "code": "metric-threshold-failed",
+          "message": "Recorded accuracy=0.34 does not satisfy gte 0.9."
+        }
+      ],
+      "receiptId": "a7c56168-d1d4-400b-801e-074d35cb19c4",
+      "schemaVersion": 1,
+      "status": "deny"
+    },
+    "receipt": {
+      "checkpointForAudit": {
+        "artifact": {
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+        },
+        "kind": "checkpoint"
+      },
+      "createdAt": 1793296369976,
+      "datasetRef": {
+        "artifact": {
+          "bytes": 124969,
+          "format": "footprint-ml/digits-split-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+          "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+        },
+        "handle": 1,
+        "kind": "dataset",
+        "role": "validation",
+        "rows": 450,
+        "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69",
+        "shape": [
+          450,
+          64
+        ]
+      },
+      "evaluationId": "a7c56168-d1d4-400b-801e-074d35cb19c4",
+      "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+        "schemaVersion": 1,
+        "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+      },
+      "kind": "evaluation-receipt",
+      "metrics": {
+        "accuracy": 0.34
+      },
+      "modelRef": {
+        "handle": 2,
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+          "schemaVersion": 1,
+          "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+        },
+        "kind": "model",
+        "originArtifact": {
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+        },
+        "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+      },
+      "parameters": {},
+      "preprocessingVersion": "measured-scaler/sha256:368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+      "schemaVersion": 2
+    }
+  },
+  "mlflowModelVersion": {
+    "name": "footprint-digits-local-4d20e037cbe6",
+    "runId": "4d20e037cbe645888c5277ed0f6384ff",
+    "source": "runs:/4d20e037cbe645888c5277ed0f6384ff/model",
+    "status": "READY",
+    "version": "1"
+  },
+  "mlflowRun": {
+    "artifactUri": "retained-examples/footprint-ml-mlflow-proof/mlflow-artifacts/4d20e037cbe645888c5277ed0f6384ff/artifacts",
+    "experimentId": "1",
+    "runId": "4d20e037cbe645888c5277ed0f6384ff"
+  },
+  "releaseStatus": "approved-locally-no-deployment",
+  "retry": {
+    "attempts": 2,
+    "failedAttempt": "select-preprocessor#4",
+    "orchestratedBy": "ordinary Python try/except"
+  },
+  "schema": "footprint-ml-mlflow-proof-outcome/v1",
+  "staleDecision": {
+    "allowed": false,
+    "bindings": {
+      "coverage": "inference",
+      "proposed": {
+        "checkpoint": {
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+        },
+        "datasetRef": {
+          "artifact": {
+            "bytes": 124969,
+            "format": "footprint-ml/digits-split-json/v1",
+            "kind": "artifact",
+            "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+            "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+          },
+          "handle": 1,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 450,
+          "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69",
+          "shape": [
+            450,
+            64
+          ]
+        },
+        "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+          "schemaVersion": 1,
+          "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+        },
+        "modelRef": {
+          "handle": 2,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+            "schemaVersion": 1,
+            "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+        },
+        "parameters": {},
+        "preprocessingVersion": "measured-scaler/sha256:368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7"
+      },
+      "receipt": {
+        "checkpoint": {
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+        },
+        "createdAt": 1793296369958,
+        "datasetRef": {
+          "artifact": {
+            "bytes": 124969,
+            "format": "footprint-ml/digits-split-json/v1",
+            "kind": "artifact",
+            "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+            "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+          },
+          "handle": 1,
+          "kind": "dataset",
+          "role": "validation",
+          "rows": 450,
+          "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69",
+          "shape": [
+            450,
+            64
+          ]
+        },
+        "evaluationId": "0ac8ddde-1eb5-46c0-b2da-496e8030965a",
+        "evaluationMethodVersion": "sklearn-accuracy/raw-heldout-digits/v1",
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+          "schemaVersion": 1,
+          "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+        },
+        "metrics": {
+          "accuracy": 0.98
+        },
+        "modelRef": {
+          "handle": 1,
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+            "schemaVersion": 1,
+            "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+          },
+          "kind": "model",
+          "originArtifact": {
+            "bytes": 12942,
+            "format": "footprint-ml/sklearn-logistic-numeric-json/v1",
+            "kind": "artifact",
+            "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+            "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486"
+          },
+          "sessionId": "4b0cdbc4-90b2-4068-a125-a3d7dfa0fc69"
+        },
+        "parameters": {},
+        "preprocessingVersion": "measured-scaler/sha256:3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54"
+      }
+    },
+    "checkedAt": 1793296369971,
+    "kind": "release-decision",
+    "policy": {
+      "metric": "accuracy",
+      "operator": "gte",
+      "threshold": 0.9
+    },
+    "reasons": [
+      {
+        "code": "inference-mismatch",
+        "message": "The proposed inference profile or digest differs from the evaluated inference identity."
+      },
+      {
+        "code": "preprocessing-mismatch",
+        "message": "The proposed preprocessing version differs from the evaluated preprocessing."
+      }
+    ],
+    "receiptId": "0ac8ddde-1eb5-46c0-b2da-496e8030965a",
+    "schemaVersion": 1,
+    "status": "deny"
+  },
+  "versions": {
+    "mlflow": "3.17.2",
+    "numpy": "2.2.6",
+    "sklearn": "1.7.2"
+  }
+}

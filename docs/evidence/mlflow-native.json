@@ -1,0 +1,190 @@
+{
+  "schema": "footprint-ml-mlflow-investigation/v1",
+  "passed": true,
+  "checks": {
+    "pythonOwnsOrchestration": true,
+    "oneFitThreeEvaluations": true,
+    "retryIsRecorded": true,
+    "failedWritesAbsent": true,
+    "faultyMetricReachesRetry": true,
+    "faultyMetricReachesModelProducer": true,
+    "laterCorrectionExcluded": true,
+    "staleDecisionReachesBothHistories": true,
+    "correctedMetricReachesRestoration": true,
+    "approvedModelReachesCorrectedEvidence": true,
+    "exactScalersWriters": true,
+    "fixedWeightsAndDataProducers": true,
+    "actualMetricReadable": true,
+    "failedStageRemainsInspectable": true,
+    "modelWeightsUnchanged": true,
+    "validationUnchanged": true,
+    "preprocessingChangedAndRestored": true,
+    "observedRegression": true,
+    "controlledRecovery": true,
+    "nativeGuards": true,
+    "mlflowBindingConsistent": true,
+    "missingControlDisclosed": true,
+    "noCertifiedRootFromUnattestedRecord": true,
+    "originalRecordingUnchanged": true
+  },
+  "source": {
+    "file": "recording.json",
+    "sha256": "f39da957ae51b0cc2ca127fa84f2f52b282d7153f339451093a4a108d6d594ce",
+    "bytes": 290820
+  },
+  "outcomeSource": {
+    "file": "outcome.json",
+    "sha256": "e460a6ed9344b690dd6a6a1faec57bb65b4099b72889e52c577637ed7bdc55cb",
+    "bytes": 28735,
+    "capturedOutcomeMatches": true
+  },
+  "nativeQueries": 11,
+  "transcript": [
+    {
+      "ordinal": 1,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 12,
+        "maxNodes": 80,
+        "variable": "faultyReceipt"
+      },
+      "result": "SLICE for 'faultyReceipt' — reads via: custom-fn\nMeasure S2 accuracy using unchanged weights and validation data (evaluate-faulty#8) [wrote: evaluationReceipt, faultyReceipt, faultyConsumption]\n  Fit scaler S1 and train the digit classifier once (train-classifier#1) ← via modelWeightsBinding [wrote: scaler1Binding, scaler2Binding, modelWeightsBinding, mlflowModelVersion, activePreprocessorBinding, versions]\n    Load and pin the fixed digits split (load-digits#0) ← via validationBinding [wrote: trainBinding, validationBinding, mlflowRun, backendSessionId, qualityPolicy, evaluationMethodVersion, modelRef, approvedModel]\n  Retry mistakenly selects incompatible scaler S2 (select-preprocessor#5) ← via activePreprocessorBinding [wrote: activePreprocessorBinding, preprocessingSelection]\n    ↳ train-classifier#1 (see above)\n  ↳ load-digits#0 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 2,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 12,
+        "maxNodes": 80,
+        "variable": "staleDecision"
+      },
+      "result": "SLICE for 'staleDecision' — reads via: custom-fn\nReject S1 evaluation evidence for the selected S2 predictor (guard-stale-baseline#7) [wrote: releaseDecision, releaseAllowed, staleDecision]\n  Validate the original S1 predictor (evaluate-baseline#2) ← via baselineReceipt [wrote: modelRef, datasetRef, actualConsumption, evaluationReceipt, baselineReceipt, baselineConsumption]\n    Fit scaler S1 and train the digit classifier once (train-classifier#1) ← via modelWeightsBinding [wrote: scaler1Binding, scaler2Binding, modelWeightsBinding, mlflowModelVersion, activePreprocessorBinding, versions]\n      Load and pin the fixed digits split (load-digits#0) ← via qualityPolicy [wrote: trainBinding, validationBinding, mlflowRun, backendSessionId, qualityPolicy, evaluationMethodVersion, modelRef, approvedModel]\n    ↳ load-digits#0 (see above)\n  Measure the predictor actually selected by retry (observe-retry-inputs#6) ← via modelRef [wrote: modelRef, actualConsumption]\n    ↳ train-classifier#1 (see above)\n    Retry mistakenly selects incompatible scaler S2 (select-preprocessor#5) ← via activePreprocessorBinding [wrote: activePreprocessorBinding, preprocessingSelection]\n      ↳ train-classifier#1 (see above)\n    ↳ load-digits#0 (see above)\n  ↳ load-digits#0 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 3,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 12,
+        "maxNodes": 80,
+        "variable": "correctedReceipt"
+      },
+      "result": "SLICE for 'correctedReceipt' — reads via: custom-fn\nRe-evaluate the restored S1 predictor (evaluate-corrected#11) [wrote: modelRef, actualConsumption, evaluationReceipt, correctedReceipt, correctedConsumption]\n  Fit scaler S1 and train the digit classifier once (train-classifier#1) ← via modelWeightsBinding [wrote: scaler1Binding, scaler2Binding, modelWeightsBinding, mlflowModelVersion, activePreprocessorBinding, versions]\n    Load and pin the fixed digits split (load-digits#0) ← via validationBinding [wrote: trainBinding, validationBinding, mlflowRun, backendSessionId, qualityPolicy, evaluationMethodVersion, modelRef, approvedModel]\n  Restore S1 without retraining the classifier (restore-preprocessor#10) ← via activePreprocessorBinding [wrote: activePreprocessorBinding, preprocessingSelection]\n    ↳ train-classifier#1 (see above)\n  ↳ load-digits#0 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 4,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 12,
+        "maxNodes": 80,
+        "variable": "approvedModel"
+      },
+      "result": "SLICE for 'approvedModel' — reads via: custom-fn\nRecord the exact locally approved predictor (record-local-approval#13) [wrote: approvedModel, releaseStatus, outcome]\n  Approve the restored predictor and matching fresh evidence (guard-corrected#12) ← via correctedDecision [wrote: offeredReceipt, releaseDecision, releaseAllowed, correctedDecision]\n    Re-evaluate the restored S1 predictor (evaluate-corrected#11) ← via modelRef [wrote: modelRef, actualConsumption, evaluationReceipt, correctedReceipt, correctedConsumption]\n      Fit scaler S1 and train the digit classifier once (train-classifier#1) ← via modelWeightsBinding [wrote: scaler1Binding, scaler2Binding, modelWeightsBinding, mlflowModelVersion, activePreprocessorBinding, versions]\n        Load and pin the fixed digits split (load-digits#0) ← via qualityPolicy [wrote: trainBinding, validationBinding, mlflowRun, backendSessionId, qualityPolicy, evaluationMethodVersion, modelRef, approvedModel]\n      Restore S1 without retraining the classifier (restore-preprocessor#10) ← via activePreprocessorBinding [wrote: activePreprocessorBinding, preprocessingSelection]\n        ↳ train-classifier#1 (see above)\n      ↳ load-digits#0 (see above)\n    Validate the original S1 predictor (evaluate-baseline#2) ← via datasetRef [wrote: modelRef, datasetRef, actualConsumption, evaluationReceipt, baselineReceipt, baselineConsumption]\n      ↳ train-classifier#1 (see above)\n      ↳ load-digits#0 (see above)\n    ↳ load-digits#0 (see above)\n  ↳ evaluate-corrected#11 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 5,
+      "tool": "who_wrote",
+      "args": {
+        "key": "activePreprocessorBinding",
+        "beforeStageId": "evaluate-faulty#8"
+      },
+      "result": "'activePreprocessorBinding' was last written by select-preprocessor#5 — \"Retry mistakenly selects incompatible scaler S2\" (verb: set): {\"kind\":\"mlflow-artifact\",\"schemaVersion\":1,\"runId\":\"4d20e037cbe645888c5277ed0f6384ff\",\"experimentId\":\"1\",\"artifactPath\":\"preprocessing/s2.json\",\"artifact\":{\"ki… (391 chars total — get_value('select-preprocessor#5', 'activePreprocessorBinding') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 6,
+      "tool": "who_wrote",
+      "args": {
+        "key": "activePreprocessorBinding",
+        "beforeStageId": "evaluate-corrected#11"
+      },
+      "result": "'activePreprocessorBinding' was last written by restore-preprocessor#10 — \"Restore S1 without retraining the classifier\" (verb: set): {\"kind\":\"mlflow-artifact\",\"schemaVersion\":1,\"runId\":\"4d20e037cbe645888c5277ed0f6384ff\",\"experimentId\":\"1\",\"artifactPath\":\"preprocessing/s1.json\",\"artifact\":{\"ki… (391 chars total — get_value('restore-preprocessor#10', 'activePreprocessorBinding') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 7,
+      "tool": "who_wrote",
+      "args": {
+        "key": "modelWeightsBinding"
+      },
+      "result": "'modelWeightsBinding' was last written by train-classifier#1 — \"Fit scaler S1 and train the digit classifier once\" (verb: set): {\"kind\":\"mlflow-artifact\",\"schemaVersion\":1,\"runId\":\"4d20e037cbe645888c5277ed0f6384ff\",\"experimentId\":\"1\",\"artifactPath\":\"model/weights.json\",\"artifact\":{\"kind\"… (387 chars total — get_value('train-classifier#1', 'modelWeightsBinding') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 8,
+      "tool": "who_wrote",
+      "args": {
+        "key": "validationBinding"
+      },
+      "result": "'validationBinding' was last written by load-digits#0 — \"Load and pin the fixed digits split\" (verb: set): {\"kind\":\"mlflow-artifact\",\"schemaVersion\":1,\"runId\":\"4d20e037cbe645888c5277ed0f6384ff\",\"experimentId\":\"1\",\"artifactPath\":\"data/validation.json\",\"artifact\":{\"kin… (380 chars total — get_value('load-digits#0', 'validationBinding') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 9,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "evaluate-faulty#8",
+        "key": "faultyReceipt\u001fmetrics\u001faccuracy"
+      },
+      "result": "VALUE of 'faultyReceipt.metrics.accuracy' as of evaluate-faulty#8:\n0.34",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 10,
+      "tool": "trace_node",
+      "args": {
+        "runtimeStageId": "select-preprocessor#4"
+      },
+      "result": "STEP select-preprocessor#4 — \"First attempt to select preprocessing\"\nwrote: nothing committed\nread (1): scaler1Binding\nparents:\n- data: scaler1Binding ← train-classifier#1 \"Fit scaler S1 and train the digit classifier once\"\n⚠ control-dependence lookup not provided — the decision that routed here is unknown.\nerrors (1):\n- ⚠ python: {\"type\":\"RuntimeError\",\"message\":\"Injected temporary selection failure before stage commit\"}",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 11,
+      "tool": "attention_list",
+      "args": {},
+      "result": "{\"tool\":\"attention_list\",\"mode\":\"recorded-evidence\",\"confidence\":\"incomplete\",\"gaps\":[{\"code\":\"truncated\",\"evidence\":[]}],\"capture\":{\"status\":\"incomplete\",\"reason\":\"missing-attestation\",\"scope\":\"root-log\",\"persistence\":\"memory-only\",\"readSources\":\"not-collected\"},\"interpretation\":\"Not sure: the requested evidence is incomplete. No root cause is asserted. Snapshot-only records have no engine-written capture/end attestation. This reader cannot prove a root cause from them, even after a normally finished run.\"}",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    }
+  ],
+  "retryEvidence": {
+    "pointer": "/supplemental/pythonCapture/stages/5",
+    "observation": {
+      "runtimeStageId": "select-preprocessor#5",
+      "stageId": "select-preprocessor",
+      "name": "Retry mistakenly selects incompatible scaler S2",
+      "status": "committed",
+      "attempt": 2,
+      "retryOf": "select-preprocessor#4",
+      "commitIdx": 4
+    },
+    "interpretation": "The Python caller supplied these attempt labels; this is not a native FootPrint retry-policy attestation."
+  },
+  "mlflow": {
+    "runId": "4d20e037cbe645888c5277ed0f6384ff",
+    "experimentId": "1",
+    "modelVersion": {
+      "name": "footprint-digits-local-4d20e037cbe6",
+      "runId": "4d20e037cbe645888c5277ed0f6384ff",
+      "source": "runs:/4d20e037cbe645888c5277ed0f6384ff/model",
+      "status": "READY",
+      "version": "1"
+    }
+  },
+  "execution": {
+    "savedJsonOnly": true,
+    "pythonStarted": false,
+    "mlflowClientStarted": false,
+    "trainingRepeated": false,
+    "evaluationRepeated": false
+  },
+  "boundaries": [
+    "Python owns stage order, retries and numerical operations. The optional host records live scope requests with the native foottrace writer.",
+    "Stage reads describe actual capture.get requests, not arbitrary Python variable or backend tensor reads. No FootPrint executor capture attestation is claimed.",
+    "Discarded stages have no committed writes. Attempt and retry labels are supplied by the Python caller; no native retry policy is inferred.",
+    "The file is replaced after commits, discards and close. This is not a write-ahead log or a promise of crash durability.",
+    "No control-dependency lookup is supplied. Numerical correctness and unobserved backend dependencies remain outside this record."
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "boundaries": [
+    "This independently checks inference from the retained parameters and raw validation data; it does not re-run or verify the training algorithm.",
+    "The original numerical backend emitted matrix multiplication warnings. Their cause has not been diagnosed or suppressed by this audit.",
+    "The saved independent scores and matching aggregate accuracies are finite; individual original backend logits were not retained for per-logit comparison.",
+    "This audit reads saved numerical artifacts. A later JSON-only provenance investigation does not need to repeat this calculation."
+  ],
+  "cases": {
+    "baseline": {
+      "accuracy": 0.98,
+      "accuracyMatchesReceipt": true,
+      "artifactAndCompositeIdentitiesMatch": true,
+      "correct": 441,
+      "finiteBounds": {
+        "allComputedValuesFinite": true,
+        "maximumAbsoluteClassScore": 17.994359743463864,
+        "maximumAbsoluteCoefficient": 1.7600480778913115,
+        "maximumAbsoluteIntercept": 1.9213406330060885,
+        "maximumAbsoluteProduct": 4.874388315785485,
+        "maximumAbsoluteRawFeature": 16.0,
+        "maximumAbsoluteScaledFeature": 25.937440852729083,
+        "maximumSumOfAbsoluteTerms": 26.146500420567623,
+        "minimumWinningClassMargin": 0.027583126613060394
+      },
+      "measuredArtifactHashes": {
+        "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+        "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+        "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+      },
+      "predictionLabelsSha256": "72a925e2af7dd5d429abf8a43710f340bc362137d2a77230c6a692355463d663",
+      "recordedAccuracy": 0.98,
+      "rows": 450
+    },
+    "corrected": {
+      "accuracy": 0.98,
+      "accuracyMatchesReceipt": true,
+      "artifactAndCompositeIdentitiesMatch": true,
+      "correct": 441,
+      "finiteBounds": {
+        "allComputedValuesFinite": true,
+        "maximumAbsoluteClassScore": 17.994359743463864,
+        "maximumAbsoluteCoefficient": 1.7600480778913115,
+        "maximumAbsoluteIntercept": 1.9213406330060885,
+        "maximumAbsoluteProduct": 4.874388315785485,
+        "maximumAbsoluteRawFeature": 16.0,
+        "maximumAbsoluteScaledFeature": 25.937440852729083,
+        "maximumSumOfAbsoluteTerms": 26.146500420567623,
+        "minimumWinningClassMargin": 0.027583126613060394
+      },
+      "measuredArtifactHashes": {
+        "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+        "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+        "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+      },
+      "predictionLabelsSha256": "72a925e2af7dd5d429abf8a43710f340bc362137d2a77230c6a692355463d663",
+      "recordedAccuracy": 0.98,
+      "rows": 450
+    },
+    "faulty": {
+      "accuracy": 0.34,
+      "accuracyMatchesReceipt": true,
+      "artifactAndCompositeIdentitiesMatch": true,
+      "correct": 153,
+      "finiteBounds": {
+        "allComputedValuesFinite": true,
+        "maximumAbsoluteClassScore": 95.96849229065498,
+        "maximumAbsoluteCoefficient": 1.7600480778913115,
+        "maximumAbsoluteIntercept": 1.9213406330060885,
+        "maximumAbsoluteProduct": 62.368572737455864,
+        "maximumAbsoluteRawFeature": 16.0,
+        "maximumAbsoluteScaledFeature": 415.5772247606715,
+        "maximumSumOfAbsoluteTerms": 215.20011645051625,
+        "minimumWinningClassMargin": 0.005239467986509538
+      },
+      "measuredArtifactHashes": {
+        "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+        "preprocessorSha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+        "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+      },
+      "predictionLabelsSha256": "76cdc37b68692869a0844dd80c8342e35582679fc47ffadf549dd56b7b92cc3b",
+      "recordedAccuracy": 0.34,
+      "rows": 450
+    }
+  },
+  "checks": [
+    "baseline:artifact-bytes",
+    "baseline:receipt-bindings",
+    "baseline:composite-identity",
+    "baseline:finite-predictions",
+    "baseline:accuracy",
+    "faulty:artifact-bytes",
+    "faulty:receipt-bindings",
+    "faulty:composite-identity",
+    "faulty:finite-predictions",
+    "faulty:accuracy",
+    "corrected:artifact-bytes",
+    "corrected:receipt-bindings",
+    "corrected:composite-identity",
+    "corrected:finite-predictions",
+    "corrected:accuracy",
+    "weights-unchanged",
+    "raw-validation-unchanged",
+    "corrected-predictions-restored",
+    "original-evidence-unchanged"
+  ],
+  "checksPassed": 19,
+  "execution": {
+    "independentSavedParameterPredictionRepeated": true,
+    "mlflowStarted": false,
+    "modelTrainingRepeated": false,
+    "sklearnEvaluationRepeated": false
+  },
+  "implementation": {
+    "isolatedFlag": true,
+    "method": "Explicit StandardScaler arithmetic, Python math.fsum dense linear scores and ordered class argmax",
+    "python": "3.14.6",
+    "siteDisabled": true,
+    "standardLibraryOnly": true
+  },
+  "inputs": {
+    "outcomeSha256": "e460a6ed9344b690dd6a6a1faec57bb65b4099b72889e52c577637ed7bdc55cb",
+    "recordingSha256": "f39da957ae51b0cc2ca127fa84f2f52b282d7153f339451093a4a108d6d594ce"
+  },
+  "passed": true,
+  "schema": "footprint-ml-mlflow-numerical-audit/v1"
+}

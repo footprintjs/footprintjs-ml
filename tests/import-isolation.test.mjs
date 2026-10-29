@@ -19,6 +19,8 @@ test('Root import never loads optional entry points; a deferred adapter import l
     assert.ok(!loaded.some(optional), 'A disabled feature loaded adapter code');
     const adapter = await maybeLoad(true);
     assert.equal(typeof adapter.createPythonTrainerAdapter, 'function');
+    assert.equal(typeof adapter.servePythonCapture, 'function');
+    assert.ok(!loaded.some(url => /\/node_modules\/foottrace\//.test(url)), 'An optional adapter import loaded the recording runtime before explicit use');
     assert.ok(loaded.some(url => url.endsWith('/dist/adapter/client.js')));
     assert.ok(!loaded.some(url => /\/dist\/conformance\/|\/lens\/session\.mjs$/.test(url)));
   } finally { hook.deregister(); }
@@ -40,6 +42,7 @@ test('Importing every public entry point starts no worker; explicit trainer cons
     const release = await import('footprintjs-ml/release');
     assert.equal(typeof core.checkRelease, 'function');
     assert.equal(typeof lens.openAdapterWorkflowRun, 'function');
+    assert.equal(typeof adapter.servePythonCapture, 'function');
     assert.equal(typeof conformance.runAdapterConformance, 'function');
     assert.equal(typeof release.createFileArtifactStore, 'function');
     assert.equal(typeof release.createLocalModelPublisher, 'function');

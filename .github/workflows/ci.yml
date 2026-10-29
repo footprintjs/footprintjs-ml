@@ -41,3 +41,34 @@ jobs:
         run: python -m unittest discover -s examples/quickstart -p 'test_*.py' -v
       - name: Verify the beta from a fresh package installation
         run: npm run beta:smoke
+
+  optional-mlflow:
+    name: Optional Python MLflow integration
+    runs-on: ubuntu-latest
+    env:
+      MLFLOW_DISABLE_TELEMETRY: 'true'
+      MLFLOW_DISABLE_AGENT_HINT: 'true'
+      DO_NOT_TRACK: 'true'
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npm run build
+      - name: Verify optional integrations import without Python ML packages
+        run: node scripts/check-optional-dependencies.mjs
+      - name: Install only this example's optional Python dependencies
+        run: python -m pip install -r examples/mlflow/requirements.txt
+      - name: Run the Python-orchestrated MLflow proof
+        run: python examples/mlflow/run.py --out .artifacts/mlflow-proof
+      - name: Reopen saved evidence with trainer spawning forbidden
+        run: node --permission --allow-fs-read=. --allow-fs-write=.artifacts/mlflow-proof examples/mlflow/investigate.mjs --run .artifacts/mlflow-proof
+      - name: Independently audit the saved numerical predictions
+        run: python -I -S examples/mlflow/audit.py --run .artifacts/mlflow-proof

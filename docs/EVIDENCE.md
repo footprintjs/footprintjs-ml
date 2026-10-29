@@ -1,6 +1,6 @@
 # Evidence ledger — public projection
 
-Personal machine paths have been replaced in this public presentation. Original model IDs, logical evidence digests and numerical claims are unchanged. Public copies with projected paths or repository-document links have different file checksums. The original retained-source checksums and published-copy checksums below are distinct. The [publication manifest](publication-manifest.json) verifies this static export; it is not a signature or authentication of the original run. Repository-document links in the saved backtracking guide point to the public SDK repository.
+Personal machine paths have been replaced in this public presentation. Original model IDs, logical evidence digests and numerical claims are unchanged. Public copies with projected paths or repository-document links have different file checksums. The original retained-source checksums and published-copy checksums below are distinct. The [publication manifest](publication-manifest.json) verifies this static export; it is not a signature or authentication of the original run. Repository-document links in the saved guides point to the public SDK repository.
 
 This deck follows the retained experiments testing FootPrint’s flowchart pattern in ML. The graph is a derived architectural teaching model, not the JAX operation graph and not a complete recorded causal graph. Viewing it does not launch a trainer.
 
@@ -561,9 +561,9 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **backtracking-guide** — Generic saved-result reader, native tool reuse and capture limits
   - Public copy: [evidence/backtracking-guide.md](evidence/backtracking-guide.md)
-  - Original retained source SHA-256: 4113e1f057639e254277c4f8f7f12b3fd28b8909faaca7dd7f62881a5f99d18e
+  - Original retained source SHA-256: 7ceaa0e53b2f39220dcca3a46c7f4b625b0380fceeef72ef79352b6c07b9fb4b
   - Original retained source bytes: 6502
-  - Published copy SHA-256: d69a41fa5660ba65c540e0e400b5bb8170a1cb7154b2df09293fad40372d4335
+  - Published copy SHA-256: cbb78fa33e188782e7b2e75326a2e85409068cc351c3364e9343cee1c77ed40c
   - Published copy bytes: 6670
   - Path projection: 0 string(s); published bytes differ from retained source.
 - **backtracking-reader** — Optional generic recording reader delegating to the existing Lens toolpack
@@ -621,6 +621,111 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Original retained source bytes: 72118
   - Published copy SHA-256: 363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7
   - Published copy bytes: 72118
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-outcome** — Actual local MLflow/scikit-learn preprocessing failure outcome
+  - Public copy: [evidence/mlflow-outcome.json](evidence/mlflow-outcome.json)
+  - Original retained source SHA-256: e460a6ed9344b690dd6a6a1faec57bb65b4099b72889e52c577637ed7bdc55cb
+  - Original retained source bytes: 28735
+  - Published copy SHA-256: fbe359503ae22d05208fba87881def03fba8294f67f155ccd8b1cb6e4cd5793b
+  - Published copy bytes: 39853
+  - Path projection: 1 string(s); published bytes differ from retained source.
+- **mlflow-recording** — Live Python-supplied scope operations recorded by the native foottrace writer
+  - Public copy: [evidence/mlflow-recording.json](evidence/mlflow-recording.json)
+  - Original retained source SHA-256: f39da957ae51b0cc2ca127fa84f2f52b282d7153f339451093a4a108d6d594ce
+  - Original retained source bytes: 290820
+  - Published copy SHA-256: 9b07a6a10b8c94a0ca56ff5c442f2cb42156fabb32d3b3b1674117bba02c2d3b
+  - Published copy bytes: 290656
+  - Path projection: 4 string(s); published bytes differ from retained source.
+- **mlflow-native** — Saved-only native investigation of the wrong scaler retry and corrected evidence
+  - Public copy: [evidence/mlflow-native.json](evidence/mlflow-native.json)
+  - Original retained source SHA-256: 22b58776f4a85c49c41f67f1a3f09e260af754c7509299ced4c7a190f589a411
+  - Original retained source bytes: 14096
+  - Published copy SHA-256: 22b58776f4a85c49c41f67f1a3f09e260af754c7509299ced4c7a190f589a411
+  - Published copy bytes: 14096
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-audit** — Independent saved-artifact numerical audit of the controlled scaler change
+  - Public copy: [evidence/mlflow-audit.json](evidence/mlflow-audit.json)
+  - Original retained source SHA-256: 56005166d5388ef202aa5a3d744817f336ff424e4ba4817d56b6fbfafa602b83
+  - Original retained source bytes: 5462
+  - Published copy SHA-256: 56005166d5388ef202aa5a3d744817f336ff424e4ba4817d56b6fbfafa602b83
+  - Published copy bytes: 5462
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-dependencies** — Observed capture import isolation and explicit dependency boundary
+  - Public copy: [evidence/mlflow-dependencies.json](evidence/mlflow-dependencies.json)
+  - Original retained source SHA-256: 6cf65366618af9918b5c9da528453d9928d1f2da06ce58615a43681d8ad69352
+  - Original retained source bytes: 1100
+  - Published copy SHA-256: 6cf65366618af9918b5c9da528453d9928d1f2da06ce58615a43681d8ad69352
+  - Published copy bytes: 1100
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-capture** — Optional Node host over native foottrace write APIs and existing ML contracts
+  - Public copy: [evidence/mlflow-capture.ts.txt](evidence/mlflow-capture.ts.txt)
+  - Original retained source SHA-256: 5e4beb3387cb51344460e25c2ccc8f501e422b144e3b34238e1d36e72b69ee1e
+  - Original retained source bytes: 14410
+  - Published copy SHA-256: 5e4beb3387cb51344460e25c2ccc8f501e422b144e3b34238e1d36e72b69ee1e
+  - Published copy bytes: 14410
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-python** — Standard-library Python capture facade and injected MLflow artifact binding
+  - Public copy: [evidence/mlflow-python.py.txt](evidence/mlflow-python.py.txt)
+  - Original retained source SHA-256: f08379bf7985569053ce863cff83102a7fba43bc13fe837bb2ae8cb40c6e846a
+  - Original retained source bytes: 21504
+  - Published copy SHA-256: f08379bf7985569053ce863cff83102a7fba43bc13fe837bb2ae8cb40c6e846a
+  - Published copy bytes: 21504
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-python-tests** — Isolated Python imports, native capture lifecycle and checked artifact binding tests
+  - Public copy: [evidence/mlflow-python-tests.py.txt](evidence/mlflow-python-tests.py.txt)
+  - Original retained source SHA-256: 2470d73daee0ce85e9779ec3f582377900dc15e18a01373dc1f89f50b330fefd
+  - Original retained source bytes: 11891
+  - Published copy SHA-256: 2470d73daee0ce85e9779ec3f582377900dc15e18a01373dc1f89f50b330fefd
+  - Published copy bytes: 11891
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-workflow** — Python-owned classifier workflow, explicit retry and measured artifact consumption
+  - Public copy: [evidence/mlflow-workflow.py.txt](evidence/mlflow-workflow.py.txt)
+  - Original retained source SHA-256: ff00614373a7d8e1053e1ba5f8bf67a737209a963b3bc801b6588355f561e960
+  - Original retained source bytes: 16801
+  - Published copy SHA-256: ff00614373a7d8e1053e1ba5f8bf67a737209a963b3bc801b6588355f561e960
+  - Published copy bytes: 16801
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-numerical** — Safe numerical JSON formats and composite predictor identity
+  - Public copy: [evidence/mlflow-numerical.py.txt](evidence/mlflow-numerical.py.txt)
+  - Original retained source SHA-256: 568289e51ca609980ded2143d0a3d34d46fab60acd16a90caee713c4c28a6693
+  - Original retained source bytes: 5414
+  - Published copy SHA-256: 568289e51ca609980ded2143d0a3d34d46fab60acd16a90caee713c4c28a6693
+  - Published copy bytes: 5414
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-guide** — Python and MLflow integration responsibilities, dependencies and limits
+  - Public copy: [evidence/mlflow-guide.md](evidence/mlflow-guide.md)
+  - Original retained source SHA-256: a85971d974c95363ffb5f51a81ee6f67d7524faf88b5cfaf33e10b1aea8e5666
+  - Original retained source bytes: 9646
+  - Published copy SHA-256: bcaeaffc803149bcd6be73427f427cee3a08e17fb2267877b4bd0219680e7d9b
+  - Published copy bytes: 9926
+  - Path projection: 0 string(s); published bytes differ from retained source.
+- **mlflow-requirements** — Explicit pinned MLflow and numerical dependencies for this example
+  - Public copy: [evidence/mlflow-requirements.txt](evidence/mlflow-requirements.txt)
+  - Original retained source SHA-256: 9afd82743d438ba0a255caba25069b7da9637270a3f17eeefdb45ab287906a9c
+  - Original retained source bytes: 48
+  - Published copy SHA-256: 9afd82743d438ba0a255caba25069b7da9637270a3f17eeefdb45ab287906a9c
+  - Published copy bytes: 48
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-package** — Current beta SDK entry points and zero npm root runtime dependencies
+  - Public copy: [evidence/mlflow-package.json](evidence/mlflow-package.json)
+  - Original retained source SHA-256: b70f89bc1883d34d9d1f6359ccd436273a7724e60da2d3ad5de8966e519e8886
+  - Original retained source bytes: 3122
+  - Published copy SHA-256: b70f89bc1883d34d9d1f6359ccd436273a7724e60da2d3ad5de8966e519e8886
+  - Published copy bytes: 3122
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-capture-tests** — Native writer lifecycle, discarded attempts and protocol-boundary tests
+  - Public copy: [evidence/mlflow-capture-tests.mjs.txt](evidence/mlflow-capture-tests.mjs.txt)
+  - Original retained source SHA-256: fd1a3fcacaaaa0082056b6b3d393a2e4554363f2510282ed514e2f9c4e1fabaf
+  - Original retained source bytes: 11720
+  - Published copy SHA-256: fd1a3fcacaaaa0082056b6b3d393a2e4554363f2510282ed514e2f9c4e1fabaf
+  - Published copy bytes: 11720
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **mlflow-audit-code** — Independent stdlib arithmetic over retained numeric model and validation artifacts
+  - Public copy: [evidence/mlflow-audit-code.py.txt](evidence/mlflow-audit-code.py.txt)
+  - Original retained source SHA-256: 3d0dcd832d34f2a7baeddff254b6ee3b6980869c8535246267d606954812f1b7
+  - Original retained source bytes: 11680
+  - Published copy SHA-256: 3d0dcd832d34f2a7baeddff254b6ee3b6980869c8535246267d606954812f1b7
+  - Published copy bytes: 11680
   - Path projection: 0 string(s); byte-identical to retained source.
 
 ## Claims by scene
@@ -801,7 +906,24 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **DERIVED** — Capture completeness depends on actual reads. Merely placing the same value elsewhere in scope cannot reveal a hidden closure dependency. Backtracking belongs to the existing workflow/Foottrace foundation; the ML library connects its evidence to that foundation. [backtracking-workflow, backtracking-tests, backtracking-guide]
 - **OPEN** — Only recorded dependencies can be followed. External code, closures, backend mutations and nested history need explicit capture where relevant. This is a controlled evidence-boundary proof, not complete numerical replay or automatic statistical root-cause discovery. [backtracking-guide, backtracking-outcome]
 
-### 26. FootPrint explained ML release mistakes through saved workflow state
+### 26. Python kept control and linked MLflow artifacts
+
+- **VERIFIED** — The Python application owns training, evaluation, stage order and its try/except retry. The optional Node capture host uses native foottrace write APIs directly. It does not execute this Python workflow with a FootPrint executor or automatically instrument Python branches and locals. [mlflow-workflow, mlflow-capture, mlflow-recording]
+- **VERIFIED** — The standalone Python capture facade imports only standard-library modules, and constructors start no process. Entering capture explicitly starts a Node helper. The npm root keeps zero runtime dependencies. MLflow and numerical dependencies are explicit application/example installations, not imported by the capture module. [mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-requirements]
+- **VERIFIED** — The MLflow artifact binding receives an application-supplied client, reads actual run metadata, downloads selected regular files and hashes their bytes. Consumption rechecks cached bytes. The example uses explicit local SQLite tracking and registers a local numeric model source. Run IDs and tags do not supply approval authority. [mlflow-python, mlflow-workflow, mlflow-outcome]
+- **OPEN** — The bridge captures explicit whole-key JSON operations, not arbitrary Python locals or tensor operations. The direct writer does not apply FootPrint executor redaction. The application selects and filters captured metadata. Boundary snapshots are not a durable workflow scheduler or write-ahead recovery log. [mlflow-guide, mlflow-capture, mlflow-recording]
+
+### 27. A retry changed preprocessing and accuracy fell
+
+- **VERIFIED** — The local sklearn digit-classifier proof observed validation accuracy 0.98 with fitted scaler S1, 0.34 after a Python retry chose deliberately incompatible scaler S2, and 0.98 after restoring S1. The raw validation and model-weight artifact hashes remained unchanged. This is a controlled intervention prepared before validation. [mlflow-outcome, mlflow-workflow, mlflow-audit]
+- **VERIFIED** — The existing native ML receipt and release contracts refused the stale S1 receipt for the S2 predictor. Fresh S2 evidence failed the configured accuracy >= 0.9 policy. The restored predictor received matching allowed evidence. These are local approvals; no external alias or deployment changed. [mlflow-outcome, mlflow-workflow, mlflow-capture]
+- **VERIFIED** — The saved native investigation followed the faulty accuracy to the selected preprocessor and its Python retry while excluding the later correction. It linked corrected accuracy to restoration, retained the discarded failed attempt, and preserved the warning that control-dependency lookup is unavailable. Reopening started no Python or MLflow client and repeated no training or evaluation. [mlflow-native, mlflow-recording]
+- **DERIVED** — The controlled correction and fixed weight/data hashes support this example’s preprocessing explanation. FootPrint ML connects the recorded refs, measured predictor components and guard evidence. The numerical trainer computes accuracy. A local registered weight source alone does not identify every preprocessing choice. [mlflow-outcome, mlflow-audit, mlflow-numerical, mlflow-guide]
+- **VERIFIED** — A separate standard-library audit recomputed predictions from retained numerical artifacts, found finite scores and matched the three aggregate accuracies in nineteen checks. It did not repeat training or verify the training algorithm. JSON-only provenance investigation does not repeat this audit. [mlflow-audit, mlflow-audit-code]
+- **OPEN** — This local SQLite experiment does not establish automatic production root-cause discovery, complete Python instrumentation, faster human investigation than complete logs, external release guarantees or general model quality. Explicit capture and a complete application-supplied predictor profile remain required. [mlflow-outcome, mlflow-native, mlflow-guide]
+- **OPEN** — The original numerical backend emitted matrix multiplication warnings. This audit did not diagnose or suppress their cause. Original per-example logits were not retained, so matching finite independent scores and aggregate accuracies do not establish per-logit equivalence. [mlflow-audit, mlflow-audit-code]
+
+### 28. FootPrint explained ML release mistakes through saved workflow state
 
 - **DERIVED** — The retained experiments support using FootPrint’s flowchart stages, reference state and provenance around ML computation. They do not establish a new numerical/autodiff framework. [wasm-summary, workflow, jax-digits-verification, gp-conformance, lineage-results, lineage-verification, crash-summary, crash-audit]
 - **VERIFIED** — Complete structured logs solved the demonstrated diagnosis questions too; FootPrint’s value is a reusable connected recording/investigation pattern, not unique detectability. [legacy-checkpoint, legacy-retry, benchmark-investigation, lineage-verification, trial-pilot, trial-verify]
@@ -1085,7 +1207,23 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED · why** — A saved value alone does not show which step consumed it. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
 - **VERIFIED · how** — The corrected ranking read its real inputs through tracked scope. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
 - **VERIFIED · learned** — The input producer became reachable through the existing backward slice. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
-- **DERIVED · next** — Test these recorded chains with unfamiliar ML developers and complete logs. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
+- **DERIVED · next** — Can an existing Python workflow keep control and still provide this history? [mlflow-workflow, mlflow-capture, mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-guide]
+
+### Python kept control and linked MLflow artifacts
+
+- **VERIFIED · what** — We kept the classifier workflow in Python and connected its MLflow artifacts. [mlflow-workflow, mlflow-capture, mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-guide]
+- **DERIVED · why** — Teams should not rewrite their ML workflow merely to inspect its history. [mlflow-workflow, mlflow-capture, mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-guide]
+- **VERIFIED · how** — A stdlib client sent chosen JSON references to a native foottrace writer. [mlflow-workflow, mlflow-capture, mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-guide]
+- **VERIFIED · learned** — Python kept control. MLflow kept artifacts. A Node helper recorded explicit state. [mlflow-workflow, mlflow-capture, mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-guide]
+- **DERIVED · next** — Would the record explain a wrong preprocessing choice after a retry? [mlflow-workflow, mlflow-capture, mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-guide]
+
+### A retry changed preprocessing and accuracy fell
+
+- **VERIFIED · what** — A Python retry selected the wrong scaler and accuracy fell from 98% to 34%. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
+- **DERIVED · why** — Unchanged model weights can behave differently when preparation changes. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
+- **VERIFIED · how** — We recorded the consumed artifact references and measured their actual bytes. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
+- **VERIFIED · learned** — Restoring the original scaler recovered 98%. Saved evidence exposed the changed input. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
+- **DERIVED · next** — Test this additive investigation path in an unfamiliar team’s existing Python workflow. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
 
 ### FootPrint explained ML release mistakes through saved workflow state
 
@@ -1196,4 +1334,6 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED** — Recover the publisher’s lost reply. Did the missing reply mean the approved model was not released? Retry the same plan and inspect the existing local publication. [release-results, release-proof, release-publisher, release-results, release-workflow]
 - **DERIVED** — A saved ML choice led back to its scores. A surprising model choice needs its actual inputs and decision history. Each selection reached its own ranking and the saved candidate observations. [backtracking-outcome, backtracking-recording, backtracking-native, backtracking-workflow, backtracking-reader]
 - **DERIVED** — A hidden input left a missing connection. A saved value alone does not show which step consumed it. The input producer became reachable through the existing backward slice. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
+- **DERIVED** — Python kept control and linked MLflow artifacts. Teams should not rewrite their ML workflow merely to inspect its history. Python kept control. MLflow kept artifacts. A Node helper recorded explicit state. [mlflow-workflow, mlflow-capture, mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-guide]
+- **DERIVED** — A retry changed preprocessing and accuracy fell. Unchanged model weights can behave differently when preparation changes. Restoring the original scaler recovered 98%. Saved evidence exposed the changed input. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
 - **DERIVED** — Review the ML debugging results. Which mistakes did these local model checks explain? Review the ML-specific checks and the still-open human comparison. [lineage-results, lineage-verification, crash-summary, crash-audit, build, trial-pilot, trial-protocol, selection-results, selection-contracts, release-results, release-contracts]

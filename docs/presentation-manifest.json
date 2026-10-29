@@ -547,6 +547,33 @@
         "lens": true
       },
       {
+        "id": "python-mlflow",
+        "kind": "adapter",
+        "summary": "Python kept control while the optional bridge linked MLflow artifacts to recorded history.",
+        "focus": [
+          "adapters",
+          "refs",
+          "investigation"
+        ],
+        "added": [],
+        "trainer": true,
+        "lens": true
+      },
+      {
+        "id": "preprocessing-retry",
+        "kind": "strengthened",
+        "summary": "Saved references exposed the wrong scaler selected by a Python retry.",
+        "focus": [
+          "refs",
+          "adapters",
+          "evaluation",
+          "approval",
+          "investigation"
+        ],
+        "added": [],
+        "lens": true
+      },
+      {
         "id": "verdict",
         "kind": "verdict",
         "summary": "Eight ML capabilities above the existing FootPrint foundation.",
@@ -779,8 +806,8 @@
     "Trusted adapter/profile; no authentication or atomic deployment guarantee.",
     "FootPrint records workflow state at instrumented boundaries; it does not record every tensor operation."
   ],
-  "sceneCount": 26,
-  "clickStateCount": 51,
+  "sceneCount": 28,
+  "clickStateCount": 55,
   "nodes": [
     {
       "id": "fp",
@@ -6138,7 +6165,7 @@
         "why": "A saved value alone does not show which step consumed it.",
         "how": "The corrected ranking read its real inputs through tracked scope.",
         "learned": "The input producer became reachable through the existing backward slice.",
-        "next": "Test these recorded chains with unfamiliar ML developers and complete logs."
+        "next": "Can an existing Python workflow keep control and still provide this history?"
       },
       "storyTextEvidence": {
         "what": {
@@ -6188,12 +6215,13 @@
         "next": {
           "classification": "DERIVED",
           "sourceIds": [
-            "backtracking-tests",
-            "backtracking-workflow",
-            "backtracking-native",
-            "backtracking-guide",
-            "backtracking-controls",
-            "backtracking-closure-native"
+            "mlflow-workflow",
+            "mlflow-capture",
+            "mlflow-python",
+            "mlflow-python-tests",
+            "mlflow-dependencies",
+            "mlflow-package",
+            "mlflow-guide"
           ]
         }
       },
@@ -6215,6 +6243,508 @@
       },
       "index": 24,
       "clickIndex": 48,
+      "nodeIds": [
+        "fp",
+        "compute",
+        "references",
+        "trainer",
+        "history",
+        "retry",
+        "cost",
+        "view",
+        "lens",
+        "replay",
+        "library",
+        "evidence",
+        "guard",
+        "jax",
+        "identity",
+        "inspect",
+        "plugin",
+        "conformance",
+        "package",
+        "data-use",
+        "data-guard",
+        "audit",
+        "recovery",
+        "continuity",
+        "trial",
+        "selection",
+        "publication"
+      ],
+      "edgeIds": [
+        "fp-compute",
+        "compute-references",
+        "fp-references",
+        "compute-trainer",
+        "trainer-history",
+        "references-history",
+        "fp-retry",
+        "history-retry",
+        "fp-cost",
+        "retry-cost",
+        "history-view",
+        "retry-view",
+        "fp-lens",
+        "fp-replay",
+        "lens-replay",
+        "references-library",
+        "lens-library",
+        "library-evidence",
+        "evidence-guard",
+        "library-jax",
+        "guard-jax",
+        "jax-identity",
+        "evidence-identity",
+        "identity-inspect",
+        "library-inspect",
+        "library-plugin",
+        "plugin-conformance",
+        "library-package",
+        "package-lens",
+        "package-plugin",
+        "trainer-data-use",
+        "evidence-data-use",
+        "data-use-data-guard",
+        "guard-data-guard",
+        "data-use-audit",
+        "lens-audit",
+        "cost-audit",
+        "references-recovery",
+        "history-recovery",
+        "recovery-continuity",
+        "identity-continuity",
+        "audit-continuity",
+        "evidence-continuity",
+        "continuity-guard",
+        "recovery-lens",
+        "recovery-replay",
+        "lens-trial",
+        "history-trial",
+        "trial-selection",
+        "library-selection",
+        "evidence-selection",
+        "selection-guard",
+        "selection-lens",
+        "guard-publication",
+        "selection-publication",
+        "library-publication",
+        "retry-publication",
+        "publication-lens"
+      ],
+      "nodeCount": 27,
+      "edgeCount": 58
+    },
+    {
+      "id": "python-mlflow",
+      "title": "Python kept control and linked MLflow artifacts",
+      "category": "Python workflow and MLflow integration",
+      "caption": "A standard-library Python client sent chosen references to a local Node helper using the existing native foottrace writer.",
+      "visual": {
+        "kind": "python-mlflow",
+        "journey": "python-mlflow",
+        "showMetricsInPrimaryView": false,
+        "showHashesInPrimaryView": false
+      },
+      "adds": {
+        "nodes": [],
+        "edges": []
+      },
+      "focus": [
+        "trainer",
+        "history",
+        "lens",
+        "library"
+      ],
+      "transition": {
+        "change": "Python kept control and linked MLflow artifacts",
+        "why": "Teams should not rewrite their ML workflow merely to inspect its history.",
+        "consequence": "Python kept control. MLflow kept artifacts. A Node helper recorded explicit state."
+      },
+      "claims": [
+        {
+          "classification": "VERIFIED",
+          "text": "The Python application owns training, evaluation, stage order and its try/except retry. The optional Node capture host uses native foottrace write APIs directly. It does not execute this Python workflow with a FootPrint executor or automatically instrument Python branches and locals.",
+          "sourceIds": [
+            "mlflow-workflow",
+            "mlflow-capture",
+            "mlflow-recording"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The standalone Python capture facade imports only standard-library modules, and constructors start no process. Entering capture explicitly starts a Node helper. The npm root keeps zero runtime dependencies. MLflow and numerical dependencies are explicit application/example installations, not imported by the capture module.",
+          "sourceIds": [
+            "mlflow-python",
+            "mlflow-python-tests",
+            "mlflow-dependencies",
+            "mlflow-package",
+            "mlflow-requirements"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The MLflow artifact binding receives an application-supplied client, reads actual run metadata, downloads selected regular files and hashes their bytes. Consumption rechecks cached bytes. The example uses explicit local SQLite tracking and registers a local numeric model source. Run IDs and tags do not supply approval authority.",
+          "sourceIds": [
+            "mlflow-python",
+            "mlflow-workflow",
+            "mlflow-outcome"
+          ]
+        },
+        {
+          "classification": "OPEN",
+          "text": "The bridge captures explicit whole-key JSON operations, not arbitrary Python locals or tensor operations. The direct writer does not apply FootPrint executor redaction. The application selects and filters captured metadata. Boundary snapshots are not a durable workflow scheduler or write-ahead recovery log.",
+          "sourceIds": [
+            "mlflow-guide",
+            "mlflow-capture",
+            "mlflow-recording"
+          ]
+        }
+      ],
+      "storyText": {
+        "what": "We kept the classifier workflow in Python and connected its MLflow artifacts.",
+        "why": "Teams should not rewrite their ML workflow merely to inspect its history.",
+        "how": "A stdlib client sent chosen JSON references to a native foottrace writer.",
+        "learned": "Python kept control. MLflow kept artifacts. A Node helper recorded explicit state.",
+        "next": "Would the record explain a wrong preprocessing choice after a retry?"
+      },
+      "storyTextEvidence": {
+        "what": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "mlflow-workflow",
+            "mlflow-capture",
+            "mlflow-python",
+            "mlflow-python-tests",
+            "mlflow-dependencies",
+            "mlflow-package",
+            "mlflow-guide"
+          ]
+        },
+        "why": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "mlflow-workflow",
+            "mlflow-capture",
+            "mlflow-python",
+            "mlflow-python-tests",
+            "mlflow-dependencies",
+            "mlflow-package",
+            "mlflow-guide"
+          ]
+        },
+        "how": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "mlflow-workflow",
+            "mlflow-capture",
+            "mlflow-python",
+            "mlflow-python-tests",
+            "mlflow-dependencies",
+            "mlflow-package",
+            "mlflow-guide"
+          ]
+        },
+        "learned": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "mlflow-workflow",
+            "mlflow-capture",
+            "mlflow-python",
+            "mlflow-python-tests",
+            "mlflow-dependencies",
+            "mlflow-package",
+            "mlflow-guide"
+          ]
+        },
+        "next": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "mlflow-workflow",
+            "mlflow-capture",
+            "mlflow-python",
+            "mlflow-python-tests",
+            "mlflow-dependencies",
+            "mlflow-package",
+            "mlflow-guide"
+          ]
+        }
+      },
+      "teachingClassification": "DERIVED",
+      "narrativeNote": "Python controls its workflow. The optional Node bridge uses the existing native foottrace writer, without a FootPrint executor. Scores are sklearn observations for a controlled local case.",
+      "nextCard": {
+        "title": "Python kept control and linked MLflow artifacts",
+        "why": "Teams should not rewrite their ML workflow merely to inspect its history.",
+        "after": "Python kept control. MLflow kept artifacts. A Node helper recorded explicit state.",
+        "classification": "DERIVED",
+        "sourceIds": [
+          "mlflow-workflow",
+          "mlflow-capture",
+          "mlflow-python",
+          "mlflow-python-tests",
+          "mlflow-dependencies",
+          "mlflow-package",
+          "mlflow-guide"
+        ]
+      },
+      "index": 25,
+      "clickIndex": 50,
+      "nodeIds": [
+        "fp",
+        "compute",
+        "references",
+        "trainer",
+        "history",
+        "retry",
+        "cost",
+        "view",
+        "lens",
+        "replay",
+        "library",
+        "evidence",
+        "guard",
+        "jax",
+        "identity",
+        "inspect",
+        "plugin",
+        "conformance",
+        "package",
+        "data-use",
+        "data-guard",
+        "audit",
+        "recovery",
+        "continuity",
+        "trial",
+        "selection",
+        "publication"
+      ],
+      "edgeIds": [
+        "fp-compute",
+        "compute-references",
+        "fp-references",
+        "compute-trainer",
+        "trainer-history",
+        "references-history",
+        "fp-retry",
+        "history-retry",
+        "fp-cost",
+        "retry-cost",
+        "history-view",
+        "retry-view",
+        "fp-lens",
+        "fp-replay",
+        "lens-replay",
+        "references-library",
+        "lens-library",
+        "library-evidence",
+        "evidence-guard",
+        "library-jax",
+        "guard-jax",
+        "jax-identity",
+        "evidence-identity",
+        "identity-inspect",
+        "library-inspect",
+        "library-plugin",
+        "plugin-conformance",
+        "library-package",
+        "package-lens",
+        "package-plugin",
+        "trainer-data-use",
+        "evidence-data-use",
+        "data-use-data-guard",
+        "guard-data-guard",
+        "data-use-audit",
+        "lens-audit",
+        "cost-audit",
+        "references-recovery",
+        "history-recovery",
+        "recovery-continuity",
+        "identity-continuity",
+        "audit-continuity",
+        "evidence-continuity",
+        "continuity-guard",
+        "recovery-lens",
+        "recovery-replay",
+        "lens-trial",
+        "history-trial",
+        "trial-selection",
+        "library-selection",
+        "evidence-selection",
+        "selection-guard",
+        "selection-lens",
+        "guard-publication",
+        "selection-publication",
+        "library-publication",
+        "retry-publication",
+        "publication-lens"
+      ],
+      "nodeCount": 27,
+      "edgeCount": 58
+    },
+    {
+      "id": "preprocessing-retry",
+      "title": "A retry changed preprocessing and accuracy fell",
+      "category": "Python workflow and MLflow integration",
+      "caption": "The same model weights and raw validation data scored 98%, then 34% with the wrong scaler, then 98% after restoration.",
+      "visual": {
+        "kind": "preprocessing-retry",
+        "journey": "preprocessing-retry",
+        "showMetricsInPrimaryView": true,
+        "showHashesInPrimaryView": false
+      },
+      "adds": {
+        "nodes": [],
+        "edges": []
+      },
+      "focus": [
+        "lens",
+        "library",
+        "guard"
+      ],
+      "transition": {
+        "change": "A retry changed preprocessing and accuracy fell",
+        "why": "Unchanged model weights can behave differently when preparation changes.",
+        "consequence": "Restoring the original scaler recovered 98%. Saved evidence exposed the changed input."
+      },
+      "claims": [
+        {
+          "classification": "VERIFIED",
+          "text": "The local sklearn digit-classifier proof observed validation accuracy 0.98 with fitted scaler S1, 0.34 after a Python retry chose deliberately incompatible scaler S2, and 0.98 after restoring S1. The raw validation and model-weight artifact hashes remained unchanged. This is a controlled intervention prepared before validation.",
+          "sourceIds": [
+            "mlflow-outcome",
+            "mlflow-workflow",
+            "mlflow-audit"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The existing native ML receipt and release contracts refused the stale S1 receipt for the S2 predictor. Fresh S2 evidence failed the configured accuracy >= 0.9 policy. The restored predictor received matching allowed evidence. These are local approvals; no external alias or deployment changed.",
+          "sourceIds": [
+            "mlflow-outcome",
+            "mlflow-workflow",
+            "mlflow-capture"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The saved native investigation followed the faulty accuracy to the selected preprocessor and its Python retry while excluding the later correction. It linked corrected accuracy to restoration, retained the discarded failed attempt, and preserved the warning that control-dependency lookup is unavailable. Reopening started no Python or MLflow client and repeated no training or evaluation.",
+          "sourceIds": [
+            "mlflow-native",
+            "mlflow-recording"
+          ]
+        },
+        {
+          "classification": "DERIVED",
+          "text": "The controlled correction and fixed weight/data hashes support this example’s preprocessing explanation. FootPrint ML connects the recorded refs, measured predictor components and guard evidence. The numerical trainer computes accuracy. A local registered weight source alone does not identify every preprocessing choice.",
+          "sourceIds": [
+            "mlflow-outcome",
+            "mlflow-audit",
+            "mlflow-numerical",
+            "mlflow-guide"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "A separate standard-library audit recomputed predictions from retained numerical artifacts, found finite scores and matched the three aggregate accuracies in nineteen checks. It did not repeat training or verify the training algorithm. JSON-only provenance investigation does not repeat this audit.",
+          "sourceIds": [
+            "mlflow-audit",
+            "mlflow-audit-code"
+          ]
+        },
+        {
+          "classification": "OPEN",
+          "text": "This local SQLite experiment does not establish automatic production root-cause discovery, complete Python instrumentation, faster human investigation than complete logs, external release guarantees or general model quality. Explicit capture and a complete application-supplied predictor profile remain required.",
+          "sourceIds": [
+            "mlflow-outcome",
+            "mlflow-native",
+            "mlflow-guide"
+          ]
+        },
+        {
+          "classification": "OPEN",
+          "text": "The original numerical backend emitted matrix multiplication warnings. This audit did not diagnose or suppress their cause. Original per-example logits were not retained, so matching finite independent scores and aggregate accuracies do not establish per-logit equivalence.",
+          "sourceIds": [
+            "mlflow-audit",
+            "mlflow-audit-code"
+          ]
+        }
+      ],
+      "storyText": {
+        "what": "A Python retry selected the wrong scaler and accuracy fell from 98% to 34%.",
+        "why": "Unchanged model weights can behave differently when preparation changes.",
+        "how": "We recorded the consumed artifact references and measured their actual bytes.",
+        "learned": "Restoring the original scaler recovered 98%. Saved evidence exposed the changed input.",
+        "next": "Test this additive investigation path in an unfamiliar team’s existing Python workflow."
+      },
+      "storyTextEvidence": {
+        "what": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "mlflow-outcome",
+            "mlflow-recording",
+            "mlflow-native",
+            "mlflow-audit",
+            "mlflow-workflow"
+          ]
+        },
+        "why": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "mlflow-outcome",
+            "mlflow-recording",
+            "mlflow-native",
+            "mlflow-audit",
+            "mlflow-workflow"
+          ]
+        },
+        "how": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "mlflow-outcome",
+            "mlflow-recording",
+            "mlflow-native",
+            "mlflow-audit",
+            "mlflow-workflow"
+          ]
+        },
+        "learned": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "mlflow-outcome",
+            "mlflow-recording",
+            "mlflow-native",
+            "mlflow-audit",
+            "mlflow-workflow"
+          ]
+        },
+        "next": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "mlflow-outcome",
+            "mlflow-recording",
+            "mlflow-native",
+            "mlflow-audit",
+            "mlflow-workflow"
+          ]
+        }
+      },
+      "teachingClassification": "DERIVED",
+      "narrativeNote": "Python controls its workflow. The optional Node bridge uses the existing native foottrace writer, without a FootPrint executor. Scores are sklearn observations for a controlled local case.",
+      "nextCard": {
+        "title": "A retry changed preprocessing and accuracy fell",
+        "why": "Unchanged model weights can behave differently when preparation changes.",
+        "after": "Restoring the original scaler recovered 98%. Saved evidence exposed the changed input.",
+        "classification": "DERIVED",
+        "sourceIds": [
+          "mlflow-outcome",
+          "mlflow-recording",
+          "mlflow-native",
+          "mlflow-audit",
+          "mlflow-workflow"
+        ]
+      },
+      "index": 26,
+      "clickIndex": 52,
       "nodeIds": [
         "fp",
         "compute",
@@ -6543,8 +7073,8 @@
           "release-contracts"
         ]
       },
-      "index": 25,
-      "clickIndex": 50,
+      "index": 27,
+      "clickIndex": 54,
       "nodeIds": [
         "fp",
         "compute",
@@ -8157,14 +8687,14 @@
       "note": "Generic saved-result reader, native tool reuse and capture limits",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/backtracking-guide.md",
-      "sha256": "4113e1f057639e254277c4f8f7f12b3fd28b8909faaca7dd7f62881a5f99d18e",
+      "sha256": "7ceaa0e53b2f39220dcca3a46c7f4b625b0380fceeef72ef79352b6c07b9fb4b",
       "bytes": 6502,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/backtracking-guide.md",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/backtracking-guide.md",
-        "sha256": "d69a41fa5660ba65c540e0e400b5bb8170a1cb7154b2df09293fad40372d4335",
+        "sha256": "cbb78fa33e188782e7b2e75326a2e85409068cc351c3364e9343cee1c77ed40c",
         "bytes": 6670,
         "pathsProjected": 0,
         "linksProjected": 3,
@@ -8327,6 +8857,307 @@
         "path": "evidence/backtracking-reopened.json",
         "sha256": "363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7",
         "bytes": 72118,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-outcome",
+      "path": "evidence/mlflow-outcome.json",
+      "label": "Actual local MLflow/scikit-learn preprocessing failure outcome",
+      "note": "Actual local MLflow/scikit-learn preprocessing failure outcome",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-outcome.json",
+      "sha256": "e460a6ed9344b690dd6a6a1faec57bb65b4099b72889e52c577637ed7bdc55cb",
+      "bytes": 28735,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-outcome.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-outcome.json",
+        "sha256": "fbe359503ae22d05208fba87881def03fba8294f67f155ccd8b1cb6e4cd5793b",
+        "bytes": 39853,
+        "pathsProjected": 1,
+        "byteIdenticalToRetainedSource": false
+      }
+    },
+    {
+      "id": "mlflow-recording",
+      "path": "evidence/mlflow-recording.json",
+      "label": "Live Python-supplied scope operations recorded by the native foottrace writer",
+      "note": "Live Python-supplied scope operations recorded by the native foottrace writer",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-recording.json",
+      "sha256": "f39da957ae51b0cc2ca127fa84f2f52b282d7153f339451093a4a108d6d594ce",
+      "bytes": 290820,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-recording.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-recording.json",
+        "sha256": "9b07a6a10b8c94a0ca56ff5c442f2cb42156fabb32d3b3b1674117bba02c2d3b",
+        "bytes": 290656,
+        "pathsProjected": 4,
+        "byteIdenticalToRetainedSource": false
+      }
+    },
+    {
+      "id": "mlflow-native",
+      "path": "evidence/mlflow-native.json",
+      "label": "Saved-only native investigation of the wrong scaler retry and corrected evidence",
+      "note": "Saved-only native investigation of the wrong scaler retry and corrected evidence",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-native.json",
+      "sha256": "22b58776f4a85c49c41f67f1a3f09e260af754c7509299ced4c7a190f589a411",
+      "bytes": 14096,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-native.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-native.json",
+        "sha256": "22b58776f4a85c49c41f67f1a3f09e260af754c7509299ced4c7a190f589a411",
+        "bytes": 14096,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-audit",
+      "path": "evidence/mlflow-audit.json",
+      "label": "Independent saved-artifact numerical audit of the controlled scaler change",
+      "note": "Independent saved-artifact numerical audit of the controlled scaler change",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-audit.json",
+      "sha256": "56005166d5388ef202aa5a3d744817f336ff424e4ba4817d56b6fbfafa602b83",
+      "bytes": 5462,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-audit.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-audit.json",
+        "sha256": "56005166d5388ef202aa5a3d744817f336ff424e4ba4817d56b6fbfafa602b83",
+        "bytes": 5462,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-dependencies",
+      "path": "evidence/mlflow-dependencies.json",
+      "label": "Observed capture import isolation and explicit dependency boundary",
+      "note": "Observed capture import isolation and explicit dependency boundary",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-dependencies.json",
+      "sha256": "6cf65366618af9918b5c9da528453d9928d1f2da06ce58615a43681d8ad69352",
+      "bytes": 1100,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-dependencies.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-dependencies.json",
+        "sha256": "6cf65366618af9918b5c9da528453d9928d1f2da06ce58615a43681d8ad69352",
+        "bytes": 1100,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-capture",
+      "path": "evidence/mlflow-capture.ts.txt",
+      "label": "Optional Node host over native foottrace write APIs and existing ML contracts",
+      "note": "Optional Node host over native foottrace write APIs and existing ML contracts",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-capture.ts.txt",
+      "sha256": "5e4beb3387cb51344460e25c2ccc8f501e422b144e3b34238e1d36e72b69ee1e",
+      "bytes": 14410,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-capture.ts.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-capture.ts.txt",
+        "sha256": "5e4beb3387cb51344460e25c2ccc8f501e422b144e3b34238e1d36e72b69ee1e",
+        "bytes": 14410,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-python",
+      "path": "evidence/mlflow-python.py.txt",
+      "label": "Standard-library Python capture facade and injected MLflow artifact binding",
+      "note": "Standard-library Python capture facade and injected MLflow artifact binding",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-python.py.txt",
+      "sha256": "f08379bf7985569053ce863cff83102a7fba43bc13fe837bb2ae8cb40c6e846a",
+      "bytes": 21504,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-python.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-python.py.txt",
+        "sha256": "f08379bf7985569053ce863cff83102a7fba43bc13fe837bb2ae8cb40c6e846a",
+        "bytes": 21504,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-python-tests",
+      "path": "evidence/mlflow-python-tests.py.txt",
+      "label": "Isolated Python imports, native capture lifecycle and checked artifact binding tests",
+      "note": "Isolated Python imports, native capture lifecycle and checked artifact binding tests",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-python-tests.py.txt",
+      "sha256": "2470d73daee0ce85e9779ec3f582377900dc15e18a01373dc1f89f50b330fefd",
+      "bytes": 11891,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-python-tests.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-python-tests.py.txt",
+        "sha256": "2470d73daee0ce85e9779ec3f582377900dc15e18a01373dc1f89f50b330fefd",
+        "bytes": 11891,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-workflow",
+      "path": "evidence/mlflow-workflow.py.txt",
+      "label": "Python-owned classifier workflow, explicit retry and measured artifact consumption",
+      "note": "Python-owned classifier workflow, explicit retry and measured artifact consumption",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-workflow.py.txt",
+      "sha256": "ff00614373a7d8e1053e1ba5f8bf67a737209a963b3bc801b6588355f561e960",
+      "bytes": 16801,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-workflow.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-workflow.py.txt",
+        "sha256": "ff00614373a7d8e1053e1ba5f8bf67a737209a963b3bc801b6588355f561e960",
+        "bytes": 16801,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-numerical",
+      "path": "evidence/mlflow-numerical.py.txt",
+      "label": "Safe numerical JSON formats and composite predictor identity",
+      "note": "Safe numerical JSON formats and composite predictor identity",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-numerical.py.txt",
+      "sha256": "568289e51ca609980ded2143d0a3d34d46fab60acd16a90caee713c4c28a6693",
+      "bytes": 5414,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-numerical.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-numerical.py.txt",
+        "sha256": "568289e51ca609980ded2143d0a3d34d46fab60acd16a90caee713c4c28a6693",
+        "bytes": 5414,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-guide",
+      "path": "evidence/mlflow-guide.md",
+      "label": "Python and MLflow integration responsibilities, dependencies and limits",
+      "note": "Python and MLflow integration responsibilities, dependencies and limits",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-guide.md",
+      "sha256": "a85971d974c95363ffb5f51a81ee6f67d7524faf88b5cfaf33e10b1aea8e5666",
+      "bytes": 9646,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-guide.md",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-guide.md",
+        "sha256": "bcaeaffc803149bcd6be73427f427cee3a08e17fb2267877b4bd0219680e7d9b",
+        "bytes": 9926,
+        "pathsProjected": 0,
+        "linksProjected": 5,
+        "byteIdenticalToRetainedSource": false
+      }
+    },
+    {
+      "id": "mlflow-requirements",
+      "path": "evidence/mlflow-requirements.txt",
+      "label": "Explicit pinned MLflow and numerical dependencies for this example",
+      "note": "Explicit pinned MLflow and numerical dependencies for this example",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-requirements.txt",
+      "sha256": "9afd82743d438ba0a255caba25069b7da9637270a3f17eeefdb45ab287906a9c",
+      "bytes": 48,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-requirements.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-requirements.txt",
+        "sha256": "9afd82743d438ba0a255caba25069b7da9637270a3f17eeefdb45ab287906a9c",
+        "bytes": 48,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-package",
+      "path": "evidence/mlflow-package.json",
+      "label": "Current beta SDK entry points and zero npm root runtime dependencies",
+      "note": "Current beta SDK entry points and zero npm root runtime dependencies",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-package.json",
+      "sha256": "b70f89bc1883d34d9d1f6359ccd436273a7724e60da2d3ad5de8966e519e8886",
+      "bytes": 3122,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-package.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-package.json",
+        "sha256": "b70f89bc1883d34d9d1f6359ccd436273a7724e60da2d3ad5de8966e519e8886",
+        "bytes": 3122,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-capture-tests",
+      "path": "evidence/mlflow-capture-tests.mjs.txt",
+      "label": "Native writer lifecycle, discarded attempts and protocol-boundary tests",
+      "note": "Native writer lifecycle, discarded attempts and protocol-boundary tests",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-capture-tests.mjs.txt",
+      "sha256": "fd1a3fcacaaaa0082056b6b3d393a2e4554363f2510282ed514e2f9c4e1fabaf",
+      "bytes": 11720,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-capture-tests.mjs.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-capture-tests.mjs.txt",
+        "sha256": "fd1a3fcacaaaa0082056b6b3d393a2e4554363f2510282ed514e2f9c4e1fabaf",
+        "bytes": 11720,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "mlflow-audit-code",
+      "path": "evidence/mlflow-audit-code.py.txt",
+      "label": "Independent stdlib arithmetic over retained numeric model and validation artifacts",
+      "note": "Audits saved inference and aggregate accuracy without repeating training or importing MLflow/NumPy/sklearn.",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/mlflow-audit-code.py.txt",
+      "sha256": "3d0dcd832d34f2a7baeddff254b6ee3b6980869c8535246267d606954812f1b7",
+      "bytes": 11680,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/mlflow-audit-code.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/mlflow-audit-code.py.txt",
+        "sha256": "3d0dcd832d34f2a7baeddff254b6ee3b6980869c8535246267d606954812f1b7",
+        "bytes": 11680,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
@@ -8513,6 +9344,20 @@
       },
       {
         "click": 51,
+        "type": "fade",
+        "seconds": 0.8,
+        "ease": "inOut",
+        "p": {}
+      },
+      {
+        "click": 53,
+        "type": "fade",
+        "seconds": 0.8,
+        "ease": "inOut",
+        "p": {}
+      },
+      {
+        "click": 55,
         "type": "fade",
         "seconds": 0.8,
         "ease": "inOut",

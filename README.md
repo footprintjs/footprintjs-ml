@@ -11,7 +11,7 @@ FootPrint coordinates the workflow. Your trainer keeps its models, tensors and n
 The beta is distributed as a versioned GitHub release tarball. These commands do not depend on an npm registry release of `footprintjs-ml`:
 
 ```sh
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.2/footprintjs-ml-0.6.0-beta.2.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.3/footprintjs-ml-0.6.0-beta.3.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy==2.2.6
 npx --no-install footprint-ml demo --out ./quickstart-run --python .venv/bin/python
@@ -75,3 +75,5 @@ The smoke check packs the SDK, installs it into a temporary consumer, runs the m
 GitHub Pages serves the presentation in `docs/`. Its historical experiments and original versions remain evidence for that story; they are separate from the current beta quickstart. The [publication manifest](docs/publication-manifest.json) distinguishes original retained-source fingerprints from public copies with personal paths removed.
 
 MIT licensed. The presentation includes the [StoryDeck MIT notice](docs/STORYDECK-LICENSE.txt).
+
+For an existing Python workflow, the [optional MLflow integration](MLFLOW.md) keeps orchestration in Python and records explicit reference reads and writes through the native foottrace writer. The Python helper uses only the standard library and accepts an application-supplied MLflow client. The Node recording helper is started explicitly.

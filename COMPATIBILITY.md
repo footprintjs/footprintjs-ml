@@ -1,8 +1,10 @@
 # Beta compatibility
 
-The current SDK beta is `0.6.0-beta.2`. APIs and supported integration profiles may change during the beta.
+The current SDK beta is `0.6.0-beta.3`. APIs and supported integration profiles may change during the beta.
 
 Beta 2 adds a saved-record entry point without release bindings and explicit CLI investigation targets. It reuses the existing FootPrint/foottrace toolpack. Its selection proof recomputes ranking from retained JAX evaluations; it does not repeat numerical training. The reference quickstart separately trains its NumPy model. See [BACKTRACKING.md](BACKTRACKING.md) for capture requirements and limits.
+
+Beta 3 adds an optional standard-library Python workflow helper and injected MLflow artifact binding. Python controls its own stages and retries; an explicitly started Node helper records reference reads and writes through the native foottrace writer. This path uses no FootPrint executor and does not capture arbitrary Python locals. MLflow and numerical packages are application dependencies, not SDK runtime dependencies. The reference MLflow proof uses Python 3.12, MLflow 3.17.2, scikit-learn 1.7.2 and NumPy 2.2.6 with a local SQLite store. See [MLFLOW.md](MLFLOW.md).
 
 ## Runtime scope
 

@@ -28,6 +28,8 @@ npm(['install',archive,'footprintjs@10.0.0','agentfootprint@11.0.0','foottrace@1
 const installed=join(consumer,'node_modules','footprintjs-ml');
 const installedPkg=JSON.parse(await readFile(join(installed,'package.json'),'utf8'));
 assert.equal(installedPkg.version,pkg.version);assert.equal(installedPkg.private,undefined);
+assert.deepEqual(installedPkg.dependencies??{}, {},'The SDK must not install runtime dependencies');
+assert.deepEqual(installedPkg.optionalDependencies??{}, {},'Optional integrations must not install third-party runtimes automatically');
 assert(npm(['exec','--no','--','footprint-ml','--help']).includes('footprint-ml demo'));
 const cli=join(installed,'examples','quickstart','cli.mjs'), runDir=join(consumer,'run');
 const configuredPython=process.env.PYTHON||'python3';
@@ -122,9 +124,44 @@ for(const call of selectionTrace.transcript){
  assert(call.result.includes('retain-candidate-observations#1'));
  assert(!call.result.includes('unrelated-telemetry#2'));
 }
+// The Python capture helper works without site packages or MLflow installed.
+// Explicit capture starts only the shipped native-writer host, using the host's
+// installed foottrace. Python remains the caller that chooses every stage.
+const pythonScopeDir=join(consumer,'python-scope');await mkdir(pythonScopeDir);
+const pythonScope=String.raw`
+import importlib.abc,json,subprocess,sys
+from pathlib import Path
+class BlockThirdParty(importlib.abc.MetaPathFinder):
+    def find_spec(self,fullname,path=None,target=None):
+        if fullname.split('.')[0] in {'numpy','mlflow','sklearn','jax','torch','footprint_ml_adapter'}:
+            raise AssertionError('Optional dependency imported: '+fullname)
+sys.meta_path.insert(0,BlockThirdParty())
+sys.path.insert(0,sys.argv[1])
+import footprint_ml_workflow as workflow
+original_popen=subprocess.Popen
+def blocked_spawn(*args,**kwargs):raise AssertionError('Constructor started a process')
+subprocess.Popen=blocked_spawn
+try:capture=workflow.WorkflowCapture(Path(sys.argv[2])/'recording.json')
+finally:subprocess.Popen=original_popen
+with capture:
+    with capture.stage('saved-model') as scope:
+        scope['modelRef']={'kind':'reference-fixture','sha256':'a'*64}
+    with capture.stage('choose-model') as scope:
+        scope['chosenModel']=scope['modelRef']
+assert not any(name.split('.')[0] in {'numpy','mlflow','sklearn','jax','torch','footprint_ml_adapter'} for name in sys.modules)
+`;
+run(python,['-I','-S','-c',pythonScope,join(installed,'python'),pythonScopeDir]);
+const nativePython=JSON.parse(await readFile(join(pythonScopeDir,'recording.json'),'utf8'));
+assert.equal(nativePython.producer.kind,'python-orchestrator/native-foottrace-writer');
+assert.equal(nativePython.supplemental.pythonCapture.lifecycle,'closed');
+run(process.execPath,['--permission',`--allow-fs-read=${consumer}`,`--allow-fs-write=${pythonScopeDir}`,
+ cli,'investigate','--run',pythonScopeDir,'--variable','chosenModel'],consumer,{PYTHON:badPython});
+const pythonTrace=JSON.parse(await readFile(join(pythonScopeDir,'investigation-variable.json'),'utf8'));
+assert(pythonTrace.transcript[0].result.includes('choose-model#1'));
+assert(pythonTrace.transcript[0].result.includes('saved-model#0'));
 assert.equal(sha(await readFile(join(runDir,'recording.json'))),recordingBefore);
-const nativeQueryCount=[stale,fresh,variable,pinned,ordinary,incomplete,selectionTrace].reduce((n,r)=>n+r.transcript.length,0);
-assert.equal(nativeQueryCount,35);
+const nativeQueryCount=[stale,fresh,variable,pinned,ordinary,incomplete,selectionTrace,pythonTrace].reduce((n,r)=>n+r.transcript.length,0);
+assert.equal(nativeQueryCount,36);
 const artifactDir=resolve(root,'.artifacts');await mkdir(artifactDir,{recursive:true});
 await copyFile(archive,join(artifactDir,filename));
 const report={schema:'footprint-ml-clean-consumer/v1',passed:true,version:pkg.version,node:process.version,
@@ -135,6 +172,8 @@ const report={schema:'footprint-ml-clean-consumer/v1',passed:true,version:pkg.ve
   nativeLensQueries:nativeQueryCount,recordingUnchanged:true,transitiveBacktracking:true,historicalCutoff:true,
   explicitDecisionStage:true,evaluationWithoutRelease:true,missingReadsDisclosed:true,
   installedSelectionProof:true,selectionProducerInNativeSlice:true,unrelatedStagesExcluded:true},
+ dependencies:{coreRuntime:0,automaticallyInstalledOptionalRuntime:0,pythonCaptureStdlibOnly:true,
+  pythonCaptureImportsNoMLflowOrNumericalFramework:true,installedPythonNativeCapture:true},
  metrics:{aMse:outcome.evaluationA.metrics.mse,bMse:outcome.evaluationB.metrics.mse},
  execution:{modelRegistryPublication:false},
  limits:['This checks one NumPy CPU trainer and installed integration; it does not establish other-trainer or remote-publisher support.']};
