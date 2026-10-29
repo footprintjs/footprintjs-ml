@@ -1909,13 +1909,13 @@
     {
       "path": "index.html",
       "published": {
-        "sha256": "734b377ca2335cbfea2d354e08c058f7bcad4f702035462dec079d6d01bc0c2c",
-        "bytes": 673293
+        "sha256": "c4d3daae1a0359368a64a0d6ef14e91b12d4ba95ba4c239e0c6a2df67eba7720",
+        "bytes": 673294
       },
       "originalRetainedSource": {
         "path": "index.html",
-        "sha256": "1385a12b29b1922677662f96630ec910f1d46278eef0fa10764d3f301b522238",
-        "bytes": 549366
+        "sha256": "3e2469e1a07155e28b988a9a645067d153bfc3613c4b3b6eb2b7f2a3a9bacfd7",
+        "bytes": 549367
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
