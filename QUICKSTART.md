@@ -2,6 +2,8 @@
 
 This example checks a model swap and explains the saved decision after the trainer has stopped. It uses real NumPy training on a small, deterministic regression problem. It is a CPU reference integration, not a benchmark or a general trainer.
 
+For an existing Python-owned workflow, use [the Python installation guide](PYTHON.md). The wheel supports normal Python imports, explicit helper setup and saved investigation from Python. The quickstart below demonstrates the separate JavaScript-orchestrated trainer adapter path.
+
 ## Install a released beta
 
 Use Node.js 22+ and Python 3.11 or 3.12 for the pinned NumPy reference trainer. The beta CI targets Node 22/24 and Python 3.11/3.12 with NumPy 2.2.6; see [COMPATIBILITY.md](COMPATIBILITY.md).
@@ -12,7 +14,7 @@ Create a new directory and install the exact beta archive plus the example’s w
 mkdir footprint-ml-try
 cd footprint-ml-try
 npm init -y
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.3/footprintjs-ml-0.6.0-beta.3.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.4/footprintjs-ml-0.6.0-beta.4.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy==2.2.6
 ```
@@ -44,7 +46,7 @@ The investigator opens the saved FootPrint record through Lens/foottrace. It sho
 
 ## Backtrack another saved value
 
-The generic reader supports `footprint-ml investigate --run ./quickstart-run --variable modelRef`. It delegates to the existing Lens toolpack and needs no release descriptor or browser. An optional `--before INDEX` asks about an earlier exclusive commit boundary. See [the backtracking guide](BACKTRACKING.md) for the API, exact decision-stage selection and the limit imposed by inputs read outside tracked scope. This command is included in `0.6.0-beta.3`.
+The generic reader supports `footprint-ml investigate --run ./quickstart-run --variable modelRef`. It delegates to the existing Lens toolpack and needs no release descriptor or browser. An optional `--before INDEX` asks about an earlier exclusive commit boundary. See [the backtracking guide](BACKTRACKING.md) for the API, exact decision-stage selection and the limit imposed by inputs read outside tracked scope. This command is included in `0.6.0-beta.4`.
 
 ## Connect your trainer
 
@@ -73,4 +75,4 @@ PYTHON="$PWD/.venv/bin/python" npm run beta:smoke
 
 The smoke check is the clean-install acceptance test: it packs the SDK, installs it into a temporary consumer, runs the quickstart against the installed package, and reopens its recording in a new process. It must fail if the wrong-model proposal is accepted or the saved investigation cannot explain the decisions. Python and NumPy must be available to the smoke check’s selected Python interpreter.
 
-You can also create a tarball for another local project with `npm pack`, then install the resulting `footprintjs-ml-0.6.0-beta.3.tgz` using `npm install /path/to/footprintjs-ml-0.6.0-beta.3.tgz`. This uses the package you built and does not require an npm registry publication.
+You can also create a tarball for another local project with `npm pack`, then install the resulting `footprintjs-ml-0.6.0-beta.4.tgz` using `npm install /path/to/footprintjs-ml-0.6.0-beta.4.tgz`. This uses the package you built and does not require an npm registry publication.

@@ -1,0 +1,20 @@
+{
+  "schema": "footprint-ml-variable-investigation/v1",
+  "variable": "faultyScore",
+  "transcript": [
+    {
+      "ordinal": 1,
+      "tool": "backtrack",
+      "args": {
+        "variable": "faultyScore"
+      },
+      "result": "SLICE for 'faultyScore' — reads via: custom-fn\nevaluate-faulty (evaluate-faulty#4) [wrote: faultyScore]\n  retain-existing-artifacts (retain-existing-artifacts#0) ← via weightsBinding [wrote: weightsBinding, validationBinding, scaler1Binding, scaler2Binding, activePreprocessorBinding]\n  select-preprocessor (select-preprocessor#3) ← via activePreprocessorBinding [wrote: activePreprocessorBinding]\n    ↳ retain-existing-artifacts#0 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    }
+  ],
+  "execution": {
+    "savedJsonOnly": true,
+    "trainerStarted": false,
+    "trainingRepeated": false
+  }
+}

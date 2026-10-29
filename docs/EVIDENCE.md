@@ -666,10 +666,10 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-python** — Standard-library Python capture facade and injected MLflow artifact binding
   - Public copy: [evidence/mlflow-python.py.txt](evidence/mlflow-python.py.txt)
-  - Original retained source SHA-256: f08379bf7985569053ce863cff83102a7fba43bc13fe837bb2ae8cb40c6e846a
-  - Original retained source bytes: 21504
-  - Published copy SHA-256: f08379bf7985569053ce863cff83102a7fba43bc13fe837bb2ae8cb40c6e846a
-  - Published copy bytes: 21504
+  - Original retained source SHA-256: ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d
+  - Original retained source bytes: 23847
+  - Published copy SHA-256: ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d
+  - Published copy bytes: 23847
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-python-tests** — Isolated Python imports, native capture lifecycle and checked artifact binding tests
   - Public copy: [evidence/mlflow-python-tests.py.txt](evidence/mlflow-python-tests.py.txt)
@@ -680,10 +680,10 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-workflow** — Python-owned classifier workflow, explicit retry and measured artifact consumption
   - Public copy: [evidence/mlflow-workflow.py.txt](evidence/mlflow-workflow.py.txt)
-  - Original retained source SHA-256: ff00614373a7d8e1053e1ba5f8bf67a737209a963b3bc801b6588355f561e960
-  - Original retained source bytes: 16801
-  - Published copy SHA-256: ff00614373a7d8e1053e1ba5f8bf67a737209a963b3bc801b6588355f561e960
-  - Published copy bytes: 16801
+  - Original retained source SHA-256: 6b972a7a203857e0c197afd837c9db1856dfdc15befadc1cc5302ff86c9800b9
+  - Original retained source bytes: 17315
+  - Published copy SHA-256: 6b972a7a203857e0c197afd837c9db1856dfdc15befadc1cc5302ff86c9800b9
+  - Published copy bytes: 17315
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-numerical** — Safe numerical JSON formats and composite predictor identity
   - Public copy: [evidence/mlflow-numerical.py.txt](evidence/mlflow-numerical.py.txt)
@@ -694,10 +694,10 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-guide** — Python and MLflow integration responsibilities, dependencies and limits
   - Public copy: [evidence/mlflow-guide.md](evidence/mlflow-guide.md)
-  - Original retained source SHA-256: a85971d974c95363ffb5f51a81ee6f67d7524faf88b5cfaf33e10b1aea8e5666
-  - Original retained source bytes: 9646
-  - Published copy SHA-256: bcaeaffc803149bcd6be73427f427cee3a08e17fb2267877b4bd0219680e7d9b
-  - Published copy bytes: 9926
+  - Original retained source SHA-256: f037b47224d5ed4597164a0f03cb4314b21d95d9616b22fd0990d34dbdd0f554
+  - Original retained source bytes: 9769
+  - Published copy SHA-256: 26074b426c20c3d8405d8da1b95e22d7208da6106aecf24891e7ed241875e219
+  - Published copy bytes: 10105
   - Path projection: 0 string(s); published bytes differ from retained source.
 - **mlflow-requirements** — Explicit pinned MLflow and numerical dependencies for this example
   - Public copy: [evidence/mlflow-requirements.txt](evidence/mlflow-requirements.txt)
@@ -708,10 +708,10 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-package** — Current beta SDK entry points and zero npm root runtime dependencies
   - Public copy: [evidence/mlflow-package.json](evidence/mlflow-package.json)
-  - Original retained source SHA-256: b70f89bc1883d34d9d1f6359ccd436273a7724e60da2d3ad5de8966e519e8886
-  - Original retained source bytes: 3122
-  - Published copy SHA-256: b70f89bc1883d34d9d1f6359ccd436273a7724e60da2d3ad5de8966e519e8886
-  - Published copy bytes: 3122
+  - Original retained source SHA-256: e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595
+  - Original retained source bytes: 3350
+  - Published copy SHA-256: e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595
+  - Published copy bytes: 3350
   - Path projection: 0 string(s); byte-identical to retained source.
 - **mlflow-capture-tests** — Native writer lifecycle, discarded attempts and protocol-boundary tests
   - Public copy: [evidence/mlflow-capture-tests.mjs.txt](evidence/mlflow-capture-tests.mjs.txt)
@@ -726,6 +726,76 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Original retained source bytes: 11680
   - Published copy SHA-256: 3d0dcd832d34f2a7baeddff254b6ee3b6980869c8535246267d606954812f1b7
   - Published copy bytes: 11680
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **adoption-report** — Measured local integration inventory and identical evaluator results
+  - Public copy: [evidence/adoption-report.json](evidence/adoption-report.json)
+  - Original retained source SHA-256: 553944bef72bed9acb2602c98c4f2494b15163c8ddf3becbecd884d7ac118224
+  - Original retained source bytes: 6627
+  - Published copy SHA-256: 3381436ceb0948dae82ae0f9802aeb19759f66ff2cc53766873170daac465213
+  - Published copy bytes: 6522
+  - Path projection: 3 string(s); published bytes differ from retained source.
+- **adoption-recording** — Installed Python wrapper reference reads, writes and caller-controlled retry
+  - Public copy: [evidence/adoption-recording.json](evidence/adoption-recording.json)
+  - Original retained source SHA-256: 721b1e9356fa2cedaca4867d75bf90182815984d6a433c0cd7616a4a476cf4fb
+  - Original retained source bytes: 25093
+  - Published copy SHA-256: 721b1e9356fa2cedaca4867d75bf90182815984d6a433c0cd7616a4a476cf4fb
+  - Published copy bytes: 25093
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **adoption-native** — Existing saved-value CLI backtracking for the adoption pilot
+  - Public copy: [evidence/adoption-native.json](evidence/adoption-native.json)
+  - Original retained source SHA-256: e50f1b9222b547b300a1e5a07c9056d91f56043b3072c1b220e95ba4c2a2ae24
+  - Original retained source bytes: 1123
+  - Published copy SHA-256: e50f1b9222b547b300a1e5a07c9056d91f56043b3072c1b220e95ba4c2a2ae24
+  - Published copy bytes: 1123
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-install-smoke** — Fresh wheel install, explicit helper setup, diagnostics and native replay smoke
+  - Public copy: [evidence/python-install-smoke.json](evidence/python-install-smoke.json)
+  - Original retained source SHA-256: 822910adabdae28cbb17c0559179785c9c6f81ced775c6dc859f4630ca9b3226
+  - Original retained source bytes: 11671
+  - Published copy SHA-256: 1706fdcbe94f5ac4bb4b9294da5433634f7fd36c29154356399766bdb1ede318
+  - Published copy bytes: 9259
+  - Path projection: 26 string(s); published bytes differ from retained source.
+- **python-install-guide** — Python package installation and explicit optional Node runtime guide
+  - Public copy: [evidence/python-install-guide.md](evidence/python-install-guide.md)
+  - Original retained source SHA-256: 9ded128193d0c2e5d942ad0be4a6395a1cb9d9d6ecc58fe3ae7e6bd0090d15d2
+  - Original retained source bytes: 5223
+  - Published copy SHA-256: fb4d6a1150d47d09ef6e6c1b9842a0dee6379120ebf1e2641c17ab44bacc4ad3
+  - Published copy bytes: 5335
+  - Path projection: 0 string(s); published bytes differ from retained source.
+- **python-setup** — Explicit pinned helper installation and read-only doctor implementation
+  - Public copy: [evidence/python-setup.py.txt](evidence/python-setup.py.txt)
+  - Original retained source SHA-256: c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8
+  - Original retained source bytes: 15503
+  - Published copy SHA-256: c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8
+  - Published copy bytes: 15503
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-baseline** — Ordinary Python evaluator driver without capture
+  - Public copy: [evidence/python-baseline.py.txt](evidence/python-baseline.py.txt)
+  - Original retained source SHA-256: 50edcc0f9b2516ad86974f50450f2283187b435dd163f0c4441cc795def0e92b
+  - Original retained source bytes: 1577
+  - Published copy SHA-256: 50edcc0f9b2516ad86974f50450f2283187b435dd163f0c4441cc795def0e92b
+  - Published copy bytes: 1577
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-wrapper** — Opt-in capture wrapper around the same evaluator
+  - Public copy: [evidence/python-wrapper.py.txt](evidence/python-wrapper.py.txt)
+  - Original retained source SHA-256: fd56d765f294886316ef8e1ee2f2722781ac9b5348c05d7393fa6010aa05ad67
+  - Original retained source bytes: 3132
+  - Published copy SHA-256: fd56d765f294886316ef8e1ee2f2722781ac9b5348c05d7393fa6010aa05ad67
+  - Published copy bytes: 3132
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-evaluator** — Shared scope-free numerical evaluator extracted from the earlier proof
+  - Public copy: [evidence/python-evaluator.py.txt](evidence/python-evaluator.py.txt)
+  - Original retained source SHA-256: e5456da6312c35b95877936e142f24016664775d84d32ac9b5705e614c19272e
+  - Original retained source bytes: 1108
+  - Published copy SHA-256: e5456da6312c35b95877936e142f24016664775d84d32ac9b5705e614c19272e
+  - Published copy bytes: 1108
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **python-adoption-runner** — Actual source inventory, returned-output identity and installed-path checks
+  - Public copy: [evidence/python-adoption-runner.py.txt](evidence/python-adoption-runner.py.txt)
+  - Original retained source SHA-256: a57ff39bdb8622baec5967c72ca4223e37dd0f73d5ae2763360b5e75454a820a
+  - Original retained source bytes: 11299
+  - Published copy SHA-256: a57ff39bdb8622baec5967c72ca4223e37dd0f73d5ae2763360b5e75454a820a
+  - Published copy bytes: 11299
   - Path projection: 0 string(s); byte-identical to retained source.
 
 ## Claims by scene
@@ -923,7 +993,16 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **OPEN** — This local SQLite experiment does not establish automatic production root-cause discovery, complete Python instrumentation, faster human investigation than complete logs, external release guarantees or general model quality. Explicit capture and a complete application-supplied predictor profile remain required. [mlflow-outcome, mlflow-native, mlflow-guide]
 - **OPEN** — The original numerical backend emitted matrix multiplication warnings. This audit did not diagnose or suppress their cause. Original per-example logits were not retained, so matching finite independent scores and aggregate accuracies do not establish per-logit equivalence. [mlflow-audit, mlflow-audit-code]
 
-### 28. FootPrint explained ML release mistakes through saved workflow state
+### 28. Python installation and measured integration
+
+- **VERIFIED** — The fresh-install smoke installs the wheel outside the checkout with zero required Python packages. Explicit setup prepares matching pinned Node packages, read-only doctor checks them, and a repeated setup is checked. Isolated import and construction start no worker or installer. Node and npm remain prerequisites. [python-install-smoke, python-install-guide, python-setup]
+- **VERIFIED** — The local pilot compares a scope-free evaluator with an opt-in wrapper using the same function and retained MLflow artifact bytes. Both return the same results and identities, including accuracies 0.98, 0.34 and 0.98. Each path recomputes three evaluations. Neither fits another model or requests MLflow writes. [adoption-report, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
+- **VERIFIED** — The baseline driver has 35 physical lines and the wrapper 57. The wrapper imports two SDK symbols and has six static stage-context sites. Runtime evidence records eight stage attempts, seven commits and a 25,093-byte recording. The 22-line net difference is a source inventory. Its literal diff adds 51 and removes 29 lines. Neither measures developer effort. Shared numerical code is reported separately. [adoption-report, python-baseline, python-wrapper, python-adoption-runner, python-evaluator, mlflow-numerical]
+- **VERIFIED** — The installed saved-recording CLI can backtrack the faulty score to the selected preprocessing reference and retry. Reopening uses saved JSON, preserves the missing-control warning and starts no trainer. This reuses existing Lens and foottrace tools rather than implementing new investigation queries. [adoption-native, adoption-recording, python-install-guide]
+- **DERIVED** — The Python wheel, explicit helper setup and measured wrapper strengthen the existing adapter and investigation path. The eight ML capabilities and existing history foundation remain the same; no new ML execution engine is claimed. [python-install-guide, python-setup, adoption-report, python-wrapper]
+- **OPEN** — This is a controlled local integration around an evaluator extracted from the preceding example. It establishes neither independent developer adoption nor faster diagnosis, development time saved or a runtime-overhead percentage. Explicit Node setup, chosen JSON capture and application-specific predictor completeness remain integration requirements. [adoption-report, python-install-guide, python-adoption-runner]
+
+### 29. FootPrint explained ML release mistakes through saved workflow state
 
 - **DERIVED** — The retained experiments support using FootPrint’s flowchart stages, reference state and provenance around ML computation. They do not establish a new numerical/autodiff framework. [wasm-summary, workflow, jax-digits-verification, gp-conformance, lineage-results, lineage-verification, crash-summary, crash-audit]
 - **VERIFIED** — Complete structured logs solved the demonstrated diagnosis questions too; FootPrint’s value is a reusable connected recording/investigation pattern, not unique detectability. [legacy-checkpoint, legacy-retry, benchmark-investigation, lineage-verification, trial-pilot, trial-verify]
@@ -1223,7 +1302,15 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED · why** — Unchanged model weights can behave differently when preparation changes. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
 - **VERIFIED · how** — We recorded the consumed artifact references and measured their actual bytes. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
 - **VERIFIED · learned** — Restoring the original scaler recovered 98%. Saved evidence exposed the changed input. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
-- **DERIVED · next** — Test this additive investigation path in an unfamiliar team’s existing Python workflow. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
+- **DERIVED · next** — Can a Python developer install this and reuse the same evaluator? [python-install-guide, adoption-report]
+
+### Python installation and measured integration
+
+- **VERIFIED · what** — We installed the Python package and wrapped the existing evaluator. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
+- **DERIVED · why** — A useful ML library must fit an existing Python workflow. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
+- **VERIFIED · how** — Explicit setup prepared a Node helper around unchanged numerical evaluation. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
+- **VERIFIED · learned** — Returned scores matched. We counted the integration code and saved recording. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
+- **DERIVED · next** — Measure the work needed by an unfamiliar ML team. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
 
 ### FootPrint explained ML release mistakes through saved workflow state
 
@@ -1336,4 +1423,5 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED** — A hidden input left a missing connection. A saved value alone does not show which step consumed it. The input producer became reachable through the existing backward slice. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
 - **DERIVED** — Python kept control and linked MLflow artifacts. Teams should not rewrite their ML workflow merely to inspect its history. Python kept control. MLflow kept artifacts. A Node helper recorded explicit state. [mlflow-workflow, mlflow-capture, mlflow-python, mlflow-python-tests, mlflow-dependencies, mlflow-package, mlflow-guide]
 - **DERIVED** — A retry changed preprocessing and accuracy fell. Unchanged model weights can behave differently when preparation changes. Restoring the original scaler recovered 98%. Saved evidence exposed the changed input. [mlflow-outcome, mlflow-recording, mlflow-native, mlflow-audit, mlflow-workflow]
+- **DERIVED** — Install Python capture around an existing evaluator. Can a Python user add recorded history without rewriting numerical evaluation? Review the installed path and measured integration, then test external developer use. [adoption-report, adoption-recording, adoption-native, python-install-smoke, python-install-guide, python-setup, python-baseline, python-wrapper, python-evaluator, python-adoption-runner]
 - **DERIVED** — Review the ML debugging results. Which mistakes did these local model checks explain? Review the ML-specific checks and the still-open human comparison. [lineage-results, lineage-verification, crash-summary, crash-audit, build, trial-pilot, trial-protocol, selection-results, selection-contracts, release-results, release-contracts]

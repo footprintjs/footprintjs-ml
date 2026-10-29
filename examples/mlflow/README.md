@@ -6,6 +6,8 @@ The Python application owns training, its `try/except` retry and its decisions. 
 
 From the package root, install the example dependencies into a separate environment:
 
+For a released wheel, [the Python guide](../../PYTHON.md) provides `setup`, `doctor`, `example-mlflow` and `investigate` commands without source-checkout paths. The commands below are the source/archive reproduction path.
+
 ```sh
 python3.12 -m venv .mlflow-venv
 .mlflow-venv/bin/python -m pip install -r examples/mlflow/requirements.txt

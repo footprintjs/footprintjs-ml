@@ -7,16 +7,16 @@
   "hashScope": "files hashes cover published bytes. originalRetainedSource hashes cover private retained authoring inputs. The manifest itself is intentionally excluded from its own hash list. These checksums are integrity references, not signatures.",
   "projection": "Only local path strings, repository-document link targets and publication-specific source/checksum descriptions are changed. Logical recorded digests, model IDs and numerical claims are retained.",
   "evidence": {
-    "count": 103,
-    "byteIdentical": 90,
-    "pathProjected": 11,
-    "documentLinksProjected": 2
+    "count": 113,
+    "byteIdentical": 97,
+    "pathProjected": 13,
+    "documentLinksProjected": 3
   },
   "validation": {
     "passed": true,
-    "staticLinksChecked": 109,
+    "staticLinksChecked": 119,
     "classicScriptsParsed": 9,
-    "embeddedSourceMappingsChecked": 412,
+    "embeddedSourceMappingsChecked": 452,
     "personalFilesystemPaths": 0,
     "localServerDependencies": 0,
     "credentialPatternMatches": 0,
@@ -1379,13 +1379,13 @@
     {
       "path": "evidence/mlflow-python.py.txt",
       "published": {
-        "sha256": "f08379bf7985569053ce863cff83102a7fba43bc13fe837bb2ae8cb40c6e846a",
-        "bytes": 21504
+        "sha256": "ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d",
+        "bytes": 23847
       },
       "originalRetainedSource": {
         "path": "evidence/mlflow-python.py.txt",
-        "sha256": "f08379bf7985569053ce863cff83102a7fba43bc13fe837bb2ae8cb40c6e846a",
-        "bytes": 21504
+        "sha256": "ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d",
+        "bytes": 23847
       },
       "projectionFlags": [],
       "byteIdenticalToRetainedSource": true
@@ -1407,13 +1407,13 @@
     {
       "path": "evidence/mlflow-workflow.py.txt",
       "published": {
-        "sha256": "ff00614373a7d8e1053e1ba5f8bf67a737209a963b3bc801b6588355f561e960",
-        "bytes": 16801
+        "sha256": "6b972a7a203857e0c197afd837c9db1856dfdc15befadc1cc5302ff86c9800b9",
+        "bytes": 17315
       },
       "originalRetainedSource": {
         "path": "evidence/mlflow-workflow.py.txt",
-        "sha256": "ff00614373a7d8e1053e1ba5f8bf67a737209a963b3bc801b6588355f561e960",
-        "bytes": 16801
+        "sha256": "6b972a7a203857e0c197afd837c9db1856dfdc15befadc1cc5302ff86c9800b9",
+        "bytes": 17315
       },
       "projectionFlags": [],
       "byteIdenticalToRetainedSource": true
@@ -1435,13 +1435,13 @@
     {
       "path": "evidence/mlflow-guide.md",
       "published": {
-        "sha256": "bcaeaffc803149bcd6be73427f427cee3a08e17fb2267877b4bd0219680e7d9b",
-        "bytes": 9926
+        "sha256": "26074b426c20c3d8405d8da1b95e22d7208da6106aecf24891e7ed241875e219",
+        "bytes": 10105
       },
       "originalRetainedSource": {
         "path": "evidence/mlflow-guide.md",
-        "sha256": "a85971d974c95363ffb5f51a81ee6f67d7524faf88b5cfaf33e10b1aea8e5666",
-        "bytes": 9646
+        "sha256": "f037b47224d5ed4597164a0f03cb4314b21d95d9616b22fd0990d34dbdd0f554",
+        "bytes": 9769
       },
       "projectionFlags": [
         "repository-document-links"
@@ -1465,13 +1465,13 @@
     {
       "path": "evidence/mlflow-package.json",
       "published": {
-        "sha256": "b70f89bc1883d34d9d1f6359ccd436273a7724e60da2d3ad5de8966e519e8886",
-        "bytes": 3122
+        "sha256": "e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595",
+        "bytes": 3350
       },
       "originalRetainedSource": {
         "path": "evidence/mlflow-package.json",
-        "sha256": "b70f89bc1883d34d9d1f6359ccd436273a7724e60da2d3ad5de8966e519e8886",
-        "bytes": 3122
+        "sha256": "e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595",
+        "bytes": 3350
       },
       "projectionFlags": [],
       "byteIdenticalToRetainedSource": true
@@ -1505,15 +1505,163 @@
       "byteIdenticalToRetainedSource": true
     },
     {
+      "path": "evidence/adoption-report.json",
+      "published": {
+        "sha256": "3381436ceb0948dae82ae0f9802aeb19759f66ff2cc53766873170daac465213",
+        "bytes": 6522
+      },
+      "originalRetainedSource": {
+        "path": "evidence/adoption-report.json",
+        "sha256": "553944bef72bed9acb2602c98c4f2494b15163c8ddf3becbecd884d7ac118224",
+        "bytes": 6627
+      },
+      "projectionFlags": [
+        "local-path-strings",
+        "json-serialization"
+      ],
+      "byteIdenticalToRetainedSource": false
+    },
+    {
+      "path": "evidence/adoption-recording.json",
+      "published": {
+        "sha256": "721b1e9356fa2cedaca4867d75bf90182815984d6a433c0cd7616a4a476cf4fb",
+        "bytes": 25093
+      },
+      "originalRetainedSource": {
+        "path": "evidence/adoption-recording.json",
+        "sha256": "721b1e9356fa2cedaca4867d75bf90182815984d6a433c0cd7616a4a476cf4fb",
+        "bytes": 25093
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/adoption-native.json",
+      "published": {
+        "sha256": "e50f1b9222b547b300a1e5a07c9056d91f56043b3072c1b220e95ba4c2a2ae24",
+        "bytes": 1123
+      },
+      "originalRetainedSource": {
+        "path": "evidence/adoption-native.json",
+        "sha256": "e50f1b9222b547b300a1e5a07c9056d91f56043b3072c1b220e95ba4c2a2ae24",
+        "bytes": 1123
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-install-smoke.json",
+      "published": {
+        "sha256": "1706fdcbe94f5ac4bb4b9294da5433634f7fd36c29154356399766bdb1ede318",
+        "bytes": 9259
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-install-smoke.json",
+        "sha256": "822910adabdae28cbb17c0559179785c9c6f81ced775c6dc859f4630ca9b3226",
+        "bytes": 11671
+      },
+      "projectionFlags": [
+        "local-path-strings",
+        "json-serialization"
+      ],
+      "byteIdenticalToRetainedSource": false
+    },
+    {
+      "path": "evidence/python-install-guide.md",
+      "published": {
+        "sha256": "fb4d6a1150d47d09ef6e6c1b9842a0dee6379120ebf1e2641c17ab44bacc4ad3",
+        "bytes": 5335
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-install-guide.md",
+        "sha256": "9ded128193d0c2e5d942ad0be4a6395a1cb9d9d6ecc58fe3ae7e6bd0090d15d2",
+        "bytes": 5223
+      },
+      "projectionFlags": [
+        "repository-document-links"
+      ],
+      "byteIdenticalToRetainedSource": false
+    },
+    {
+      "path": "evidence/python-setup.py.txt",
+      "published": {
+        "sha256": "c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8",
+        "bytes": 15503
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-setup.py.txt",
+        "sha256": "c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8",
+        "bytes": 15503
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-baseline.py.txt",
+      "published": {
+        "sha256": "50edcc0f9b2516ad86974f50450f2283187b435dd163f0c4441cc795def0e92b",
+        "bytes": 1577
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-baseline.py.txt",
+        "sha256": "50edcc0f9b2516ad86974f50450f2283187b435dd163f0c4441cc795def0e92b",
+        "bytes": 1577
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-wrapper.py.txt",
+      "published": {
+        "sha256": "fd56d765f294886316ef8e1ee2f2722781ac9b5348c05d7393fa6010aa05ad67",
+        "bytes": 3132
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-wrapper.py.txt",
+        "sha256": "fd56d765f294886316ef8e1ee2f2722781ac9b5348c05d7393fa6010aa05ad67",
+        "bytes": 3132
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-evaluator.py.txt",
+      "published": {
+        "sha256": "e5456da6312c35b95877936e142f24016664775d84d32ac9b5705e614c19272e",
+        "bytes": 1108
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-evaluator.py.txt",
+        "sha256": "e5456da6312c35b95877936e142f24016664775d84d32ac9b5705e614c19272e",
+        "bytes": 1108
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/python-adoption-runner.py.txt",
+      "published": {
+        "sha256": "a57ff39bdb8622baec5967c72ca4223e37dd0f73d5ae2763360b5e75454a820a",
+        "bytes": 11299
+      },
+      "originalRetainedSource": {
+        "path": "evidence/python-adoption-runner.py.txt",
+        "sha256": "a57ff39bdb8622baec5967c72ca4223e37dd0f73d5ae2763360b5e75454a820a",
+        "bytes": 11299
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
       "path": "index.html",
       "published": {
-        "sha256": "fdb07a3df697d073c2bd9a18fac0f0da826bf9badd3a1d58dd30fc351ca554eb",
-        "bytes": 593632
+        "sha256": "3b14e2d789b84e0b0f2be5c9b1692222a12026bb5ef06847861a4342dbd459dd",
+        "bytes": 623904
       },
       "originalRetainedSource": {
         "path": "index.html",
-        "sha256": "7ec2a6ee8d27b0b554fa7200a16f0b6cbbdd6a66c01e1b3eaab941c34e518274",
-        "bytes": 497620
+        "sha256": "6e3113910e395ee1935b50f5f17a4708c5a052cd5004f689c79cbf8bd9165f60",
+        "bytes": 518169
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -1524,13 +1672,13 @@
     {
       "path": "technical-story.html",
       "published": {
-        "sha256": "35881e04b0a67afd6696d4d9a04848b16c18d971cdae92281cc21c3c02455d23",
-        "bytes": 901536
+        "sha256": "5a3d123c3c6de12606a69034d24bef0654e320d83af8f0b57f176eef52166686",
+        "bytes": 936221
       },
       "originalRetainedSource": {
         "path": "technical-story.html",
-        "sha256": "69600999fc13f8fb14439f744ab6d3f7703f8374fb3bdaffb76178572af0a364",
-        "bytes": 805785
+        "sha256": "7133e5caba2189a044d2c4a8fc6dff513ce1c5eacf8d324284a0a0ccbfed2234",
+        "bytes": 830747
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -1542,13 +1690,13 @@
     {
       "path": "presentation-manifest.json",
       "published": {
-        "sha256": "81b9f6c2dcaeb608ebf1416943e6ab591d1f8e80254ecd8948002adb70ec324e",
-        "bytes": 345318
+        "sha256": "b590ee8db56be7bf37c80c1f34d05f5f252b7c7538fd08c6cadb19700d55c047",
+        "bytes": 366476
       },
       "originalRetainedSource": {
         "path": "presentation-manifest.json",
-        "sha256": "aa58d2df0c1cb003c6acc092c330638895da34579cbd41e880990ed76a5651ef",
-        "bytes": 301822
+        "sha256": "31d71464f526b48967d805dd0c1910a4d3a125ec718c0db22dec5d2ed5e4e9b6",
+        "bytes": 318693
       },
       "projectionFlags": [
         "public-source-mappings",
@@ -1560,13 +1708,13 @@
     {
       "path": "EVIDENCE.md",
       "published": {
-        "sha256": "8e8566e0e56365fa476ad4a486d69e366feb8fef4429ed8cd4f1c9d03c7f1491",
-        "bytes": 143604
+        "sha256": "4dee1a1a9d03f546363207ffbcf375e27ee6f659bac73a9bb5dd33bb8cc3026a",
+        "bytes": 153168
       },
       "originalRetainedSource": {
         "path": "EVIDENCE.md",
-        "sha256": "6394d233b1db0f8039dbf319ad5a03da51a1e573f7e140912f34ff4f939a8bdb",
-        "bytes": 132133
+        "sha256": "1323f2cc2568d98e672619e4241d7303efca0dbf8c4c9a615b9ae4180ceb180b",
+        "bytes": 140698
       },
       "projectionFlags": [
         "public-evidence-links",
@@ -1601,7 +1749,7 @@
     {
       "path": "README.md",
       "published": {
-        "sha256": "2fd7bb2d455d22d078255565273c54cbf2654ad50dcd8cd92d228f71383be9cb",
+        "sha256": "dc08b7d585c4da630b0d0d456edacfc63147116b3146e79c4f1b2c969c7d7a08",
         "bytes": 2028
       },
       "projectionFlags": [],

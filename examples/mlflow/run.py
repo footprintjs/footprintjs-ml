@@ -12,9 +12,17 @@ import uuid
 # Keep this local proof from contacting MLflow's optional usage telemetry.
 os.environ.setdefault("MLFLOW_DISABLE_TELEMETRY", "true")
 os.environ.setdefault("DO_NOT_TRACK", "true")
+os.environ.setdefault("MLFLOW_DISABLE_AGENT_HINT", "true")
 
-# This is the installed package's optional Python directory, not a JS workflow.
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "python"))
+# Prefer a normal Python installation. Source/archive users retain the original
+# adjacent-module fallback; an unrelated failed dependency import must propagate.
+try:
+    from footprint_ml_workflow import WorkflowCapture, MlflowArtifacts
+except ModuleNotFoundError as error:
+    if error.name != "footprint_ml_workflow":
+        raise
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "python"))
+    from footprint_ml_workflow import WorkflowCapture, MlflowArtifacts
 
 import mlflow
 from mlflow import MlflowClient
@@ -26,7 +34,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from footprint_ml_workflow import WorkflowCapture, MlflowArtifacts
 from numerical import (DATA_FORMAT, EVALUATION_METHOD, MODEL_FORMAT, SCALER_FORMAT,
                        data_document, digest, encode, model_document, predictor_identity,
                        read_data, read_model, read_scaler, scaler_document, write_json)
@@ -94,7 +101,7 @@ def guard(scope, capture, receipt_key):
     return decision
 
 
-def run(out):
+def run(out, runtime_dir=None):
     root = Path(out).resolve()
     root.mkdir(parents=True, exist_ok=False)
     source_dir = root / "source-artifacts"
@@ -108,7 +115,7 @@ def run(out):
     artifacts = MlflowArtifacts(client, root / "verified-cache")
     summary = None
     try:
-        with WorkflowCapture(root / "recording.json") as capture:
+        with WorkflowCapture(root / "recording.json", runtime_dir=runtime_dir) as capture:
             with capture.stage("load-digits", name="Load and pin the fixed digits split") as s:
                 x, y = load_digits(return_X_y=True)
                 train_x, validation_x, train_y, validation_y = train_test_split(
@@ -250,4 +257,6 @@ def run(out):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", required=True, help="A new output directory; existing runs are never overwritten")
-    run(parser.parse_args().out)
+    parser.add_argument("--runtime-dir", help="Optional explicitly installed native helper directory")
+    args = parser.parse_args()
+    run(args.out, runtime_dir=args.runtime_dir)

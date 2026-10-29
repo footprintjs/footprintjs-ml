@@ -1,0 +1,165 @@
+{
+  "boundaries": [
+    "An extracted local evaluator and one controlled retry fault, not independent developer adoption.",
+    "The same numerical evaluator runs in both paths. Each path recomputes three metrics from retained artifacts; no model fitting runs.",
+    "Source line/access counts and literal diffs are code inventory, not developer time or a universal integration estimate.",
+    "Python controls workflow and retry. Explicit whole-key scope operations record selected values through a Node foottrace helper.",
+    "No human speed, root-cause superiority, throughput or performance-overhead claim is measured.",
+    "This pilot adds no release receipt/guard calls; the preceding MLflow proof separately checks those contracts."
+  ],
+  "checks": {
+    "captureWorkerExited": true,
+    "capturedOutcomeMatches": true,
+    "failedWritesAbsent": true,
+    "oneDiscardedAttempt": true,
+    "originalEvidenceUnchanged": true,
+    "retryLinksDiscardedAttempt": true,
+    "sameEvaluatorFunction": true,
+    "sameRawValidation": true,
+    "sameReturnedResults": true,
+    "sameWeights": true,
+    "sourceArtifactIdentitiesRetained": true,
+    "sourceScoresRetained": true,
+    "wrongScalerChangesThenRestores": true
+  },
+  "clientCalls": {
+    "baseline": {
+      "download_artifacts": 4,
+      "get_run": 1
+    },
+    "captured": {
+      "download_artifacts": 4,
+      "get_run": 4
+    },
+    "definition": "Calls through the injected client facade, not internal HTTP or storage request counts."
+  },
+  "execution": {
+    "baselineEvaluations": 3,
+    "capturedEvaluations": 3,
+    "investigationQueriesRun": false,
+    "mlflowWritesRequested": false,
+    "newModelFits": 0,
+    "registryAliasesChanged": false
+  },
+  "integration": {
+    "baseline": {
+      "file": "baseline.py",
+      "nonblankLines": 30,
+      "physicalLines": 35,
+      "scopeReadSites": 0,
+      "scopeWriteSites": 0,
+      "sdkImportedSymbols": [],
+      "sha256": "50edcc0f9b2516ad86974f50450f2283187b435dd163f0c4441cc795def0e92b",
+      "stageContextCallSites": 0
+    },
+    "definition": "Physical/nonblank source lines and AST call/access sites. These are integration inventory, not effort or semantic edit distance.",
+    "literalDiff": {
+      "addedLines": 51,
+      "removedLines": 29
+    },
+    "retainedNumericalHelper": {
+      "file": "numerical.py",
+      "nonblankLines": 90,
+      "physicalLines": 114,
+      "scopeReadSites": 0,
+      "scopeWriteSites": 0,
+      "sdkImportedSymbols": [],
+      "sha256": "568289e51ca609980ded2143d0a3d34d46fab60acd16a90caee713c4c28a6693",
+      "stageContextCallSites": 0
+    },
+    "unchangedEvaluator": {
+      "file": "existing_evaluator.py",
+      "nonblankLines": 22,
+      "physicalLines": 26,
+      "scopeReadSites": 0,
+      "scopeWriteSites": 0,
+      "sdkImportedSymbols": [],
+      "sha256": "e5456da6312c35b95877936e142f24016664775d84d32ac9b5705e614c19272e",
+      "stageContextCallSites": 0
+    },
+    "wrapper": {
+      "file": "wrapped.py",
+      "nonblankLines": 52,
+      "physicalLines": 57,
+      "scopeReadSites": 10,
+      "scopeWriteSites": 11,
+      "sdkImportedSymbols": [
+        "MlflowArtifacts",
+        "WorkflowCapture"
+      ],
+      "sha256": "fd56d765f294886316ef8e1ee2f2722781ac9b5348c05d7393fa6010aa05ad67",
+      "stageContextCallSites": 6
+    }
+  },
+  "passed": true,
+  "provenance": {
+    "copiedHelperSha256": "568289e51ca609980ded2143d0a3d34d46fab60acd16a90caee713c4c28a6693",
+    "numericalHelperCopyMatches": true,
+    "numericalHelperSource": "examples/mlflow/numerical.py"
+  },
+  "results": {
+    "baselineScore": {
+      "accuracy": 0.98,
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+        "schemaVersion": 1,
+        "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+      },
+      "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+      "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+      "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+    },
+    "correctedScore": {
+      "accuracy": 0.98,
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+        "schemaVersion": 1,
+        "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+      },
+      "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+      "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+      "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+    },
+    "faultyScore": {
+      "accuracy": 0.34,
+      "inferenceIdentity": {
+        "kind": "inference-identity",
+        "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+        "schemaVersion": 1,
+        "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+      },
+      "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+      "preprocessorSha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+      "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c"
+    },
+    "retryAttempts": 2,
+    "schema": "footprint-python-adoption-evaluation/v1"
+  },
+  "runtime": {
+    "captureModule": "retained-work/mlflow-env/lib/python3.12/site-packages/footprint_ml_workflow.py",
+    "captureWorker": {
+      "command": [
+        "node",
+        "retained-work/python-adoption-consumer/native/node_modules/footprintjs-ml/dist/adapter/capture-worker.js"
+      ],
+      "exitCode": 0,
+      "pid": 45975
+    },
+    "captureWorkerPath": "retained-work/python-adoption-consumer/native/node_modules/footprintjs-ml/dist/adapter/capture-worker.js",
+    "committedStages": 7,
+    "outsideForbiddenSourceRoot": true,
+    "python": "3.12.14",
+    "recordingBytes": 25093,
+    "recordingSha256": "721b1e9356fa2cedaca4867d75bf90182815984d6a433c0cd7616a4a476cf4fb",
+    "stageAttempts": 8
+  },
+  "schema": "footprint-python-adoption-pilot/v1",
+  "source": {
+    "outcomeSha256": "e460a6ed9344b690dd6a6a1faec57bb65b4099b72889e52c577637ed7bdc55cb",
+    "recordingSha256": "f39da957ae51b0cc2ca127fa84f2f52b282d7153f339451093a4a108d6d594ce",
+    "runId": "4d20e037cbe645888c5277ed0f6384ff",
+    "sourceOutcomeMatchesCaptured": true
+  }
+}

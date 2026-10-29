@@ -574,6 +574,19 @@
         "lens": true
       },
       {
+        "id": "python-install",
+        "kind": "strengthened",
+        "summary": "An installed Python package added captured history around the same evaluator.",
+        "focus": [
+          "adapters",
+          "refs",
+          "investigation"
+        ],
+        "added": [],
+        "trainer": true,
+        "lens": true
+      },
+      {
         "id": "verdict",
         "kind": "verdict",
         "summary": "Eight ML capabilities above the existing FootPrint foundation.",
@@ -806,8 +819,8 @@
     "Trusted adapter/profile; no authentication or atomic deployment guarantee.",
     "FootPrint records workflow state at instrumented boundaries; it does not record every tensor operation."
   ],
-  "sceneCount": 28,
-  "clickStateCount": 55,
+  "sceneCount": 29,
+  "clickStateCount": 57,
   "nodes": [
     {
       "id": "fp",
@@ -6674,7 +6687,7 @@
         "why": "Unchanged model weights can behave differently when preparation changes.",
         "how": "We recorded the consumed artifact references and measured their actual bytes.",
         "learned": "Restoring the original scaler recovered 98%. Saved evidence exposed the changed input.",
-        "next": "Test this additive investigation path in an unfamiliar team’s existing Python workflow."
+        "next": "Can a Python developer install this and reuse the same evaluator?"
       },
       "storyTextEvidence": {
         "what": {
@@ -6720,11 +6733,8 @@
         "next": {
           "classification": "DERIVED",
           "sourceIds": [
-            "mlflow-outcome",
-            "mlflow-recording",
-            "mlflow-native",
-            "mlflow-audit",
-            "mlflow-workflow"
+            "python-install-guide",
+            "adoption-report"
           ]
         }
       },
@@ -6745,6 +6755,292 @@
       },
       "index": 26,
       "clickIndex": 52,
+      "nodeIds": [
+        "fp",
+        "compute",
+        "references",
+        "trainer",
+        "history",
+        "retry",
+        "cost",
+        "view",
+        "lens",
+        "replay",
+        "library",
+        "evidence",
+        "guard",
+        "jax",
+        "identity",
+        "inspect",
+        "plugin",
+        "conformance",
+        "package",
+        "data-use",
+        "data-guard",
+        "audit",
+        "recovery",
+        "continuity",
+        "trial",
+        "selection",
+        "publication"
+      ],
+      "edgeIds": [
+        "fp-compute",
+        "compute-references",
+        "fp-references",
+        "compute-trainer",
+        "trainer-history",
+        "references-history",
+        "fp-retry",
+        "history-retry",
+        "fp-cost",
+        "retry-cost",
+        "history-view",
+        "retry-view",
+        "fp-lens",
+        "fp-replay",
+        "lens-replay",
+        "references-library",
+        "lens-library",
+        "library-evidence",
+        "evidence-guard",
+        "library-jax",
+        "guard-jax",
+        "jax-identity",
+        "evidence-identity",
+        "identity-inspect",
+        "library-inspect",
+        "library-plugin",
+        "plugin-conformance",
+        "library-package",
+        "package-lens",
+        "package-plugin",
+        "trainer-data-use",
+        "evidence-data-use",
+        "data-use-data-guard",
+        "guard-data-guard",
+        "data-use-audit",
+        "lens-audit",
+        "cost-audit",
+        "references-recovery",
+        "history-recovery",
+        "recovery-continuity",
+        "identity-continuity",
+        "audit-continuity",
+        "evidence-continuity",
+        "continuity-guard",
+        "recovery-lens",
+        "recovery-replay",
+        "lens-trial",
+        "history-trial",
+        "trial-selection",
+        "library-selection",
+        "evidence-selection",
+        "selection-guard",
+        "selection-lens",
+        "guard-publication",
+        "selection-publication",
+        "library-publication",
+        "retry-publication",
+        "publication-lens"
+      ],
+      "nodeCount": 27,
+      "edgeCount": 58
+    },
+    {
+      "id": "python-install",
+      "title": "Python installation and measured integration",
+      "category": "Python installation and local integration pilot",
+      "caption": "An installed Python package and a small wrapper kept the evaluator and its retained artifacts unchanged.",
+      "visual": {
+        "kind": "python-install",
+        "journey": "python-install",
+        "showMetricsInPrimaryView": false,
+        "showHashesInPrimaryView": false
+      },
+      "adds": {
+        "nodes": [],
+        "edges": []
+      },
+      "focus": [
+        "plugin",
+        "history",
+        "lens",
+        "library"
+      ],
+      "transition": {
+        "change": "Install Python capture around an existing evaluator",
+        "why": "A useful ML tool must fit the Python workflow a team already has.",
+        "consequence": "The same evaluator returned the same results, with a saved reference history."
+      },
+      "claims": [
+        {
+          "classification": "VERIFIED",
+          "text": "The fresh-install smoke installs the wheel outside the checkout with zero required Python packages. Explicit setup prepares matching pinned Node packages, read-only doctor checks them, and a repeated setup is checked. Isolated import and construction start no worker or installer. Node and npm remain prerequisites.",
+          "sourceIds": [
+            "python-install-smoke",
+            "python-install-guide",
+            "python-setup"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The local pilot compares a scope-free evaluator with an opt-in wrapper using the same function and retained MLflow artifact bytes. Both return the same results and identities, including accuracies 0.98, 0.34 and 0.98. Each path recomputes three evaluations. Neither fits another model or requests MLflow writes.",
+          "sourceIds": [
+            "adoption-report",
+            "python-baseline",
+            "python-wrapper",
+            "python-evaluator",
+            "python-adoption-runner"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The baseline driver has 35 physical lines and the wrapper 57. The wrapper imports two SDK symbols and has six static stage-context sites. Runtime evidence records eight stage attempts, seven commits and a 25,093-byte recording. The 22-line net difference is a source inventory. Its literal diff adds 51 and removes 29 lines. Neither measures developer effort. Shared numerical code is reported separately.",
+          "sourceIds": [
+            "adoption-report",
+            "python-baseline",
+            "python-wrapper",
+            "python-adoption-runner",
+            "python-evaluator",
+            "mlflow-numerical"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The installed saved-recording CLI can backtrack the faulty score to the selected preprocessing reference and retry. Reopening uses saved JSON, preserves the missing-control warning and starts no trainer. This reuses existing Lens and foottrace tools rather than implementing new investigation queries.",
+          "sourceIds": [
+            "adoption-native",
+            "adoption-recording",
+            "python-install-guide"
+          ]
+        },
+        {
+          "classification": "DERIVED",
+          "text": "The Python wheel, explicit helper setup and measured wrapper strengthen the existing adapter and investigation path. The eight ML capabilities and existing history foundation remain the same; no new ML execution engine is claimed.",
+          "sourceIds": [
+            "python-install-guide",
+            "python-setup",
+            "adoption-report",
+            "python-wrapper"
+          ]
+        },
+        {
+          "classification": "OPEN",
+          "text": "This is a controlled local integration around an evaluator extracted from the preceding example. It establishes neither independent developer adoption nor faster diagnosis, development time saved or a runtime-overhead percentage. Explicit Node setup, chosen JSON capture and application-specific predictor completeness remain integration requirements.",
+          "sourceIds": [
+            "adoption-report",
+            "python-install-guide",
+            "python-adoption-runner"
+          ]
+        }
+      ],
+      "storyText": {
+        "what": "We installed the Python package and wrapped the existing evaluator.",
+        "why": "A useful ML library must fit an existing Python workflow.",
+        "how": "Explicit setup prepared a Node helper around unchanged numerical evaluation.",
+        "learned": "Returned scores matched. We counted the integration code and saved recording.",
+        "next": "Measure the work needed by an unfamiliar ML team."
+      },
+      "storyTextEvidence": {
+        "what": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "adoption-report",
+            "adoption-recording",
+            "adoption-native",
+            "python-install-smoke",
+            "python-install-guide",
+            "python-setup",
+            "python-baseline",
+            "python-wrapper",
+            "python-evaluator",
+            "python-adoption-runner"
+          ]
+        },
+        "why": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "adoption-report",
+            "adoption-recording",
+            "adoption-native",
+            "python-install-smoke",
+            "python-install-guide",
+            "python-setup",
+            "python-baseline",
+            "python-wrapper",
+            "python-evaluator",
+            "python-adoption-runner"
+          ]
+        },
+        "how": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "adoption-report",
+            "adoption-recording",
+            "adoption-native",
+            "python-install-smoke",
+            "python-install-guide",
+            "python-setup",
+            "python-baseline",
+            "python-wrapper",
+            "python-evaluator",
+            "python-adoption-runner"
+          ]
+        },
+        "learned": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "adoption-report",
+            "adoption-recording",
+            "adoption-native",
+            "python-install-smoke",
+            "python-install-guide",
+            "python-setup",
+            "python-baseline",
+            "python-wrapper",
+            "python-evaluator",
+            "python-adoption-runner"
+          ]
+        },
+        "next": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "adoption-report",
+            "adoption-recording",
+            "adoption-native",
+            "python-install-smoke",
+            "python-install-guide",
+            "python-setup",
+            "python-baseline",
+            "python-wrapper",
+            "python-evaluator",
+            "python-adoption-runner"
+          ]
+        }
+      },
+      "teachingClassification": "DERIVED",
+      "narrativeNote": "A controlled local installation and code inventory. The same numerical function is used in both paths. Counts are not developer time, human speed or an automatic-capture claim.",
+      "nextCard": {
+        "title": "Install Python capture around an existing evaluator",
+        "why": "Can a Python user add recorded history without rewriting numerical evaluation?",
+        "after": "Review the installed path and measured integration, then test external developer use.",
+        "classification": "DERIVED",
+        "sourceIds": [
+          "adoption-report",
+          "adoption-recording",
+          "adoption-native",
+          "python-install-smoke",
+          "python-install-guide",
+          "python-setup",
+          "python-baseline",
+          "python-wrapper",
+          "python-evaluator",
+          "python-adoption-runner"
+        ]
+      },
+      "index": 27,
+      "clickIndex": 54,
       "nodeIds": [
         "fp",
         "compute",
@@ -7073,8 +7369,8 @@
           "release-contracts"
         ]
       },
-      "index": 27,
-      "clickIndex": 54,
+      "index": 28,
+      "clickIndex": 56,
       "nodeIds": [
         "fp",
         "compute",
@@ -8988,15 +9284,15 @@
       "note": "Standard-library Python capture facade and injected MLflow artifact binding",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/mlflow-python.py.txt",
-      "sha256": "f08379bf7985569053ce863cff83102a7fba43bc13fe837bb2ae8cb40c6e846a",
-      "bytes": 21504,
+      "sha256": "ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d",
+      "bytes": 23847,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/mlflow-python.py.txt",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/mlflow-python.py.txt",
-        "sha256": "f08379bf7985569053ce863cff83102a7fba43bc13fe837bb2ae8cb40c6e846a",
-        "bytes": 21504,
+        "sha256": "ae7eccb0879cb175cadd15f535fcd927a1ff8e4ab6e4a844e838129139119c6d",
+        "bytes": 23847,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
@@ -9028,15 +9324,15 @@
       "note": "Python-owned classifier workflow, explicit retry and measured artifact consumption",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/mlflow-workflow.py.txt",
-      "sha256": "ff00614373a7d8e1053e1ba5f8bf67a737209a963b3bc801b6588355f561e960",
-      "bytes": 16801,
+      "sha256": "6b972a7a203857e0c197afd837c9db1856dfdc15befadc1cc5302ff86c9800b9",
+      "bytes": 17315,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/mlflow-workflow.py.txt",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/mlflow-workflow.py.txt",
-        "sha256": "ff00614373a7d8e1053e1ba5f8bf67a737209a963b3bc801b6588355f561e960",
-        "bytes": 16801,
+        "sha256": "6b972a7a203857e0c197afd837c9db1856dfdc15befadc1cc5302ff86c9800b9",
+        "bytes": 17315,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
@@ -9068,17 +9364,17 @@
       "note": "Python and MLflow integration responsibilities, dependencies and limits",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/mlflow-guide.md",
-      "sha256": "a85971d974c95363ffb5f51a81ee6f67d7524faf88b5cfaf33e10b1aea8e5666",
-      "bytes": 9646,
+      "sha256": "f037b47224d5ed4597164a0f03cb4314b21d95d9616b22fd0990d34dbdd0f554",
+      "bytes": 9769,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/mlflow-guide.md",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/mlflow-guide.md",
-        "sha256": "bcaeaffc803149bcd6be73427f427cee3a08e17fb2267877b4bd0219680e7d9b",
-        "bytes": 9926,
+        "sha256": "26074b426c20c3d8405d8da1b95e22d7208da6106aecf24891e7ed241875e219",
+        "bytes": 10105,
         "pathsProjected": 0,
-        "linksProjected": 5,
+        "linksProjected": 6,
         "byteIdenticalToRetainedSource": false
       }
     },
@@ -9109,15 +9405,15 @@
       "note": "Current beta SDK entry points and zero npm root runtime dependencies",
       "classification": "VERIFIED",
       "relativeUrl": "evidence/mlflow-package.json",
-      "sha256": "b70f89bc1883d34d9d1f6359ccd436273a7724e60da2d3ad5de8966e519e8886",
-      "bytes": 3122,
+      "sha256": "e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595",
+      "bytes": 3350,
       "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
       "retainedSourceLocation": "evidence/mlflow-package.json",
       "sha256Scope": "Original retained source bytes before the public path projection.",
       "publishedCopy": {
         "path": "evidence/mlflow-package.json",
-        "sha256": "b70f89bc1883d34d9d1f6359ccd436273a7724e60da2d3ad5de8966e519e8886",
-        "bytes": 3122,
+        "sha256": "e5085fe709187a29f38c41b695f2a34c323053fc5137ccc07e92659669306595",
+        "bytes": 3350,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
@@ -9158,6 +9454,207 @@
         "path": "evidence/mlflow-audit-code.py.txt",
         "sha256": "3d0dcd832d34f2a7baeddff254b6ee3b6980869c8535246267d606954812f1b7",
         "bytes": 11680,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "adoption-report",
+      "path": "evidence/adoption-report.json",
+      "label": "Measured local integration inventory and identical evaluator results",
+      "note": "Measured local integration inventory and identical evaluator results",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/adoption-report.json",
+      "sha256": "553944bef72bed9acb2602c98c4f2494b15163c8ddf3becbecd884d7ac118224",
+      "bytes": 6627,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/adoption-report.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/adoption-report.json",
+        "sha256": "3381436ceb0948dae82ae0f9802aeb19759f66ff2cc53766873170daac465213",
+        "bytes": 6522,
+        "pathsProjected": 3,
+        "byteIdenticalToRetainedSource": false
+      }
+    },
+    {
+      "id": "adoption-recording",
+      "path": "evidence/adoption-recording.json",
+      "label": "Installed Python wrapper reference reads, writes and caller-controlled retry",
+      "note": "Installed Python wrapper reference reads, writes and caller-controlled retry",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/adoption-recording.json",
+      "sha256": "721b1e9356fa2cedaca4867d75bf90182815984d6a433c0cd7616a4a476cf4fb",
+      "bytes": 25093,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/adoption-recording.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/adoption-recording.json",
+        "sha256": "721b1e9356fa2cedaca4867d75bf90182815984d6a433c0cd7616a4a476cf4fb",
+        "bytes": 25093,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "adoption-native",
+      "path": "evidence/adoption-native.json",
+      "label": "Existing saved-value CLI backtracking for the adoption pilot",
+      "note": "Existing saved-value CLI backtracking for the adoption pilot",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/adoption-native.json",
+      "sha256": "e50f1b9222b547b300a1e5a07c9056d91f56043b3072c1b220e95ba4c2a2ae24",
+      "bytes": 1123,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/adoption-native.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/adoption-native.json",
+        "sha256": "e50f1b9222b547b300a1e5a07c9056d91f56043b3072c1b220e95ba4c2a2ae24",
+        "bytes": 1123,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-install-smoke",
+      "path": "evidence/python-install-smoke.json",
+      "label": "Fresh wheel install, explicit helper setup, diagnostics and native replay smoke",
+      "note": "Fresh wheel install, explicit helper setup, diagnostics and native replay smoke",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-install-smoke.json",
+      "sha256": "822910adabdae28cbb17c0559179785c9c6f81ced775c6dc859f4630ca9b3226",
+      "bytes": 11671,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-install-smoke.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-install-smoke.json",
+        "sha256": "1706fdcbe94f5ac4bb4b9294da5433634f7fd36c29154356399766bdb1ede318",
+        "bytes": 9259,
+        "pathsProjected": 26,
+        "byteIdenticalToRetainedSource": false
+      }
+    },
+    {
+      "id": "python-install-guide",
+      "path": "evidence/python-install-guide.md",
+      "label": "Python package installation and explicit optional Node runtime guide",
+      "note": "Python package installation and explicit optional Node runtime guide",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-install-guide.md",
+      "sha256": "9ded128193d0c2e5d942ad0be4a6395a1cb9d9d6ecc58fe3ae7e6bd0090d15d2",
+      "bytes": 5223,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-install-guide.md",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-install-guide.md",
+        "sha256": "fb4d6a1150d47d09ef6e6c1b9842a0dee6379120ebf1e2641c17ab44bacc4ad3",
+        "bytes": 5335,
+        "pathsProjected": 0,
+        "linksProjected": 2,
+        "byteIdenticalToRetainedSource": false
+      }
+    },
+    {
+      "id": "python-setup",
+      "path": "evidence/python-setup.py.txt",
+      "label": "Explicit pinned helper installation and read-only doctor implementation",
+      "note": "Explicit pinned helper installation and read-only doctor implementation",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-setup.py.txt",
+      "sha256": "c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8",
+      "bytes": 15503,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-setup.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-setup.py.txt",
+        "sha256": "c3d352c6de0b37222f05e02c83f4005feb5d12b06b30e7c1a7baa2a15cc695b8",
+        "bytes": 15503,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-baseline",
+      "path": "evidence/python-baseline.py.txt",
+      "label": "Ordinary Python evaluator driver without capture",
+      "note": "Ordinary Python evaluator driver without capture",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-baseline.py.txt",
+      "sha256": "50edcc0f9b2516ad86974f50450f2283187b435dd163f0c4441cc795def0e92b",
+      "bytes": 1577,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-baseline.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-baseline.py.txt",
+        "sha256": "50edcc0f9b2516ad86974f50450f2283187b435dd163f0c4441cc795def0e92b",
+        "bytes": 1577,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-wrapper",
+      "path": "evidence/python-wrapper.py.txt",
+      "label": "Opt-in capture wrapper around the same evaluator",
+      "note": "Opt-in capture wrapper around the same evaluator",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-wrapper.py.txt",
+      "sha256": "fd56d765f294886316ef8e1ee2f2722781ac9b5348c05d7393fa6010aa05ad67",
+      "bytes": 3132,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-wrapper.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-wrapper.py.txt",
+        "sha256": "fd56d765f294886316ef8e1ee2f2722781ac9b5348c05d7393fa6010aa05ad67",
+        "bytes": 3132,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-evaluator",
+      "path": "evidence/python-evaluator.py.txt",
+      "label": "Shared scope-free numerical evaluator extracted from the earlier proof",
+      "note": "Shared scope-free numerical evaluator extracted from the earlier proof",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-evaluator.py.txt",
+      "sha256": "e5456da6312c35b95877936e142f24016664775d84d32ac9b5705e614c19272e",
+      "bytes": 1108,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-evaluator.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-evaluator.py.txt",
+        "sha256": "e5456da6312c35b95877936e142f24016664775d84d32ac9b5705e614c19272e",
+        "bytes": 1108,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "python-adoption-runner",
+      "path": "evidence/python-adoption-runner.py.txt",
+      "label": "Actual source inventory, returned-output identity and installed-path checks",
+      "note": "Actual source inventory, returned-output identity and installed-path checks",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/python-adoption-runner.py.txt",
+      "sha256": "a57ff39bdb8622baec5967c72ca4223e37dd0f73d5ae2763360b5e75454a820a",
+      "bytes": 11299,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/python-adoption-runner.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/python-adoption-runner.py.txt",
+        "sha256": "a57ff39bdb8622baec5967c72ca4223e37dd0f73d5ae2763360b5e75454a820a",
+        "bytes": 11299,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
@@ -9358,6 +9855,13 @@
       },
       {
         "click": 55,
+        "type": "fade",
+        "seconds": 0.8,
+        "ease": "inOut",
+        "p": {}
+      },
+      {
+        "click": 57,
         "type": "fade",
         "seconds": 0.8,
         "ease": "inOut",

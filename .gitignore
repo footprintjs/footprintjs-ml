@@ -8,3 +8,8 @@
 /reports/
 **/__pycache__/
 *.py[cod]
+
+/build/
+/python-dist/
+/*.egg-info/
+/python/*.egg-info/

@@ -1,0 +1,278 @@
+{
+  "boundaries": [
+    "This install smoke starts no numerical trainer or MLflow service.",
+    "Explicit native setup may fetch the pinned Node runtime dependencies; importing the wheel never installs them."
+  ],
+  "checks": {
+    "defaultVenvRuntimeDiscovery": true,
+    "doctorPassed": true,
+    "explicitLocalArchiveSetup": true,
+    "freshVenvOutsideCheckout": true,
+    "idempotentSetup": true,
+    "installedLiveCapture": true,
+    "installedPythonInvestigationCommand": true,
+    "investigatorChildProcessesForbidden": true,
+    "isolatedImportsAndConstructor": true,
+    "missingRuntimeActionable": true,
+    "nativeCliBacktracking": true,
+    "nativeSyntheticReceiptAndGuard": true,
+    "noIndexWheelInstall": true,
+    "pinnedNativeVersions": true,
+    "recordingUnchangedAfterInvestigation": true,
+    "zeroPythonRuntimeDependencies": true
+  },
+  "doctor": {
+    "captureCommand": [
+      "retained-local/.nvm/versions/node/v24.21.0/bin/node",
+      "retained-temporary"
+    ],
+    "checks": {
+      "importsReady": true,
+      "nodeCompatible": true,
+      "packageVersionsMatch": true,
+      "workerPresent": true
+    },
+    "errors": [],
+    "execution": {
+      "captureStarted": false,
+      "installsStarted": false,
+      "mlflowImported": false,
+      "networkRequested": false,
+      "trainingStarted": false
+    },
+    "node": {
+      "executable": "retained-local/.nvm/versions/node/v24.21.0/bin/node",
+      "major": 24,
+      "minor": 21,
+      "version": "v24.21.0"
+    },
+    "ok": true,
+    "packages": {
+      "agentfootprint": {
+        "actual": "11.0.0",
+        "expected": "11.0.0"
+      },
+      "footprintjs": {
+        "actual": "10.0.0",
+        "expected": "10.0.0"
+      },
+      "footprintjs-ml": {
+        "actual": "0.6.0-beta.4",
+        "expected": "0.6.0-beta.4"
+      },
+      "foottrace": {
+        "actual": "1.8.0",
+        "expected": "1.8.0"
+      }
+    },
+    "pythonVersion": "0.6.0b4",
+    "runtimeDir": "retained-temporary",
+    "schema": "footprint-ml-python-doctor/v1",
+    "sdkVersion": "0.6.0-beta.4",
+    "usage": {
+      "capture": "WorkflowCapture('recording.json', runtime_dir='retained-temporary')",
+      "python": "retained-temporary"
+    },
+    "worker": "retained-temporary"
+  },
+  "execution": {
+    "recordingWritten": true,
+    "schema": "footprint-ml-python-capture/v1",
+    "state": {
+      "input": 7,
+      "result": 14,
+      "syntheticContractCheckPassed": true
+    }
+  },
+  "import": {
+    "constructorStartedNoProcess": true,
+    "heavyImportsBlocked": true,
+    "installedFromWheel": true,
+    "isolatedImport": true,
+    "nativePins": {
+      "agentfootprint": "11.0.0",
+      "footprintjs": "10.0.0",
+      "footprintjs-ml": "0.6.0-beta.4",
+      "foottrace": "1.8.0"
+    },
+    "runtimeDependencies": [],
+    "version": "0.6.0b4"
+  },
+  "investigation": {
+    "pythonCommand": {
+      "childProcessesAllowed": false,
+      "nativeOutput": "SLICE for 'result' — reads via: custom-fn\ninstalled-result (installed-result#1) [wrote: result]\n  installed-input (installed-input#0) ← via input [wrote: input]\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.\nSaved native backtracking evidence. Trainer was not started.",
+      "ok": true,
+      "report": "retained-temporary",
+      "runtimeDir": "retained-temporary",
+      "schema": "footprint-ml-python-investigation/v1",
+      "trainingStarted": false
+    },
+    "report": {
+      "execution": {
+        "savedJsonOnly": true,
+        "trainerStarted": false,
+        "trainingRepeated": false
+      },
+      "schema": "footprint-ml-variable-investigation/v1",
+      "transcript": [
+        {
+          "args": {
+            "variable": "result"
+          },
+          "ordinal": 1,
+          "owner": "agentfootprint/observe: existing Lens toolpack",
+          "result": "SLICE for 'result' — reads via: custom-fn\ninstalled-result (installed-result#1) [wrote: result]\n  installed-input (installed-input#0) ← via input [wrote: input]\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+          "tool": "backtrack"
+        }
+      ],
+      "variable": "result"
+    },
+    "stdout": "SLICE for 'result' — reads via: custom-fn\ninstalled-result (installed-result#1) [wrote: result]\n  installed-input (installed-input#0) ← via input [wrote: input]\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.\nSaved native backtracking evidence. Trainer was not started.\n"
+  },
+  "missingRuntime": {
+    "actionable": true,
+    "message": "The optional native capture runtime is not installed. Run `python -m footprint_ml_workflow setup` in this virtual environment, or select an installed runtime_dir / explicit command."
+  },
+  "nativeVersions": {
+    "agentfootprint": "11.0.0",
+    "footprintjs": "10.0.0",
+    "footprintjs-ml": "0.6.0-beta.4",
+    "foottrace": "1.8.0"
+  },
+  "passed": true,
+  "repeatedSetup": {
+    "doctor": {
+      "captureCommand": [
+        "retained-local/.nvm/versions/node/v24.21.0/bin/node",
+        "retained-temporary"
+      ],
+      "checks": {
+        "importsReady": true,
+        "nodeCompatible": true,
+        "packageVersionsMatch": true,
+        "workerPresent": true
+      },
+      "errors": [],
+      "execution": {
+        "captureStarted": false,
+        "installsStarted": false,
+        "mlflowImported": false,
+        "networkRequested": false,
+        "trainingStarted": false
+      },
+      "node": {
+        "executable": "retained-local/.nvm/versions/node/v24.21.0/bin/node",
+        "major": 24,
+        "minor": 21,
+        "version": "v24.21.0"
+      },
+      "ok": true,
+      "packages": {
+        "agentfootprint": {
+          "actual": "11.0.0",
+          "expected": "11.0.0"
+        },
+        "footprintjs": {
+          "actual": "10.0.0",
+          "expected": "10.0.0"
+        },
+        "footprintjs-ml": {
+          "actual": "0.6.0-beta.4",
+          "expected": "0.6.0-beta.4"
+        },
+        "foottrace": {
+          "actual": "1.8.0",
+          "expected": "1.8.0"
+        }
+      },
+      "pythonVersion": "0.6.0b4",
+      "runtimeDir": "retained-temporary",
+      "schema": "footprint-ml-python-doctor/v1",
+      "sdkVersion": "0.6.0-beta.4",
+      "usage": {
+        "capture": "WorkflowCapture('recording.json', runtime_dir='retained-temporary')",
+        "python": "retained-temporary"
+      },
+      "worker": "retained-temporary"
+    },
+    "networkRequested": false,
+    "ok": true,
+    "runtimeDir": "retained-temporary",
+    "schema": "footprint-ml-python-setup/v1",
+    "status": "already-installed"
+  },
+  "schema": "footprint-ml-python-install-smoke/v1",
+  "setup": {
+    "archiveSha256": "e7604934df6b1daed50477100f5d47eab699528874bc3c27a4932afe56ce840c",
+    "doctor": {
+      "captureCommand": [
+        "retained-local/.nvm/versions/node/v24.21.0/bin/node",
+        "retained-temporary"
+      ],
+      "checks": {
+        "importsReady": true,
+        "nodeCompatible": true,
+        "packageVersionsMatch": true,
+        "workerPresent": true
+      },
+      "errors": [],
+      "execution": {
+        "captureStarted": false,
+        "installsStarted": false,
+        "mlflowImported": false,
+        "networkRequested": false,
+        "trainingStarted": false
+      },
+      "node": {
+        "executable": "retained-local/.nvm/versions/node/v24.21.0/bin/node",
+        "major": 24,
+        "minor": 21,
+        "version": "v24.21.0"
+      },
+      "ok": true,
+      "packages": {
+        "agentfootprint": {
+          "actual": "11.0.0",
+          "expected": "11.0.0"
+        },
+        "footprintjs": {
+          "actual": "10.0.0",
+          "expected": "10.0.0"
+        },
+        "footprintjs-ml": {
+          "actual": "0.6.0-beta.4",
+          "expected": "0.6.0-beta.4"
+        },
+        "foottrace": {
+          "actual": "1.8.0",
+          "expected": "1.8.0"
+        }
+      },
+      "pythonVersion": "0.6.0b4",
+      "runtimeDir": "retained-temporary",
+      "schema": "footprint-ml-python-doctor/v1",
+      "sdkVersion": "0.6.0-beta.4",
+      "usage": {
+        "capture": "WorkflowCapture('recording.json', runtime_dir='retained-temporary')",
+        "python": "retained-temporary"
+      },
+      "worker": "retained-temporary"
+    },
+    "networkRequested": true,
+    "node": {
+      "executable": "retained-local/.nvm/versions/node/v24.21.0/bin/node",
+      "major": 24,
+      "minor": 21,
+      "version": "v24.21.0"
+    },
+    "ok": true,
+    "runtimeDir": "retained-temporary",
+    "schema": "footprint-ml-python-setup/v1",
+    "status": "installed"
+  },
+  "wheel": {
+    "file": "footprintjs_ml-0.6.0b4-py3-none-any.whl",
+    "sha256": "a38e74fcb57c36e3096150ca58553b221764631ed841c6016aeb0bf5b34f203d"
+  }
+}

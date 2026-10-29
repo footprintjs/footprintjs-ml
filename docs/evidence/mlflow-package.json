@@ -1,6 +1,6 @@
 {
   "name": "footprintjs-ml",
-  "version": "0.6.0-beta.3",
+  "version": "0.6.0-beta.4",
   "description": "ML evidence, selection and release APIs with optional trainer, publisher and Lens subpaths",
   "license": "MIT",
   "type": "module",
@@ -66,7 +66,11 @@
     "examples/mlflow/*.py",
     "examples/mlflow/*.mjs",
     "examples/mlflow/*.txt",
-    "examples/mlflow/*.md"
+    "examples/mlflow/*.md",
+    "pyproject.toml",
+    "PYTHON.md",
+    "examples/python-adoption/*.py",
+    "examples/python-adoption/*.md"
   ],
   "scripts": {
     "build": "node build.mjs",
@@ -77,7 +81,9 @@
     "beta:smoke": "node scripts/beta-smoke.mjs",
     "test:backtracking": "npm run build && node --test tests/headless-investigation.test.mjs tests/selection-backtracking.test.mjs",
     "example:mlflow:investigate": "node examples/mlflow/investigate.mjs",
-    "test:optional-dependencies": "node scripts/check-optional-dependencies.mjs"
+    "test:optional-dependencies": "node scripts/check-optional-dependencies.mjs",
+    "build:python": "node scripts/build-python.mjs",
+    "beta:python": "python3 scripts/python-install-smoke.py"
   },
   "devDependencies": {
     "typescript": "5.4.5",

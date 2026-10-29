@@ -1,0 +1,657 @@
+{
+  "schema": "footprint-ml-python-capture/v1",
+  "producer": {
+    "kind": "python-orchestrator/native-foottrace-writer",
+    "schemaVersion": 1
+  },
+  "snapshot": {
+    "runId": "b8129ac4-293e-4b6d-b848-1d097dba57b5",
+    "logAddress": {
+      "logRunId": "b8129ac4-293e-4b6d-b848-1d097dba57b5",
+      "drillPath": []
+    },
+    "initialState": {},
+    "commitLog": [
+      {
+        "overwrite": {
+          "weightsBinding": {
+            "kind": "mlflow-artifact",
+            "schemaVersion": 1,
+            "runId": "4d20e037cbe645888c5277ed0f6384ff",
+            "experimentId": "1",
+            "artifactPath": "model/weights.json",
+            "artifact": {
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+              "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+              "bytes": 12942,
+              "format": "footprint-ml/sklearn-logistic-numeric-json/v1"
+            }
+          },
+          "validationBinding": {
+            "kind": "mlflow-artifact",
+            "schemaVersion": 1,
+            "runId": "4d20e037cbe645888c5277ed0f6384ff",
+            "experimentId": "1",
+            "artifactPath": "data/validation.json",
+            "artifact": {
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+              "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+              "bytes": 124969,
+              "format": "footprint-ml/digits-split-json/v1"
+            }
+          },
+          "scaler1Binding": {
+            "kind": "mlflow-artifact",
+            "schemaVersion": 1,
+            "runId": "4d20e037cbe645888c5277ed0f6384ff",
+            "experimentId": "1",
+            "artifactPath": "preprocessing/s1.json",
+            "artifact": {
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/preprocessing/s1.json",
+              "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+              "bytes": 3697,
+              "format": "footprint-ml/sklearn-standard-scaler-json/v1"
+            }
+          },
+          "scaler2Binding": {
+            "kind": "mlflow-artifact",
+            "schemaVersion": 1,
+            "runId": "4d20e037cbe645888c5277ed0f6384ff",
+            "experimentId": "1",
+            "artifactPath": "preprocessing/s2.json",
+            "artifact": {
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/preprocessing/s2.json",
+              "sha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+              "bytes": 3710,
+              "format": "footprint-ml/sklearn-standard-scaler-json/v1"
+            }
+          },
+          "activePreprocessorBinding": {
+            "kind": "mlflow-artifact",
+            "schemaVersion": 1,
+            "runId": "4d20e037cbe645888c5277ed0f6384ff",
+            "experimentId": "1",
+            "artifactPath": "preprocessing/s1.json",
+            "artifact": {
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/preprocessing/s1.json",
+              "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+              "bytes": 3697,
+              "format": "footprint-ml/sklearn-standard-scaler-json/v1"
+            }
+          }
+        },
+        "updates": {},
+        "redactedPaths": [],
+        "trace": [
+          {
+            "path": "weightsBinding",
+            "verb": "set",
+            "readKeys": []
+          },
+          {
+            "path": "validationBinding",
+            "verb": "set",
+            "readKeys": []
+          },
+          {
+            "path": "scaler1Binding",
+            "verb": "set",
+            "readKeys": []
+          },
+          {
+            "path": "scaler2Binding",
+            "verb": "set",
+            "readKeys": []
+          },
+          {
+            "path": "activePreprocessorBinding",
+            "verb": "set",
+            "readKeys": [
+              "scaler1Binding"
+            ]
+          }
+        ],
+        "stage": "retain-existing-artifacts",
+        "stageId": "retain-existing-artifacts",
+        "runtimeStageId": "retain-existing-artifacts#0",
+        "idx": 0
+      },
+      {
+        "overwrite": {
+          "baselineScore": {
+            "accuracy": 0.98,
+            "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+            "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+            "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "schemaVersion": 1,
+              "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+              "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+            }
+          }
+        },
+        "updates": {},
+        "redactedPaths": [],
+        "trace": [
+          {
+            "path": "baselineScore",
+            "verb": "set",
+            "readKeys": [
+              "weightsBinding",
+              "activePreprocessorBinding",
+              "validationBinding"
+            ]
+          }
+        ],
+        "stage": "evaluate-baseline",
+        "stageId": "evaluate-baseline",
+        "runtimeStageId": "evaluate-baseline#1",
+        "idx": 1
+      },
+      {
+        "overwrite": {
+          "activePreprocessorBinding": {
+            "kind": "mlflow-artifact",
+            "schemaVersion": 1,
+            "runId": "4d20e037cbe645888c5277ed0f6384ff",
+            "experimentId": "1",
+            "artifactPath": "preprocessing/s2.json",
+            "artifact": {
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/preprocessing/s2.json",
+              "sha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+              "bytes": 3710,
+              "format": "footprint-ml/sklearn-standard-scaler-json/v1"
+            }
+          }
+        },
+        "updates": {},
+        "redactedPaths": [],
+        "trace": [
+          {
+            "path": "activePreprocessorBinding",
+            "verb": "set",
+            "readKeys": [
+              "scaler2Binding"
+            ]
+          }
+        ],
+        "stage": "select-preprocessor",
+        "stageId": "select-preprocessor",
+        "runtimeStageId": "select-preprocessor#3",
+        "idx": 2
+      },
+      {
+        "overwrite": {
+          "faultyScore": {
+            "accuracy": 0.34,
+            "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+            "preprocessorSha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+            "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "schemaVersion": 1,
+              "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+              "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+            }
+          }
+        },
+        "updates": {},
+        "redactedPaths": [],
+        "trace": [
+          {
+            "path": "faultyScore",
+            "verb": "set",
+            "readKeys": [
+              "weightsBinding",
+              "activePreprocessorBinding",
+              "validationBinding"
+            ]
+          }
+        ],
+        "stage": "evaluate-faulty",
+        "stageId": "evaluate-faulty",
+        "runtimeStageId": "evaluate-faulty#4",
+        "idx": 3
+      },
+      {
+        "overwrite": {
+          "activePreprocessorBinding": {
+            "kind": "mlflow-artifact",
+            "schemaVersion": 1,
+            "runId": "4d20e037cbe645888c5277ed0f6384ff",
+            "experimentId": "1",
+            "artifactPath": "preprocessing/s1.json",
+            "artifact": {
+              "kind": "artifact",
+              "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/preprocessing/s1.json",
+              "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+              "bytes": 3697,
+              "format": "footprint-ml/sklearn-standard-scaler-json/v1"
+            }
+          }
+        },
+        "updates": {},
+        "redactedPaths": [],
+        "trace": [
+          {
+            "path": "activePreprocessorBinding",
+            "verb": "set",
+            "readKeys": [
+              "scaler1Binding"
+            ]
+          }
+        ],
+        "stage": "restore-preprocessor",
+        "stageId": "restore-preprocessor",
+        "runtimeStageId": "restore-preprocessor#5",
+        "idx": 4
+      },
+      {
+        "overwrite": {
+          "correctedScore": {
+            "accuracy": 0.98,
+            "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+            "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+            "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+            "inferenceIdentity": {
+              "kind": "inference-identity",
+              "schemaVersion": 1,
+              "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+              "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+            }
+          }
+        },
+        "updates": {},
+        "redactedPaths": [],
+        "trace": [
+          {
+            "path": "correctedScore",
+            "verb": "set",
+            "readKeys": [
+              "weightsBinding",
+              "activePreprocessorBinding",
+              "validationBinding"
+            ]
+          }
+        ],
+        "stage": "evaluate-corrected",
+        "stageId": "evaluate-corrected",
+        "runtimeStageId": "evaluate-corrected#6",
+        "idx": 5
+      },
+      {
+        "overwrite": {
+          "outcome": {
+            "schema": "footprint-python-adoption-evaluation/v1",
+            "retryAttempts": 2,
+            "baselineScore": {
+              "accuracy": 0.98,
+              "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+              "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+              "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+              "inferenceIdentity": {
+                "kind": "inference-identity",
+                "schemaVersion": 1,
+                "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+                "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+              }
+            },
+            "faultyScore": {
+              "accuracy": 0.34,
+              "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+              "preprocessorSha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+              "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+              "inferenceIdentity": {
+                "kind": "inference-identity",
+                "schemaVersion": 1,
+                "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+                "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+              }
+            },
+            "correctedScore": {
+              "accuracy": 0.98,
+              "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+              "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+              "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+              "inferenceIdentity": {
+                "kind": "inference-identity",
+                "schemaVersion": 1,
+                "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+                "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+              }
+            }
+          }
+        },
+        "updates": {},
+        "redactedPaths": [],
+        "trace": [
+          {
+            "path": "outcome",
+            "verb": "set",
+            "readKeys": [
+              "baselineScore",
+              "faultyScore",
+              "correctedScore"
+            ]
+          }
+        ],
+        "stage": "record-results",
+        "stageId": "record-results",
+        "runtimeStageId": "record-results#7",
+        "idx": 6
+      }
+    ],
+    "sharedState": {
+      "weightsBinding": {
+        "kind": "mlflow-artifact",
+        "schemaVersion": 1,
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "experimentId": "1",
+        "artifactPath": "model/weights.json",
+        "artifact": {
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/model/weights.json",
+          "sha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+          "bytes": 12942,
+          "format": "footprint-ml/sklearn-logistic-numeric-json/v1"
+        }
+      },
+      "validationBinding": {
+        "kind": "mlflow-artifact",
+        "schemaVersion": 1,
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "experimentId": "1",
+        "artifactPath": "data/validation.json",
+        "artifact": {
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/data/validation.json",
+          "sha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+          "bytes": 124969,
+          "format": "footprint-ml/digits-split-json/v1"
+        }
+      },
+      "scaler1Binding": {
+        "kind": "mlflow-artifact",
+        "schemaVersion": 1,
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "experimentId": "1",
+        "artifactPath": "preprocessing/s1.json",
+        "artifact": {
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/preprocessing/s1.json",
+          "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+          "bytes": 3697,
+          "format": "footprint-ml/sklearn-standard-scaler-json/v1"
+        }
+      },
+      "scaler2Binding": {
+        "kind": "mlflow-artifact",
+        "schemaVersion": 1,
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "experimentId": "1",
+        "artifactPath": "preprocessing/s2.json",
+        "artifact": {
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/preprocessing/s2.json",
+          "sha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+          "bytes": 3710,
+          "format": "footprint-ml/sklearn-standard-scaler-json/v1"
+        }
+      },
+      "activePreprocessorBinding": {
+        "kind": "mlflow-artifact",
+        "schemaVersion": 1,
+        "runId": "4d20e037cbe645888c5277ed0f6384ff",
+        "experimentId": "1",
+        "artifactPath": "preprocessing/s1.json",
+        "artifact": {
+          "kind": "artifact",
+          "path": "runs:/4d20e037cbe645888c5277ed0f6384ff/preprocessing/s1.json",
+          "sha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+          "bytes": 3697,
+          "format": "footprint-ml/sklearn-standard-scaler-json/v1"
+        }
+      },
+      "baselineScore": {
+        "accuracy": 0.98,
+        "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+        "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+        "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "schemaVersion": 1,
+          "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+          "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+        }
+      },
+      "faultyScore": {
+        "accuracy": 0.34,
+        "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+        "preprocessorSha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+        "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "schemaVersion": 1,
+          "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+          "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+        }
+      },
+      "correctedScore": {
+        "accuracy": 0.98,
+        "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+        "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+        "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+        "inferenceIdentity": {
+          "kind": "inference-identity",
+          "schemaVersion": 1,
+          "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+          "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+        }
+      },
+      "outcome": {
+        "schema": "footprint-python-adoption-evaluation/v1",
+        "retryAttempts": 2,
+        "baselineScore": {
+          "accuracy": 0.98,
+          "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+          "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+          "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "schemaVersion": 1,
+            "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+            "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+          }
+        },
+        "faultyScore": {
+          "accuracy": 0.34,
+          "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+          "preprocessorSha256": "368050a93127d3cfbbe39a54e8159d6da50dbd1fb8e2e42a8754a06365ade8a7",
+          "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "schemaVersion": 1,
+            "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+            "sha256": "f5b892ae6d306e494a94486f3b2a3a00cba15f6da2375f3e9c450bf14da5fada"
+          }
+        },
+        "correctedScore": {
+          "accuracy": 0.98,
+          "modelWeightsSha256": "12d2839744f9c8fd14d28fe46098180e311617383110a8b0097e4107e4fb0486",
+          "preprocessorSha256": "3c92423932535e624dd465cb3f02575df53bb76d0b77109be69605efa80a2b54",
+          "rawValidationSha256": "ec7ddeb7cadefccc3408e721c3626df3e853526aae6634ab2ff22d752144648c",
+          "inferenceIdentity": {
+            "kind": "inference-identity",
+            "schemaVersion": 1,
+            "profile": "digits-standard-scaler-logistic/sklearn-predict/v1",
+            "sha256": "31a8d23bfb156360b5193e6282c3c39a07d2e8ee32c54acadf7734ae8253f40d"
+          }
+        }
+      }
+    },
+    "executionTree": {
+      "id": "retain-existing-artifacts",
+      "name": "retain-existing-artifacts",
+      "runtimeStageId": "retain-existing-artifacts#0",
+      "stageReads": {
+        "scaler1Binding": "summary"
+      },
+      "next": {
+        "id": "evaluate-baseline",
+        "name": "evaluate-baseline",
+        "runtimeStageId": "evaluate-baseline#1",
+        "stageReads": {
+          "weightsBinding": "summary",
+          "activePreprocessorBinding": "summary",
+          "validationBinding": "summary"
+        },
+        "next": {
+          "id": "select-preprocessor",
+          "name": "select-preprocessor",
+          "runtimeStageId": "select-preprocessor#2",
+          "stageReads": {
+            "scaler1Binding": "summary"
+          },
+          "errors": {
+            "python": {
+              "type": "RuntimeError",
+              "message": "Injected first selection attempt failure"
+            }
+          },
+          "next": {
+            "id": "select-preprocessor",
+            "name": "select-preprocessor",
+            "runtimeStageId": "select-preprocessor#3",
+            "stageReads": {
+              "scaler2Binding": "summary"
+            },
+            "next": {
+              "id": "evaluate-faulty",
+              "name": "evaluate-faulty",
+              "runtimeStageId": "evaluate-faulty#4",
+              "stageReads": {
+                "weightsBinding": "summary",
+                "activePreprocessorBinding": "summary",
+                "validationBinding": "summary"
+              },
+              "next": {
+                "id": "restore-preprocessor",
+                "name": "restore-preprocessor",
+                "runtimeStageId": "restore-preprocessor#5",
+                "stageReads": {
+                  "scaler1Binding": "summary"
+                },
+                "next": {
+                  "id": "evaluate-corrected",
+                  "name": "evaluate-corrected",
+                  "runtimeStageId": "evaluate-corrected#6",
+                  "stageReads": {
+                    "weightsBinding": "summary",
+                    "activePreprocessorBinding": "summary",
+                    "validationBinding": "summary"
+                  },
+                  "next": {
+                    "id": "record-results",
+                    "name": "record-results",
+                    "runtimeStageId": "record-results#7",
+                    "stageReads": {
+                      "baselineScore": "summary",
+                      "faultyScore": "summary",
+                      "correctedScore": "summary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "commitValues": "full",
+    "writeProvenance": "reads-prefix"
+  },
+  "supplemental": {
+    "pythonCapture": {
+      "lifecycle": "closed",
+      "stages": [
+        {
+          "runtimeStageId": "retain-existing-artifacts#0",
+          "stageId": "retain-existing-artifacts",
+          "name": "retain-existing-artifacts",
+          "status": "committed",
+          "commitIdx": 0
+        },
+        {
+          "runtimeStageId": "evaluate-baseline#1",
+          "stageId": "evaluate-baseline",
+          "name": "evaluate-baseline",
+          "status": "committed",
+          "commitIdx": 1
+        },
+        {
+          "runtimeStageId": "select-preprocessor#2",
+          "stageId": "select-preprocessor",
+          "name": "select-preprocessor",
+          "status": "discarded",
+          "attempt": 1,
+          "error": {
+            "type": "RuntimeError",
+            "message": "Injected first selection attempt failure"
+          }
+        },
+        {
+          "runtimeStageId": "select-preprocessor#3",
+          "stageId": "select-preprocessor",
+          "name": "select-preprocessor",
+          "status": "committed",
+          "attempt": 2,
+          "retryOf": "select-preprocessor#2",
+          "commitIdx": 2
+        },
+        {
+          "runtimeStageId": "evaluate-faulty#4",
+          "stageId": "evaluate-faulty",
+          "name": "evaluate-faulty",
+          "status": "committed",
+          "commitIdx": 3
+        },
+        {
+          "runtimeStageId": "restore-preprocessor#5",
+          "stageId": "restore-preprocessor",
+          "name": "restore-preprocessor",
+          "status": "committed",
+          "commitIdx": 4
+        },
+        {
+          "runtimeStageId": "evaluate-corrected#6",
+          "stageId": "evaluate-corrected",
+          "name": "evaluate-corrected",
+          "status": "committed",
+          "commitIdx": 5
+        },
+        {
+          "runtimeStageId": "record-results#7",
+          "stageId": "record-results",
+          "name": "record-results",
+          "status": "committed",
+          "commitIdx": 6
+        }
+      ],
+      "missingReads": []
+    }
+  },
+  "boundaries": [
+    "Python owns stage order, retries and numerical operations. The optional host records live scope requests with the native foottrace writer.",
+    "Stage reads describe actual capture.get requests, not arbitrary Python variable or backend tensor reads. No FootPrint executor capture attestation is claimed.",
+    "Discarded stages have no committed writes. Attempt and retry labels are supplied by the Python caller; no native retry policy is inferred.",
+    "The file is replaced after commits, discards and close. This is not a write-ahead log or a promise of crash durability.",
+    "No control-dependency lookup is supplied. Numerical correctness and unobserved backend dependencies remain outside this record."
+  ]
+}

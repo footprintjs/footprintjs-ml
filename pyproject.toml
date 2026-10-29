@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "footprintjs-ml"
+version = "0.6.0b4"
+description = "Python workflow capture and ML evidence bindings over the FootPrint runtime"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = []
+keywords = ["machine-learning", "provenance", "workflow", "footprintjs", "mlflow"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://footprintjs.github.io/footprintjs-ml/"
+Repository = "https://github.com/footprintjs/footprintjs-ml"
+Issues = "https://github.com/footprintjs/footprintjs-ml/issues"
+
+[tool.setuptools]
+package-dir = {"" = "python"}
+py-modules = ["footprint_ml_workflow", "footprint_ml_setup", "footprint_ml_versions"]
+
+[tool.setuptools.packages.find]
+where = ["python"]
+include = ["footprint_ml_adapter*"]
+namespaces = false

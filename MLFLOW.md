@@ -14,9 +14,9 @@ This integration is a beta addition with a local Node capture process. Python co
 | MLflow binding | An application-supplied client. The module does not import MLflow, install it, create runs, change aliases or select credentials. |
 | Example | Explicit MLflow, NumPy and scikit-learn dependencies in [requirements.txt](examples/mlflow/requirements.txt). |
 
-The Python module ships in the same SDK archive under `python/`. Place that directory on `PYTHONPATH`, or use the source checkout as the example does. There is no separate required Python package installation for capture. The earlier numerical adapter remains optional and still requires NumPy when used.
+Install the Python wheel of the same SDK and explicitly set up its Node helper using [PYTHON.md](PYTHON.md). This removes the need to add an npm package's Python directory to `PYTHONPATH`. The Python module also remains in the npm archive under `python/` for existing integrations. The earlier numerical adapter remains optional and still requires NumPy when used.
 
-From a source checkout, install the Node development dependencies with `npm ci` and build with `npm run build`. The example instructions in [examples/mlflow/README.md](examples/mlflow/README.md) install the numerical dependencies into a separate Python environment. The default capture command resolves `dist/adapter/capture-worker.js` relative to the Python module's shipped location. A relocated installation can supply an explicit argument list using `command=[...]`.
+From a source checkout, install the Node development dependencies with `npm ci` and build with `npm run build`. The example instructions in [examples/mlflow/README.md](examples/mlflow/README.md) install the numerical dependencies into a separate Python environment. A source/archive module uses its adjacent built worker; an installed wheel finds the matching helper in the active environment. A custom helper directory can be supplied using `runtime_dir=...`, or a custom worker with an explicit argument list using `command=[...]`.
 
 ## Bind the bytes your workflow consumes
 

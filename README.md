@@ -6,12 +6,14 @@ FootPrint coordinates the workflow. Your trainer keeps its models, tensors and n
 
 [Try the quickstart](QUICKSTART.md) · [Explore the visual story](https://footprintjs.github.io/footprintjs-ml/#1) · [Compatibility](COMPATIBILITY.md)
 
+**Already working in Python?** Start with [Python installation](PYTHON.md). The same SDK now has a Python wheel, an explicit helper setup command and a read-only environment check. Your application keeps its training code and MLflow client. Node.js 22+ is still required for recording and saved investigation.
+
 ## Try the beta
 
 The beta is distributed as a versioned GitHub release tarball. These commands do not depend on an npm registry release of `footprintjs-ml`:
 
 ```sh
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.3/footprintjs-ml-0.6.0-beta.3.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.4/footprintjs-ml-0.6.0-beta.4.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy==2.2.6
 npx --no-install footprint-ml demo --out ./quickstart-run --python .venv/bin/python

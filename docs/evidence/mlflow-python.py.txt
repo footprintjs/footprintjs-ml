@@ -16,10 +16,15 @@ import queue
 import re
 import stat
 import subprocess
+import sys
 import tempfile
 import threading
 import time
 from typing import Any
+
+from footprint_ml_versions import SDK_VERSION, PYTHON_VERSION, FOOTTRACE_VERSION
+
+__version__ = PYTHON_VERSION
 
 MAX_REQUEST_BYTES = 1_048_576
 MAX_VALUE_BYTES = 65_536
@@ -169,17 +174,26 @@ class WorkflowCapture:
     """Synchronous, explicitly started capture bridge for one Python thread.
 
     Values are finite, plain JSON (64 KiB per value). Model arrays stay in the
-    application. The default worker is shipped in the same SDK archive. There
-    is no Node/npm discovery, installation, automatic retry or worker restart.
+    application. The optional worker comes from the SDK source layout or an
+    explicitly installed virtual-environment runtime. Import and construction
+    install nothing and launch nothing. There is no automatic retry or restart.
     """
 
     def __init__(self, recording_path: str | os.PathLike[str], command: list[str] | None = None,
-                 timeout: float = 10, *, initial_state: dict[str, Any] | None = None):
+                 timeout: float = 10, *, initial_state: dict[str, Any] | None = None,
+                 runtime_dir: str | os.PathLike[str] | None = None):
         self.recording_path = Path(recording_path).expanduser().absolute()
         if type(timeout) not in (float, int) or not math.isfinite(timeout) or timeout <= 0:
             raise ValueError("timeout must be positive and finite")
         self.timeout = float(timeout)
-        default_worker = Path(__file__).resolve().parent.parent / "dist" / "adapter" / "capture-worker.js"
+        if command is not None and runtime_dir is not None:
+            raise ValueError("command and runtime_dir are mutually exclusive")
+        source_worker = Path(__file__).resolve().parent.parent / "dist" / "adapter" / "capture-worker.js"
+        self.runtime_dir = (Path(runtime_dir).expanduser().absolute() if runtime_dir is not None else
+                            None if source_worker.is_file() else Path(sys.prefix) / "share" / "footprintjs-ml" / SDK_VERSION)
+        default_worker = (source_worker if self.runtime_dir is None else
+                          self.runtime_dir / "node_modules" / "footprintjs-ml" / "dist" / "adapter" / "capture-worker.js")
+        self._default_worker = default_worker if command is None else None
         self.command = ["node", str(default_worker)] if command is None else list(command)
         if isinstance(command, (str, bytes)) or not self.command or any(type(x) is not str or not x for x in self.command):
             raise ValueError("command must be a nonempty argument list")
@@ -213,6 +227,22 @@ class WorkflowCapture:
         if self._process is not None:
             self._require_started()
             return self
+        if self._default_worker is not None:
+            if not self._default_worker.is_file():
+                raise CaptureError("The optional native capture runtime is not installed. Run "
+                                   "`python -m footprint_ml_workflow setup` in this virtual environment, "
+                                   "or select an installed runtime_dir / explicit command.", code="runtime-missing")
+            if self.runtime_dir is not None:
+                for name, version in (("footprintjs-ml", SDK_VERSION), ("foottrace", FOOTTRACE_VERSION)):
+                    metadata = self.runtime_dir / "node_modules" / name / "package.json"
+                    try:
+                        installed = json.loads(metadata.read_text("utf-8"))
+                        if type(installed) is not dict or installed.get("name") != name or installed.get("version") != version:
+                            raise ValueError("Runtime package version mismatch")
+                    except (OSError, ValueError) as error:
+                        raise CaptureError(f"The capture runtime must contain {name}@{version}. "
+                                           "Run `python -m footprint_ml_workflow doctor` with the selected --runtime-dir.",
+                                           code="runtime-version") from error
         self._owner = threading.get_ident()
         try:
             self._process = subprocess.Popen(self.command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -492,4 +522,9 @@ class MlflowArtifacts:
         return self.client.log_artifact(run_id, str(file))
 
 
-__all__ = ["WorkflowCapture", "MlflowArtifacts", "CaptureError"]
+__all__ = ["WorkflowCapture", "MlflowArtifacts", "CaptureError", "__version__"]
+
+
+if __name__ == "__main__":
+    from footprint_ml_setup import main
+    raise SystemExit(main())
