@@ -9,7 +9,7 @@ The supplied transfer proof adapts the official JAX Gaussian-process regression 
 Install the beta package (or the downloaded release tarball). Python, NumPy and your numerical framework must already be installed; the kit does not install them automatically.
 
 ```sh
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.1/footprintjs-ml-0.6.0-beta.1.tgz
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.2/footprintjs-ml-0.6.0-beta.2.tgz
 ```
 
 ```ts
@@ -79,7 +79,13 @@ Start with the [bring-your-own-trainer quickstart](QUICKSTART.md). The [technica
 
 Passing conformance establishes the tested behaviour and selected mutations. It cannot prove that an arbitrary plugin included every semantically relevant component, that a dishonest plugin measured anything, or that a model is suitable for unseen data. Independent component and numerical auditing remain necessary for a supported adapter profile.
 
-## Investigate an arbitrary workflow
+## Backtrack any saved workflow value
+
+The `openWorkflowRecording` reader accepts a saved FootPrint snapshot without ML-specific bindings. It delegates value tracing to the existing public Lens/foottrace toolpack. Use it to start at a selected candidate, recorded score or other scope key. See [BACKTRACKING.md](BACKTRACKING.md) for the API and a missing-read example. The ML decision reader remains available below.
+
+Read the inputs used by a decision through tracked scope. A score held only in a JavaScript closure or an unobserved backend cannot acquire a dependency edge simply because the same value also appears elsewhere in the record.
+
+## Add ML context to saved decisions
 
 Attach a small binding manifest to the saved trace:
 
@@ -98,7 +104,7 @@ Attach a small binding manifest to the saved trace:
 }
 ```
 
-These are the workflow's own scope-key names. The generic Lens session discovers actual decision stages and writers from the saved commit log. It does not need hardcoded stage IDs, model names or custom queries. Import `openAdapterWorkflowRun` from `footprintjs-ml/lens` and inject the existing public Lens/foottrace bridge. The supplied viewer adds a decision selector for these runs.
+These are the workflow's own scope-key names. The ML Lens session discovers actual decision stages and writers from the saved commit log. It does not need hardcoded stage IDs, model names or custom queries. Import `openAdapterWorkflowRun` from `footprintjs-ml/lens` and inject the existing public Lens/foottrace bridge. The supplied viewer adds a decision selector for these runs.
 
 Native tool responses remain native evidence. Callback rows remain supplemental. Missing typed integrity events or control-dependency lookup remain visible limitations. State replay reconstructs recorded references and receipts; it does not restore live arrays, rerun Python or resume training.
 

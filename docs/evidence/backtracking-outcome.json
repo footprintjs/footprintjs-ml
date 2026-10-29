@@ -1,0 +1,116 @@
+{
+  "schema": "footprint-ml-selection-backtracking-outcome/v1",
+  "wrong": {
+    "candidateId": "steps-30",
+    "allowed": false,
+    "receiptSha256": "3626c44de5852c3d41b3db47c5697f7f37b4e123beb3481ec2bd4f63804bb781"
+  },
+  "corrected": {
+    "candidateId": "steps-100",
+    "allowed": true,
+    "receiptSha256": "67297aa133c0795d89f20f2a7c4e4e0c13d0eab980e1800e0f696dd21b9f94d6"
+  },
+  "candidates": [
+    {
+      "candidateId": "steps-100",
+      "mse": 0.001700233258309988
+    },
+    {
+      "candidateId": "steps-30",
+      "mse": 0.004259598336456735
+    },
+    {
+      "candidateId": "steps-60",
+      "mse": 0.0023385982112158693
+    }
+  ],
+  "commits": 7,
+  "nativeQueries": 2,
+  "nativeEvidenceChecks": [
+    {
+      "variable": "wrongAttempt",
+      "candidateProducerReached": true,
+      "candidateReadEdgePresent": true,
+      "manifestReadEdgePresent": true,
+      "unrelatedStageExcluded": true
+    },
+    {
+      "variable": "correctAttempt",
+      "candidateProducerReached": true,
+      "candidateReadEdgePresent": true,
+      "manifestReadEdgePresent": true,
+      "unrelatedStageExcluded": true
+    }
+  ],
+  "evidence": {
+    "fixtureSchema": "footprint-ml-selection-observations/v1",
+    "source": {
+      "label": "footprint-ml-model-selection/run/trace.json",
+      "schema": "footprint-model-selection/v1",
+      "sha256": "22b370b278ad8f5c87d1fc056dcbb4056f576e34029799a1d9bb0872037600fb",
+      "bytes": 1414507,
+      "manifestSha256": "340b83af1ff9ff251870ae8dba2c97933d820b6abf4b4d93526729818d5b6e12",
+      "candidateResultsSha256": "50453821399bf43910493e18f111c2c5c96cfbdab69ac45a9b0ea52fdc69721b",
+      "pointers": {
+        "manifest": "/footprint/sharedState/experimentManifest",
+        "candidateResults": "/footprint/sharedState/candidateResults"
+      },
+      "selections": {
+        "wrong": {
+          "sha256": "5ca2b2dc4eb61e88ade1582ca1045a7a532c5549045d9f8578330ea1db82bd38",
+          "selectedCandidateId": "steps-30",
+          "direction": "max",
+          "ranking": [
+            {
+              "candidateId": "steps-30",
+              "value": 0.004259598336456735
+            },
+            {
+              "candidateId": "steps-60",
+              "value": 0.0023385982112158693
+            },
+            {
+              "candidateId": "steps-100",
+              "value": 0.001700233258309988
+            }
+          ]
+        },
+        "corrected": {
+          "sha256": "d9f2187ad39e7811237538eca564adcc74cba87c066d13267c50bbb3a6c40d59",
+          "selectedCandidateId": "steps-100",
+          "direction": "min",
+          "ranking": [
+            {
+              "candidateId": "steps-100",
+              "value": 0.001700233258309988
+            },
+            {
+              "candidateId": "steps-60",
+              "value": 0.0023385982112158693
+            },
+            {
+              "candidateId": "steps-30",
+              "value": 0.004259598336456735
+            }
+          ]
+        }
+      }
+    },
+    "projection": {
+      "schemaVersion": 1,
+      "description": "Core typed references, configurations and evaluation receipts; relative artifact labels are retained. No arrays or executable checkpoint data.",
+      "sha256": "c6b0faa5e9c96b758c05b8a4a954a8b80cdfe319754065c7a4f70b32d949b405"
+    },
+    "operation": "Recompute selection and guards from retained numerical evaluation observations.",
+    "numericalTrainingRepeated": false,
+    "numericalEvaluationRepeated": false,
+    "liveBackendUsed": false,
+    "readTracking": "full"
+  },
+  "boundaries": [
+    "This is a new metadata workflow, not a corrected version of the original saved recording.",
+    "Recorded model/session references are historical labels. No live model handles or checkpoint bytes are opened.",
+    "Selection and guard calculations run again. Original numerical training and evaluation do not.",
+    "A recorded dependency chain identifies consumed scope inputs; it does not prove numerical or statistical causation."
+  ]
+}

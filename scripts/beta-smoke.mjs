@@ -43,7 +43,7 @@ assert.deepEqual(outcome.approvedModel,outcome.modelB);
 const recordingBefore=sha(await readFile(join(runDir,'recording.json')));
 // Neither the Python executable nor checkpoint/dataset files are available to
 // the separate investigation processes. Only retained JSON is required.
-await rename(join(runDir,'backend'),join(runDir,'backend-unavailable-during-reopen'));
+await rename(join(runDir,'backend'),join(temp,'backend-unavailable-during-reopen'));
 const badPython=join(temp,'does-not-exist-python');
 const readOnlyInvestigation=['--permission',`--allow-fs-read=${consumer}`,`--allow-fs-write=${runDir}`,cli,'investigate','--run',runDir];
 // No --allow-child-process: Node enforces that neither investigator can spawn a trainer.
@@ -63,7 +63,68 @@ for(const report of [stale,fresh]){
  assert(nativeWriter.includes(report.summary.modelWriterStageId));
  assert(nativeWriter.includes(report.summary.receiptWriterStageId));
 }
+const staleChain=stale.transcript.find(call=>call.tool==='backtrack').result;
+for(const stage of ['check-stale-receipt#4','evaluate-a#2','train-a#1','continue-to-b#3','connect-trainer#0'])
+ assert(staleChain.includes(stage),`Stale chain missed ${stage}`);
+assert(!staleChain.includes('evaluate-b#7'),'A later evaluation leaked into the earlier decision');
+assert(staleChain.includes('control edges unavailable'),'Missing control evidence was concealed');
+const freshChain=fresh.transcript.find(call=>call.tool==='backtrack').result;
+for(const stage of ['check-fresh-receipt#8','evaluate-b#7','continue-to-b#3'])assert(freshChain.includes(stage));
+const original=JSON.parse(await readFile(join(runDir,'recording.json'),'utf8'));
+const staleCommit=original.snapshot.commitLog.findIndex(c=>c.runtimeStageId==='check-stale-receipt#4');
+assert(staleCommit>=0);
+run(process.execPath,[...readOnlyInvestigation,'--variable','evaluationReceipt','--before',String(staleCommit+1)],consumer,{PYTHON:badPython});
+const variable=JSON.parse(await readFile(join(runDir,'investigation-variable.json'),'utf8'));
+assert.equal(variable.schema,'footprint-ml-variable-investigation/v1');
+assert(variable.transcript[0].result.includes('evaluate-a#2'));
+assert(!variable.transcript[0].result.includes('evaluate-b#7'));
+run(process.execPath,[...readOnlyInvestigation,'--stage','check-stale-receipt#4'],consumer,{PYTHON:badPython});
+const pinned=JSON.parse(await readFile(join(runDir,'investigation-stage.json'),'utf8'));
+assert.equal(pinned.summary.selectedDecisionStageId,'check-stale-receipt#4');
+// A real prefix through evaluation A has neither a release decision nor ML
+// release bindings. Its saved observation is still a native backtrack target.
+const {stateAt}=await import('foottrace');
+const prefix=structuredClone(original.snapshot), cutoff=prefix.commitLog.findIndex(c=>c.runtimeStageId==='evaluate-a#2');
+assert(cutoff>=0);prefix.commitLog=prefix.commitLog.slice(0,cutoff+1);
+prefix.sharedState=stateAt(original.snapshot,cutoff).state;
+const ids=new Set(prefix.commitLog.map(c=>c.runtimeStageId));
+const trim=node=>{
+ if(!node||!ids.has(node.runtimeStageId))return undefined;
+ const next={...node};if(next.next){next.next=trim(next.next);if(!next.next)delete next.next;}
+ if(next.children)next.children=next.children.map(trim).filter(Boolean);return next;
+};
+prefix.executionTree=trim(prefix.executionTree);
+const prefixDir=join(consumer,'evaluation-only');await mkdir(prefixDir);
+await writeFile(join(prefixDir,'recording.json'),JSON.stringify({snapshot:prefix}));
+const askSaved=(dir)=>run(process.execPath,['--permission',`--allow-fs-read=${consumer}`,`--allow-fs-write=${dir}`,
+ cli,'investigate','--run',dir,'--variable','evaluationReceipt'],consumer,{PYTHON:badPython});
+askSaved(prefixDir);
+const ordinary=JSON.parse(await readFile(join(prefixDir,'investigation-variable.json'),'utf8'));
+for(const stage of ['evaluate-a#2','train-a#1','connect-trainer#0'])assert(ordinary.transcript[0].result.includes(stage));
+assert(!ordinary.transcript[0].result.includes('check-stale-receipt#4'));
+const missingDir=join(consumer,'missing-reads');await mkdir(missingDir);
+const missing=structuredClone(prefix);
+const omitReads=value=>{if(value&&typeof value==='object'){delete value.stageReads;for(const child of Object.values(value))omitReads(child);}};
+omitReads(missing.executionTree);
+await writeFile(join(missingDir,'recording.json'),JSON.stringify({snapshot:missing}));
+askSaved(missingDir);
+const incomplete=JSON.parse(await readFile(join(missingDir,'investigation-variable.json'),'utf8'));
+assert(incomplete.transcript[0].result.includes('no per-step read tracking'));
+assert(!incomplete.transcript[0].result.includes('train-a#1'));
+const selectionDir=join(consumer,'selection-proof');
+run(process.execPath,['--permission',`--allow-fs-read=${consumer}`,`--allow-fs-write=${consumer}`,
+ join(installed,'examples','selection-backtracking','run.mjs'),'--out',selectionDir],consumer,{PYTHON:badPython});
+const selection=JSON.parse(await readFile(join(selectionDir,'outcome.json'),'utf8'));
+const selectionTrace=JSON.parse(await readFile(join(selectionDir,'investigation.json'),'utf8'));
+assert.equal(selection.wrong.candidateId,'steps-30');assert.equal(selection.wrong.allowed,false);
+assert.equal(selection.corrected.candidateId,'steps-100');assert.equal(selection.corrected.allowed,true);
+for(const call of selectionTrace.transcript){
+ assert(call.result.includes('retain-candidate-observations#1'));
+ assert(!call.result.includes('unrelated-telemetry#2'));
+}
 assert.equal(sha(await readFile(join(runDir,'recording.json'))),recordingBefore);
+const nativeQueryCount=[stale,fresh,variable,pinned,ordinary,incomplete,selectionTrace].reduce((n,r)=>n+r.transcript.length,0);
+assert.equal(nativeQueryCount,35);
 const artifactDir=resolve(root,'.artifacts');await mkdir(artifactDir,{recursive:true});
 await copyFile(archive,join(artifactDir,filename));
 const report={schema:'footprint-ml-clean-consumer/v1',passed:true,version:pkg.version,node:process.version,
@@ -71,7 +132,9 @@ const report={schema:'footprint-ml-clean-consumer/v1',passed:true,version:pkg.ve
  checks:{freshDirectory:true,installedTarball:true,sourceCheckoutNotUsedByConsumer:true,
   actualPythonTraining:true,staleReceiptDenied:true,freshReceiptAllowed:true,trainerClosed:true,
   backendFilesUnavailableDuringReopen:true,separateInvestigationProcesses:true,childProcessesDisallowedDuringReopen:true,configuredPythonPathUnavailable:true,
-  nativeLensQueries:20,recordingUnchanged:true},
+  nativeLensQueries:nativeQueryCount,recordingUnchanged:true,transitiveBacktracking:true,historicalCutoff:true,
+  explicitDecisionStage:true,evaluationWithoutRelease:true,missingReadsDisclosed:true,
+  installedSelectionProof:true,selectionProducerInNativeSlice:true,unrelatedStagesExcluded:true},
  metrics:{aMse:outcome.evaluationA.metrics.mse,bMse:outcome.evaluationB.metrics.mse},
  execution:{modelRegistryPublication:false},
  limits:['This checks one NumPy CPU trainer and installed integration; it does not establish other-trainer or remote-publisher support.']};

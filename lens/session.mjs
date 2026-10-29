@@ -1,7 +1,30 @@
 /**
- * Saved ML workflow bindings over existing Lens and foottrace APIs.
+ * Saved workflow investigation over existing Lens and foottrace APIs.
  * No trainer, model implementation, graph engine, or model provider is loaded.
  */
+export function openWorkflowRecording(input, bridge, options = {}) {
+  const snapshot = input?.footprint ?? input?.snapshot ?? input;
+  if (!snapshot || !Array.isArray(snapshot.commitLog) || snapshot.executionTree === undefined)
+    throw new Error('A saved FootPrint snapshot with commitLog and executionTree is required.');
+  for (const name of ['openRecording', 'traceToolpack', 'callTraceTool'])
+    if (typeof bridge?.[name] !== 'function') throw new Error(`The injected public Lens bridge is missing ${name}.`);
+  const recording = snapshot === input ? { snapshot } : { ...input, snapshot };
+  const artifacts = bridge.openRecording(recording);
+  const tools = bridge.traceToolpack(artifacts, options.toolpack);
+  const transcript = [];
+  const call = async (tool, args = {}) => {
+    const result = await bridge.callTraceTool(tools, tool, args);
+    const entry = { ordinal: transcript.length + 1, tool, args: { ...args }, result,
+      owner: 'agentfootprint/observe: existing Lens toolpack' };
+    transcript.push(entry);
+    return entry;
+  };
+  // Argument validation and evidence limits belong to the existing toolpack.
+  // `before` is its exclusive commit-index bound; no later values are borrowed.
+  const backtrack = (variable, query = {}) => call('backtrack', { ...query, variable });
+  return { recording, snapshot, artifacts, tools, transcript, call, backtrack };
+}
+
 export function openAdapterWorkflowRun(input, bridge, options = {}) {
   const snapshot = input?.footprint ?? input?.snapshot;
   if (!snapshot || !Array.isArray(snapshot.commitLog) || snapshot.executionTree === undefined)
@@ -72,8 +95,8 @@ export function openAdapterWorkflowRun(input, bridge, options = {}) {
       ...(selectionBindings ? { selection: selectionBindings } : {}),
       ...(publicationBindings ? { publication: publicationBindings } : {}) },
     supplemental: { footprintCallbacks: callbacks } };
-  const artifacts = bridge.openRecording(recording);
-  const tools = bridge.traceToolpack(artifacts, { previewChars: 600, valueMaxChars: 8000 });
+  const { artifacts, tools, transcript, call } = openWorkflowRecording(recording, bridge,
+    { toolpack: { previewChars: 600, valueMaxChars: 8000 } });
   const cursor = bridge.timeTravel(snapshot);
   const writerAt = (key, through) => bridge.findLastWriter(log, key, through + 1);
   // A first writer means the earliest captured, non-null value through the
@@ -167,13 +190,6 @@ export function openAdapterWorkflowRun(input, bridge, options = {}) {
     ...(publicationWriters ? { releasePin: publicationWriters.pin?.runtimeStageId,
       releasePlan: publicationWriters.plan?.runtimeStageId, releasePreparation: publicationWriters.preparation?.runtimeStageId,
       publication: publicationWriters.publication?.runtimeStageId, publicationAttempt: publicationWriters.attempt?.runtimeStageId } : {}) };
-  const transcript = [];
-  const call = async (tool, args = {}) => {
-    const result = await bridge.callTraceTool(tools, tool, args);
-    const entry = { ordinal: transcript.length + 1, tool, args: { ...args }, result,
-      owner: 'agentfootprint/observe: existing Lens toolpack' };
-    transcript.push(entry); return entry;
-  };
   // who_wrote's beforeStageId is exclusive. The following commit includes the
   // selected decision while excluding every later revision of the same key.
   const writerArgsAt = (key, through) => ({ key, ...(log[through + 1]?.runtimeStageId ?

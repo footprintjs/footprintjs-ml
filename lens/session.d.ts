@@ -52,6 +52,49 @@ export interface SavedWorkflowSnapshot {
   readonly executionTree: unknown;
   readonly sharedState?: Readonly<Record<string, unknown>>;
 }
+/** Any saved FootPrint snapshot, or its existing recording wrapper. No release bindings are required. */
+export type WorkflowRecordingInput<S extends SavedWorkflowSnapshot = SavedWorkflowSnapshot> = S |
+  ({ readonly snapshot: S; readonly footprint?: S } | { readonly footprint: S; readonly snapshot?: S }) & {
+    readonly events?: readonly unknown[];
+    readonly structure?: unknown;
+  };
+export interface SavedWorkflowRecording<S extends SavedWorkflowSnapshot = SavedWorkflowSnapshot> {
+  readonly snapshot: S;
+  readonly events?: readonly unknown[];
+  readonly structure?: unknown;
+}
+export interface SavedRecordingToolpackOptions {
+  readonly previewChars?: number;
+  readonly valueMaxChars?: number;
+  readonly sliceMaxDepth?: number;
+  readonly sliceMaxNodes?: number;
+}
+/** Only the public offline toolpack is needed; callers own optional dependency loading. */
+export interface SavedRecordingBridge<A = unknown, T = unknown> {
+  openRecording(recording: SavedWorkflowRecording): A;
+  traceToolpack(artifacts: A, options?: SavedRecordingToolpackOptions): T;
+  callTraceTool(tools: T, name: string, args?: Readonly<Record<string, unknown>>): string | Promise<string>;
+}
+/** The native backtrack tool's exclusive commit bound and resource limits. */
+export interface BacktrackRecordedVariableOptions {
+  readonly before?: number;
+  readonly element?: number;
+  readonly maxDepth?: number;
+  readonly maxNodes?: number;
+}
+export interface WorkflowRecordingOptions {
+  readonly toolpack?: SavedRecordingToolpackOptions;
+}
+export interface WorkflowRecordingSession<S extends SavedWorkflowSnapshot = SavedWorkflowSnapshot, A = unknown, T = unknown> {
+  readonly recording: SavedWorkflowRecording<S>;
+  readonly snapshot: S;
+  readonly artifacts: A;
+  readonly tools: T;
+  readonly transcript: readonly NativeLensTranscriptEntry[];
+  /** Native argument corrections, warnings and evidence text are returned verbatim. */
+  call(tool: string, args?: Readonly<Record<string, unknown>>): Promise<NativeLensTranscriptEntry>;
+  backtrack(variable: string, options?: BacktrackRecordedVariableOptions): Promise<NativeLensTranscriptEntry>;
+}
 export type AdapterWorkflowRunInput<S extends SavedWorkflowSnapshot = SavedWorkflowSnapshot> =
   ({ readonly footprint: S; readonly snapshot?: S } | { readonly snapshot: S; readonly footprint?: S }) & {
     readonly workflow?: { readonly kind: string };
@@ -248,6 +291,11 @@ export interface AdapterWorkflowSession<S extends SavedWorkflowSnapshot = SavedW
 }
 
 /** Reopens recorded JSON only. Bridge/tool results are returned verbatim. */
+export function openWorkflowRecording<S extends SavedWorkflowSnapshot, A = unknown, T = unknown>(
+  input: WorkflowRecordingInput<S>, bridge: SavedRecordingBridge<A, T>, options?: WorkflowRecordingOptions,
+): WorkflowRecordingSession<S, A, T>;
+
+/** Optional release-specific projection over the same native saved-run tools. */
 export function openAdapterWorkflowRun<S extends SavedWorkflowSnapshot, A = unknown, T = unknown>(
   input: AdapterWorkflowRunInput<S>, bridge: SavedRunLensBridge<A, T>, options?: AdapterWorkflowRunOptions,
 ): AdapterWorkflowSession<S, A, T>;

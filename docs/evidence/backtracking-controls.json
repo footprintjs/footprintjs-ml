@@ -1,0 +1,14 @@
+{
+  "schema": "footprint-ml-selection-negative-controls/v1",
+  "nativeQueries": 3,
+  "closure": {
+    "guardDenied": true,
+    "producerMissingFromNativeChain": true
+  },
+  "missingReads": {
+    "nativeWarningPreserved": true,
+    "producerMissingFromNativeChains": true
+  },
+  "numericalTrainingRepeated": false,
+  "numericalEvaluationRepeated": false
+}

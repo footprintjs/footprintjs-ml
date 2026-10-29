@@ -5,17 +5,18 @@
   "technicalEntry": "technical-story.html#1",
   "target": "Static relative-path deployment; repository and hosting configuration are external to this package.",
   "hashScope": "files hashes cover published bytes. originalRetainedSource hashes cover private retained authoring inputs. The manifest itself is intentionally excluded from its own hash list. These checksums are integrity references, not signatures.",
-  "projection": "Only local path strings and publication-specific source/checksum descriptions are changed. Logical recorded digests, model IDs and numerical claims are retained.",
+  "projection": "Only local path strings, repository-document link targets and publication-specific source/checksum descriptions are changed. Logical recorded digests, model IDs and numerical claims are retained.",
   "evidence": {
-    "count": 74,
-    "byteIdentical": 65,
-    "pathProjected": 9
+    "count": 88,
+    "byteIdentical": 78,
+    "pathProjected": 9,
+    "documentLinksProjected": 1
   },
   "validation": {
     "passed": true,
-    "staticLinksChecked": 80,
+    "staticLinksChecked": 94,
     "classicScriptsParsed": 9,
-    "embeddedSourceMappingsChecked": 296,
+    "embeddedSourceMappingsChecked": 352,
     "personalFilesystemPaths": 0,
     "localServerDependencies": 0,
     "credentialPatternMatches": 0,
@@ -1088,15 +1089,213 @@
       "byteIdenticalToRetainedSource": true
     },
     {
+      "path": "evidence/backtracking-outcome.json",
+      "published": {
+        "sha256": "b34a3c27dd8a2117c8ddc4c400e38ea5fb3a2f28087050e95d9e246037df6378",
+        "bytes": 3990
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-outcome.json",
+        "sha256": "b34a3c27dd8a2117c8ddc4c400e38ea5fb3a2f28087050e95d9e246037df6378",
+        "bytes": 3990
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-recording.json",
+      "published": {
+        "sha256": "b30fa5e125e9b572fac9e1b33dbb2cab10bb7dae5a06ff0f81a56e775fdac047",
+        "bytes": 983569
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-recording.json",
+        "sha256": "b30fa5e125e9b572fac9e1b33dbb2cab10bb7dae5a06ff0f81a56e775fdac047",
+        "bytes": 983569
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-native.json",
+      "published": {
+        "sha256": "363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7",
+        "bytes": 72118
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-native.json",
+        "sha256": "363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7",
+        "bytes": 72118
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-workflow.mjs.txt",
+      "published": {
+        "sha256": "c666da19fe8e7efd7bc35289f5e1a815d39be32a4f0c4bd99674785222eedad7",
+        "bytes": 5115
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-workflow.mjs.txt",
+        "sha256": "c666da19fe8e7efd7bc35289f5e1a815d39be32a4f0c4bd99674785222eedad7",
+        "bytes": 5115
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-tests.mjs.txt",
+      "published": {
+        "sha256": "e86b3911e6d8ba8b9a640087cab96609c4e8814f40d3781245c4ad709f6cb86d",
+        "bytes": 5942
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-tests.mjs.txt",
+        "sha256": "e86b3911e6d8ba8b9a640087cab96609c4e8814f40d3781245c4ad709f6cb86d",
+        "bytes": 5942
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-guide.md",
+      "published": {
+        "sha256": "d69a41fa5660ba65c540e0e400b5bb8170a1cb7154b2df09293fad40372d4335",
+        "bytes": 6670
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-guide.md",
+        "sha256": "4113e1f057639e254277c4f8f7f12b3fd28b8909faaca7dd7f62881a5f99d18e",
+        "bytes": 6502
+      },
+      "projectionFlags": [
+        "repository-document-links"
+      ],
+      "byteIdenticalToRetainedSource": false
+    },
+    {
+      "path": "evidence/backtracking-reader.mjs.txt",
+      "published": {
+        "sha256": "46c3ced64722057f0101c9f48b641847e886bcd9397a0b790291f7ef76b9730b",
+        "bytes": 23118
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-reader.mjs.txt",
+        "sha256": "46c3ced64722057f0101c9f48b641847e886bcd9397a0b790291f7ef76b9730b",
+        "bytes": 23118
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-observations.json",
+      "published": {
+        "sha256": "dfe89a6d33df861ddbe8e7299e7b7bad337ff66db2f65ee107a8702698e0321d",
+        "bytes": 14848
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-observations.json",
+        "sha256": "dfe89a6d33df861ddbe8e7299e7b7bad337ff66db2f65ee107a8702698e0321d",
+        "bytes": 14848
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-controls.json",
+      "published": {
+        "sha256": "b9e300aae18561c1032ae7eb4d85757520b5ec08818edd092ae9ae6f871cf961",
+        "bytes": 355
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-controls.json",
+        "sha256": "b9e300aae18561c1032ae7eb4d85757520b5ec08818edd092ae9ae6f871cf961",
+        "bytes": 355
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-closure-recording.json",
+      "published": {
+        "sha256": "efa82ad47c0f4a31175a4c8f10c4f36de145d16132cab56ae22037452255cb06",
+        "bytes": 471783
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-closure-recording.json",
+        "sha256": "efa82ad47c0f4a31175a4c8f10c4f36de145d16132cab56ae22037452255cb06",
+        "bytes": 471783
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-closure-native.json",
+      "published": {
+        "sha256": "af56c8b04fc880255bdc36b3bd6ea5348021d8690019576096e8013da04e4608",
+        "bytes": 36003
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-closure-native.json",
+        "sha256": "af56c8b04fc880255bdc36b3bd6ea5348021d8690019576096e8013da04e4608",
+        "bytes": 36003
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-missing-reads.json",
+      "published": {
+        "sha256": "a9ed55202c91698e63cf952bd3219bb4598b54e070460f15a997de17193a7b4c",
+        "bytes": 71351
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-missing-reads.json",
+        "sha256": "a9ed55202c91698e63cf952bd3219bb4598b54e070460f15a997de17193a7b4c",
+        "bytes": 71351
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-missing-recording.json",
+      "published": {
+        "sha256": "fcd0f53e64d88203eca43280737e6bf4e11822a336e5fa92763694d82398dae7",
+        "bytes": 778626
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-missing-recording.json",
+        "sha256": "fcd0f53e64d88203eca43280737e6bf4e11822a336e5fa92763694d82398dae7",
+        "bytes": 778626
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/backtracking-reopened.json",
+      "published": {
+        "sha256": "363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7",
+        "bytes": 72118
+      },
+      "originalRetainedSource": {
+        "path": "evidence/backtracking-reopened.json",
+        "sha256": "363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7",
+        "bytes": 72118
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
       "path": "index.html",
       "published": {
-        "sha256": "9a33d84f9f48e79ca135cb1979d945e3f995d138db9c434993e0503bcb67987f",
-        "bytes": 507069
+        "sha256": "24fba070903355142db6893f7d683a84fed77b6a0b1f551d87a3b6f2c374c761",
+        "bytes": 549133
       },
       "originalRetainedSource": {
         "path": "index.html",
-        "sha256": "714228333af1205310fecdd83625f97106bbe9efc4b37be2a41795b519537dfa",
-        "bytes": 439686
+        "sha256": "13ebf7c399bbca426076cfd0380bf4bac46dbaee7f29fcd59786fe44cc1ea3eb",
+        "bytes": 467767
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -1107,13 +1306,13 @@
     {
       "path": "technical-story.html",
       "published": {
-        "sha256": "bcd31bba53d908fbf7e0e60c1361d71648354b39e5823062d8c1020d25a1023a",
-        "bytes": 790114
+        "sha256": "cb24010e4a776885ebcad4251a7657c635767485c9237c2a5a3034c704466a1b",
+        "bytes": 843306
       },
       "originalRetainedSource": {
         "path": "technical-story.html",
-        "sha256": "fad87b3300f77925e458baf96e4d0dc7bd6a9e0b5561b5504e083aec309a374d",
-        "bytes": 722992
+        "sha256": "da25116024011a2d5b5cad3a2090d25987861faf551a70b303e4e6199eb496e4",
+        "bytes": 762201
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -1125,13 +1324,13 @@
     {
       "path": "presentation-manifest.json",
       "published": {
-        "sha256": "a939590ee2d691326c26d72ba0bb26f705bc4a735ba143551aa525caede3bc20",
-        "bytes": 278673
+        "sha256": "70a8fd79d2dd4d2a16dc173de7c2c4932bf55b06afb66e5e4d096de3419b85b2",
+        "bytes": 310568
       },
       "originalRetainedSource": {
         "path": "presentation-manifest.json",
-        "sha256": "54f4d4a59cc1aea4403fa6f962bb081fdfc0af636bc0bff1f6a5d69b8d38c92e",
-        "bytes": 247782
+        "sha256": "772a00260b1f811bf157dcb573a436e0a856832fa2d2f35c0940c493973a9516",
+        "bytes": 273536
       },
       "projectionFlags": [
         "public-source-mappings",
@@ -1143,13 +1342,13 @@
     {
       "path": "EVIDENCE.md",
       "published": {
-        "sha256": "9e1efecd318681966b5e0416dc55434961b4fcc89e548f7b1498eeb76b32eece",
-        "bytes": 115237
+        "sha256": "57ec9daa0926cf6e4f7908309e5aae540e6f349375dc143efba4e332432785f9",
+        "bytes": 128620
       },
       "originalRetainedSource": {
         "path": "EVIDENCE.md",
-        "sha256": "ffee800cfef8fdd436ae02a7ea2ece859891cd59c371f3db2c528bffcb08ab8c",
-        "bytes": 106787
+        "sha256": "e627ec6f01366b4054030eafa36cfc7511a1a48f2a7b68f824b8647495927460",
+        "bytes": 118707
       },
       "projectionFlags": [
         "public-evidence-links",
@@ -1184,8 +1383,8 @@
     {
       "path": "README.md",
       "published": {
-        "sha256": "4b4d6b59d0b911df6badf83adf9b31ba02a26db7a6142de2f9c4a2e547620497",
-        "bytes": 1989
+        "sha256": "e6cd660e279e92b784d1633dca53c5443d709e2a12949edfbd8b13968e69b1b3",
+        "bytes": 2026
       },
       "projectionFlags": [],
       "byteIdenticalToRetainedSource": null
@@ -1193,7 +1392,7 @@
   ],
   "limits": [
     "Static/link/script validation only; browser interaction and deployed Pages URL should be checked after integration.",
-    "Local original evidence is not published verbatim for the nine path-projected JSON copies.",
+    "Local original evidence is not published verbatim for the path-projected JSON copies.",
     "The ML implementation and numerical trainers are not executed by this package."
   ]
 }

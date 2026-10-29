@@ -12,7 +12,7 @@ Create a new directory and install the exact beta archive plus the example’s w
 mkdir footprint-ml-try
 cd footprint-ml-try
 npm init -y
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.1/footprintjs-ml-0.6.0-beta.1.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.2/footprintjs-ml-0.6.0-beta.2.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy==2.2.6
 ```
@@ -42,6 +42,10 @@ npx --no-install footprint-ml investigate --run ./quickstart-run --decision fres
 
 The investigator opens the saved FootPrint record through Lens/foottrace. It should identify the stage that changed the model reference, the earlier evaluation writer, and the selected release decision. The stale investigation writes `investigation.json`; the fresh investigation writes `investigation-fresh.json`. It does not start Python, rerun training or recompute a score.
 
+## Backtrack another saved value
+
+The generic reader supports `footprint-ml investigate --run ./quickstart-run --variable modelRef`. It delegates to the existing Lens toolpack and needs no release descriptor or browser. An optional `--before INDEX` asks about an earlier exclusive commit boundary. See [the backtracking guide](BACKTRACKING.md) for the API, exact decision-stage selection and the limit imposed by inputs read outside tracked scope. This command is included in `0.6.0-beta.2`.
+
 ## Connect your trainer
 
 Start with [examples/quickstart/trainer.py](examples/quickstart/trainer.py). Replace its numerical work with calls to your existing training code, using the hooks in the [adapter guide](ADAPTER.md) and [Python protocol](python/README.md). The workflow can then run that plugin with its explicit plan:
@@ -69,4 +73,4 @@ PYTHON="$PWD/.venv/bin/python" npm run beta:smoke
 
 The smoke check is the clean-install acceptance test: it packs the SDK, installs it into a temporary consumer, runs the quickstart against the installed package, and reopens its recording in a new process. It must fail if the wrong-model proposal is accepted or the saved investigation cannot explain the decisions. Python and NumPy must be available to the smoke check’s selected Python interpreter.
 
-You can also create a tarball for another local project with `npm pack`, then install the resulting `footprintjs-ml-0.6.0-beta.1.tgz` using `npm install /path/to/footprintjs-ml-0.6.0-beta.1.tgz`. This uses the package you built and does not require an npm registry publication.
+You can also create a tarball for another local project with `npm pack`, then install the resulting `footprintjs-ml-0.6.0-beta.2.tgz` using `npm install /path/to/footprintjs-ml-0.6.0-beta.2.tgz`. This uses the package you built and does not require an npm registry publication.

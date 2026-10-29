@@ -167,6 +167,10 @@
       "release-publisher"
     ]
   },
+  "libraryStatus": {
+    "stage": "beta",
+    "notice": "Library APIs may change."
+  },
   "format": "Self-contained HTML; StoryDeck custom element; editable HTML/SVG text",
   "audience": "Sanjay and developers following the experiments testing FootPrint’s flowchart pattern in ML",
   "thesis": "We tested FootPrint’s existing flowchart stages, shared state and execution provenance around ML computation. The retained experiments cover model evidence, data use, recovery and candidate selection. Explicit ML guards now check both evaluation coverage and the declared comparison. Complete logs explained the earlier mistakes too; independent developer benefit remains unproven.",
@@ -517,6 +521,32 @@
         "trainer": true
       },
       {
+        "id": "backtrack-result",
+        "kind": "existing-tools",
+        "summary": "Existing Foottrace followed the selected result to its recorded inputs.",
+        "focus": [
+          "investigation",
+          "selection",
+          "refs",
+          "evaluation"
+        ],
+        "added": [],
+        "lens": true
+      },
+      {
+        "id": "backtrack-read",
+        "kind": "strengthened",
+        "summary": "Tracked reads restored the missing input connection.",
+        "focus": [
+          "investigation",
+          "selection",
+          "refs",
+          "evaluation"
+        ],
+        "added": [],
+        "lens": true
+      },
+      {
         "id": "verdict",
         "kind": "verdict",
         "summary": "Eight ML capabilities above the existing FootPrint foundation.",
@@ -749,8 +779,8 @@
     "Trusted adapter/profile; no authentication or atomic deployment guarantee.",
     "FootPrint records workflow state at instrumented boundaries; it does not record every tensor operation."
   ],
-  "sceneCount": 24,
-  "clickStateCount": 47,
+  "sceneCount": 26,
+  "clickStateCount": 51,
   "nodes": [
     {
       "id": "fp",
@@ -5651,7 +5681,7 @@
         "why": "A lost reply leaves the workflow unsure whether publication succeeded.",
         "how": "FootPrint retried. The publisher found the original receipt for that release.",
         "learned": "One publication remained after a fresh backend reloaded the same model.",
-        "next": "Could a remote registry preserve this behavior across concurrent requests?"
+        "next": "Can we trace any saved ML result back to its inputs?"
       },
       "storyTextEvidence": {
         "what": {
@@ -5693,10 +5723,8 @@
         "next": {
           "classification": "DERIVED",
           "sourceIds": [
-            "release-contracts",
-            "release-workflow",
-            "release-publisher",
-            "release-results"
+            "backtracking-native",
+            "backtracking-guide"
           ]
         }
       },
@@ -5717,6 +5745,476 @@
       },
       "index": 22,
       "clickIndex": 44,
+      "nodeIds": [
+        "fp",
+        "compute",
+        "references",
+        "trainer",
+        "history",
+        "retry",
+        "cost",
+        "view",
+        "lens",
+        "replay",
+        "library",
+        "evidence",
+        "guard",
+        "jax",
+        "identity",
+        "inspect",
+        "plugin",
+        "conformance",
+        "package",
+        "data-use",
+        "data-guard",
+        "audit",
+        "recovery",
+        "continuity",
+        "trial",
+        "selection",
+        "publication"
+      ],
+      "edgeIds": [
+        "fp-compute",
+        "compute-references",
+        "fp-references",
+        "compute-trainer",
+        "trainer-history",
+        "references-history",
+        "fp-retry",
+        "history-retry",
+        "fp-cost",
+        "retry-cost",
+        "history-view",
+        "retry-view",
+        "fp-lens",
+        "fp-replay",
+        "lens-replay",
+        "references-library",
+        "lens-library",
+        "library-evidence",
+        "evidence-guard",
+        "library-jax",
+        "guard-jax",
+        "jax-identity",
+        "evidence-identity",
+        "identity-inspect",
+        "library-inspect",
+        "library-plugin",
+        "plugin-conformance",
+        "library-package",
+        "package-lens",
+        "package-plugin",
+        "trainer-data-use",
+        "evidence-data-use",
+        "data-use-data-guard",
+        "guard-data-guard",
+        "data-use-audit",
+        "lens-audit",
+        "cost-audit",
+        "references-recovery",
+        "history-recovery",
+        "recovery-continuity",
+        "identity-continuity",
+        "audit-continuity",
+        "evidence-continuity",
+        "continuity-guard",
+        "recovery-lens",
+        "recovery-replay",
+        "lens-trial",
+        "history-trial",
+        "trial-selection",
+        "library-selection",
+        "evidence-selection",
+        "selection-guard",
+        "selection-lens",
+        "guard-publication",
+        "selection-publication",
+        "library-publication",
+        "retry-publication",
+        "publication-lens"
+      ],
+      "nodeCount": 27,
+      "edgeCount": 58
+    },
+    {
+      "id": "backtrack-result",
+      "title": "A saved ML choice led back to its scores",
+      "category": "Saved ML result investigation",
+      "caption": "The existing Lens tool traced a rejected ranking and an accepted ranking through their actual recorded inputs.",
+      "visual": {
+        "kind": "backtrack-result",
+        "journey": "backtrack-result",
+        "showMetricsInPrimaryView": false,
+        "showHashesInPrimaryView": false
+      },
+      "adds": {
+        "nodes": [],
+        "edges": []
+      },
+      "focus": [
+        "lens",
+        "library",
+        "selection"
+      ],
+      "transition": {
+        "change": "A saved ML choice led back to its scores",
+        "why": "A surprising model choice needs its actual inputs and decision history.",
+        "consequence": "Each selection reached its own ranking and the saved candidate observations."
+      },
+      "claims": [
+        {
+          "classification": "VERIFIED",
+          "text": "A new seven-commit metadata workflow reuses three retained JAX evaluation observations. It recomputes selection receipts and guards, rejects maximum-error ranking and accepts the declared minimum-error ranking. Numerical training and evaluation do not run. Historical model handles remain labels.",
+          "sourceIds": [
+            "backtracking-outcome",
+            "backtracking-recording",
+            "backtracking-workflow",
+            "backtracking-observations"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Two verbatim native backtrack responses follow wrongAttempt and correctAttempt through their own guard and ranking to the independently recorded declaration and candidate-observation producer. Unrelated telemetry and the opposite ranking do not enter the selected data slice.",
+          "sourceIds": [
+            "backtracking-native",
+            "backtracking-recording",
+            "backtracking-tests"
+          ]
+        },
+        {
+          "classification": "DERIVED",
+          "text": "FootPrint records workflow state. Foottrace and the existing Lens toolpack supply the backward slice. The ML package adds model, score, receipt and decision meaning plus a small generic reader. No new ML graph engine is introduced.",
+          "sourceIds": [
+            "backtracking-reader",
+            "backtracking-guide",
+            "backtracking-workflow"
+          ]
+        },
+        {
+          "classification": "OPEN",
+          "text": "The native responses preserve their warning that control-dependency lookup is unavailable. A recorded data-dependency chain does not establish the statistical cause of a numerical score or a human investigation advantage.",
+          "sourceIds": [
+            "backtracking-native",
+            "backtracking-outcome"
+          ]
+        }
+      ],
+      "storyText": {
+        "what": "We reopened the chosen candidate and traced its saved scores.",
+        "why": "A surprising model choice needs its actual inputs and decision history.",
+        "how": "The existing Lens tool followed recorded writers and scope reads.",
+        "learned": "Each selection reached its own ranking and the saved candidate observations.",
+        "next": "What happens when a decision reads an input outside scope?"
+      },
+      "storyTextEvidence": {
+        "what": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "backtracking-outcome",
+            "backtracking-recording",
+            "backtracking-native",
+            "backtracking-workflow",
+            "backtracking-reader"
+          ]
+        },
+        "why": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "backtracking-outcome",
+            "backtracking-recording",
+            "backtracking-native",
+            "backtracking-workflow",
+            "backtracking-reader"
+          ]
+        },
+        "how": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "backtracking-outcome",
+            "backtracking-recording",
+            "backtracking-native",
+            "backtracking-workflow",
+            "backtracking-reader"
+          ]
+        },
+        "learned": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "backtracking-outcome",
+            "backtracking-recording",
+            "backtracking-native",
+            "backtracking-workflow",
+            "backtracking-reader"
+          ]
+        },
+        "next": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "backtracking-outcome",
+            "backtracking-recording",
+            "backtracking-native",
+            "backtracking-workflow",
+            "backtracking-reader"
+          ]
+        }
+      },
+      "teachingClassification": "DERIVED",
+      "narrativeNote": "A source-backed teaching diagram. Existing FootPrint and foottrace supply backtracking. Numerical scores are retained observations, not recomputed results.",
+      "nextCard": {
+        "title": "A saved ML choice led back to its scores",
+        "why": "A surprising model choice needs its actual inputs and decision history.",
+        "after": "Each selection reached its own ranking and the saved candidate observations.",
+        "classification": "DERIVED",
+        "sourceIds": [
+          "backtracking-outcome",
+          "backtracking-recording",
+          "backtracking-native",
+          "backtracking-workflow",
+          "backtracking-reader"
+        ]
+      },
+      "index": 23,
+      "clickIndex": 46,
+      "nodeIds": [
+        "fp",
+        "compute",
+        "references",
+        "trainer",
+        "history",
+        "retry",
+        "cost",
+        "view",
+        "lens",
+        "replay",
+        "library",
+        "evidence",
+        "guard",
+        "jax",
+        "identity",
+        "inspect",
+        "plugin",
+        "conformance",
+        "package",
+        "data-use",
+        "data-guard",
+        "audit",
+        "recovery",
+        "continuity",
+        "trial",
+        "selection",
+        "publication"
+      ],
+      "edgeIds": [
+        "fp-compute",
+        "compute-references",
+        "fp-references",
+        "compute-trainer",
+        "trainer-history",
+        "references-history",
+        "fp-retry",
+        "history-retry",
+        "fp-cost",
+        "retry-cost",
+        "history-view",
+        "retry-view",
+        "fp-lens",
+        "fp-replay",
+        "lens-replay",
+        "references-library",
+        "lens-library",
+        "library-evidence",
+        "evidence-guard",
+        "library-jax",
+        "guard-jax",
+        "jax-identity",
+        "evidence-identity",
+        "identity-inspect",
+        "library-inspect",
+        "library-plugin",
+        "plugin-conformance",
+        "library-package",
+        "package-lens",
+        "package-plugin",
+        "trainer-data-use",
+        "evidence-data-use",
+        "data-use-data-guard",
+        "guard-data-guard",
+        "data-use-audit",
+        "lens-audit",
+        "cost-audit",
+        "references-recovery",
+        "history-recovery",
+        "recovery-continuity",
+        "identity-continuity",
+        "audit-continuity",
+        "evidence-continuity",
+        "continuity-guard",
+        "recovery-lens",
+        "recovery-replay",
+        "lens-trial",
+        "history-trial",
+        "trial-selection",
+        "library-selection",
+        "evidence-selection",
+        "selection-guard",
+        "selection-lens",
+        "guard-publication",
+        "selection-publication",
+        "library-publication",
+        "retry-publication",
+        "publication-lens"
+      ],
+      "nodeCount": 27,
+      "edgeCount": 58
+    },
+    {
+      "id": "backtrack-read",
+      "title": "A hidden input left a missing connection",
+      "category": "Saved ML result investigation",
+      "caption": "A closure bypassed scope tracking. Reading the actual selection inputs through scope restored their recorded connection.",
+      "visual": {
+        "kind": "backtrack-read",
+        "journey": "backtrack-read",
+        "showMetricsInPrimaryView": false,
+        "showHashesInPrimaryView": false
+      },
+      "adds": {
+        "nodes": [],
+        "edges": []
+      },
+      "focus": [
+        "lens",
+        "library",
+        "selection"
+      ],
+      "transition": {
+        "change": "A hidden input left a missing connection",
+        "why": "A saved value alone does not show which step consumed it.",
+        "consequence": "The input producer became reachable through the existing backward slice."
+      },
+      "claims": [
+        {
+          "classification": "VERIFIED",
+          "text": "The recorded closure negative control stores inputs in scope but deliberately consumes equivalent closure-held inputs during ranking and checking. Its native slice reaches the ranking writer without reaching the input-producing stage. Read tracking is enabled in that control.",
+          "sourceIds": [
+            "backtracking-controls",
+            "backtracking-closure-recording",
+            "backtracking-closure-native",
+            "backtracking-tests"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The corrected workflow consumes manifest and candidateResults through tracked scope in ranking and guard stages. Native saved slices reach the distinct observation producer. A separate readTracking-off control keeps the real guard outcomes while exposing incomplete diagnostic coverage.",
+          "sourceIds": [
+            "backtracking-tests",
+            "backtracking-workflow",
+            "backtracking-native",
+            "backtracking-controls",
+            "backtracking-missing-reads"
+          ]
+        },
+        {
+          "classification": "DERIVED",
+          "text": "Capture completeness depends on actual reads. Merely placing the same value elsewhere in scope cannot reveal a hidden closure dependency. Backtracking belongs to the existing workflow/Foottrace foundation; the ML library connects its evidence to that foundation.",
+          "sourceIds": [
+            "backtracking-workflow",
+            "backtracking-tests",
+            "backtracking-guide"
+          ]
+        },
+        {
+          "classification": "OPEN",
+          "text": "Only recorded dependencies can be followed. External code, closures, backend mutations and nested history need explicit capture where relevant. This is a controlled evidence-boundary proof, not complete numerical replay or automatic statistical root-cause discovery.",
+          "sourceIds": [
+            "backtracking-guide",
+            "backtracking-outcome"
+          ]
+        }
+      ],
+      "storyText": {
+        "what": "We tested a selection that read its scores from a closure.",
+        "why": "A saved value alone does not show which step consumed it.",
+        "how": "The corrected ranking read its real inputs through tracked scope.",
+        "learned": "The input producer became reachable through the existing backward slice.",
+        "next": "Test these recorded chains with unfamiliar ML developers and complete logs."
+      },
+      "storyTextEvidence": {
+        "what": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "backtracking-tests",
+            "backtracking-workflow",
+            "backtracking-native",
+            "backtracking-guide",
+            "backtracking-controls",
+            "backtracking-closure-native"
+          ]
+        },
+        "why": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "backtracking-tests",
+            "backtracking-workflow",
+            "backtracking-native",
+            "backtracking-guide",
+            "backtracking-controls",
+            "backtracking-closure-native"
+          ]
+        },
+        "how": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "backtracking-tests",
+            "backtracking-workflow",
+            "backtracking-native",
+            "backtracking-guide",
+            "backtracking-controls",
+            "backtracking-closure-native"
+          ]
+        },
+        "learned": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "backtracking-tests",
+            "backtracking-workflow",
+            "backtracking-native",
+            "backtracking-guide",
+            "backtracking-controls",
+            "backtracking-closure-native"
+          ]
+        },
+        "next": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "backtracking-tests",
+            "backtracking-workflow",
+            "backtracking-native",
+            "backtracking-guide",
+            "backtracking-controls",
+            "backtracking-closure-native"
+          ]
+        }
+      },
+      "teachingClassification": "DERIVED",
+      "narrativeNote": "A source-backed teaching diagram. Existing FootPrint and foottrace supply backtracking. Numerical scores are retained observations, not recomputed results.",
+      "nextCard": {
+        "title": "A hidden input left a missing connection",
+        "why": "A saved value alone does not show which step consumed it.",
+        "after": "The input producer became reachable through the existing backward slice.",
+        "classification": "DERIVED",
+        "sourceIds": [
+          "backtracking-tests",
+          "backtracking-workflow",
+          "backtracking-native",
+          "backtracking-guide",
+          "backtracking-controls",
+          "backtracking-closure-native"
+        ]
+      },
+      "index": 24,
+      "clickIndex": 48,
       "nodeIds": [
         "fp",
         "compute",
@@ -6045,8 +6543,8 @@
           "release-contracts"
         ]
       },
-      "index": 23,
-      "clickIndex": 46,
+      "index": 25,
+      "clickIndex": 50,
       "nodeIds": [
         "fp",
         "compute",
@@ -7551,6 +8049,287 @@
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
+    },
+    {
+      "id": "backtracking-outcome",
+      "path": "evidence/backtracking-outcome.json",
+      "label": "Saved selection-backtracking outcome and retained-score provenance",
+      "note": "Saved selection-backtracking outcome and retained-score provenance",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-outcome.json",
+      "sha256": "b34a3c27dd8a2117c8ddc4c400e38ea5fb3a2f28087050e95d9e246037df6378",
+      "bytes": 3990,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-outcome.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-outcome.json",
+        "sha256": "b34a3c27dd8a2117c8ddc4c400e38ea5fb3a2f28087050e95d9e246037df6378",
+        "bytes": 3990,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-recording",
+      "path": "evidence/backtracking-recording.json",
+      "label": "New metadata workflow recording with actual tracked candidate inputs",
+      "note": "New metadata workflow recording with actual tracked candidate inputs",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-recording.json",
+      "sha256": "b30fa5e125e9b572fac9e1b33dbb2cab10bb7dae5a06ff0f81a56e775fdac047",
+      "bytes": 983569,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-recording.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-recording.json",
+        "sha256": "b30fa5e125e9b572fac9e1b33dbb2cab10bb7dae5a06ff0f81a56e775fdac047",
+        "bytes": 983569,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-native",
+      "path": "evidence/backtracking-native.json",
+      "label": "Verbatim native Lens backward slices for rejected and accepted selection attempts",
+      "note": "Verbatim native Lens backward slices for rejected and accepted selection attempts",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-native.json",
+      "sha256": "363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7",
+      "bytes": 72118,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-native.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-native.json",
+        "sha256": "363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7",
+        "bytes": 72118,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-workflow",
+      "path": "evidence/backtracking-workflow.mjs.txt",
+      "label": "Tracked-scope selection workflow over retained JAX observations",
+      "note": "Tracked-scope selection workflow over retained JAX observations",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-workflow.mjs.txt",
+      "sha256": "c666da19fe8e7efd7bc35289f5e1a815d39be32a4f0c4bd99674785222eedad7",
+      "bytes": 5115,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-workflow.mjs.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-workflow.mjs.txt",
+        "sha256": "c666da19fe8e7efd7bc35289f5e1a815d39be32a4f0c4bd99674785222eedad7",
+        "bytes": 5115,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-tests",
+      "path": "evidence/backtracking-tests.mjs.txt",
+      "label": "Native-chain, closure-input and missing-read negative-control tests",
+      "note": "Native-chain, closure-input and missing-read negative-control tests",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-tests.mjs.txt",
+      "sha256": "e86b3911e6d8ba8b9a640087cab96609c4e8814f40d3781245c4ad709f6cb86d",
+      "bytes": 5942,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-tests.mjs.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-tests.mjs.txt",
+        "sha256": "e86b3911e6d8ba8b9a640087cab96609c4e8814f40d3781245c4ad709f6cb86d",
+        "bytes": 5942,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-guide",
+      "path": "evidence/backtracking-guide.md",
+      "label": "Generic saved-result reader, native tool reuse and capture limits",
+      "note": "Generic saved-result reader, native tool reuse and capture limits",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-guide.md",
+      "sha256": "4113e1f057639e254277c4f8f7f12b3fd28b8909faaca7dd7f62881a5f99d18e",
+      "bytes": 6502,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-guide.md",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-guide.md",
+        "sha256": "d69a41fa5660ba65c540e0e400b5bb8170a1cb7154b2df09293fad40372d4335",
+        "bytes": 6670,
+        "pathsProjected": 0,
+        "linksProjected": 3,
+        "byteIdenticalToRetainedSource": false
+      }
+    },
+    {
+      "id": "backtracking-reader",
+      "path": "evidence/backtracking-reader.mjs.txt",
+      "label": "Optional generic recording reader delegating to the existing Lens toolpack",
+      "note": "Optional generic recording reader delegating to the existing Lens toolpack",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-reader.mjs.txt",
+      "sha256": "46c3ced64722057f0101c9f48b641847e886bcd9397a0b790291f7ef76b9730b",
+      "bytes": 23118,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-reader.mjs.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-reader.mjs.txt",
+        "sha256": "46c3ced64722057f0101c9f48b641847e886bcd9397a0b790291f7ef76b9730b",
+        "bytes": 23118,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-observations",
+      "path": "evidence/backtracking-observations.json",
+      "label": "Portable projection of retained numerical evaluation observations",
+      "note": "Portable projection of retained numerical evaluation observations",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-observations.json",
+      "sha256": "dfe89a6d33df861ddbe8e7299e7b7bad337ff66db2f65ee107a8702698e0321d",
+      "bytes": 14848,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-observations.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-observations.json",
+        "sha256": "dfe89a6d33df861ddbe8e7299e7b7bad337ff66db2f65ee107a8702698e0321d",
+        "bytes": 14848,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-controls",
+      "path": "evidence/backtracking-controls.json",
+      "label": "Saved negative-control outcomes and capture limits",
+      "note": "Saved negative-control outcomes and capture limits",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-controls.json",
+      "sha256": "b9e300aae18561c1032ae7eb4d85757520b5ec08818edd092ae9ae6f871cf961",
+      "bytes": 355,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-controls.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-controls.json",
+        "sha256": "b9e300aae18561c1032ae7eb4d85757520b5ec08818edd092ae9ae6f871cf961",
+        "bytes": 355,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-closure-recording",
+      "path": "evidence/backtracking-closure-recording.json",
+      "label": "Recorded closure-input negative control with read tracking enabled",
+      "note": "Recorded closure-input negative control with read tracking enabled",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-closure-recording.json",
+      "sha256": "efa82ad47c0f4a31175a4c8f10c4f36de145d16132cab56ae22037452255cb06",
+      "bytes": 471783,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-closure-recording.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-closure-recording.json",
+        "sha256": "efa82ad47c0f4a31175a4c8f10c4f36de145d16132cab56ae22037452255cb06",
+        "bytes": 471783,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-closure-native",
+      "path": "evidence/backtracking-closure-native.json",
+      "label": "Native slice omitting the hidden closure input producer",
+      "note": "Native slice omitting the hidden closure input producer",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-closure-native.json",
+      "sha256": "af56c8b04fc880255bdc36b3bd6ea5348021d8690019576096e8013da04e4608",
+      "bytes": 36003,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-closure-native.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-closure-native.json",
+        "sha256": "af56c8b04fc880255bdc36b3bd6ea5348021d8690019576096e8013da04e4608",
+        "bytes": 36003,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-missing-reads",
+      "path": "evidence/backtracking-missing-reads.json",
+      "label": "Native read-tracking-off warnings and limited slices",
+      "note": "Native read-tracking-off warnings and limited slices",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-missing-reads.json",
+      "sha256": "a9ed55202c91698e63cf952bd3219bb4598b54e070460f15a997de17193a7b4c",
+      "bytes": 71351,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-missing-reads.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-missing-reads.json",
+        "sha256": "a9ed55202c91698e63cf952bd3219bb4598b54e070460f15a997de17193a7b4c",
+        "bytes": 71351,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-missing-recording",
+      "path": "evidence/backtracking-missing-recording.json",
+      "label": "Saved read-tracking-off negative control",
+      "note": "Saved read-tracking-off negative control",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-missing-recording.json",
+      "sha256": "fcd0f53e64d88203eca43280737e6bf4e11822a336e5fa92763694d82398dae7",
+      "bytes": 778626,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-missing-recording.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-missing-recording.json",
+        "sha256": "fcd0f53e64d88203eca43280737e6bf4e11822a336e5fa92763694d82398dae7",
+        "bytes": 778626,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "backtracking-reopened",
+      "path": "evidence/backtracking-reopened.json",
+      "label": "Fresh-process investigation of the saved metadata workflow",
+      "note": "Fresh-process investigation of the saved metadata workflow",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/backtracking-reopened.json",
+      "sha256": "363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7",
+      "bytes": 72118,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/backtracking-reopened.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/backtracking-reopened.json",
+        "sha256": "363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7",
+        "bytes": 72118,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
     }
   ],
   "ending": "The local experiments support FootPrint’s flowchart pattern for ML orchestration, recorded data-use checks, explicit checkpoint recovery and saved investigation. Numerical trainers own computation; independent developer value and broader scale need further proof.",
@@ -7720,6 +8499,20 @@
       },
       {
         "click": 47,
+        "type": "fade",
+        "seconds": 0.8,
+        "ease": "inOut",
+        "p": {}
+      },
+      {
+        "click": 49,
+        "type": "fade",
+        "seconds": 0.8,
+        "ease": "inOut",
+        "p": {}
+      },
+      {
+        "click": 51,
         "type": "fade",
         "seconds": 0.8,
         "ease": "inOut",

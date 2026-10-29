@@ -2,7 +2,7 @@
 
 **Beta — APIs may change.** Check that a proposed model has matching evaluation evidence, then reopen the recorded release decision after training has stopped.
 
-FootPrint coordinates the workflow. Your trainer keeps its models, tensors and numerical code. Scope holds small references, evaluation receipts and decisions. Lens and foottrace inspect the saved execution record.
+FootPrint coordinates the workflow. Your trainer keeps its models, tensors and numerical code. Scope holds small references, evaluation receipts and decisions. Lens and foottrace inspect the saved execution record, including the tracked inputs and writers behind an ML result.
 
 [Try the quickstart](QUICKSTART.md) · [Explore the visual story](https://footprintjs.github.io/footprintjs-ml/#1) · [Compatibility](COMPATIBILITY.md)
 
@@ -11,7 +11,7 @@ FootPrint coordinates the workflow. Your trainer keeps its models, tensors and n
 The beta is distributed as a versioned GitHub release tarball. These commands do not depend on an npm registry release of `footprintjs-ml`:
 
 ```sh
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.1/footprintjs-ml-0.6.0-beta.1.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.2/footprintjs-ml-0.6.0-beta.2.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy==2.2.6
 npx --no-install footprint-ml demo --out ./quickstart-run --python .venv/bin/python
@@ -67,6 +67,7 @@ The smoke check packs the SDK, installs it into a temporary consumer, runs the m
 
 - [Quickstart](QUICKSTART.md) and [supported/tested environments](COMPATIBILITY.md)
 - [Trainer adapter](ADAPTER.md) and [Python plugin protocol](python/README.md)
+- [Saved-result backtracking](BACKTRACKING.md), including generic value tracing and the closure-input boundary
 - [Data-use checks](DATA-LINEAGE.md), [model selection](SELECTION.md), [checked release](RELEASE.md)
 - [Visual story](https://footprintjs.github.io/footprintjs-ml/#1), [technical story](https://footprintjs.github.io/footprintjs-ml/technical-story.html#1), [saved evidence ledger](docs/EVIDENCE.md)
 - [FootPrint](https://github.com/footprintjs/footPrint)

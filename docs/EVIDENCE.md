@@ -1,6 +1,6 @@
 # Evidence ledger — public projection
 
-Personal machine paths have been replaced in this public presentation. Original model IDs, logical evidence digests and numerical claims are unchanged. Nine evidence JSON copies have projected path strings and therefore different file checksums. The original retained-source checksums and published-copy checksums below are distinct. The [publication manifest](publication-manifest.json) verifies this static export; it is not a signature or authentication of the original run.
+Personal machine paths have been replaced in this public presentation. Original model IDs, logical evidence digests and numerical claims are unchanged. Public copies with projected paths or repository-document links have different file checksums. The original retained-source checksums and published-copy checksums below are distinct. The [publication manifest](publication-manifest.json) verifies this static export; it is not a signature or authentication of the original run. Repository-document links in the saved backtracking guide point to the public SDK repository.
 
 This deck follows the retained experiments testing FootPrint’s flowchart pattern in ML. The graph is a derived architectural teaching model, not the JAX operation graph and not a complete recorded causal graph. Viewing it does not launch a trainer.
 
@@ -524,6 +524,104 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Published copy SHA-256: f8473393d7374fad0b308f48c07a56c7a5dd496ec0bf017827e9ce3b293c774b
   - Published copy bytes: 4200
   - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-outcome** — Saved selection-backtracking outcome and retained-score provenance
+  - Public copy: [evidence/backtracking-outcome.json](evidence/backtracking-outcome.json)
+  - Original retained source SHA-256: b34a3c27dd8a2117c8ddc4c400e38ea5fb3a2f28087050e95d9e246037df6378
+  - Original retained source bytes: 3990
+  - Published copy SHA-256: b34a3c27dd8a2117c8ddc4c400e38ea5fb3a2f28087050e95d9e246037df6378
+  - Published copy bytes: 3990
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-recording** — New metadata workflow recording with actual tracked candidate inputs
+  - Public copy: [evidence/backtracking-recording.json](evidence/backtracking-recording.json)
+  - Original retained source SHA-256: b30fa5e125e9b572fac9e1b33dbb2cab10bb7dae5a06ff0f81a56e775fdac047
+  - Original retained source bytes: 983569
+  - Published copy SHA-256: b30fa5e125e9b572fac9e1b33dbb2cab10bb7dae5a06ff0f81a56e775fdac047
+  - Published copy bytes: 983569
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-native** — Verbatim native Lens backward slices for rejected and accepted selection attempts
+  - Public copy: [evidence/backtracking-native.json](evidence/backtracking-native.json)
+  - Original retained source SHA-256: 363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7
+  - Original retained source bytes: 72118
+  - Published copy SHA-256: 363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7
+  - Published copy bytes: 72118
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-workflow** — Tracked-scope selection workflow over retained JAX observations
+  - Public copy: [evidence/backtracking-workflow.mjs.txt](evidence/backtracking-workflow.mjs.txt)
+  - Original retained source SHA-256: c666da19fe8e7efd7bc35289f5e1a815d39be32a4f0c4bd99674785222eedad7
+  - Original retained source bytes: 5115
+  - Published copy SHA-256: c666da19fe8e7efd7bc35289f5e1a815d39be32a4f0c4bd99674785222eedad7
+  - Published copy bytes: 5115
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-tests** — Native-chain, closure-input and missing-read negative-control tests
+  - Public copy: [evidence/backtracking-tests.mjs.txt](evidence/backtracking-tests.mjs.txt)
+  - Original retained source SHA-256: e86b3911e6d8ba8b9a640087cab96609c4e8814f40d3781245c4ad709f6cb86d
+  - Original retained source bytes: 5942
+  - Published copy SHA-256: e86b3911e6d8ba8b9a640087cab96609c4e8814f40d3781245c4ad709f6cb86d
+  - Published copy bytes: 5942
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-guide** — Generic saved-result reader, native tool reuse and capture limits
+  - Public copy: [evidence/backtracking-guide.md](evidence/backtracking-guide.md)
+  - Original retained source SHA-256: 4113e1f057639e254277c4f8f7f12b3fd28b8909faaca7dd7f62881a5f99d18e
+  - Original retained source bytes: 6502
+  - Published copy SHA-256: d69a41fa5660ba65c540e0e400b5bb8170a1cb7154b2df09293fad40372d4335
+  - Published copy bytes: 6670
+  - Path projection: 0 string(s); published bytes differ from retained source.
+- **backtracking-reader** — Optional generic recording reader delegating to the existing Lens toolpack
+  - Public copy: [evidence/backtracking-reader.mjs.txt](evidence/backtracking-reader.mjs.txt)
+  - Original retained source SHA-256: 46c3ced64722057f0101c9f48b641847e886bcd9397a0b790291f7ef76b9730b
+  - Original retained source bytes: 23118
+  - Published copy SHA-256: 46c3ced64722057f0101c9f48b641847e886bcd9397a0b790291f7ef76b9730b
+  - Published copy bytes: 23118
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-observations** — Portable projection of retained numerical evaluation observations
+  - Public copy: [evidence/backtracking-observations.json](evidence/backtracking-observations.json)
+  - Original retained source SHA-256: dfe89a6d33df861ddbe8e7299e7b7bad337ff66db2f65ee107a8702698e0321d
+  - Original retained source bytes: 14848
+  - Published copy SHA-256: dfe89a6d33df861ddbe8e7299e7b7bad337ff66db2f65ee107a8702698e0321d
+  - Published copy bytes: 14848
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-controls** — Saved negative-control outcomes and capture limits
+  - Public copy: [evidence/backtracking-controls.json](evidence/backtracking-controls.json)
+  - Original retained source SHA-256: b9e300aae18561c1032ae7eb4d85757520b5ec08818edd092ae9ae6f871cf961
+  - Original retained source bytes: 355
+  - Published copy SHA-256: b9e300aae18561c1032ae7eb4d85757520b5ec08818edd092ae9ae6f871cf961
+  - Published copy bytes: 355
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-closure-recording** — Recorded closure-input negative control with read tracking enabled
+  - Public copy: [evidence/backtracking-closure-recording.json](evidence/backtracking-closure-recording.json)
+  - Original retained source SHA-256: efa82ad47c0f4a31175a4c8f10c4f36de145d16132cab56ae22037452255cb06
+  - Original retained source bytes: 471783
+  - Published copy SHA-256: efa82ad47c0f4a31175a4c8f10c4f36de145d16132cab56ae22037452255cb06
+  - Published copy bytes: 471783
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-closure-native** — Native slice omitting the hidden closure input producer
+  - Public copy: [evidence/backtracking-closure-native.json](evidence/backtracking-closure-native.json)
+  - Original retained source SHA-256: af56c8b04fc880255bdc36b3bd6ea5348021d8690019576096e8013da04e4608
+  - Original retained source bytes: 36003
+  - Published copy SHA-256: af56c8b04fc880255bdc36b3bd6ea5348021d8690019576096e8013da04e4608
+  - Published copy bytes: 36003
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-missing-reads** — Native read-tracking-off warnings and limited slices
+  - Public copy: [evidence/backtracking-missing-reads.json](evidence/backtracking-missing-reads.json)
+  - Original retained source SHA-256: a9ed55202c91698e63cf952bd3219bb4598b54e070460f15a997de17193a7b4c
+  - Original retained source bytes: 71351
+  - Published copy SHA-256: a9ed55202c91698e63cf952bd3219bb4598b54e070460f15a997de17193a7b4c
+  - Published copy bytes: 71351
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-missing-recording** — Saved read-tracking-off negative control
+  - Public copy: [evidence/backtracking-missing-recording.json](evidence/backtracking-missing-recording.json)
+  - Original retained source SHA-256: fcd0f53e64d88203eca43280737e6bf4e11822a336e5fa92763694d82398dae7
+  - Original retained source bytes: 778626
+  - Published copy SHA-256: fcd0f53e64d88203eca43280737e6bf4e11822a336e5fa92763694d82398dae7
+  - Published copy bytes: 778626
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **backtracking-reopened** — Fresh-process investigation of the saved metadata workflow
+  - Public copy: [evidence/backtracking-reopened.json](evidence/backtracking-reopened.json)
+  - Original retained source SHA-256: 363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7
+  - Original retained source bytes: 72118
+  - Published copy SHA-256: 363ac01fcef9dbb55a91975782fa80fc644a4d4503a70a8ba364fb66d66bcba7
+  - Published copy bytes: 72118
+  - Path projection: 0 string(s); byte-identical to retained source.
 
 ## Claims by scene
 
@@ -689,7 +787,21 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — Existing Lens and foottrace execute 100 native evidence calls over five decision views, with original returned strings and missing-evidence warnings preserved. Child processes are denied during the saved-run verification; opening the evidence performs no training, checkpoint load or publication. [release-native, release-verify]
 - **VERIFIED** — A separate real-clock expiry case first publishes before its deadline, then waits until after expiry. Read-only lookup confirms the original publication without a model or live verifier; it does not authorize another release. The same expired evidence with no existing publication is denied. The separate expiry registry retains one original publication while the main retry registry remains at one. [release-results, release-proof, release-verify, release-guide, release-contracts]
 
-### 24. FootPrint explained ML release mistakes through saved workflow state
+### 24. A saved ML choice led back to its scores
+
+- **VERIFIED** — A new seven-commit metadata workflow reuses three retained JAX evaluation observations. It recomputes selection receipts and guards, rejects maximum-error ranking and accepts the declared minimum-error ranking. Numerical training and evaluation do not run. Historical model handles remain labels. [backtracking-outcome, backtracking-recording, backtracking-workflow, backtracking-observations]
+- **VERIFIED** — Two verbatim native backtrack responses follow wrongAttempt and correctAttempt through their own guard and ranking to the independently recorded declaration and candidate-observation producer. Unrelated telemetry and the opposite ranking do not enter the selected data slice. [backtracking-native, backtracking-recording, backtracking-tests]
+- **DERIVED** — FootPrint records workflow state. Foottrace and the existing Lens toolpack supply the backward slice. The ML package adds model, score, receipt and decision meaning plus a small generic reader. No new ML graph engine is introduced. [backtracking-reader, backtracking-guide, backtracking-workflow]
+- **OPEN** — The native responses preserve their warning that control-dependency lookup is unavailable. A recorded data-dependency chain does not establish the statistical cause of a numerical score or a human investigation advantage. [backtracking-native, backtracking-outcome]
+
+### 25. A hidden input left a missing connection
+
+- **VERIFIED** — The recorded closure negative control stores inputs in scope but deliberately consumes equivalent closure-held inputs during ranking and checking. Its native slice reaches the ranking writer without reaching the input-producing stage. Read tracking is enabled in that control. [backtracking-controls, backtracking-closure-recording, backtracking-closure-native, backtracking-tests]
+- **VERIFIED** — The corrected workflow consumes manifest and candidateResults through tracked scope in ranking and guard stages. Native saved slices reach the distinct observation producer. A separate readTracking-off control keeps the real guard outcomes while exposing incomplete diagnostic coverage. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-controls, backtracking-missing-reads]
+- **DERIVED** — Capture completeness depends on actual reads. Merely placing the same value elsewhere in scope cannot reveal a hidden closure dependency. Backtracking belongs to the existing workflow/Foottrace foundation; the ML library connects its evidence to that foundation. [backtracking-workflow, backtracking-tests, backtracking-guide]
+- **OPEN** — Only recorded dependencies can be followed. External code, closures, backend mutations and nested history need explicit capture where relevant. This is a controlled evidence-boundary proof, not complete numerical replay or automatic statistical root-cause discovery. [backtracking-guide, backtracking-outcome]
+
+### 26. FootPrint explained ML release mistakes through saved workflow state
 
 - **DERIVED** — The retained experiments support using FootPrint’s flowchart stages, reference state and provenance around ML computation. They do not establish a new numerical/autodiff framework. [wasm-summary, workflow, jax-digits-verification, gp-conformance, lineage-results, lineage-verification, crash-summary, crash-audit]
 - **VERIFIED** — Complete structured logs solved the demonstrated diagnosis questions too; FootPrint’s value is a reusable connected recording/investigation pattern, not unique detectability. [legacy-checkpoint, legacy-retry, benchmark-investigation, lineage-verification, trial-pilot, trial-verify]
@@ -957,7 +1069,23 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED · why** — A lost reply leaves the workflow unsure whether publication succeeded. [release-results, release-proof, release-contracts, release-workflow]
 - **VERIFIED · how** — FootPrint retried. The publisher found the original receipt for that release. [release-results, release-proof, release-contracts, release-workflow]
 - **VERIFIED · learned** — One publication remained after a fresh backend reloaded the same model. [release-results, release-proof, release-contracts, release-workflow]
-- **DERIVED · next** — Could a remote registry preserve this behavior across concurrent requests? [release-contracts, release-workflow, release-publisher, release-results]
+- **DERIVED · next** — Can we trace any saved ML result back to its inputs? [backtracking-native, backtracking-guide]
+
+### A saved ML choice led back to its scores
+
+- **VERIFIED · what** — We reopened the chosen candidate and traced its saved scores. [backtracking-outcome, backtracking-recording, backtracking-native, backtracking-workflow, backtracking-reader]
+- **DERIVED · why** — A surprising model choice needs its actual inputs and decision history. [backtracking-outcome, backtracking-recording, backtracking-native, backtracking-workflow, backtracking-reader]
+- **VERIFIED · how** — The existing Lens tool followed recorded writers and scope reads. [backtracking-outcome, backtracking-recording, backtracking-native, backtracking-workflow, backtracking-reader]
+- **VERIFIED · learned** — Each selection reached its own ranking and the saved candidate observations. [backtracking-outcome, backtracking-recording, backtracking-native, backtracking-workflow, backtracking-reader]
+- **DERIVED · next** — What happens when a decision reads an input outside scope? [backtracking-outcome, backtracking-recording, backtracking-native, backtracking-workflow, backtracking-reader]
+
+### A hidden input left a missing connection
+
+- **VERIFIED · what** — We tested a selection that read its scores from a closure. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
+- **DERIVED · why** — A saved value alone does not show which step consumed it. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
+- **VERIFIED · how** — The corrected ranking read its real inputs through tracked scope. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
+- **VERIFIED · learned** — The input producer became reachable through the existing backward slice. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
+- **DERIVED · next** — Test these recorded chains with unfamiliar ML developers and complete logs. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
 
 ### FootPrint explained ML release mistakes through saved workflow state
 
@@ -1066,4 +1194,6 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED** — Check the model-selection rule. Can a valid model still lose the declared comparison? Bind all candidate results and check the proposed winner. [selection-results, selection-contracts, selection-workflow]
 - **DERIVED** — Protect the approved checkpoint. Could publication substitute a different model after approval? Pin the model and evidence, then check the transferred bytes. [release-results, release-proof, release-contracts, release-workflow]
 - **DERIVED** — Recover the publisher’s lost reply. Did the missing reply mean the approved model was not released? Retry the same plan and inspect the existing local publication. [release-results, release-proof, release-publisher, release-results, release-workflow]
+- **DERIVED** — A saved ML choice led back to its scores. A surprising model choice needs its actual inputs and decision history. Each selection reached its own ranking and the saved candidate observations. [backtracking-outcome, backtracking-recording, backtracking-native, backtracking-workflow, backtracking-reader]
+- **DERIVED** — A hidden input left a missing connection. A saved value alone does not show which step consumed it. The input producer became reachable through the existing backward slice. [backtracking-tests, backtracking-workflow, backtracking-native, backtracking-guide, backtracking-controls, backtracking-closure-native]
 - **DERIVED** — Review the ML debugging results. Which mistakes did these local model checks explain? Review the ML-specific checks and the still-open human comparison. [lineage-results, lineage-verification, crash-summary, crash-audit, build, trial-pilot, trial-protocol, selection-results, selection-contracts, release-results, release-contracts]

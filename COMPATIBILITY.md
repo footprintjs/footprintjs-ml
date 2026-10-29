@@ -1,6 +1,8 @@
 # Beta compatibility
 
-The initial public SDK beta is `0.6.0-beta.1`. APIs and supported integration profiles may change during the beta.
+The current SDK beta is `0.6.0-beta.2`. APIs and supported integration profiles may change during the beta.
+
+Beta 2 adds a saved-record entry point without release bindings and explicit CLI investigation targets. It reuses the existing FootPrint/foottrace toolpack. Its selection proof recomputes ranking from retained JAX evaluations; it does not repeat numerical training. The reference quickstart separately trains its NumPy model. See [BACKTRACKING.md](BACKTRACKING.md) for capture requirements and limits.
 
 ## Runtime scope
 

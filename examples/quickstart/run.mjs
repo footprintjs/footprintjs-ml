@@ -22,28 +22,28 @@ export async function runDemo(args=process.argv.slice(2)){
  let trainer, emit=()=>{};
  const stage=fn=>async scope=>{emit=(name,payload)=>scope.$emit(name,payload);await fn(scope);};
  const evaluate=async scope=>{
-  const result=await trainer.adapter.evaluate({modelRef:plain(scope.modelRef),datasetRef:trainer.datasets.validation,
-   preprocessingVersion:trainer.backend.preprocessingVersion,evaluationMethodVersion:trainer.backend.evaluationMethodVersion,
-   parameters:plan.evaluationParameters||{}});
+  const result=await trainer.adapter.evaluate({modelRef:plain(scope.modelRef),datasetRef:plain(scope.datasets.validation),
+   preprocessingVersion:scope.backend.preprocessingVersion,evaluationMethodVersion:scope.backend.evaluationMethodVersion,
+   parameters:plain(scope.plan.evaluationParameters||{})});
   scope.evaluationReceipt=plain(result.receipt);
  };
  const guard=async scope=>{
   const verified=await trainer.adapter.verifyModel({modelRef:plain(scope.modelRef)});
   scope.modelRef=plain(verified);
   scope.releaseDecision=plain(checkRelease({modelRef:verified,receipt:plain(scope.evaluationReceipt),
-   datasetRef:trainer.datasets.validation,preprocessingVersion:trainer.backend.preprocessingVersion,
-   evaluationMethodVersion:trainer.backend.evaluationMethodVersion,parameters:plan.evaluationParameters||{},policy:plan.policy}));
+   datasetRef:plain(scope.datasets.validation),preprocessingVersion:scope.backend.preprocessingVersion,
+   evaluationMethodVersion:scope.backend.evaluationMethodVersion,parameters:plain(scope.plan.evaluationParameters||{}),policy:plain(scope.plan.policy)}));
   scope.releaseAllowed=scope.releaseDecision.allowed;
  };
  let chart=flowChart('Connect your Python trainer',stage(async s=>{
   trainer=await createPythonTrainerAdapter({root:resolve(root,'backend'),pluginPath:resolve(opts.plugin||resolve(here,'trainer.py')),
    config:plan.config||{},expectedProfile:plan.profile},{python:opts.python||process.env.PYTHON||'python3',emit:(n,p)=>emit(n,p)});
-  s.backend=plain(trainer.backend);s.datasets=plain(trainer.datasets);s.approvedModel=null;
+  s.backend=plain(trainer.backend);s.datasets=plain(trainer.datasets);s.plan=plain(plan);s.approvedModel=null;
  }), 'connect-trainer');
- chart.addFunction('Train model A',stage(async s=>{const trained=await trainer.adapter.train(plan.trainA);s.modelRef=plain(trained.modelRef);s.modelA=plain(trained.modelRef);}), 'train-a');
+ chart.addFunction('Train model A',stage(async s=>{const trained=await trainer.adapter.train(plain(s.plan.trainA));s.modelRef=plain(trained.modelRef);s.modelA=plain(trained.modelRef);}), 'train-a');
  chart.addFunction('Evaluate model A',stage(async s=>{await evaluate(s);s.receiptA=plain(s.evaluationReceipt);}), 'evaluate-a');
  chart.addFunction('Continue training to model B; leave A’s receipt in place',stage(async s=>{
-  const trained=await trainer.adapter.train({...plan.continueB,modelRef:plain(s.modelRef)});
+  const trained=await trainer.adapter.train({...plain(s.plan.continueB),modelRef:plain(s.modelRef)});
   s.modelRef=plain(trained.modelRef);s.modelB=plain(trained.modelRef);
   if(s.modelA.inferenceIdentity.sha256===s.modelB.inferenceIdentity.sha256)throw new Error('The example needs genuinely changed model parameters.');
  }), 'continue-to-b');
