@@ -1090,13 +1090,13 @@
     {
       "path": "index.html",
       "published": {
-        "sha256": "1d6fc2452a19c56202a87fdf93e3f401a0af94cdb4835c3d72a22a66679a5e74",
-        "bytes": 506900
+        "sha256": "9a33d84f9f48e79ca135cb1979d945e3f995d138db9c434993e0503bcb67987f",
+        "bytes": 507069
       },
       "originalRetainedSource": {
         "path": "index.html",
-        "sha256": "44c9693f8c463d56b45c1494d5f2b2dcd94f944484a765fbf2002fb1e0624664",
-        "bytes": 439517
+        "sha256": "714228333af1205310fecdd83625f97106bbe9efc4b37be2a41795b519537dfa",
+        "bytes": 439686
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -1107,13 +1107,13 @@
     {
       "path": "technical-story.html",
       "published": {
-        "sha256": "56477c66fdc384aaafbc2020695382338aef2eaf39df4e8d6749ea13789b9f22",
-        "bytes": 789945
+        "sha256": "bcd31bba53d908fbf7e0e60c1361d71648354b39e5823062d8c1020d25a1023a",
+        "bytes": 790114
       },
       "originalRetainedSource": {
         "path": "technical-story.html",
-        "sha256": "a9e8ed85fc7c5145acd135b9b72e2c5078230135441ac480ada857fd2798766a",
-        "bytes": 722823
+        "sha256": "fad87b3300f77925e458baf96e4d0dc7bd6a9e0b5561b5504e083aec309a374d",
+        "bytes": 722992
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -1184,8 +1184,8 @@
     {
       "path": "README.md",
       "published": {
-        "sha256": "f3f120998747f90a84ebfafff6fa0e6e3b28f72289c9c05443d49f36d3750e4b",
-        "bytes": 1834
+        "sha256": "4b4d6b59d0b911df6badf83adf9b31ba02a26db7a6142de2f9c4a2e547620497",
+        "bytes": 1989
       },
       "projectionFlags": [],
       "byteIdenticalToRetainedSource": null

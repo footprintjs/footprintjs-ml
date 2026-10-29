@@ -1,6 +1,6 @@
 # FootPrint in ML: the story
 
-**Status: Beta — library APIs may change.** This page presents the current exploration and saved evidence. An installable SDK has not been published yet.
+**Status: Beta — library APIs may change.** [Get the v0.6.0-beta.1 SDK release](https://github.com/footprintjs/footprintjs-ml/releases/tag/v0.6.0-beta.1) and [follow the quickstart](https://github.com/footprintjs/footprintjs-ml/blob/main/QUICKSTART.md). This page presents the exploration and saved evidence.
 
 [Open the twelve-chapter visual story](index.html#1), or [read the full technical story](technical-story.html#1). The animated map shows the reusable ML pieces explored around FootPrint. Next and Back move through the chapters. Pause motion stops the floating graph; reduced-motion preferences and the motion=off query option are respected. More detail opens the retained lessons and linked evidence.
 
