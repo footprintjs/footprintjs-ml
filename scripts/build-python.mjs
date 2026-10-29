@@ -3,6 +3,7 @@ import {resolve,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
+import {checkAgentDocs,documentationResources} from './check-agent-docs.mjs';
 
 const root=fileURLToPath(new URL('..',import.meta.url));
 const args=process.argv.slice(2),options={python:process.env.PYTHON||'python3',out:'python-dist'};
@@ -28,13 +29,15 @@ const constants=JSON.parse(run(['-I','-c',
 if(constants.sdk!==pkg.version||constants.python!==pythonVersion)
   throw new Error(`Version mismatch in footprint_ml_versions: expected SDK ${pkg.version} and Python ${pythonVersion}.`);
 if(project.buildSystem['build-backend']!=='setuptools.build_meta')throw new Error('Expected the standard setuptools.build_meta backend.');
+const guidance=await checkAgentDocs(root);
+const resourceHashes=await Promise.all((await documentationResources(root)).map(async file=>({file,sha256:createHash('sha256').update(await readFile(join(root,file))).digest('hex')})));
 const out=resolve(root,options.out);await mkdir(out,{recursive:true});
 const buildOutput=run(['-m','pip','wheel','--no-deps','--no-build-isolation','.', '--wheel-dir',out]);
 const candidates=(await readdir(out)).filter(name=>name.startsWith(`footprintjs_ml-${pythonVersion}-`)&&name.endsWith('.whl'));
 if(candidates.length!==1)throw new Error(`Expected one ${pythonVersion} wheel, found ${candidates.length}.`);
 const wheel=join(out,candidates[0]);
 const validation=JSON.parse(run(['-I','-c',String.raw`
-import email,json,sys,zipfile
+import email,hashlib,json,sys,zipfile
 with zipfile.ZipFile(sys.argv[1]) as archive:
     names=archive.namelist()
     metadata_files=[name for name in names if name.endswith('.dist-info/METADATA')]
@@ -45,13 +48,23 @@ with zipfile.ZipFile(sys.argv[1]) as archive:
     assert metadata['Name']=='footprintjs-ml', 'Unexpected Python distribution name'
     assert metadata['Version']==sys.argv[2], 'Unexpected Python distribution version'
     assert not metadata.get_all('Requires-Dist'), 'Python wheel must not install runtime dependencies'
-    assert not any(name.endswith(('.js','.mjs')) or 'node_modules/' in name for name in names), 'Native JS runtime must be installed explicitly'
+    assert not any('/node_modules/' in name or name.startswith('dist/') or '/share/footprintjs-ml/dist/' in name for name in names), 'Native compiled runtime must be installed explicitly'
+    prefix='footprintjs_ml-'+sys.argv[2]+'.data/data/share/footprintjs-ml/'
+    resources=json.loads(sys.argv[3])
+    for resource in resources:
+        name=prefix+resource['file']
+        assert name in names, 'Missing installed agent guidance resource: '+resource['file']
+        assert hashlib.sha256(archive.read(name)).hexdigest()==resource['sha256'], 'Guidance source bytes differ: '+resource['file']
+    examples_js=any(name.startswith(prefix+'examples/') and name.endswith('.mjs') for name in names)
+    assert examples_js, 'Inspectable example source is missing'
     print(json.dumps({'name':metadata['Name'],'version':metadata['Version'],'requiresPython':metadata['Requires-Python'],
-        'requiresDist':metadata.get_all('Requires-Dist',[]),'requiredModulesPresent':True,'nativeJsBundled':False,'files':len(names)}))
-`,wheel,pythonVersion]));
+        'requiresDist':metadata.get_all('Requires-Dist',[]),'requiredModulesPresent':True,'nativeRuntimeBundled':False,
+        'documentationExamplesJs':examples_js,'guidanceResourcesMatchSource':len(resources),'files':len(names)}))
+`,wheel,pythonVersion,JSON.stringify(resourceHashes)]));
 const bytes=await readFile(wheel);
 const report={schema:'footprint-ml-python-wheel-build/v1',passed:true,npmVersion:pkg.version,pythonVersion,
   backend:'setuptools.build_meta',buildIsolation:false,
+  guidance:{featureCount:guidance.featureCount,markdownFiles:guidance.markdownFiles,localLinks:guidance.localLinks},
   wheel:{file:candidates[0],path:wheel,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')},validation};
 const reportPath=options.report?resolve(root,options.report):join(out,'python-build.json');
 await writeFile(reportPath,JSON.stringify(report,null,2)+'\n');

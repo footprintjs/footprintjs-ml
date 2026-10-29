@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "footprintjs-ml"
-version = "0.6.0b4"
+version = "0.6.0b5"
 description = "Python workflow capture and ML evidence bindings over the FootPrint runtime"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -33,3 +33,29 @@ py-modules = ["footprint_ml_workflow", "footprint_ml_setup", "footprint_ml_versi
 where = ["python"]
 include = ["footprint_ml_adapter*"]
 namespaces = false
+
+# Read-only agent guidance and inspectable examples; native helper remains explicit.
+[tool.setuptools.data-files]
+"share/footprintjs-ml" = ["*.md", "LICENSE"]
+"share/footprintjs-ml/python" = ["python/README.md", "python/*.py"]
+"share/footprintjs-ml/features" = ["features/README.md"]
+"share/footprintjs-ml/skills/footprintjs-ml" = ["skills/footprintjs-ml/SKILL.md"]
+"share/footprintjs-ml/skills/footprintjs-ml/agents" = ["skills/footprintjs-ml/agents/openai.yaml"]
+"share/footprintjs-ml/lens" = ["lens/session.d.ts", "lens/session.mjs"]
+"share/footprintjs-ml/features/references" = ["features/references/README.md"]
+"share/footprintjs-ml/features/evaluation" = ["features/evaluation/README.md"]
+"share/footprintjs-ml/features/trainer-adapter" = ["features/trainer-adapter/README.md"]
+"share/footprintjs-ml/features/approval" = ["features/approval/README.md"]
+"share/footprintjs-ml/features/investigation" = ["features/investigation/README.md"]
+"share/footprintjs-ml/features/data-lineage" = ["features/data-lineage/README.md"]
+"share/footprintjs-ml/features/selection" = ["features/selection/README.md"]
+"share/footprintjs-ml/features/publication" = ["features/publication/README.md"]
+"share/footprintjs-ml/src" = ["src/*.ts"]
+"share/footprintjs-ml/src/adapter" = ["src/adapter/*.ts"]
+"share/footprintjs-ml/src/conformance" = ["src/conformance/*.ts"]
+"share/footprintjs-ml/src/release" = ["src/release/*.ts"]
+"share/footprintjs-ml/examples/quickstart" = ["examples/quickstart/*.py", "examples/quickstart/*.mjs", "examples/quickstart/*.md", "examples/quickstart/*.txt"]
+"share/footprintjs-ml/examples/mlflow" = ["examples/mlflow/*.py", "examples/mlflow/*.mjs", "examples/mlflow/*.md", "examples/mlflow/*.txt"]
+"share/footprintjs-ml/examples/python-adoption" = ["examples/python-adoption/*.py", "examples/python-adoption/*.md"]
+"share/footprintjs-ml/examples/selection-backtracking" = ["examples/selection-backtracking/*.mjs", "examples/selection-backtracking/*.md"]
+"share/footprintjs-ml/python/footprint_ml_adapter" = ["python/footprint_ml_adapter/*.py"]

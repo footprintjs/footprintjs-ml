@@ -8,11 +8,13 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
 import subprocess
 import sys
 import tempfile
+import zipfile
 
 
 def run(executable, arguments, cwd):
@@ -25,12 +27,40 @@ def run(executable, arguments, cwd):
 
 def smoke(wheel, archive):
     wheel, archive = Path(wheel).resolve(strict=True), Path(archive).resolve(strict=True)
+    with zipfile.ZipFile(wheel) as package:
+        prefix = next(name for name in package.namelist() if name.endswith(".data/data/share/footprintjs-ml/README.md")).removesuffix("README.md")
+        guidance_bytes = {name.removeprefix(prefix): package.read(name) for name in package.namelist()
+                          if name.startswith(prefix) and not name.endswith("/")}
+    required_guides = ["skills/footprintjs-ml/SKILL.md", "skills/footprintjs-ml/agents/openai.yaml", "features/README.md"]
+    required_guides += ["features/" + name + "/README.md" for name in
+                       ("references", "evaluation", "trainer-adapter", "approval", "investigation", "data-lineage", "selection", "publication")]
+    if not all(name in guidance_bytes for name in required_guides):
+        raise ValueError("Wheel is missing the skill or an individual feature guide")
     with tempfile.TemporaryDirectory(prefix="footprint-python-install-") as temporary:
         root = Path(temporary).resolve()
         environment = root / "venv"
         run(sys.executable, ["-m", "venv", environment], root)
         python = environment / ("Scripts/python.exe" if sys.platform == "win32" else "bin/python")
         run(python, ["-m", "pip", "install", "--no-index", "--no-deps", wheel], root)
+        installed_guidance = environment / "share" / "footprintjs-ml"
+        for name, expected in guidance_bytes.items():
+            if (installed_guidance / name).read_bytes() != expected:
+                raise ValueError("Installed guidance differs from the wheel: " + name)
+        guidance_links = 0
+        for name, content in guidance_bytes.items():
+            if not name.endswith(".md"):
+                continue
+            for match in re.finditer(r"\]\((?:<([^>]+)>|([^\s)]+))(?:\s+\"[^\"]*\")?\)", content.decode("utf-8")):
+                target = match[1] or match[2]
+                if re.match(r"^(?:[a-z][a-z0-9+.-]*:|#)", target, re.IGNORECASE):
+                    continue
+                path = target.split("#", 1)[0].split("?", 1)[0]
+                if not path:
+                    continue
+                resolved = (installed_guidance / name).parent.joinpath(path).resolve()
+                if not resolved.is_relative_to(installed_guidance.resolve()) or not resolved.is_file():
+                    raise ValueError("Installed guidance link is broken: " + name + " -> " + target)
+                guidance_links += 1
         imported = json.loads(run(python, ["-I", "-c", r'''
 import importlib.abc,importlib.metadata,json,pathlib,subprocess,sys
 class BlockHeavyImports(importlib.abc.MetaPathFinder):
@@ -81,6 +111,9 @@ except Exception as error:
             if package["version"] != expected:
                 raise ValueError("Installed native dependency version differs: " + name)
             versions[name] = package["version"]
+        for name, expected in guidance_bytes.items():
+            if (runtime / "node_modules" / "footprintjs-ml" / name).read_bytes() != expected:
+                raise ValueError("npm and Python guidance copies disagree: " + name)
         recording = root / "installed-recording.json"
         execution = json.loads(run(python, ["-I", "-c", r'''
 import json,pathlib,sys
@@ -144,7 +177,12 @@ print(json.dumps({'recordingWritten':True,'schema':recording['schema'],'state':r
                            "nativeSyntheticReceiptAndGuard": True,
                            "nativeCliBacktracking": True, "investigatorChildProcessesForbidden": True,
                            "installedPythonInvestigationCommand": True,
-                           "recordingUnchangedAfterInvestigation": True},
+                           "recordingUnchangedAfterInvestigation": True,
+                           "wheelGuidanceInstalledIntact": True, "featureGuideLinksResolveAfterInstall": True,
+                           "npmAndWheelGuidanceAgree": True},
+                "guidance": {"files": len(guidance_bytes), "localLinks": guidance_links,
+                             "skillSha256": hashlib.sha256(guidance_bytes["skills/footprintjs-ml/SKILL.md"]).hexdigest(),
+                             "featureCount": 8, "nativeCompiledRuntimeBundled": False},
                 "import": imported, "nativeVersions": versions, "setup": setup, "repeatedSetup": repeated_setup,
                 "doctor": doctor, "missingRuntime": missing,
                 "investigation": {"report": native_report, "stdout": native_stdout,

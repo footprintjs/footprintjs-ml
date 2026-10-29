@@ -1,0 +1,4 @@
+interface:
+  display_name: "FootPrint ML"
+  short_description: "Build and investigate recorded ML workflows"
+  default_prompt: "Use $footprintjs-ml to add matching ML evidence and saved-result investigation to this existing workflow."

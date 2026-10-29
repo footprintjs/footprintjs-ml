@@ -4,16 +4,45 @@
 
 FootPrint coordinates the workflow. Your trainer keeps its models, tensors and numerical code. Scope holds small references, evaluation receipts and decisions. Lens and foottrace inspect the saved execution record, including the tracked inputs and writers behind an ML result.
 
-[Try the quickstart](QUICKSTART.md) · [Explore the visual story](https://footprintjs.github.io/footprintjs-ml/#1) · [Compatibility](COMPATIBILITY.md)
+[Feature guides](features/README.md) · [AI coding skill](skills/footprintjs-ml/SKILL.md) · [Quickstart](QUICKSTART.md) · [Visual story](https://footprintjs.github.io/footprintjs-ml/#1)
 
 **Already working in Python?** Start with [Python installation](PYTHON.md). The same SDK now has a Python wheel, an explicit helper setup command and a read-only environment check. Your application keeps its training code and MLflow client. Node.js 22+ is still required for recording and saved investigation.
+
+## Choose the feature you need
+
+Each feature has a short README that explains its purpose, public API, example and verification boundary. The linked detailed guides remain the contract reference.
+
+| Your task | Feature README |
+| --- | --- |
+| Identify the actual model, checkpoint and dataset | [References](features/references/README.md) |
+| Keep a score with what was evaluated | [Evaluation receipts](features/evaluation/README.md) |
+| Connect your existing trainer | [Trainer adapter](features/trainer-adapter/README.md) |
+| Check matching evidence before release | [Model approval](features/approval/README.md) |
+| Explain a saved result or decision | [Investigation and backtracking](features/investigation/README.md) |
+| Check training and preprocessing data use | [Data lineage](features/data-lineage/README.md) |
+| Compare the declared model candidates | [Candidate selection](features/selection/README.md) |
+| Publish the exact approved checkpoint | [Checked publication](features/publication/README.md) |
+
+Python-owned workflows start with [Python installation](PYTHON.md) and [MLflow capture](MLFLOW.md). The Python helper exposes recording, evaluation receipts and model approval; selection, lineage and publication use the TypeScript contracts.
+
+## Build with an AI coding agent
+
+The root [AGENTS.md](AGENTS.md) points repository-aware assistants to the skill. Give your agent the [FootPrint ML skill](skills/footprintjs-ml/SKILL.md) and your existing workflow. The skill routes to the relevant feature instead of requiring the agent to read every guide. It covers actual consumed references, evaluation binding, failure/retry semantics and saved investigation using existing Lens/foottrace tools.
+
+For example:
+
+> Use the FootPrint ML skill to add recording to this existing Python evaluation workflow. Keep the numerical code, record the model and fitted preprocessing actually consumed, and reopen a saved result to explain its reference history.
+
+The portable skill directory is `skills/footprintjs-ml/`. Copy that folder into your coding agent's configured skill directory if it supports `SKILL.md`, or ask the agent to read it directly. Codex UI metadata is included; the instructions and feature guides are plain Markdown and require no agent service.
+
+The npm package includes this same skill and guide tree. The Python wheel installs them under your environment's `share/footprintjs-ml/`, including `skills/footprintjs-ml/SKILL.md`. Installing the library does not automatically register a skill in an agent's personal configuration. The skill adds guidance, with no runtime dependency or process startup.
 
 ## Try the beta
 
 The beta is distributed as a versioned GitHub release tarball. These commands do not depend on an npm registry release of `footprintjs-ml`:
 
 ```sh
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.4/footprintjs-ml-0.6.0-beta.4.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.5/footprintjs-ml-0.6.0-beta.5.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy==2.2.6
 npx --no-install footprint-ml demo --out ./quickstart-run --python .venv/bin/python
@@ -71,11 +100,11 @@ The smoke check packs the SDK, installs it into a temporary consumer, runs the m
 - [Trainer adapter](ADAPTER.md) and [Python plugin protocol](python/README.md)
 - [Saved-result backtracking](BACKTRACKING.md), including generic value tracing and the closure-input boundary
 - [Data-use checks](DATA-LINEAGE.md), [model selection](SELECTION.md), [checked release](RELEASE.md)
-- [Visual story](https://footprintjs.github.io/footprintjs-ml/#1), [technical story](https://footprintjs.github.io/footprintjs-ml/technical-story.html#1), [saved evidence ledger](docs/EVIDENCE.md)
+- [Visual story](https://footprintjs.github.io/footprintjs-ml/#1), [technical story](https://footprintjs.github.io/footprintjs-ml/technical-story.html#1), [saved evidence ledger](https://footprintjs.github.io/footprintjs-ml/EVIDENCE.md)
 - [FootPrint](https://github.com/footprintjs/footPrint)
 
-GitHub Pages serves the presentation in `docs/`. Its historical experiments and original versions remain evidence for that story; they are separate from the current beta quickstart. The [publication manifest](docs/publication-manifest.json) distinguishes original retained-source fingerprints from public copies with personal paths removed.
+GitHub Pages serves the presentation in `docs/`. Its historical experiments and original versions remain evidence for that story; they are separate from the current beta quickstart. The [publication manifest](https://footprintjs.github.io/footprintjs-ml/publication-manifest.json) distinguishes original retained-source fingerprints from public copies with personal paths removed.
 
-MIT licensed. The presentation includes the [StoryDeck MIT notice](docs/STORYDECK-LICENSE.txt).
+MIT licensed. The presentation includes the [StoryDeck MIT notice](https://footprintjs.github.io/footprintjs-ml/STORYDECK-LICENSE.txt).
 
 For an existing Python workflow, the [optional MLflow integration](MLFLOW.md) keeps orchestration in Python and records explicit reference reads and writes through the native foottrace writer. The Python helper uses only the standard library and accepts an application-supplied MLflow client. The Node recording helper is started explicitly.
