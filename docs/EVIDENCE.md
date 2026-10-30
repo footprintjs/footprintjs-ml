@@ -1231,6 +1231,90 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Published copy SHA-256: 2e1fa73acf5bf412f77ddb38c06d9d85c101d7a87e84902024095119e112aed4
   - Published copy bytes: 8224
   - Path projection: 0 string(s); byte-identical to retained source.
+- **regression-outcome** — Executed fixed imbalanced-population model comparison and release decisions
+  - Public copy: [evidence/regression-outcome.json](evidence/regression-outcome.json)
+  - Original retained source SHA-256: 8b1eb5ff3f4c0308a3658efb7fb8d96a582d0d66a43f3918b37640cf1fc30dd8
+  - Original retained source bytes: 7357
+  - Published copy SHA-256: 8b1eb5ff3f4c0308a3658efb7fb8d96a582d0d66a43f3918b37640cf1fc30dd8
+  - Published copy bytes: 7357
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **regression-recording** — Actual native scope reads and writes for the Python-owned paired comparison
+  - Public copy: [evidence/regression-recording.json](evidence/regression-recording.json)
+  - Original retained source SHA-256: 2c5022442a967eb6c3c5f021c0d6ff3d02f9f6ec097dd06f559c4d06c0a3bd96
+  - Original retained source bytes: 685847
+  - Published copy SHA-256: 120ccf27f69f58c50f813107154b9e3e04b5ff15e7c66db6c931c836ad8e4722
+  - Published copy bytes: 685711
+  - Path projection: 4 string(s); published bytes differ from retained source.
+- **regression-native** — Existing Lens/foottrace backtracking without starting a numerical process
+  - Public copy: [evidence/regression-native.json](evidence/regression-native.json)
+  - Original retained source SHA-256: 8850105267e7acacedd3af100694a49b521cc60fa5fc4882ecb9c7d4518d8690
+  - Original retained source bytes: 30776
+  - Published copy SHA-256: 8850105267e7acacedd3af100694a49b521cc60fa5fc4882ecb9c7d4518d8690
+  - Published copy bytes: 30776
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **regression-audit** — Saved scalar audit of actual paired predictions, metrics, group membership and artifacts
+  - Public copy: [evidence/regression-audit.json](evidence/regression-audit.json)
+  - Original retained source SHA-256: db38465b2822dfc6c906242d244edc2f57465d64baffb722f4b868b5593128a6
+  - Original retained source bytes: 4054
+  - Published copy SHA-256: db38465b2822dfc6c906242d244edc2f57465d64baffb722f4b868b5593128a6
+  - Published copy bytes: 4054
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **regression-numerical** — Retained numerical observations outside workflow scope
+  - Public copy: [evidence/regression-numerical.json](evidence/regression-numerical.json)
+  - Original retained source SHA-256: 4e9efc6f88d9f4533269d96f749181840f047d9efc4794ead686e34965193f34
+  - Original retained source bytes: 37668
+  - Published copy SHA-256: 4e9efc6f88d9f4533269d96f749181840f047d9efc4794ead686e34965193f34
+  - Published copy bytes: 37668
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **regression-workflow** — Python-owned workflow invoking the shared paired guard and checked publication
+  - Public copy: [evidence/regression-workflow.py.txt](evidence/regression-workflow.py.txt)
+  - Original retained source SHA-256: c39ca730d593b387263ad8dab483ead1b2a716f66b9628fe5c06989ff91391ed
+  - Original retained source bytes: 22253
+  - Published copy SHA-256: c39ca730d593b387263ad8dab483ead1b2a716f66b9628fe5c06989ff91391ed
+  - Published copy bytes: 22253
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **regression-core** — Reusable paired baseline/challenger predefined-group contracts and guard
+  - Public copy: [evidence/regression-core.ts.txt](evidence/regression-core.ts.txt)
+  - Original retained source SHA-256: f34b04c90f44a4acad93eb85bf031524db57f367b482098d3de384f6a746da2b
+  - Original retained source bytes: 21001
+  - Published copy SHA-256: f34b04c90f44a4acad93eb85bf031524db57f367b482098d3de384f6a746da2b
+  - Published copy bytes: 21001
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **regression-release** — Required paired evidence composed into preparation, new publication and expiry
+  - Public copy: [evidence/regression-release.ts.txt](evidence/regression-release.ts.txt)
+  - Original retained source SHA-256: 2ff2f20b2bcbc77ce9cc1dcf010b557908de9efe37fc005f63568a3abb27a290
+  - Original retained source bytes: 38337
+  - Published copy SHA-256: 2ff2f20b2bcbc77ce9cc1dcf010b557908de9efe37fc005f63568a3abb27a290
+  - Published copy bytes: 38337
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **regression-guide** — Proof commands, actual values, scope and interpretation limits
+  - Public copy: [evidence/regression-guide.md](evidence/regression-guide.md)
+  - Original retained source SHA-256: 8c741c9b2809a5f019b15816c2c87eea56545ed1f34598de99d26358b52d2809
+  - Original retained source bytes: 4847
+  - Published copy SHA-256: 8c741c9b2809a5f019b15816c2c87eea56545ed1f34598de99d26358b52d2809
+  - Published copy bytes: 4847
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **regression-audit-controls** — Saved-audit acceptance controls reject empty and rebound evidence on disposable copies
+  - Public copy: [evidence/regression-audit-controls.json](evidence/regression-audit-controls.json)
+  - Original retained source SHA-256: 026571ab286ad48865929a85a5b4c596a7c7e28366707e3966eca1e1636a6c7a
+  - Original retained source bytes: 1487
+  - Published copy SHA-256: 026571ab286ad48865929a85a5b4c596a7c7e28366707e3966eca1e1636a6c7a
+  - Published copy bytes: 1487
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **regression-audit-controls-code** — Standard-library saved-evidence adversarial checker with no numerical rerun
+  - Public copy: [evidence/regression-audit-controls-code.py.txt](evidence/regression-audit-controls-code.py.txt)
+  - Original retained source SHA-256: 64c854796224c753f55ce5105d83ab5fb50a53890ed40d8cd6db59b3f3417e6e
+  - Original retained source bytes: 4273
+  - Published copy SHA-256: 64c854796224c753f55ce5105d83ab5fb50a53890ed40d8cd6db59b3f3417e6e
+  - Published copy bytes: 4273
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **regression-audit-code** — Saved-only standard-library arithmetic and binding audit
+  - Public copy: [evidence/regression-audit-code.py.txt](evidence/regression-audit-code.py.txt)
+  - Original retained source SHA-256: d4ab473f64ac9bd3b7f7f3768201c6de488550a3f2c36204182a8cf0175671e6
+  - Original retained source bytes: 15468
+  - Published copy SHA-256: d4ab473f64ac9bd3b7f7f3768201c6de488550a3f2c36204182a8cf0175671e6
+  - Published copy bytes: 15468
+  - Path projection: 0 string(s); byte-identical to retained source.
 
 ## Claims by scene
 
@@ -1479,7 +1563,15 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — The separate saved numerical audit reads the retained worker artifacts. Building, viewing or verifying this story reads that report and does not repeat an audit, training, prediction, retry or publication. Historical Python proof reports and source snapshots remain unchanged. [native-inference-audit, native-inference-verify, inference-worker, inference-workflow]
 - **OPEN** — The demonstrated retry is a controlled failure before numerical effects. It does not establish rollback or exactly-once behavior for arbitrary training, file writes, remote registries or other external effects. The local proof is not a hosted inference platform, an authenticated backend or a measured human debugging advantage. [native-inference-run, native-inference-worker, native-inference-results, native-inference-verify]
 
-### 32. FootPrint explained ML release mistakes through saved workflow state
+### 32. An overall improvement hid a worse group
+
+- **VERIFIED** — The fixed controlled NumPy proof declares group definitions, membership and policies before evaluating balanced-weight and pooled least squares on the same held-out data. The pooled challenger improves overall mean squared error but worsens the predefined rare group. Actual values are retained in the evidence; these are regression errors, not classification accuracy. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **VERIFIED** — The required paired guard refuses the challenger despite passing overall selection and quality. Independently pinned model, dataset, preprocessing, evaluation protocol, group definition and membership bind both model measurements. Missing evidence or insufficient declared sample coverage stays unknown. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **VERIFIED** — The reusable TypeScript core is called from Python. Required paired evidence is loaded and measured again before any new publication and constrains expiry. A separately declared unchanged-model control publishes the exact approved artifact through the existing local receiver. Its singleton comparison is a control; the original two-candidate overall winner remains the pooled model. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **VERIFIED** — Existing Lens and foottrace follow the captured release refusal to the independently declared group policy and separately retained paired observations after numerical work has stopped. No custom query engine or training rerun is required. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **OPEN** — Absolute tolerances and sample floors are declared policy, not statistical significance, fairness certification, automatic group discovery or proof of producer truth. Complete structured logs can retain the same facts; a human investigation-speed advantage remains unmeasured. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+
+### 33. FootPrint explained ML release mistakes through saved workflow state
 
 - **DERIVED** — The retained experiments support using FootPrint’s flowchart stages, reference state and provenance around ML computation. They do not establish a new numerical/autodiff framework. [wasm-summary, workflow, jax-digits-verification, gp-conformance, lineage-results, lineage-verification, crash-summary, crash-audit]
 - **VERIFIED** — Complete structured logs solved the demonstrated diagnosis questions too; FootPrint’s value is a reusable connected recording/investigation pattern, not unique detectability. [legacy-checkpoint, legacy-retry, benchmark-investigation, lineage-verification, trial-pilot, trial-verify]
@@ -1501,6 +1593,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — Beta 9 reliability update (R7): A trainer conformance report must name the exact requested plan before it can be accepted. [beta9-reliability-review, beta9-release-verification]
 - **VERIFIED** — Beta 9 passed 242 JavaScript tests, 43 Python tests, 25 clean-install checks and five CI jobs. Two independent agent reviewers cleared the same frozen changes. This is not an external human audit or a new numerical experiment. Existing storage and backend-trust limits remain. [beta9-reliability-review, beta9-release-verification]
 - **VERIFIED** — Beta 10 strengthens the existing publication capability: real local MLflow promotion from Python, refusal of wrong registered bytes, and explicit confirmed-versus-pending retry outcomes. A saved standard-library audit binds predictor arithmetic to captured artifacts; existing Lens follows the retained decisions. No new capability node, numerical framework, remote-registry guarantee or independent adoption result is claimed. [promotion-outcome, promotion-recording, promotion-native, promotion-audit, promotion-numerical, promotion-workflow, promotion-publisher, promotion-bridge, promotion-guide, promotion-audit-code]
+- **VERIFIED** — Beta 11 adds a paired baseline/group regression guard and required release composition. The fixed imbalance proof blocks a group regression hidden by an overall improvement; the unchanged-model control publishes. Earlier nine capabilities and historical evidence remain separate. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 
 ## Relationships
 
@@ -1567,6 +1660,9 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **DERIVED**: references → prediction; binds expected and observed model [inference-contracts]
 - **DERIVED**: library → prediction; provides prediction contracts and receipts [inference-contracts, inference-workflow]
 - **DERIVED**: prediction → lens; reopens actual prediction evidence [inference-native, inference-workflow]
+- **DERIVED**: evidence → regression; compares paired group results [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **DERIVED**: regression → publication; can refuse an overall winner [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **DERIVED**: regression → lens; reopens the refusal [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 
 ## Limits
 
@@ -1828,6 +1924,14 @@ The sequence is a derived teaching path, not a dated development history.
 - **VERIFIED · learned** — The accepted output followed the recorded branch and successful retry. [native-inference-results, native-inference-recording, native-inference-native, native-inference-verify, native-inference-audit, native-inference-run, native-inference-client, native-inference-worker, native-inference-package]
 - **DERIVED · next** — Test this flow in an unfamiliar team’s ML application. [native-inference-results, native-inference-recording, native-inference-native, native-inference-verify, native-inference-audit, native-inference-run, native-inference-client, native-inference-worker, native-inference-package]
 
+### An overall improvement hid a worse group
+
+- **VERIFIED · what** — Train a group-balanced baseline and a population-weighted challenger on fixed imbalanced data. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **DERIVED · why** — A better overall prediction error can hide worse performance for a predefined smaller group. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **VERIFIED · how** — Keep paired measurements with the model, data, group membership and declared tolerance. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **VERIFIED · learned** — The overall winner failed the required group check before publication. An unchanged-model control passed. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **OPEN · next** — Try declared group policies in an unfamiliar existing ML workflow. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+
 ### FootPrint explained ML release mistakes through saved workflow state
 
 - **DERIVED · what** — Nine ML capabilities now use the existing stages, reference state and saved history. [lineage-results, crash-summary, jax-digits-verification, trial-pilot, trial-protocol, trial-code, selection-results, selection-contracts, selection-native, release-results, release-proof, release-contracts, release-workflow, release-publisher, inference-contracts, inference-results, inference-native]
@@ -1901,6 +2005,9 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED** — Inference evidence compares actual model and input references with independently supplied expectations. [inference-contracts]
 - **DERIVED** — The ML library records named prediction semantics and checks actual inference observations. [inference-contracts, inference-workflow]
 - **DERIVED** — Existing Lens and foottrace inspect saved inference decisions and the references their stages consumed. [inference-native, inference-workflow]
+- **DERIVED** — Ordinary evaluator receipts cover the independently declared baseline and candidate on the same subset. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **DERIVED** — A release plan requiring group evidence cannot publish when the group guard refuses or remains unknown. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **DERIVED** — Lens follows the captured decision to the group declaration and actual consumed paired observations. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 
 ## Opening briefing
 
@@ -1947,4 +2054,5 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED** — Check the winner and data use from Python. Is a passing score enough to select a model? Keep the existing guards, then check the actual model used for prediction. [python-guards-outcome, python-guards-recording, python-guards-native, python-guards-workflow, python-guards-observations, python-guards-guide, python-ml-contract-tests, python-ml-contract-python-tests, mlflow-capture, mlflow-python, lineage-contracts, selection-contracts]
 - **DERIVED** — Check what actually made the prediction. Does approving A mean the prediction worker used A? Record actual model use from Python, then test FootPrint-controlled branches and retry. [inference-contracts, inference-results, inference-recording, inference-native, inference-verify, inference-workflow, inference-worker, inference-client, inference-numerical, inference-fixture-manifest, inference-fixture-preparation, inference-guide, inference-contract-guide, inference-contract-tests, inference-python-tests, inference-native-investigator, inference-requirements, mlflow-capture, mlflow-python]
 - **DERIVED** — Let FootPrint choose branches and retry. Can the existing flowchart own the inference control flow too? Observe the real decision branch and native retry, then reopen their saved evidence. [native-inference-results, native-inference-recording, native-inference-native, native-inference-verify, native-inference-audit, native-inference-run, native-inference-client, native-inference-worker, native-inference-package]
+- **DERIVED** — Check the important group too. Does the overall winner still meet the declared group rule? Use paired evidence and reopen the saved refusal. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 - **DERIVED** — Review the ML debugging results. Which mistakes did these local model checks explain? Review the ML-specific checks and the still-open human comparison. [lineage-results, lineage-verification, crash-summary, crash-audit, build, trial-pilot, trial-protocol, selection-results, selection-contracts, release-results, release-contracts]

@@ -1,7 +1,7 @@
 """Release coordinates shared by the optional stdlib Python entry points."""
 
-SDK_VERSION = "0.6.0-beta.10"
-PYTHON_VERSION = "0.6.0b10"
+SDK_VERSION = "0.6.0-beta.11"
+PYTHON_VERSION = "0.6.0b11"
 FOOTTRACE_VERSION = "1.8.0"
 AGENTFOOTPRINT_VERSION = "11.0.0"
 FOOTPRINTJS_VERSION = "10.0.0"

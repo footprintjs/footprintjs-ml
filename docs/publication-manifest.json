@@ -7,16 +7,16 @@
   "hashScope": "files hashes cover published bytes. originalRetainedSource hashes cover private retained authoring inputs. The manifest itself is intentionally excluded from its own hash list. These checksums are integrity references, not signatures.",
   "projection": "Only local path strings, repository-document link targets and publication-specific source/checksum descriptions are changed. Logical recorded digests, model IDs and numerical claims are retained.",
   "evidence": {
-    "count": 175,
-    "byteIdentical": 155,
-    "pathProjected": 13,
+    "count": 187,
+    "byteIdentical": 166,
+    "pathProjected": 14,
     "documentLinksProjected": 7
   },
   "validation": {
     "passed": true,
-    "staticLinksChecked": 182,
+    "staticLinksChecked": 194,
     "classicScriptsParsed": 9,
-    "embeddedSourceMappingsChecked": 700,
+    "embeddedSourceMappingsChecked": 748,
     "personalFilesystemPaths": 0,
     "localServerDependencies": 0,
     "credentialPatternMatches": 0,
@@ -2529,15 +2529,186 @@
       "byteIdenticalToRetainedSource": true
     },
     {
+      "path": "evidence/regression-outcome.json",
+      "published": {
+        "sha256": "8b1eb5ff3f4c0308a3658efb7fb8d96a582d0d66a43f3918b37640cf1fc30dd8",
+        "bytes": 7357
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-outcome.json",
+        "sha256": "8b1eb5ff3f4c0308a3658efb7fb8d96a582d0d66a43f3918b37640cf1fc30dd8",
+        "bytes": 7357
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/regression-recording.json",
+      "published": {
+        "sha256": "120ccf27f69f58c50f813107154b9e3e04b5ff15e7c66db6c931c836ad8e4722",
+        "bytes": 685711
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-recording.json",
+        "sha256": "2c5022442a967eb6c3c5f021c0d6ff3d02f9f6ec097dd06f559c4d06c0a3bd96",
+        "bytes": 685847
+      },
+      "projectionFlags": [
+        "local-path-strings",
+        "json-serialization"
+      ],
+      "byteIdenticalToRetainedSource": false
+    },
+    {
+      "path": "evidence/regression-native.json",
+      "published": {
+        "sha256": "8850105267e7acacedd3af100694a49b521cc60fa5fc4882ecb9c7d4518d8690",
+        "bytes": 30776
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-native.json",
+        "sha256": "8850105267e7acacedd3af100694a49b521cc60fa5fc4882ecb9c7d4518d8690",
+        "bytes": 30776
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/regression-audit.json",
+      "published": {
+        "sha256": "db38465b2822dfc6c906242d244edc2f57465d64baffb722f4b868b5593128a6",
+        "bytes": 4054
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-audit.json",
+        "sha256": "db38465b2822dfc6c906242d244edc2f57465d64baffb722f4b868b5593128a6",
+        "bytes": 4054
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/regression-numerical.json",
+      "published": {
+        "sha256": "4e9efc6f88d9f4533269d96f749181840f047d9efc4794ead686e34965193f34",
+        "bytes": 37668
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-numerical.json",
+        "sha256": "4e9efc6f88d9f4533269d96f749181840f047d9efc4794ead686e34965193f34",
+        "bytes": 37668
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/regression-workflow.py.txt",
+      "published": {
+        "sha256": "c39ca730d593b387263ad8dab483ead1b2a716f66b9628fe5c06989ff91391ed",
+        "bytes": 22253
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-workflow.py.txt",
+        "sha256": "c39ca730d593b387263ad8dab483ead1b2a716f66b9628fe5c06989ff91391ed",
+        "bytes": 22253
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/regression-core.ts.txt",
+      "published": {
+        "sha256": "f34b04c90f44a4acad93eb85bf031524db57f367b482098d3de384f6a746da2b",
+        "bytes": 21001
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-core.ts.txt",
+        "sha256": "f34b04c90f44a4acad93eb85bf031524db57f367b482098d3de384f6a746da2b",
+        "bytes": 21001
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/regression-release.ts.txt",
+      "published": {
+        "sha256": "2ff2f20b2bcbc77ce9cc1dcf010b557908de9efe37fc005f63568a3abb27a290",
+        "bytes": 38337
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-release.ts.txt",
+        "sha256": "2ff2f20b2bcbc77ce9cc1dcf010b557908de9efe37fc005f63568a3abb27a290",
+        "bytes": 38337
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/regression-guide.md",
+      "published": {
+        "sha256": "8c741c9b2809a5f019b15816c2c87eea56545ed1f34598de99d26358b52d2809",
+        "bytes": 4847
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-guide.md",
+        "sha256": "8c741c9b2809a5f019b15816c2c87eea56545ed1f34598de99d26358b52d2809",
+        "bytes": 4847
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/regression-audit-controls.json",
+      "published": {
+        "sha256": "026571ab286ad48865929a85a5b4c596a7c7e28366707e3966eca1e1636a6c7a",
+        "bytes": 1487
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-audit-controls.json",
+        "sha256": "026571ab286ad48865929a85a5b4c596a7c7e28366707e3966eca1e1636a6c7a",
+        "bytes": 1487
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/regression-audit-controls-code.py.txt",
+      "published": {
+        "sha256": "64c854796224c753f55ce5105d83ab5fb50a53890ed40d8cd6db59b3f3417e6e",
+        "bytes": 4273
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-audit-controls-code.py.txt",
+        "sha256": "64c854796224c753f55ce5105d83ab5fb50a53890ed40d8cd6db59b3f3417e6e",
+        "bytes": 4273
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/regression-audit-code.py.txt",
+      "published": {
+        "sha256": "d4ab473f64ac9bd3b7f7f3768201c6de488550a3f2c36204182a8cf0175671e6",
+        "bytes": 15468
+      },
+      "originalRetainedSource": {
+        "path": "evidence/regression-audit-code.py.txt",
+        "sha256": "d4ab473f64ac9bd3b7f7f3768201c6de488550a3f2c36204182a8cf0175671e6",
+        "bytes": 15468
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
       "path": "index.html",
       "published": {
-        "sha256": "62d400c207057857d23156844d279627baa71b807d1a35046e4082624878c480",
-        "bytes": 830425
+        "sha256": "e21b8b84c2216fbd9bfc9e050315621020afb9faa16e7f719b96b1870eceb87c",
+        "bytes": 874582
       },
       "originalRetainedSource": {
         "path": "index.html",
-        "sha256": "4361da750847e3b3283bf023ba5698faa8cb8b5e51ea0b5cc8658b873fb77ce5",
-        "bytes": 671357
+        "sha256": "a261a11c8d51e3f9a9f35978b2739d27c5a9460b09f6230e506622471bffae1f",
+        "bytes": 704316
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -2548,13 +2719,13 @@
     {
       "path": "technical-story.html",
       "published": {
-        "sha256": "56584216f1ad0fcb39721930f2cdaf746c1e7509bd4bc5c6256ca3f10fb69cbe",
-        "bytes": 1140084
+        "sha256": "a9c07edc01fff7cd6ced5425de556a14917aa841418ecbd0d1e648dbc808f95f",
+        "bytes": 1188454
       },
       "originalRetainedSource": {
         "path": "technical-story.html",
-        "sha256": "51fa54cb250f3bcaf81d278ec45efbe6f7e95b7244f8d041346826f554d7c871",
-        "bytes": 981277
+        "sha256": "5d191205252357a44b79a6dabf61d631b602a9596834a2a767ab41de12fb2822",
+        "bytes": 1018449
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -2566,13 +2737,13 @@
     {
       "path": "presentation-manifest.json",
       "published": {
-        "sha256": "cf7db0e2a9ff4195099328579c8c734c9ed275511e386f729caecf179201cea3",
-        "bytes": 490044
+        "sha256": "397c37edb483d13ce27dd5c96c80f95a05ce72d0e4c624677f5b2c1226847bd7",
+        "bytes": 519795
       },
       "originalRetainedSource": {
         "path": "presentation-manifest.json",
-        "sha256": "d5171471a6869fe3cbef35025d711e1626894d12d9cac47228639c3ea1ee4b9d",
-        "bytes": 423739
+        "sha256": "bf0b2fb904847c355d17fa2d8b805e725bb7b869f61b97530d68a9f60ae616b8",
+        "bytes": 448922
       },
       "projectionFlags": [
         "public-source-mappings",
@@ -2584,13 +2755,13 @@
     {
       "path": "EVIDENCE.md",
       "published": {
-        "sha256": "357cb73ed0380df335f67ab238b3e405c0346667e51b8e062fd7588d74ed88e4",
-        "bytes": 213675
+        "sha256": "511c46336c03a6ad4446299181e606c70472cd6ef66cf8861d9d177a42feba57",
+        "bytes": 228124
       },
       "originalRetainedSource": {
         "path": "EVIDENCE.md",
-        "sha256": "a7e6e77690e29ad38406186bf9ce7f812e381d66f61b8a1bd05624becc98eea5",
-        "bytes": 203789
+        "sha256": "1d23f53ad2fea8859e4d06862632fb41cdcbfd9afe481ceae402e257f5fb6e8a",
+        "bytes": 217609
       },
       "projectionFlags": [
         "public-evidence-links",
@@ -2625,7 +2796,7 @@
     {
       "path": "README.md",
       "published": {
-        "sha256": "3935296c44ba65661b4ea3d568ded12064835fb2ff980504758e0f1dad1f83c6",
+        "sha256": "21a5055da314157ae431d5691a462211f2552ef1d2a73e15d2244939cd2d5d16",
         "bytes": 2030
       },
       "projectionFlags": [],

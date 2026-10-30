@@ -103,3 +103,12 @@ jobs:
         run: node --permission --allow-fs-read=. --allow-fs-write=.artifacts/mlflow-promotion-proof examples/mlflow-promotion/investigate.mjs --run .artifacts/mlflow-promotion-proof
       - name: Audit saved promotion arithmetic and journal evidence using stdlib only
         run: python -I -S examples/mlflow-promotion/verify.py --run .artifacts/mlflow-promotion-proof
+
+      - name: Train fixed baseline and challenger and check a predefined group
+        run: python examples/regression/run.py --out .artifacts/regression-proof
+      - name: Investigate saved regression without numerical processes
+        run: node --permission --allow-fs-read=. --allow-fs-write=.artifacts/regression-proof examples/regression/investigate.mjs --run .artifacts/regression-proof
+      - name: Audit saved paired metrics with standard-library arithmetic
+        run: python -I -S examples/regression/audit.py --run .artifacts/regression-proof
+      - name: Refuse incomplete or rebound saved group evidence
+        run: python -I -S examples/regression/audit-controls.py --run .artifacts/regression-proof --out .artifacts/regression-audit-controls.json

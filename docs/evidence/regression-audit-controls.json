@@ -1,0 +1,48 @@
+{
+  "schema": "footprint-ml-regression-audit-controls/v1",
+  "passed": true,
+  "controls": {
+    "complete": {
+      "accepted": true
+    },
+    "emptyPairedObservations": {
+      "rejected": true,
+      "reason": "Exactly one paired observation per predefined group is required"
+    },
+    "missingNativeResponse": {
+      "rejected": true,
+      "reason": "All five full native responses must be retained"
+    },
+    "emptyNativeResponseSet": {
+      "rejected": true,
+      "reason": "All five full native responses must be retained"
+    },
+    "rewrittenDeclaredPolicy": {
+      "rejected": true,
+      "reason": "pooledManifestPreservesPredeclaredGroupsAndPolicy"
+    },
+    "differentPairedMetric": {
+      "rejected": true,
+      "reason": "pooledCapturedEvidenceMatchesPinnedArtifacts"
+    },
+    "differentPinnedNativeResponse": {
+      "rejected": true,
+      "reason": "Full native response ref differs from its captured reference"
+    },
+    "emptyOfferedReceiptObservations": {
+      "rejected": true,
+      "reason": "pooledCapturedEvidenceMatchesPinnedArtifacts"
+    },
+    "differentDeclaredTrainingConfiguration": {
+      "rejected": true,
+      "reason": "actualConfigurationsMatchDeclaredExperiment"
+    }
+  },
+  "execution": {
+    "sourceUnchanged": true,
+    "trainingStarted": false,
+    "guardRecomputed": false,
+    "publicationPerformed": false
+  },
+  "boundary": "Saved-evidence checker acceptance controls; no producer authentication or numerical training."
+}

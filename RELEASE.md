@@ -47,6 +47,7 @@ interface ModelReleasePlan {
     splitManifest: ArtifactRef;
     policy: DataLineagePolicy;
   };
+  regression?: { manifestRef: ArtifactRef; observationsRef: ArtifactRef; receiptRef?: ArtifactRef };
 }
 ```
 
@@ -58,6 +59,7 @@ For a new publication, the core reads actual bytes through the store, snapshots 
 
 - The winning model's own evaluation against the declared quality policy.
 - The supplied selection receipt, complete comparison and proposed winner against the pinned manifest and results.
+- Required [baseline/group-regression evidence](REGRESSION.md) against its independently pinned manifest and observations. Presence of the plan block makes it mandatory; absent evidence stays unknown.
 - Required data-lineage evidence against the proposed model, comparison dataset, split and data-use policy.
 - A fresh live observation of the proposed model through `verifyModel`.
 - Agreement between the plan, winning result and verified model on the exact checkpoint digest, byte count and format.
@@ -114,7 +116,7 @@ The library allocates transient `Uint8Array` copies of serialized checkpoint fil
 
 ## Stable publication identity
 
-The publication payload contains the release/idempotency IDs, target and expected revision, checkpoint identity, winning candidate, inference identity, quality policy and identities of the pinned evidence. Its `validUntil` is derived from the winning evaluation's creation time and `maxAgeMs`, or is `null` when no maximum age is required.
+The publication payload contains the release/idempotency IDs, target and expected revision, checkpoint identity, winning candidate, inference identity, quality policy and identities of the pinned evidence. Its `validUntil` is the earliest applicable quality expiry or required group-comparison/paired-evaluation expiry, or `null` when neither check declares a maximum age. Required group evidence adds the manifest, observations and receipt content identities to the payload.
 
 The top-level payload uses content identities instead of current live handles and storage locations, and excludes preparation time. It still binds the complete pinned evidence by hash, including any historical metadata inside those artifacts. Re-preparing against the same pinned authority, evidence and effectful claims can therefore identify the same intended effect in a fresh client. Rewriting a plan or results file is not automatically equivalent. The publication receipt retains the original preparation reference and original commit time; a retry does not replace that receipt with a newly timestamped one.
 

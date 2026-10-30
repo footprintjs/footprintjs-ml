@@ -179,20 +179,20 @@
   },
   "libraryStatus": {
     "stage": "beta",
-    "version": "0.6.0-beta.10",
+    "version": "0.6.0-beta.11",
     "notice": "Library APIs may change."
   },
   "currentRelease": {
-    "version": "0.6.0-beta.10",
+    "version": "0.6.0-beta.11",
     "stage": "beta",
-    "url": "https://github.com/footprintjs/footprintjs-ml/releases/tag/v0.6.0-beta.10",
-    "summary": "Python checked promotion to a real local MLflow registry strengthens the existing publication capability.",
+    "url": "https://github.com/footprintjs/footprintjs-ml/releases/tag/v0.6.0-beta.11",
+    "summary": "Paired baseline/group regression evidence becomes a required release check when independently declared.",
     "sourceIds": [
-      "promotion-outcome",
-      "promotion-native",
-      "promotion-audit"
+      "regression-outcome",
+      "regression-native",
+      "regression-audit"
     ],
-    "historicalEvidenceNotice": "Earlier experiments retain their original versions and evidence. This is a separate small NumPy/MLflow publication example, not a rerun of the earlier JAX release."
+    "historicalEvidenceNotice": "Earlier experiments retain their original versions and evidence. This is a separate fixed NumPy imbalance proof, not a rerun of earlier JAX or MLflow training."
   },
   "format": "Self-contained HTML; StoryDeck custom element; editable HTML/SVG text",
   "audience": "Sanjay and developers following the experiments testing FootPrint’s flowchart pattern in ML",
@@ -209,7 +209,7 @@
   },
   "libraryGrowth": {
     "classification": "DERIVED",
-    "chronology": "Reusable milestones in the teaching sequence, not invented development dates. Experiments before chapter 8 are prototypes; current sources establish ownership.",
+    "chronology": "Reusable milestones in the teaching sequence, not invented development dates. Experiments before chapter 8 are prototypes; current sources establish ownership. The beta 11 group-regression extension is separately source-bound; earlier source snapshots are unchanged.",
     "packageVersion": "0.6.0-beta.8",
     "private": false,
     "layers": [
@@ -285,13 +285,32 @@
         "sourceIds": [
           "inference-contracts"
         ]
+      },
+      {
+        "id": "regression",
+        "label": "Group regression",
+        "chapter": 32,
+        "sourceIds": [
+          "regression-core"
+        ]
       }
     ],
     "foundation": "Existing FootPrint stages, scope, branches, retries and read/write history.",
     "external": "Numerical trainers compute; native Lens and foottrace inspect saved workflow state.",
     "exampleOnly": "Crash/recovery helpers and benchmark/trial harnesses remain examples, not general ML-package APIs.",
     "historicalPrototypeVersion": "0.5.0",
-    "packageVersionScope": "Retained beta 8 source snapshot for the existing teaching map; currentRelease identifies the latest SDK.",
+    "packageVersionScope": "The first nine capability sources retain the beta 8 teaching-map snapshot. The separately source-bound tenth group-regression capability is a beta 11 extension; currentRelease identifies the latest SDK.",
+    "extensions": [
+      {
+        "version": "0.6.0-beta.11",
+        "layers": [
+          "regression"
+        ],
+        "sourceIds": [
+          "regression-core"
+        ]
+      }
+    ],
     "chapters": [
       {
         "id": "question",
@@ -662,9 +681,25 @@
         "lens": true
       },
       {
+        "id": "regression",
+        "kind": "added",
+        "summary": "An overall winner failed its predefined group rule.",
+        "focus": [
+          "regression",
+          "approval",
+          "publication",
+          "investigation"
+        ],
+        "added": [
+          "regression"
+        ],
+        "trainer": true,
+        "lens": true
+      },
+      {
         "id": "verdict",
         "kind": "verdict",
-        "summary": "Nine ML capabilities above the existing FootPrint foundation.",
+        "summary": "Ten ML capabilities above the existing FootPrint foundation.",
         "focus": [
           "refs",
           "evaluation",
@@ -674,7 +709,8 @@
           "lineage",
           "selection",
           "publication",
-          "prediction"
+          "prediction",
+          "regression"
         ],
         "added": []
       }
@@ -812,11 +848,26 @@
         "detail": "What actually made this prediction?",
         "since": 29,
         "version": "v0.6 beta.7",
-        "x": 253,
+        "x": 132,
         "y": 272,
         "evidence": {
           "path": "evidence/inference-contracts.ts.txt",
           "sha256": "2fbe53db47e3b2010d5a7c84dc6499ba8205a361591540cae5acc95ffabed02e",
+          "type": "SOURCE",
+          "classification": "VERIFIED"
+        }
+      },
+      {
+        "id": "regression",
+        "label": "Group regression",
+        "detail": "Baseline and challenger by group",
+        "since": 31,
+        "version": "v0.6 beta.11",
+        "x": 375,
+        "y": 272,
+        "evidence": {
+          "path": "evidence/regression-core.ts.txt",
+          "sha256": "f34b04c90f44a4acad93eb85bf031524db57f367b482098d3de384f6a746da2b",
           "type": "SOURCE",
           "classification": "VERIFIED"
         }
@@ -910,8 +961,8 @@
     "Trusted adapter/profile; no authentication or atomic deployment guarantee.",
     "FootPrint records workflow state at instrumented boundaries; it does not record every tensor operation."
   ],
-  "sceneCount": 32,
-  "clickStateCount": 63,
+  "sceneCount": 33,
+  "clickStateCount": 65,
   "nodes": [
     {
       "id": "fp",
@@ -1172,6 +1223,15 @@
       "kind": "evidence",
       "x": -5.3,
       "y": 4.15,
+      "z": 0.6
+    },
+    {
+      "id": "regression",
+      "label": "Groups",
+      "fullLabel": "Paired baseline/group regression guard",
+      "kind": "policy",
+      "x": 5.1,
+      "y": -3.4,
       "z": 0.6
     }
   ],
@@ -1925,6 +1985,72 @@
       "sourceIds": [
         "inference-native",
         "inference-workflow"
+      ]
+    },
+    {
+      "id": "evaluation-regression",
+      "from": "evidence",
+      "to": "regression",
+      "label": "compares paired group results",
+      "sentence": "Ordinary evaluator receipts cover the independently declared baseline and candidate on the same subset.",
+      "classification": "DERIVED",
+      "sourceIds": [
+        "regression-outcome",
+        "regression-recording",
+        "regression-native",
+        "regression-audit",
+        "regression-numerical",
+        "regression-workflow",
+        "regression-core",
+        "regression-release",
+        "regression-guide",
+        "regression-audit-controls",
+        "regression-audit-controls-code",
+        "regression-audit-code"
+      ]
+    },
+    {
+      "id": "regression-publication",
+      "from": "regression",
+      "to": "publication",
+      "label": "can refuse an overall winner",
+      "sentence": "A release plan requiring group evidence cannot publish when the group guard refuses or remains unknown.",
+      "classification": "DERIVED",
+      "sourceIds": [
+        "regression-outcome",
+        "regression-recording",
+        "regression-native",
+        "regression-audit",
+        "regression-numerical",
+        "regression-workflow",
+        "regression-core",
+        "regression-release",
+        "regression-guide",
+        "regression-audit-controls",
+        "regression-audit-controls-code",
+        "regression-audit-code"
+      ]
+    },
+    {
+      "id": "regression-lens",
+      "from": "regression",
+      "to": "lens",
+      "label": "reopens the refusal",
+      "sentence": "Lens follows the captured decision to the group declaration and actual consumed paired observations.",
+      "classification": "DERIVED",
+      "sourceIds": [
+        "regression-outcome",
+        "regression-recording",
+        "regression-native",
+        "regression-audit",
+        "regression-numerical",
+        "regression-workflow",
+        "regression-core",
+        "regression-release",
+        "regression-guide",
+        "regression-audit-controls",
+        "regression-audit-controls-code",
+        "regression-audit-code"
       ]
     }
   ],
@@ -8379,10 +8505,351 @@
       "edgeCount": 61
     },
     {
+      "id": "regression",
+      "title": "An overall improvement hid a worse group",
+      "category": "A new ML evidence check",
+      "caption": "Fixed imbalanced data exposed a release-policy gap: overall selection and quality passed, while a predefined group became worse.",
+      "visual": {
+        "kind": "regression",
+        "journey": "regression",
+        "showMetricsInPrimaryView": false,
+        "showHashesInPrimaryView": false
+      },
+      "adds": {
+        "nodes": [
+          "regression"
+        ],
+        "edges": [
+          "evaluation-regression",
+          "regression-publication",
+          "regression-lens"
+        ]
+      },
+      "focus": [
+        "regression",
+        "publication",
+        "lens"
+      ],
+      "transition": {
+        "change": "Check the important group too",
+        "why": "An aggregate score may hide a regression in one declared population.",
+        "consequence": "Paired group evidence joins the release requirements."
+      },
+      "claims": [
+        {
+          "classification": "VERIFIED",
+          "text": "The fixed controlled NumPy proof declares group definitions, membership and policies before evaluating balanced-weight and pooled least squares on the same held-out data. The pooled challenger improves overall mean squared error but worsens the predefined rare group. Actual values are retained in the evidence; these are regression errors, not classification accuracy.",
+          "sourceIds": [
+            "regression-outcome",
+            "regression-recording",
+            "regression-native",
+            "regression-audit",
+            "regression-numerical",
+            "regression-workflow",
+            "regression-core",
+            "regression-release",
+            "regression-guide",
+            "regression-audit-controls",
+            "regression-audit-controls-code",
+            "regression-audit-code"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The required paired guard refuses the challenger despite passing overall selection and quality. Independently pinned model, dataset, preprocessing, evaluation protocol, group definition and membership bind both model measurements. Missing evidence or insufficient declared sample coverage stays unknown.",
+          "sourceIds": [
+            "regression-outcome",
+            "regression-recording",
+            "regression-native",
+            "regression-audit",
+            "regression-numerical",
+            "regression-workflow",
+            "regression-core",
+            "regression-release",
+            "regression-guide",
+            "regression-audit-controls",
+            "regression-audit-controls-code",
+            "regression-audit-code"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The reusable TypeScript core is called from Python. Required paired evidence is loaded and measured again before any new publication and constrains expiry. A separately declared unchanged-model control publishes the exact approved artifact through the existing local receiver. Its singleton comparison is a control; the original two-candidate overall winner remains the pooled model.",
+          "sourceIds": [
+            "regression-outcome",
+            "regression-recording",
+            "regression-native",
+            "regression-audit",
+            "regression-numerical",
+            "regression-workflow",
+            "regression-core",
+            "regression-release",
+            "regression-guide",
+            "regression-audit-controls",
+            "regression-audit-controls-code",
+            "regression-audit-code"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Existing Lens and foottrace follow the captured release refusal to the independently declared group policy and separately retained paired observations after numerical work has stopped. No custom query engine or training rerun is required.",
+          "sourceIds": [
+            "regression-outcome",
+            "regression-recording",
+            "regression-native",
+            "regression-audit",
+            "regression-numerical",
+            "regression-workflow",
+            "regression-core",
+            "regression-release",
+            "regression-guide",
+            "regression-audit-controls",
+            "regression-audit-controls-code",
+            "regression-audit-code"
+          ]
+        },
+        {
+          "classification": "OPEN",
+          "text": "Absolute tolerances and sample floors are declared policy, not statistical significance, fairness certification, automatic group discovery or proof of producer truth. Complete structured logs can retain the same facts; a human investigation-speed advantage remains unmeasured.",
+          "sourceIds": [
+            "regression-outcome",
+            "regression-recording",
+            "regression-native",
+            "regression-audit",
+            "regression-numerical",
+            "regression-workflow",
+            "regression-core",
+            "regression-release",
+            "regression-guide",
+            "regression-audit-controls",
+            "regression-audit-controls-code",
+            "regression-audit-code"
+          ]
+        }
+      ],
+      "storyText": {
+        "what": "Train a group-balanced baseline and a population-weighted challenger on fixed imbalanced data.",
+        "why": "A better overall prediction error can hide worse performance for a predefined smaller group.",
+        "how": "Keep paired measurements with the model, data, group membership and declared tolerance.",
+        "learned": "The overall winner failed the required group check before publication. An unchanged-model control passed.",
+        "next": "Try declared group policies in an unfamiliar existing ML workflow."
+      },
+      "storyTextEvidence": {
+        "what": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "regression-outcome",
+            "regression-recording",
+            "regression-native",
+            "regression-audit",
+            "regression-numerical",
+            "regression-workflow",
+            "regression-core",
+            "regression-release",
+            "regression-guide",
+            "regression-audit-controls",
+            "regression-audit-controls-code",
+            "regression-audit-code"
+          ]
+        },
+        "why": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "regression-outcome",
+            "regression-recording",
+            "regression-native",
+            "regression-audit",
+            "regression-numerical",
+            "regression-workflow",
+            "regression-core",
+            "regression-release",
+            "regression-guide",
+            "regression-audit-controls",
+            "regression-audit-controls-code",
+            "regression-audit-code"
+          ]
+        },
+        "how": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "regression-outcome",
+            "regression-recording",
+            "regression-native",
+            "regression-audit",
+            "regression-numerical",
+            "regression-workflow",
+            "regression-core",
+            "regression-release",
+            "regression-guide",
+            "regression-audit-controls",
+            "regression-audit-controls-code",
+            "regression-audit-code"
+          ]
+        },
+        "learned": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "regression-outcome",
+            "regression-recording",
+            "regression-native",
+            "regression-audit",
+            "regression-numerical",
+            "regression-workflow",
+            "regression-core",
+            "regression-release",
+            "regression-guide",
+            "regression-audit-controls",
+            "regression-audit-controls-code",
+            "regression-audit-code"
+          ]
+        },
+        "next": {
+          "classification": "OPEN",
+          "sourceIds": [
+            "regression-outcome",
+            "regression-recording",
+            "regression-native",
+            "regression-audit",
+            "regression-numerical",
+            "regression-workflow",
+            "regression-core",
+            "regression-release",
+            "regression-guide",
+            "regression-audit-controls",
+            "regression-audit-controls-code",
+            "regression-audit-code"
+          ]
+        }
+      },
+      "teachingClassification": "DERIVED",
+      "narrativeNote": "Separate controlled numerical proof. The authored capability map is not the model computation graph or a complete runtime causality graph.",
+      "nextCard": {
+        "title": "Check the important group too",
+        "why": "Does the overall winner still meet the declared group rule?",
+        "after": "Use paired evidence and reopen the saved refusal.",
+        "classification": "DERIVED",
+        "sourceIds": [
+          "regression-outcome",
+          "regression-recording",
+          "regression-native",
+          "regression-audit",
+          "regression-numerical",
+          "regression-workflow",
+          "regression-core",
+          "regression-release",
+          "regression-guide",
+          "regression-audit-controls",
+          "regression-audit-controls-code",
+          "regression-audit-code"
+        ]
+      },
+      "index": 31,
+      "clickIndex": 62,
+      "nodeIds": [
+        "fp",
+        "compute",
+        "references",
+        "trainer",
+        "history",
+        "retry",
+        "cost",
+        "view",
+        "lens",
+        "replay",
+        "library",
+        "evidence",
+        "guard",
+        "jax",
+        "identity",
+        "inspect",
+        "plugin",
+        "conformance",
+        "package",
+        "data-use",
+        "data-guard",
+        "audit",
+        "recovery",
+        "continuity",
+        "trial",
+        "selection",
+        "publication",
+        "prediction",
+        "regression"
+      ],
+      "edgeIds": [
+        "fp-compute",
+        "compute-references",
+        "fp-references",
+        "compute-trainer",
+        "trainer-history",
+        "references-history",
+        "fp-retry",
+        "history-retry",
+        "fp-cost",
+        "retry-cost",
+        "history-view",
+        "retry-view",
+        "fp-lens",
+        "fp-replay",
+        "lens-replay",
+        "references-library",
+        "lens-library",
+        "library-evidence",
+        "evidence-guard",
+        "library-jax",
+        "guard-jax",
+        "jax-identity",
+        "evidence-identity",
+        "identity-inspect",
+        "library-inspect",
+        "library-plugin",
+        "plugin-conformance",
+        "library-package",
+        "package-lens",
+        "package-plugin",
+        "trainer-data-use",
+        "evidence-data-use",
+        "data-use-data-guard",
+        "guard-data-guard",
+        "data-use-audit",
+        "lens-audit",
+        "cost-audit",
+        "references-recovery",
+        "history-recovery",
+        "recovery-continuity",
+        "identity-continuity",
+        "audit-continuity",
+        "evidence-continuity",
+        "continuity-guard",
+        "recovery-lens",
+        "recovery-replay",
+        "lens-trial",
+        "history-trial",
+        "trial-selection",
+        "library-selection",
+        "evidence-selection",
+        "selection-guard",
+        "selection-lens",
+        "guard-publication",
+        "selection-publication",
+        "library-publication",
+        "retry-publication",
+        "publication-lens",
+        "references-prediction",
+        "library-prediction",
+        "prediction-lens",
+        "evaluation-regression",
+        "regression-publication",
+        "regression-lens"
+      ],
+      "nodeCount": 29,
+      "edgeCount": 64
+    },
+    {
       "id": "verdict",
       "title": "FootPrint explained ML release mistakes through saved workflow state",
       "category": "What we learned",
-      "caption": "Stages and saved history now support nine ML capabilities, including evidence for what actually made a prediction. Wider production use and independent developer benefit remain untested.",
+      "caption": "Ten reusable ML capabilities sit above FootPrint’s stages and history. Independent adoption and broader scale remain open.",
       "visual": {
         "kind": "verdict",
         "journey": "verdict",
@@ -8602,6 +9069,24 @@
             "promotion-guide",
             "promotion-audit-code"
           ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 11 adds a paired baseline/group regression guard and required release composition. The fixed imbalance proof blocks a group regression hidden by an overall improvement; the unchanged-model control publishes. Earlier nine capabilities and historical evidence remain separate.",
+          "sourceIds": [
+            "regression-outcome",
+            "regression-recording",
+            "regression-native",
+            "regression-audit",
+            "regression-numerical",
+            "regression-workflow",
+            "regression-core",
+            "regression-release",
+            "regression-guide",
+            "regression-audit-controls",
+            "regression-audit-controls-code",
+            "regression-audit-code"
+          ]
         }
       ],
       "storyText": {
@@ -8731,8 +9216,8 @@
           "release-contracts"
         ]
       },
-      "index": 31,
-      "clickIndex": 62,
+      "index": 32,
+      "clickIndex": 64,
       "nodeIds": [
         "fp",
         "compute",
@@ -8762,6 +9247,7 @@
         "selection",
         "publication",
         "prediction",
+        "regression",
         "future"
       ],
       "edgeIds": [
@@ -8826,11 +9312,14 @@
         "references-prediction",
         "library-prediction",
         "prediction-lens",
+        "evaluation-regression",
+        "regression-publication",
+        "regression-lens",
         "package-future",
         "trial-future"
       ],
-      "nodeCount": 29,
-      "edgeCount": 63
+      "nodeCount": 30,
+      "edgeCount": 66
     }
   ],
   "sources": [
@@ -12268,6 +12757,246 @@
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
+    },
+    {
+      "id": "regression-outcome",
+      "path": "evidence/regression-outcome.json",
+      "label": "Executed fixed imbalanced-population model comparison and release decisions",
+      "note": "Executed fixed imbalanced-population model comparison and release decisions",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-outcome.json",
+      "sha256": "8b1eb5ff3f4c0308a3658efb7fb8d96a582d0d66a43f3918b37640cf1fc30dd8",
+      "bytes": 7357,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-outcome.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-outcome.json",
+        "sha256": "8b1eb5ff3f4c0308a3658efb7fb8d96a582d0d66a43f3918b37640cf1fc30dd8",
+        "bytes": 7357,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "regression-recording",
+      "path": "evidence/regression-recording.json",
+      "label": "Actual native scope reads and writes for the Python-owned paired comparison",
+      "note": "Actual native scope reads and writes for the Python-owned paired comparison",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-recording.json",
+      "sha256": "2c5022442a967eb6c3c5f021c0d6ff3d02f9f6ec097dd06f559c4d06c0a3bd96",
+      "bytes": 685847,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-recording.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-recording.json",
+        "sha256": "120ccf27f69f58c50f813107154b9e3e04b5ff15e7c66db6c931c836ad8e4722",
+        "bytes": 685711,
+        "pathsProjected": 4,
+        "byteIdenticalToRetainedSource": false
+      }
+    },
+    {
+      "id": "regression-native",
+      "path": "evidence/regression-native.json",
+      "label": "Existing Lens/foottrace backtracking without starting a numerical process",
+      "note": "Existing Lens/foottrace backtracking without starting a numerical process",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-native.json",
+      "sha256": "8850105267e7acacedd3af100694a49b521cc60fa5fc4882ecb9c7d4518d8690",
+      "bytes": 30776,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-native.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-native.json",
+        "sha256": "8850105267e7acacedd3af100694a49b521cc60fa5fc4882ecb9c7d4518d8690",
+        "bytes": 30776,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "regression-audit",
+      "path": "evidence/regression-audit.json",
+      "label": "Saved scalar audit of actual paired predictions, metrics, group membership and artifacts",
+      "note": "Saved scalar audit of actual paired predictions, metrics, group membership and artifacts",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-audit.json",
+      "sha256": "db38465b2822dfc6c906242d244edc2f57465d64baffb722f4b868b5593128a6",
+      "bytes": 4054,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-audit.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-audit.json",
+        "sha256": "db38465b2822dfc6c906242d244edc2f57465d64baffb722f4b868b5593128a6",
+        "bytes": 4054,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "regression-numerical",
+      "path": "evidence/regression-numerical.json",
+      "label": "Retained numerical observations outside workflow scope",
+      "note": "Retained numerical observations outside workflow scope",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-numerical.json",
+      "sha256": "4e9efc6f88d9f4533269d96f749181840f047d9efc4794ead686e34965193f34",
+      "bytes": 37668,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-numerical.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-numerical.json",
+        "sha256": "4e9efc6f88d9f4533269d96f749181840f047d9efc4794ead686e34965193f34",
+        "bytes": 37668,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "regression-workflow",
+      "path": "evidence/regression-workflow.py.txt",
+      "label": "Python-owned workflow invoking the shared paired guard and checked publication",
+      "note": "Python-owned workflow invoking the shared paired guard and checked publication",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-workflow.py.txt",
+      "sha256": "c39ca730d593b387263ad8dab483ead1b2a716f66b9628fe5c06989ff91391ed",
+      "bytes": 22253,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-workflow.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-workflow.py.txt",
+        "sha256": "c39ca730d593b387263ad8dab483ead1b2a716f66b9628fe5c06989ff91391ed",
+        "bytes": 22253,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "regression-core",
+      "path": "evidence/regression-core.ts.txt",
+      "label": "Reusable paired baseline/challenger predefined-group contracts and guard",
+      "note": "Reusable paired baseline/challenger predefined-group contracts and guard",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-core.ts.txt",
+      "sha256": "f34b04c90f44a4acad93eb85bf031524db57f367b482098d3de384f6a746da2b",
+      "bytes": 21001,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-core.ts.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-core.ts.txt",
+        "sha256": "f34b04c90f44a4acad93eb85bf031524db57f367b482098d3de384f6a746da2b",
+        "bytes": 21001,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "regression-release",
+      "path": "evidence/regression-release.ts.txt",
+      "label": "Required paired evidence composed into preparation, new publication and expiry",
+      "note": "Required paired evidence composed into preparation, new publication and expiry",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-release.ts.txt",
+      "sha256": "2ff2f20b2bcbc77ce9cc1dcf010b557908de9efe37fc005f63568a3abb27a290",
+      "bytes": 38337,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-release.ts.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-release.ts.txt",
+        "sha256": "2ff2f20b2bcbc77ce9cc1dcf010b557908de9efe37fc005f63568a3abb27a290",
+        "bytes": 38337,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "regression-guide",
+      "path": "evidence/regression-guide.md",
+      "label": "Proof commands, actual values, scope and interpretation limits",
+      "note": "Proof commands, actual values, scope and interpretation limits",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-guide.md",
+      "sha256": "8c741c9b2809a5f019b15816c2c87eea56545ed1f34598de99d26358b52d2809",
+      "bytes": 4847,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-guide.md",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-guide.md",
+        "sha256": "8c741c9b2809a5f019b15816c2c87eea56545ed1f34598de99d26358b52d2809",
+        "bytes": 4847,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "regression-audit-controls",
+      "path": "evidence/regression-audit-controls.json",
+      "label": "Saved-audit acceptance controls reject empty and rebound evidence on disposable copies",
+      "note": "Saved-audit acceptance controls reject empty and rebound evidence on disposable copies",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-audit-controls.json",
+      "sha256": "026571ab286ad48865929a85a5b4c596a7c7e28366707e3966eca1e1636a6c7a",
+      "bytes": 1487,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-audit-controls.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-audit-controls.json",
+        "sha256": "026571ab286ad48865929a85a5b4c596a7c7e28366707e3966eca1e1636a6c7a",
+        "bytes": 1487,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "regression-audit-controls-code",
+      "path": "evidence/regression-audit-controls-code.py.txt",
+      "label": "Standard-library saved-evidence adversarial checker with no numerical rerun",
+      "note": "Standard-library saved-evidence adversarial checker with no numerical rerun",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-audit-controls-code.py.txt",
+      "sha256": "64c854796224c753f55ce5105d83ab5fb50a53890ed40d8cd6db59b3f3417e6e",
+      "bytes": 4273,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-audit-controls-code.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-audit-controls-code.py.txt",
+        "sha256": "64c854796224c753f55ce5105d83ab5fb50a53890ed40d8cd6db59b3f3417e6e",
+        "bytes": 4273,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "regression-audit-code",
+      "path": "evidence/regression-audit-code.py.txt",
+      "label": "Saved-only standard-library arithmetic and binding audit",
+      "note": "Saved-only standard-library arithmetic and binding audit",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/regression-audit-code.py.txt",
+      "sha256": "d4ab473f64ac9bd3b7f7f3768201c6de488550a3f2c36204182a8cf0175671e6",
+      "bytes": 15468,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/regression-audit-code.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/regression-audit-code.py.txt",
+        "sha256": "d4ab473f64ac9bd3b7f7f3768201c6de488550a3f2c36204182a8cf0175671e6",
+        "bytes": 15468,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
     }
   ],
   "ending": "The local experiments support FootPrint’s flowchart pattern for ML orchestration, recorded data-use checks, explicit checkpoint recovery and saved investigation. Numerical trainers own computation; independent developer value and broader scale need further proof.",
@@ -12493,6 +13222,13 @@
       },
       {
         "click": 63,
+        "type": "fade",
+        "seconds": 0.8,
+        "ease": "inOut",
+        "p": {}
+      },
+      {
+        "click": 65,
         "type": "fade",
         "seconds": 0.8,
         "ease": "inOut",

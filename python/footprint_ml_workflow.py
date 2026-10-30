@@ -467,6 +467,22 @@ class WorkflowCapture:
         """Compare observed prediction use with independent request context."""
         return self._rpc("check_inference", input=input)
 
+    def read_regression_manifest(self, input: dict[str, Any]) -> Any:
+        """Validate the application's independently declared paired comparison."""
+        return self._rpc("read_regression_manifest", input=input)
+
+    def create_regression_receipt(self, input: dict[str, Any]) -> Any:
+        """Record paired baseline/challenger observations through the core contract."""
+        return self._rpc("create_regression_receipt", input=input)
+
+    def read_regression_receipt(self, input: dict[str, Any]) -> Any:
+        """Validate persisted regression evidence without numerical evaluation."""
+        return self._rpc("read_regression_receipt", input=input)
+
+    def check_regression(self, input: dict[str, Any]) -> Any:
+        """Check paired evidence against independently declared comparison inputs."""
+        return self._rpc("check_regression", input=input)
+
     def read_model_release_plan(self, input: dict[str, Any]) -> Any:
         """Validate independently supplied release authority through the core contract."""
         return self._rpc("read_model_release_plan", input=input)

@@ -1,0 +1,85 @@
+{
+  "schema": "footprint-ml-regression-saved-audit/v1",
+  "passed": true,
+  "checks": {
+    "capturedOutcomeMatchesSidecar": true,
+    "allWorkflowControlsPass": true,
+    "declarationPrecedesGenerationTrainingAndEvaluation": true,
+    "protocolMatchesCapturedDeclaration": true,
+    "actualConfigurationsMatchDeclaredExperiment": true,
+    "trainingAndValidationIDsAreDisjoint": true,
+    "trainingDeclaredPopulationCounts": true,
+    "trainingDeclaredGeneratingRelation": true,
+    "validationDeclaredPopulationCounts": true,
+    "validationDeclaredGeneratingRelation": true,
+    "majorityDefinitionMatchesIndependentMetadata": true,
+    "majorityMembershipMatchesActualParentRows": true,
+    "majoritySubsetAndCountMatchMembership": true,
+    "rareDefinitionMatchesIndependentMetadata": true,
+    "rareMembershipMatchesActualParentRows": true,
+    "rareSubsetAndCountMatchMembership": true,
+    "baselinePredictorBindsActualModel": true,
+    "baselineWeightsMatchDeclaredLeastSquares": true,
+    "pooledPredictorBindsActualModel": true,
+    "pooledWeightsMatchDeclaredLeastSquares": true,
+    "baselineoverallCompletePredictionsAndMetricsBound": true,
+    "baselinemajorityCompletePredictionsAndMetricsBound": true,
+    "baselinerareCompletePredictionsAndMetricsBound": true,
+    "pooledoverallCompletePredictionsAndMetricsBound": true,
+    "pooledmajorityCompletePredictionsAndMetricsBound": true,
+    "pooledrareCompletePredictionsAndMetricsBound": true,
+    "unchangedoverallCompletePredictionsAndMetricsBound": true,
+    "unchangedmajorityCompletePredictionsAndMetricsBound": true,
+    "unchangedrareCompletePredictionsAndMetricsBound": true,
+    "pooledManifestPreservesPredeclaredGroupsAndPolicy": true,
+    "pooledCapturedEvidenceMatchesPinnedArtifacts": true,
+    "pooledmajorityPairedEvidenceMatchesActualEvaluation": true,
+    "pooledrarePairedEvidenceMatchesActualEvaluation": true,
+    "unchangedManifestPreservesPredeclaredGroupsAndPolicy": true,
+    "unchangedCapturedEvidenceMatchesPinnedArtifacts": true,
+    "unchangedmajorityPairedEvidenceMatchesActualEvaluation": true,
+    "unchangedrarePairedEvidenceMatchesActualEvaluation": true,
+    "blockedReleaseCompactViewExactlyMatchesPinnedNativeResponse": true,
+    "blockedReleaseNativeBindingsMatchConsumedInputs": true,
+    "pooledDecisionCompactViewExactlyMatchesPinnedNativeResponse": true,
+    "pooledDecisionNativeBindingsMatchConsumedInputs": true,
+    "retainedReleaseCompactViewExactlyMatchesPinnedNativeResponse": true,
+    "retainedReleaseNativeBindingsMatchConsumedInputs": true,
+    "retryReleaseCompactViewExactlyMatchesPinnedNativeResponse": true,
+    "retryReleaseNativeBindingsMatchConsumedInputs": true,
+    "unchangedDecisionCompactViewExactlyMatchesPinnedNativeResponse": true,
+    "unchangedDecisionNativeBindingsMatchConsumedInputs": true,
+    "averageImprovementAndRareRegressionAreObserved": true,
+    "majorityNativeDeteriorationMatchesScalarDifference": true,
+    "rareNativeDeteriorationMatchesScalarDifference": true,
+    "singleExactBaselinePublication": true,
+    "noModelWeightsOrPredictionsInScope": true
+  },
+  "auditedPredictionRows": 600,
+  "source": {
+    "recording.json": {
+      "sha256": "2c5022442a967eb6c3c5f021c0d6ff3d02f9f6ec097dd06f559c4d06c0a3bd96",
+      "bytes": 685847
+    },
+    "outcome.json": {
+      "sha256": "8b1eb5ff3f4c0308a3658efb7fb8d96a582d0d66a43f3918b37640cf1fc30dd8",
+      "bytes": 7357
+    },
+    "numerical-observations.json": {
+      "sha256": "4e9efc6f88d9f4533269d96f749181840f047d9efc4794ead686e34965193f34",
+      "bytes": 37668
+    }
+  },
+  "execution": {
+    "savedArtifactsOnly": true,
+    "scalarArithmetic": true,
+    "numpyImported": false,
+    "trainingRepeated": false,
+    "guardRecomputed": false,
+    "publicationPerformed": false
+  },
+  "boundaries": [
+    "Scalar normal equations and predictions validate only this explicit fixed linear profile, not arbitrary numerical trainers.",
+    "Saved hashes and consistent recording do not authenticate a producer or establish statistical significance."
+  ]
+}

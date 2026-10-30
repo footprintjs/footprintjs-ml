@@ -9,6 +9,7 @@ import {createDataLineageReceipt,readDataLineageReceipt,checkDataLineage} from '
 import {createEvaluationReceipt,readEvaluationReceipt} from '../receipts.js';
 import {readSelectionManifest,createSelectionReceipt,readSelectionReceipt,checkSelection} from '../selection.js';
 import {createPredictionContract,readPredictionContract,createInferenceReceipt,readInferenceReceipt,checkInference} from '../inference.js';
+import {readRegressionManifest,createRegressionReceipt,readRegressionReceipt,checkRegression} from '../regression.js';
 import {readModelReleasePlan} from '../release.js';
 import {executePythonRelease,putPythonReleaseArtifact} from './python-release.js';
 import type {PythonReleaseCallback} from './python-release.js';
@@ -108,6 +109,7 @@ export async function servePythonCapture(options: PythonCaptureServeOptions={}):
       read_evaluation_receipt:['input'],create_data_lineage_receipt:['input'],read_data_lineage_receipt:['input'],check_data_lineage:['input'],
       read_selection_manifest:['input'],create_selection_receipt:['input'],read_selection_receipt:['input'],check_selection:['input'],
       create_prediction_contract:['input'],read_prediction_contract:['input'],create_inference_receipt:['input'],read_inference_receipt:['input'],check_inference:['input'],
+      read_regression_manifest:['input'],create_regression_receipt:['input'],read_regression_receipt:['input'],check_regression:['input'],
       read_model_release_plan:['input'],put_release_artifact:['filePath','storeRoot','format'],
       prepare_model_release:['input','storeRoot','verifyModel','publisherLookup'],publish_model_release:['input','storeRoot','verifyModel','publisherLookup'],
       release_model:['input','storeRoot','verifyModel','publisherLookup']};
@@ -195,6 +197,14 @@ export async function servePythonCapture(options: PythonCaptureServeOptions={}):
         opened();return readInferenceReceipt(boundedJson(request.input,limits.maxPacketBytes,'inference receipt'));
       case 'check_inference':
         opened();return checkInference(boundedJson(request.input,limits.maxPacketBytes,'inference request') as unknown as Parameters<typeof checkInference>[0]);
+      case 'read_regression_manifest':
+        opened();return readRegressionManifest(boundedJson(request.input,limits.maxPacketBytes,'regression manifest'));
+      case 'create_regression_receipt':
+        opened();return createRegressionReceipt(boundedJson(request.input,limits.maxPacketBytes,'regression input') as unknown as Parameters<typeof createRegressionReceipt>[0]);
+      case 'read_regression_receipt':
+        opened();return readRegressionReceipt(boundedJson(request.input,limits.maxPacketBytes,'regression receipt'));
+      case 'check_regression':
+        opened();return checkRegression(boundedJson(request.input,limits.maxPacketBytes,'regression request') as unknown as Parameters<typeof checkRegression>[0]);
       case 'read_model_release_plan':
         opened();return readModelReleasePlan(boundedJson(request.input,limits.maxPacketBytes,'release plan'));
       case 'put_release_artifact':

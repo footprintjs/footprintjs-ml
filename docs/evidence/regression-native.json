@@ -1,0 +1,210 @@
+{
+  "schema": "footprint-ml-regression-investigation/v1",
+  "passed": true,
+  "checks": {
+    "capturedOutcomeMatches": true,
+    "pooledDecisionReachesBaselineEvaluation": true,
+    "pooledDecisionReachesActualCandidateEvaluation": true,
+    "pooledDecisionReachesPredeclaredDefinitions": true,
+    "pooledDecisionReachesMeasuredGroupMembership": true,
+    "actualObservationWriterVisible": true,
+    "blockedReleaseReachesRequiredRegression": true,
+    "blockedReleaseDoesNotBorrowLaterControl": true,
+    "matchedControlReachesItsOwnExecutedEvaluation": true,
+    "handoffReachesActualRelease": true,
+    "scopeShowsOverallQualityAndSelectionPass": true,
+    "scopeShowsRegressionDenial": true,
+    "actualGroupDeltaAndCountsVisible": true,
+    "fullOriginalResponseReferenceVisible": true,
+    "nativeMissingControlWarningsPreserved": true,
+    "scopeRemainsPythonOwned": true,
+    "allWorkflowChecksPass": true,
+    "recordingUnchanged": true,
+    "outcomeUnchanged": true
+  },
+  "nativeQueries": 15,
+  "sources": {
+    "recording": {
+      "sha256": "2c5022442a967eb6c3c5f021c0d6ff3d02f9f6ec097dd06f559c4d06c0a3bd96",
+      "bytes": 685847
+    },
+    "outcome": {
+      "sha256": "8b1eb5ff3f4c0308a3658efb7fb8d96a582d0d66a43f3918b37640cf1fc30dd8",
+      "bytes": 7357
+    }
+  },
+  "transcript": [
+    {
+      "ordinal": 1,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "pooledDecision"
+      },
+      "result": "SLICE for 'pooledDecision' — reads via: custom-fn\nCompare pooled to the independently retained baseline (check-pooled-regression#6) [wrote: pooledManifest, pooledObservations, pooledReceipt, pooledDecisionRef, pooledDecision, pooledManifestRef, pooledObservationsRef, pooledReceiptRef]\n  Fit the predeclared group-balanced and pooled least-squares models (train-two-models#2) ← via baselineModelRef [wrote: baselineModelRef, candidateModelRef]\n    Generate the fixed populations and retain actual membership artifacts (generate-declared-data#1) ← via comparison [wrote: trainingArtifact, validationDatasetRef, groups, comparison]\n      Declare populations, data protocol and acceptance limits before evaluation (declare-before-training#0) ← via predeclaredPolicies [wrote: dataProtocol, protocolArtifact, expectedGroupRows, predeclaredPolicies, candidateConfigurations, qualityPolicy, groupDefinitions, publisherConfiguration]\n    ↳ declare-before-training#0 (see above)\n  ↳ generate-declared-data#1 (see above)\n  ↳ declare-before-training#0 (see above)\n  Measure actual overall and predefined-group errors for baseline (evaluate-baseline#3) ← via baselineReceipts [wrote: baselineReceipts]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n  Measure actual overall and predefined-group errors for pooled (evaluate-pooled#4) ← via pooledReceipts [wrote: pooledReceipts]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 2,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "unchangedDecision"
+      },
+      "result": "SLICE for 'unchangedDecision' — reads via: custom-fn\nCompare unchanged to the independently retained baseline (check-unchanged-regression#7) [wrote: unchangedManifest, unchangedObservations, unchangedReceipt, unchangedDecisionRef, unchangedDecision, unchangedManifestRef, unchangedObservationsRef, unchangedReceiptRef]\n  Fit the predeclared group-balanced and pooled least-squares models (train-two-models#2) ← via baselineModelRef [wrote: baselineModelRef, candidateModelRef]\n    Generate the fixed populations and retain actual membership artifacts (generate-declared-data#1) ← via comparison [wrote: trainingArtifact, validationDatasetRef, groups, comparison]\n      Declare populations, data protocol and acceptance limits before evaluation (declare-before-training#0) ← via predeclaredPolicies [wrote: dataProtocol, protocolArtifact, expectedGroupRows, predeclaredPolicies, candidateConfigurations, qualityPolicy, groupDefinitions, publisherConfiguration]\n    ↳ declare-before-training#0 (see above)\n  ↳ generate-declared-data#1 (see above)\n  ↳ declare-before-training#0 (see above)\n  Measure actual overall and predefined-group errors for baseline (evaluate-baseline#3) ← via baselineReceipts [wrote: baselineReceipts]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n  Measure actual overall and predefined-group errors for unchanged (evaluate-unchanged#5) ← via unchangedReceipts [wrote: unchangedReceipts]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 3,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "blockedRelease"
+      },
+      "result": "SLICE for 'blockedRelease' — reads via: custom-fn\nCompose overall selection, quality and required group checks for blocked (release-blocked#9) [wrote: blockedPlanRef, blockedReleaseRef, blockedRelease, blockedPublisherCalls, blockedLiveObservations]\n  Declare populations, data protocol and acceptance limits before evaluation (declare-before-training#0) ← via candidateConfigurations [wrote: dataProtocol, protocolArtifact, expectedGroupRows, predeclaredPolicies, candidateConfigurations, qualityPolicy, groupDefinitions, publisherConfiguration]\n  Generate the fixed populations and retain actual membership artifacts (generate-declared-data#1) ← via comparison [wrote: trainingArtifact, validationDatasetRef, groups, comparison]\n    ↳ declare-before-training#0 (see above)\n  Fit the predeclared group-balanced and pooled least-squares models (train-two-models#2) ← via baselineModelRef [wrote: baselineModelRef, candidateModelRef]\n    ↳ generate-declared-data#1 (see above)\n    ↳ declare-before-training#0 (see above)\n  Measure actual overall and predefined-group errors for baseline (evaluate-baseline#3) ← via baselineReceipts [wrote: baselineReceipts]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n  Measure actual overall and predefined-group errors for pooled (evaluate-pooled#4) ← via pooledReceipts [wrote: pooledReceipts]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n  Compare pooled to the independently retained baseline (check-pooled-regression#6) ← via pooledManifestRef [wrote: pooledManifest, pooledObservations, pooledReceipt, pooledDecisionRef, pooledDecision, pooledManifestRef, pooledObservationsRef, pooledReceiptRef]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n    ↳ declare-before-training#0 (see above)\n    ↳ evaluate-baseline#3 (see above)\n    ↳ evaluate-pooled#4 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 4,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "retainedRelease"
+      },
+      "result": "SLICE for 'retainedRelease' — reads via: custom-fn\nCompose overall selection, quality and required group checks for retained (release-retained#10) [wrote: retainedPlanRef, retainedReleaseRef, retainedRelease, retainedPublisherCalls, retainedLiveObservations, approvedPublication]\n  Declare populations, data protocol and acceptance limits before evaluation (declare-before-training#0) ← via candidateConfigurations [wrote: dataProtocol, protocolArtifact, expectedGroupRows, predeclaredPolicies, candidateConfigurations, qualityPolicy, groupDefinitions, publisherConfiguration]\n  Generate the fixed populations and retain actual membership artifacts (generate-declared-data#1) ← via comparison [wrote: trainingArtifact, validationDatasetRef, groups, comparison]\n    ↳ declare-before-training#0 (see above)\n  Fit the predeclared group-balanced and pooled least-squares models (train-two-models#2) ← via baselineModelRef [wrote: baselineModelRef, candidateModelRef]\n    ↳ generate-declared-data#1 (see above)\n    ↳ declare-before-training#0 (see above)\n  Measure actual overall and predefined-group errors for unchanged (evaluate-unchanged#5) ← via unchangedReceipts [wrote: unchangedReceipts]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n  Compare unchanged to the independently retained baseline (check-unchanged-regression#7) ← via unchangedManifestRef [wrote: unchangedManifest, unchangedObservations, unchangedReceipt, unchangedDecisionRef, unchangedDecision, unchangedManifestRef, unchangedObservationsRef, unchangedReceiptRef]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n    ↳ declare-before-training#0 (see above)\n    Measure actual overall and predefined-group errors for baseline (evaluate-baseline#3) ← via baselineReceipts [wrote: baselineReceipts]\n      ↳ train-two-models#2 (see above)\n      ↳ generate-declared-data#1 (see above)\n    ↳ evaluate-unchanged#5 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 5,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "approvedPublication"
+      },
+      "result": "SLICE for 'approvedPublication' — reads via: custom-fn\nCompose overall selection, quality and required group checks for retained (release-retained#10) [wrote: retainedPlanRef, retainedReleaseRef, retainedRelease, retainedPublisherCalls, retainedLiveObservations, approvedPublication]\n  Declare populations, data protocol and acceptance limits before evaluation (declare-before-training#0) ← via candidateConfigurations [wrote: dataProtocol, protocolArtifact, expectedGroupRows, predeclaredPolicies, candidateConfigurations, qualityPolicy, groupDefinitions, publisherConfiguration]\n  Generate the fixed populations and retain actual membership artifacts (generate-declared-data#1) ← via comparison [wrote: trainingArtifact, validationDatasetRef, groups, comparison]\n    ↳ declare-before-training#0 (see above)\n  Fit the predeclared group-balanced and pooled least-squares models (train-two-models#2) ← via baselineModelRef [wrote: baselineModelRef, candidateModelRef]\n    ↳ generate-declared-data#1 (see above)\n    ↳ declare-before-training#0 (see above)\n  Measure actual overall and predefined-group errors for unchanged (evaluate-unchanged#5) ← via unchangedReceipts [wrote: unchangedReceipts]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n  Compare unchanged to the independently retained baseline (check-unchanged-regression#7) ← via unchangedManifestRef [wrote: unchangedManifest, unchangedObservations, unchangedReceipt, unchangedDecisionRef, unchangedDecision, unchangedManifestRef, unchangedObservationsRef, unchangedReceiptRef]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n    ↳ declare-before-training#0 (see above)\n    Measure actual overall and predefined-group errors for baseline (evaluate-baseline#3) ← via baselineReceipts [wrote: baselineReceipts]\n      ↳ train-two-models#2 (see above)\n      ↳ generate-declared-data#1 (see above)\n    ↳ evaluate-unchanged#5 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 6,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "wrongProtocolDecision"
+      },
+      "result": "SLICE for 'wrongProtocolDecision' — reads via: custom-fn\nKeep mismatch and unavailable-coverage controls separate from the original declaration (derived-negative-controls#8) [wrote: wrongModelDecision, missingReceiptDecision, wrongProtocolDecision, insufficientCoverageDecision, derivedControlNotice]\n  Compare pooled to the independently retained baseline (check-pooled-regression#6) ← via pooledManifest [wrote: pooledManifest, pooledObservations, pooledReceipt, pooledDecisionRef, pooledDecision, pooledManifestRef, pooledObservationsRef, pooledReceiptRef]\n    Fit the predeclared group-balanced and pooled least-squares models (train-two-models#2) ← via baselineModelRef [wrote: baselineModelRef, candidateModelRef]\n      Generate the fixed populations and retain actual membership artifacts (generate-declared-data#1) ← via comparison [wrote: trainingArtifact, validationDatasetRef, groups, comparison]\n        Declare populations, data protocol and acceptance limits before evaluation (declare-before-training#0) ← via predeclaredPolicies [wrote: dataProtocol, protocolArtifact, expectedGroupRows, predeclaredPolicies, candidateConfigurations, qualityPolicy, groupDefinitions, publisherConfiguration]\n      ↳ declare-before-training#0 (see above)\n    ↳ generate-declared-data#1 (see above)\n    ↳ declare-before-training#0 (see above)\n    Measure actual overall and predefined-group errors for baseline (evaluate-baseline#3) ← via baselineReceipts [wrote: baselineReceipts]\n      ↳ train-two-models#2 (see above)\n      ↳ generate-declared-data#1 (see above)\n    Measure actual overall and predefined-group errors for pooled (evaluate-pooled#4) ← via pooledReceipts [wrote: pooledReceipts]\n      ↳ train-two-models#2 (see above)\n      ↳ generate-declared-data#1 (see above)\n  ↳ train-two-models#2 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 7,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "insufficientCoverageDecision"
+      },
+      "result": "SLICE for 'insufficientCoverageDecision' — reads via: custom-fn\nKeep mismatch and unavailable-coverage controls separate from the original declaration (derived-negative-controls#8) [wrote: wrongModelDecision, missingReceiptDecision, wrongProtocolDecision, insufficientCoverageDecision, derivedControlNotice]\n  Compare pooled to the independently retained baseline (check-pooled-regression#6) ← via pooledManifest [wrote: pooledManifest, pooledObservations, pooledReceipt, pooledDecisionRef, pooledDecision, pooledManifestRef, pooledObservationsRef, pooledReceiptRef]\n    Fit the predeclared group-balanced and pooled least-squares models (train-two-models#2) ← via baselineModelRef [wrote: baselineModelRef, candidateModelRef]\n      Generate the fixed populations and retain actual membership artifacts (generate-declared-data#1) ← via comparison [wrote: trainingArtifact, validationDatasetRef, groups, comparison]\n        Declare populations, data protocol and acceptance limits before evaluation (declare-before-training#0) ← via predeclaredPolicies [wrote: dataProtocol, protocolArtifact, expectedGroupRows, predeclaredPolicies, candidateConfigurations, qualityPolicy, groupDefinitions, publisherConfiguration]\n      ↳ declare-before-training#0 (see above)\n    ↳ generate-declared-data#1 (see above)\n    ↳ declare-before-training#0 (see above)\n    Measure actual overall and predefined-group errors for baseline (evaluate-baseline#3) ← via baselineReceipts [wrote: baselineReceipts]\n      ↳ train-two-models#2 (see above)\n      ↳ generate-declared-data#1 (see above)\n    Measure actual overall and predefined-group errors for pooled (evaluate-pooled#4) ← via pooledReceipts [wrote: pooledReceipts]\n      ↳ train-two-models#2 (see above)\n      ↳ generate-declared-data#1 (see above)\n  ↳ train-two-models#2 (see above)\n  Compare unchanged to the independently retained baseline (check-unchanged-regression#7) ← via unchangedManifest [wrote: unchangedManifest, unchangedObservations, unchangedReceipt, unchangedDecisionRef, unchangedDecision, unchangedManifestRef, unchangedObservationsRef, unchangedReceiptRef]\n    ↳ train-two-models#2 (see above)\n    ↳ generate-declared-data#1 (see above)\n    ↳ declare-before-training#0 (see above)\n    ↳ evaluate-baseline#3 (see above)\n    Measure actual overall and predefined-group errors for unchanged (evaluate-unchanged#5) ← via unchangedReceipts [wrote: unchangedReceipts]\n      ↳ train-two-models#2 (see above)\n      ↳ generate-declared-data#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 8,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "release-blocked#9",
+        "key": "blockedRelease\u001fdecision\u001fchecks\u001fquality\u001fallowed"
+      },
+      "result": "VALUE of 'blockedRelease.decision.checks.quality.allowed' as of release-blocked#9:\ntrue",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 9,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "release-blocked#9",
+        "key": "blockedRelease\u001fdecision\u001fchecks\u001fselection\u001fallowed"
+      },
+      "result": "VALUE of 'blockedRelease.decision.checks.selection.allowed' as of release-blocked#9:\ntrue",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 10,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "release-blocked#9",
+        "key": "blockedRelease\u001fdecision\u001fchecks\u001fregression\u001fstatus"
+      },
+      "result": "VALUE of 'blockedRelease.decision.checks.regression.status' as of release-blocked#9:\n\"deny\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 11,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "check-pooled-regression#6",
+        "key": "pooledDecision\u001fcomparisons"
+      },
+      "result": "VALUE of 'pooledDecision.comparisons' as of check-pooled-regression#6:\n[{\"groupId\":\"majority\",\"metric\":\"mse\",\"direction\":\"min\",\"baselineValue\":2.249999999999995,\"candidateValue\":0.09000000000000018,\"deterioration\":-2.159999999999995,\"maxDeterioration\":0.1,\"minSamples\":5,\"rows\":90,\"status\":\"allow\"},{\"groupId\":\"rare\",\"metric\":\"mse\",\"direction\":\"min\",\"baselineValue\":2.2500000000000053,\"candidateValue\":7.289999999999997,\"deterioration\":5.039999999999992,\"maxDeterioration\":0.1,\"minSamples\":5,\"rows\":10,\"status\":\"deny\"}]",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 12,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "release-blocked#9",
+        "key": "blockedReleaseRef"
+      },
+      "result": "VALUE of 'blockedReleaseRef' as of release-blocked#9:\n{\"kind\":\"artifact\",\"path\":\"sha256-dd7bdf7e0db71c8b2a5735af0c17fa29735231ce5f995964c8049efde80997de-bacb769b46f6d169fb227ea026550f411d46cbe66a9c2a6ba36449c8cf8e4dea.bin\",\"sha256\":\"dd7bdf7e0db71c8b2a5735af0c17fa29735231ce5f995964c8049efde80997de\",\"bytes\":49594,\"format\":\"application/json\"}",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 13,
+      "tool": "who_wrote",
+      "args": {
+        "key": "groupDefinitions",
+        "beforeStageId": "check-pooled-regression#6"
+      },
+      "result": "'groupDefinitions' was last written by declare-before-training#0 — \"Declare populations, data protocol and acceptance limits before evaluation\" (verb: set): [{\"groupId\":\"majority\",\"definitionRef\":{\"kind\":\"artifact\",\"path\":\"sha256-21d48e841674adf08f60fbd2090fe8bd9b1b836adc36348107254a34972d039c-bacb769b46f6d169fb227e… (647 chars total — get_value('declare-before-training#0', 'groupDefinitions') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 14,
+      "tool": "who_wrote",
+      "args": {
+        "key": "pooledReceipts",
+        "beforeStageId": "check-pooled-regression#6"
+      },
+      "result": "'pooledReceipts' was last written by evaluate-pooled#4 — \"Measure actual overall and predefined-group errors for pooled\" (verb: set): {\"overall\":{\"receipt\":{\"kind\":\"evaluation-receipt\",\"evaluationId\":\"pooled-overall\",\"createdAt\":1793381512054,\"modelRef\":{\"kind\":\"model\",\"sessionId\":\"regression-… (5940 chars total — get_value('evaluate-pooled#4', 'pooledReceipts') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 15,
+      "tool": "trace_node",
+      "args": {
+        "runtimeStageId": "release-retained#10"
+      },
+      "result": "STEP release-retained#10 — \"Compose overall selection, quality and required group checks for retained\"\nwrote (6):\n- retainedPlanRef (set): {\"kind\":\"artifact\",\"path\":\"sha256-22634301c19c119578081cd4fac87c01ffd97e6101d4cd075c0e41cd29495559-bacb769b46f6d169fb227ea026550f411d46cbe66a9c2a6ba36449c8cf8e4… (286 chars total — get_value('release-retained#10', 'retainedPlanRef') for full)\n- retainedReleaseRef (set): {\"kind\":\"artifact\",\"path\":\"sha256-19be08bbe847a0126c481a51468a15eeff44aa3595c4328a9d42e6d3dbfe06b2-bacb769b46f6d169fb227ea026550f411d46cbe66a9c2a6ba36449c8cf8e4… (288 chars total — get_value('release-retained#10', 'retainedReleaseRef') for full)\n- retainedRelease (set): {\"kind\":\"model-release-publication\",\"schemaVersion\":1,\"allowed\":true,\"status\":\"published\",\"reasons\":[{\"code\":\"model-release-checks-pass\",\"message\":\"Pinned autho… (3729 chars total — get_value('release-retained#10', 'retainedRelease') for full)\n- retainedPublisherCalls (set): [\"lookup\",\"publish\"]\n- retainedLiveObservations (set): [{\"kind\":\"model\",\"sessionId\":\"regression-proof-cecd0e3c0b81451f94f49a233ffabb05\",\"handle\":1,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"sha256-45e17193efea0f251… (1243 chars total — get_value('release-retained#10', 'retainedLiveObservations') for full)\n- approvedPublication (set): {\"kind\":\"model-publication-receipt\",\"schemaVersion\":1,\"releaseId\":\"retained-release\",\"idempotencyKey\":\"retained-publication\",\"targetName\":\"regression-proof\",\"re… (1006 chars total — get_value('release-retained#10', 'approvedPublication') for full)\nread (10): candidateConfigurations, comparison, baselineModelRef, unchangedReceipts, publisherConfiguration, qualityPolicy, unchangedManifestRef, unchangedObservationsRef, unchangedReceiptRef, retainedPlanRef\nparents:\n- data: candidateConfigurations ← declare-before-training#0 \"Declare populations, data protocol and acceptance limits before evaluation\"\n- data: comparison ← generate-declared-data#1 \"Generate the fixed populations and retain actual membership artifacts\"\n- data: baselineModelRef ← train-two-models#2 \"Fit the predeclared group-balanced and pooled least-squares models\"\n- data: unchangedReceipts ← evaluate-unchanged#5 \"Measure actual overall and predefined-group errors for unchanged\"\n- data: publisherConfiguration ← declare-before-training#0 \"Declare populations, data protocol and acceptance limits before evaluation\"\n- data: qualityPolicy ← declare-before-training#0 \"Declare populations, data protocol and acceptance limits before evaluation\"\n- data: unchangedManifestRef ← check-unchanged-regression#7 \"Compare unchanged to the independently retained baseline\"\n- data: unchangedObservationsRef ← check-unchanged-regression#7 \"Compare unchanged to the independently retained baseline\"\n- data: unchangedReceiptRef ← check-unchanged-regression#7 \"Compare unchanged to the independently retained baseline\"\n- data: retainedPlanRef ← (no tracked writer ⚠ never-written)\n⚠ never-written: No commit in the range asked about wrote the key — not its whole value, not a path inside it, and not a container around it in a way that changed it (a forward slice or a timeline also found no recorded read on, inside or around it) — so there is no write to start from: any value it has came from the initial state, the frozen run input or a closure, none of which the commit log can see.\n⚠ control-dependence lookup not provided — the decision that routed here is unknown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    }
+  ],
+  "releaseNode": "STEP release-retained#10 — \"Compose overall selection, quality and required group checks for retained\"\nwrote (6):\n- retainedPlanRef (set): {\"kind\":\"artifact\",\"path\":\"sha256-22634301c19c119578081cd4fac87c01ffd97e6101d4cd075c0e41cd29495559-bacb769b46f6d169fb227ea026550f411d46cbe66a9c2a6ba36449c8cf8e4… (286 chars total — get_value('release-retained#10', 'retainedPlanRef') for full)\n- retainedReleaseRef (set): {\"kind\":\"artifact\",\"path\":\"sha256-19be08bbe847a0126c481a51468a15eeff44aa3595c4328a9d42e6d3dbfe06b2-bacb769b46f6d169fb227ea026550f411d46cbe66a9c2a6ba36449c8cf8e4… (288 chars total — get_value('release-retained#10', 'retainedReleaseRef') for full)\n- retainedRelease (set): {\"kind\":\"model-release-publication\",\"schemaVersion\":1,\"allowed\":true,\"status\":\"published\",\"reasons\":[{\"code\":\"model-release-checks-pass\",\"message\":\"Pinned autho… (3729 chars total — get_value('release-retained#10', 'retainedRelease') for full)\n- retainedPublisherCalls (set): [\"lookup\",\"publish\"]\n- retainedLiveObservations (set): [{\"kind\":\"model\",\"sessionId\":\"regression-proof-cecd0e3c0b81451f94f49a233ffabb05\",\"handle\":1,\"originArtifact\":{\"kind\":\"artifact\",\"path\":\"sha256-45e17193efea0f251… (1243 chars total — get_value('release-retained#10', 'retainedLiveObservations') for full)\n- approvedPublication (set): {\"kind\":\"model-publication-receipt\",\"schemaVersion\":1,\"releaseId\":\"retained-release\",\"idempotencyKey\":\"retained-publication\",\"targetName\":\"regression-proof\",\"re… (1006 chars total — get_value('release-retained#10', 'approvedPublication') for full)\nread (10): candidateConfigurations, comparison, baselineModelRef, unchangedReceipts, publisherConfiguration, qualityPolicy, unchangedManifestRef, unchangedObservationsRef, unchangedReceiptRef, retainedPlanRef\nparents:\n- data: candidateConfigurations ← declare-before-training#0 \"Declare populations, data protocol and acceptance limits before evaluation\"\n- data: comparison ← generate-declared-data#1 \"Generate the fixed populations and retain actual membership artifacts\"\n- data: baselineModelRef ← train-two-models#2 \"Fit the predeclared group-balanced and pooled least-squares models\"\n- data: unchangedReceipts ← evaluate-unchanged#5 \"Measure actual overall and predefined-group errors for unchanged\"\n- data: publisherConfiguration ← declare-before-training#0 \"Declare populations, data protocol and acceptance limits before evaluation\"\n- data: qualityPolicy ← declare-before-training#0 \"Declare populations, data protocol and acceptance limits before evaluation\"\n- data: unchangedManifestRef ← check-unchanged-regression#7 \"Compare unchanged to the independently retained baseline\"\n- data: unchangedObservationsRef ← check-unchanged-regression#7 \"Compare unchanged to the independently retained baseline\"\n- data: unchangedReceiptRef ← check-unchanged-regression#7 \"Compare unchanged to the independently retained baseline\"\n- data: retainedPlanRef ← (no tracked writer ⚠ never-written)\n⚠ never-written: No commit in the range asked about wrote the key — not its whole value, not a path inside it, and not a container around it in a way that changed it (a forward slice or a timeline also found no recorded read on, inside or around it) — so there is no write to start from: any value it has came from the initial state, the frozen run input or a closure, none of which the commit log can see.\n⚠ control-dependence lookup not provided — the decision that routed here is unknown.",
+  "execution": {
+    "savedJsonOnly": true,
+    "trainingStarted": false,
+    "numpyImported": false,
+    "guardRecomputed": false,
+    "publicationPerformed": false
+  },
+  "boundaries": [
+    "Fixed synthetic 90/10 population protocol; no statistical significance, protected-class fairness or production representativeness claim.",
+    "Groups and main limits were declared before data generation, training and evaluation. Negative/coverage controls are explicitly derived what-if inputs.",
+    "An unchanged baseline is a separately evaluated no-regression control, not a new improved model.",
+    "Group membership and numerical observations remain trusted application evidence; identities do not authenticate a producer or prove arbitrary semantics.",
+    "Python owns stages and retry; this is not native FootPrint executor control or a distributed scheduler.",
+    "The existing local Node publisher supplies one-host locking/CAS/idempotency, without power-loss or distributed exactly-once guarantees."
+  ]
+}

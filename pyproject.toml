@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "footprintjs-ml"
-version = "0.6.0b10"
+version = "0.6.0b11"
 description = "Python workflow capture and ML evidence bindings over the FootPrint runtime"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -66,3 +66,6 @@ namespaces = false
 "share/footprintjs-ml/examples/inference/fixtures" = ["examples/inference/fixtures/*.json"]
 
 "share/footprintjs-ml/examples/mlflow-promotion" = ["examples/mlflow-promotion/*.py", "examples/mlflow-promotion/*.mjs", "examples/mlflow-promotion/*.md", "examples/mlflow-promotion/*.txt"]
+
+"share/footprintjs-ml/features/regression" = ["features/regression/README.md"]
+"share/footprintjs-ml/examples/regression" = ["examples/regression/*.py", "examples/regression/*.mjs", "examples/regression/*.md", "examples/regression/*.txt"]

@@ -22,3 +22,7 @@ export type { ReleaseArtifactStore, ModelReleasePlan, ReleaseArtifactIdentity, M
 export { createPredictionContract, readPredictionContract, createInferenceReceipt, readInferenceReceipt, checkInference } from './inference.js';
 export type { PredictionField, PredictionFields, PredictionContractInput, PredictionContract,
   InferenceReceiptInput, InferenceReceipt, InferenceRequest, InferenceReason, InferenceDecision } from './inference.js';
+
+export {readRegressionManifest, createRegressionReceipt, readRegressionReceipt, checkRegression} from './regression.js';
+export type {RegressionGroup, RegressionPolicy, RegressionManifest, RegressionObservation, RegressionReceiptInput,
+  RegressionReceipt, RegressionRequest, RegressionReason, RegressionComparison, RegressionDecision} from './regression.js';

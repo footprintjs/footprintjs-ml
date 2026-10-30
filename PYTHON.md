@@ -8,16 +8,16 @@ Prerequisites: Python 3.11+ and Node.js 22+ with npm. The current CI targets Pyt
 
 ```sh
 python3 -m venv .venv
-.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.10/footprintjs_ml-0.6.0b10-py3-none-any.whl
+.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.11/footprintjs_ml-0.6.0b11-py3-none-any.whl
 .venv/bin/python -m footprint_ml_workflow setup
 .venv/bin/python -m footprint_ml_workflow doctor
 ```
 
-Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b10` corresponds to npm version `0.6.0-beta.10`.
+Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b11` corresponds to npm version `0.6.0-beta.11`.
 
 The wheel has no required Python packages. It does not install MLflow, NumPy, scikit-learn or JAX. Importing the module and constructing a capture object do not install dependencies or launch a process. The optional numerical trainer adapter still needs NumPy when explicitly used.
 
-`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.8.0`, `agentfootprint@11.0.0` and `footprintjs@10.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.10` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
+`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.8.0`, `agentfootprint@11.0.0` and `footprintjs@10.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.11` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
 
 The helper is checked in a temporary sibling directory before it is made available. A failed setup preserves the prior runtime. A completed matching installation can be checked again. `doctor` is read-only: it checks versions and imports without starting a trainer or connecting to MLflow. It is an environment check, not an authenticity or security certificate. Release `SHA256SUMS` identifies the distributed files.
 
@@ -160,3 +160,9 @@ PYTHON="$PWD/.build-venv/bin/python" npm run build:python
 ```
 
 This creates the wheel in `python-dist/`. The release acceptance check installs it into a fresh environment outside the checkout and provisions the helper from the locally packed SDK archive before recording and reopening a small run. Standard Python packaging is described in the [Python Packaging User Guide](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
+
+## Paired baseline/group regression
+
+The started capture exposes `read_regression_manifest(input)`, `create_regression_receipt(input)`, `read_regression_receipt(input)` and `check_regression(input)`. These call the same TypeScript core; they add no numerical dependency. Keep JSON fields camelCase and read the actual operands through scope before calling a guard. The [regression guide](REGRESSION.md) defines missing/insufficient evidence, absolute tolerances, binding and freshness behavior. The [numerical example](examples/regression/README.md) trains two ordinary regressions on fixed imbalanced data, refuses a worse predefined group despite an overall improvement, then reopens saved evidence without training.
+
+For release composition, the independently pinned plan's optional `regression` block names managed `manifestRef`, `observationsRef` and `receiptRef` artifacts. Its presence requires the check in existing `prepare_model_release`/`publish_model_release`/`release_model` calls.

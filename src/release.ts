@@ -7,6 +7,8 @@ import {checkSelection, createSelectionReceipt, readSelectionManifest} from './s
 import type {SelectionCandidateResult, SelectionDecision} from './selection.js';
 import {checkDataLineage} from './lineage.js';
 import type {DataLineageDecision, DataLineagePolicy} from './lineage.js';
+import {checkRegression, readRegressionManifest, readRegressionReceipt} from './regression.js';
+import type {RegressionDecision, RegressionObservation} from './regression.js';
 
 export interface ReleaseArtifactStore {
   read(reference: ArtifactRef): Promise<Uint8Array>;
@@ -19,6 +21,8 @@ export interface ModelReleasePlan {
   readonly modelArtifact: ArtifactRef;
   readonly manifestRef: ArtifactRef; readonly resultsRef: ArtifactRef;
   readonly selectionReceiptRef: ArtifactRef; readonly qualityPolicy: ReleasePolicy;
+  /** Presence requires this independently pinned baseline/group comparison before any new publication. */
+  readonly regression?: {readonly manifestRef: ArtifactRef; readonly observationsRef: ArtifactRef; readonly receiptRef?: ArtifactRef};
   readonly lineage?: {readonly required: boolean; readonly receiptRef?: ArtifactRef;
     readonly splitManifest: ArtifactRef; readonly policy: DataLineagePolicy};
 }
@@ -32,7 +36,9 @@ export interface ModelPublicationPayload {
   readonly inferenceIdentity: InferenceIdentity | null;
   readonly evidence: {readonly plan: ReleaseArtifactIdentity; readonly manifest: ReleaseArtifactIdentity;
     readonly results: ReleaseArtifactIdentity; readonly selectionReceipt: ReleaseArtifactIdentity;
-    readonly lineageReceipt?: ReleaseArtifactIdentity; readonly splitManifest?: ReleaseArtifactIdentity};
+    readonly lineageReceipt?: ReleaseArtifactIdentity; readonly splitManifest?: ReleaseArtifactIdentity;
+    readonly regressionManifest?: ReleaseArtifactIdentity; readonly regressionObservations?: ReleaseArtifactIdentity;
+    readonly regressionReceipt?: ReleaseArtifactIdentity};
   readonly qualityPolicy: ReleasePolicy;
 }
 export interface ModelPublicationRequest {
@@ -64,7 +70,7 @@ export interface ModelReleaseDecision {
   /** Present only when confirming an existing effect without fresh release authorization. */
   readonly basis?: 'historical-acknowledgement';
   readonly checks: {readonly quality: ReleaseDecision | null; readonly selection: SelectionDecision | null;
-    readonly lineage: DataLineageDecision | null};
+    readonly lineage: DataLineageDecision | null; readonly regression?: RegressionDecision};
   readonly bindings: {readonly planRef: ArtifactRef | null; readonly modelRef: ModelRef | null;
     readonly payloadSha256: string | null};
 }
@@ -73,7 +79,7 @@ export interface PreparedModelRelease {
   readonly planRef: ArtifactRef; readonly modelRef: ModelRef;
   readonly payload: ModelPublicationPayload; readonly payloadSha256: string;
   readonly qualityDecision: ReleaseDecision; readonly selectionDecision: SelectionDecision;
-  readonly lineageDecision: DataLineageDecision | null; readonly decision: ModelReleaseDecision;
+  readonly lineageDecision: DataLineageDecision | null; readonly regressionDecision?: RegressionDecision; readonly decision: ModelReleaseDecision;
 }
 export interface PrepareModelReleaseRequest {
   /** Independently authorized/pinned reference, never authority copied from the offered preparation. */
@@ -135,7 +141,12 @@ export function readModelPublicationPayload(value: unknown): ModelPublicationPay
   if (raw.kind !== 'model-publication-payload' || raw.schemaVersion !== 1)
     fail('invalid-publication-payload', 'Unsupported publication payload schema');
   const evidence = jsonObject(raw.evidence, 'payload.evidence');
-  exactKeys(evidence, ['plan', 'manifest', 'results', 'selectionReceipt', 'lineageReceipt', 'splitManifest'], 'payload.evidence');
+  exactKeys(evidence, ['plan', 'manifest', 'results', 'selectionReceipt', 'lineageReceipt', 'splitManifest',
+    'regressionManifest', 'regressionObservations', 'regressionReceipt'], 'payload.evidence');
+  const regressionKeys = ['regressionManifest', 'regressionObservations', 'regressionReceipt'] as const;
+  const regressionCount = regressionKeys.filter(key => evidence[key] !== undefined).length;
+  if (regressionCount !== 0 && regressionCount !== 3)
+    fail('invalid-publication-payload', 'Regression publication evidence must contain all three pinned identities');
   const measured = raw.inferenceIdentity === null ? null : inferenceIdentity(raw.inferenceIdentity);
   return detached({kind: 'model-publication-payload' as const, schemaVersion: 1 as const,
     releaseId: nonempty(raw.releaseId, 'releaseId'), idempotencyKey: nonempty(raw.idempotencyKey, 'idempotencyKey'),
@@ -146,7 +157,9 @@ export function readModelPublicationPayload(value: unknown): ModelPublicationPay
     evidence: {plan: identity(evidence.plan), manifest: identity(evidence.manifest), results: identity(evidence.results),
       selectionReceipt: identity(evidence.selectionReceipt),
       ...(evidence.lineageReceipt === undefined ? {} : {lineageReceipt: identity(evidence.lineageReceipt)}),
-      ...(evidence.splitManifest === undefined ? {} : {splitManifest: identity(evidence.splitManifest)})},
+      ...(evidence.splitManifest === undefined ? {} : {splitManifest: identity(evidence.splitManifest)}),
+      ...(regressionCount === 0 ? {} : {regressionManifest: identity(evidence.regressionManifest),
+        regressionObservations: identity(evidence.regressionObservations), regressionReceipt: identity(evidence.regressionReceipt)})},
     qualityPolicy: readPolicy(raw.qualityPolicy)});
 }
 /** Hash actual detached bytes; root import remains free of Node-specific modules. */
@@ -164,9 +177,16 @@ export async function modelPublicationPayloadSha256(value: ModelPublicationPaylo
 export function readModelReleasePlan(value: unknown): ModelReleasePlan {
   const raw = jsonObject(value, 'model release plan');
   exactKeys(raw, ['kind', 'schemaVersion', 'releaseId', 'idempotencyKey', 'target', 'modelArtifact',
-    'manifestRef', 'resultsRef', 'selectionReceiptRef', 'qualityPolicy', 'lineage'], 'release plan');
+    'manifestRef', 'resultsRef', 'selectionReceiptRef', 'qualityPolicy', 'lineage', 'regression'], 'release plan');
   if (raw.kind !== 'model-release-plan' || raw.schemaVersion !== 1)
     fail('invalid-model-release-plan', 'Unsupported model release plan schema');
+  let regression: ModelReleasePlan['regression'];
+  if (raw.regression !== undefined) {
+    const source = jsonObject(raw.regression, 'regression');
+    exactKeys(source, ['manifestRef', 'observationsRef', 'receiptRef'], 'regression');
+    regression = {manifestRef: artifactRef(source.manifestRef), observationsRef: artifactRef(source.observationsRef),
+      ...(source.receiptRef === undefined ? {} : {receiptRef: artifactRef(source.receiptRef)})};
+  }
   let lineage: ModelReleasePlan['lineage'];
   if (raw.lineage !== undefined) {
     const source = jsonObject(raw.lineage, 'lineage');
@@ -183,7 +203,7 @@ export function readModelReleasePlan(value: unknown): ModelReleasePlan {
     target: readTarget(raw.target), modelArtifact: artifactRef(raw.modelArtifact),
     manifestRef: artifactRef(raw.manifestRef), resultsRef: artifactRef(raw.resultsRef),
     selectionReceiptRef: artifactRef(raw.selectionReceiptRef), qualityPolicy: readPolicy(raw.qualityPolicy),
-    ...(lineage === undefined ? {} : {lineage})});
+    ...(lineage === undefined ? {} : {lineage}), ...(regression === undefined ? {} : {regression})});
 }
 
 async function measuredRead(store: ReleaseArtifactStore, value: ArtifactRef): Promise<Uint8Array> {
@@ -255,6 +275,22 @@ async function evaluatePlan(input: PrepareModelReleaseRequest): Promise<{
       [lineageJson] = await Promise.all([measuredJson(input.store, plan.lineage.receiptRef),
         measuredRead(input.store, plan.lineage.splitManifest)]);
     }
+    let regressionManifest: ReturnType<typeof readRegressionManifest> | undefined;
+    let regressionObservations: RegressionObservation[] | undefined;
+    let regressionReceipt: JsonValue | undefined;
+    if (plan.regression) {
+      regressionManifest = readRegressionManifest(await measuredJson(input.store, plan.regression.manifestRef));
+      regressionObservations = await measuredJson(input.store, plan.regression.observationsRef) as unknown as RegressionObservation[];
+      if (plan.regression.receiptRef) regressionReceipt = await measuredJson(input.store, plan.regression.receiptRef);
+      // Measure the declaration and membership artifacts actually pinned by this release.
+      // Their application-defined semantics and numerical truth remain the evaluator's responsibility.
+      await measuredRead(input.store, regressionManifest.comparison.datasetRef.artifact);
+      for (const group of regressionManifest.groups) {
+        await measuredRead(input.store, group.definitionRef);
+        await measuredRead(input.store, group.membershipRef);
+        await measuredRead(input.store, group.datasetRef.artifact);
+      }
+    }
     if (typeof input.verifyModel !== 'function') fail('release-live-verification-required', 'A live model verifier is required');
     const modelRef = readModelRef(await input.verifyModel({modelRef: proposed}));
     if (!sameRuntime(proposed, modelRef) || !sameModelContent(proposed, modelRef))
@@ -267,7 +303,9 @@ async function evaluatePlan(input: PrepareModelReleaseRequest): Promise<{
     const selection = checkSelection({receipt: selectionJson, manifest, results: expected.results, modelRef, now});
     const lineage = plan.lineage?.required ? checkDataLineage({receipt: lineageJson, modelRef,
       datasetRef: manifest.comparison.datasetRef, splitManifest: plan.lineage.splitManifest, policy: plan.lineage.policy}) : null;
-    const checks = {quality, selection, lineage};
+    const regression = plan.regression ? checkRegression({manifest: regressionManifest!,
+      observations: regressionObservations!, receipt: regressionReceipt, modelRef, now}) : undefined;
+    const checks = {quality, selection, lineage, ...(regression === undefined ? {} : {regression})};
     const reasons: ReleaseReason[] = [];
     let denied = false, unknown = false;
     for (const [name, check] of Object.entries(checks)) if (check && !check.allowed) {
@@ -279,8 +317,16 @@ async function evaluatePlan(input: PrepareModelReleaseRequest): Promise<{
       reasons.push({code: 'release-checkpoint-mismatch',
         message: 'The plan, winning result and verified live model must name the same exact checkpoint bytes/format'});
     }
-    const validUntil = plan.qualityPolicy.maxAgeMs === undefined ? null :
-      Math.min(Number.MAX_VALUE, winner.evaluation.createdAt + plan.qualityPolicy.maxAgeMs);
+    const expiryTimes: number[] = [];
+    if (plan.qualityPolicy.maxAgeMs !== undefined)
+      expiryTimes.push(Math.min(Number.MAX_VALUE, winner.evaluation.createdAt + plan.qualityPolicy.maxAgeMs));
+    if (regressionManifest?.maxAgeMs !== undefined && regression?.allowed) {
+      const retained = readRegressionReceipt(regressionReceipt);
+      const timestamps = [retained.createdAt, ...retained.observations.flatMap(observation =>
+        [observation.baseline?.createdAt, observation.candidate?.createdAt].filter((value): value is number => value !== undefined))];
+      expiryTimes.push(...timestamps.map(time => Math.min(Number.MAX_VALUE, time + regressionManifest!.maxAgeMs!)));
+    }
+    const validUntil = expiryTimes.length ? Math.min(...expiryTimes) : null;
     const payload = readModelPublicationPayload({kind: 'model-publication-payload', schemaVersion: 1,
       releaseId: plan.releaseId, idempotencyKey: plan.idempotencyKey, target: plan.target,
       artifact: contentIdentity(plan.modelArtifact), candidateId: expected.selectedCandidateId,
@@ -288,17 +334,21 @@ async function evaluatePlan(input: PrepareModelReleaseRequest): Promise<{
       evidence: {plan: contentIdentity(planRef), manifest: contentIdentity(plan.manifestRef),
         results: contentIdentity(plan.resultsRef), selectionReceipt: contentIdentity(plan.selectionReceiptRef),
         ...(plan.lineage?.required && plan.lineage.receiptRef ? {lineageReceipt: contentIdentity(plan.lineage.receiptRef),
-          splitManifest: contentIdentity(plan.lineage.splitManifest)} : {})}, qualityPolicy: plan.qualityPolicy});
+          splitManifest: contentIdentity(plan.lineage.splitManifest)} : {}),
+        ...(plan.regression?.receiptRef ? {regressionManifest: contentIdentity(plan.regression.manifestRef),
+          regressionObservations: contentIdentity(plan.regression.observationsRef),
+          regressionReceipt: contentIdentity(plan.regression.receiptRef)} : {})}, qualityPolicy: plan.qualityPolicy});
     const payloadSha256 = await modelPublicationPayloadSha256(payload);
     const allowed = !denied && !unknown;
     if (allowed) reasons.push({code: 'model-release-checks-pass',
-      message: 'Pinned authority, complete selection, quality, required data use, live model and exact checkpoint agree'});
+      message: plan.regression ? 'Pinned authority, selection, quality, required lineage/group comparison, live model and exact checkpoint agree' :
+        'Pinned authority, complete selection, quality, required data use, live model and exact checkpoint agree'});
     decision = detached({...decision, checkedAt: now, allowed, status: allowed ? 'allow' as const : denied ? 'deny' as const : 'unknown' as const,
       reasons, checks, bindings: {planRef, modelRef, payloadSha256}});
     if (!allowed) return {decision, record: null, modelBytes: null};
     const record: PreparedModelRelease = detached({kind: 'prepared-model-release' as const, schemaVersion: 1 as const,
       preparedAt: now, planRef, modelRef, payload, payloadSha256, qualityDecision: quality,
-      selectionDecision: selection, lineageDecision: lineage, decision});
+      selectionDecision: selection, lineageDecision: lineage, ...(regression === undefined ? {} : {regressionDecision: regression}), decision});
     return {decision, record, modelBytes};
   } catch (error) {
     return {decision: failedDecision(error, decision), record: null, modelBytes: null};
@@ -318,23 +368,27 @@ export async function prepareModelRelease(input: PrepareModelReleaseRequest): Pr
 function readPrepared(value: unknown): PreparedModelRelease {
   const raw = jsonObject(value, 'prepared model release');
   exactKeys(raw, ['kind', 'schemaVersion', 'preparedAt', 'planRef', 'modelRef', 'payload', 'payloadSha256',
-    'qualityDecision', 'selectionDecision', 'lineageDecision', 'decision'], 'prepared release');
+    'qualityDecision', 'selectionDecision', 'lineageDecision', 'regressionDecision', 'decision'], 'prepared release');
   if (raw.kind !== 'prepared-model-release' || raw.schemaVersion !== 1)
     fail('invalid-release-preparation', 'Unsupported preparation schema');
   const decision = jsonObject(raw.decision, 'preparation decision');
   const quality = jsonObject(raw.qualityDecision, 'preparation quality');
   const selection = jsonObject(raw.selectionDecision, 'preparation selection');
   const lineage = raw.lineageDecision === null ? null : jsonObject(raw.lineageDecision, 'preparation lineage');
+  const regression = raw.regressionDecision === undefined ? undefined : jsonObject(raw.regressionDecision, 'preparation regression');
   if (decision.kind !== 'model-release-decision' || decision.allowed !== true || decision.status !== 'allow' ||
       quality.kind !== 'release-decision' || quality.allowed !== true ||
       selection.kind !== 'selection-decision' || selection.allowed !== true ||
-      (lineage !== null && (lineage.kind !== 'data-lineage-decision' || lineage.allowed !== true)))
+      (lineage !== null && (lineage.kind !== 'data-lineage-decision' || lineage.allowed !== true)) ||
+      (regression !== undefined && (regression.kind !== 'regression-decision' || regression.allowed !== true)))
     fail('release-preparation-not-approved', 'The stored preparation does not retain successful required checks');
   return detached({kind: 'prepared-model-release' as const, schemaVersion: 1 as const,
     preparedAt: finiteNumber(raw.preparedAt, 'preparedAt', 0), planRef: artifactRef(raw.planRef), modelRef: readModelRef(raw.modelRef),
     payload: readModelPublicationPayload(raw.payload), payloadSha256: nonempty(raw.payloadSha256, 'payloadSha256'),
     qualityDecision: quality as unknown as ReleaseDecision, selectionDecision: selection as unknown as SelectionDecision,
-    lineageDecision: lineage as unknown as DataLineageDecision | null, decision: decision as unknown as ModelReleaseDecision});
+    lineageDecision: lineage as unknown as DataLineageDecision | null,
+    ...(regression === undefined ? {} : {regressionDecision: regression as unknown as RegressionDecision}),
+    decision: decision as unknown as ModelReleaseDecision});
 }
 function publication(decision: ModelReleaseDecision, status: ModelReleasePublication['status'],
   preparedRef: ArtifactRef | null = null, record: PreparedModelRelease | null = null,

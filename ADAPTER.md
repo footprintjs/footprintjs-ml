@@ -9,7 +9,7 @@ The supplied transfer proof adapts the official JAX Gaussian-process regression 
 Install the beta package (or the downloaded release tarball). Python, NumPy and your numerical framework must already be installed; the kit does not install them automatically.
 
 ```sh
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.10/footprintjs-ml-0.6.0-beta.10.tgz
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.11/footprintjs-ml-0.6.0-beta.11.tgz
 ```
 
 ```ts

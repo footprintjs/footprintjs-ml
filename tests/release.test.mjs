@@ -379,3 +379,104 @@ test('the convenience API can recover a retained preparation after expiry withou
   assert.equal(recovered.status, 'already-published'); assert.equal(publisher.publications.length, 1);
   assert.deepEqual(recovered.preparedRef, first.preparedRef);
 });
+
+// Synthetic paired observations isolate the release boundary from numerical evaluation.
+async function regressionFixture({candidateMse = 0.01, maxAgeMs} = {}) {
+  const f = await fixture(), comparison = f.manifest.comparison;
+  const manifest = {kind: 'regression-manifest', schemaVersion: 1, comparisonId: 'predeclared-group-comparison',
+    baselineModelRef: f.models[0], candidateModelRef: f.models[1], comparison,
+    groups: [{groupId: 'declared-group', definitionRef: await f.store.putJson({where: 'all fixture rows'}),
+      membershipRef: await f.store.putJson([0, 1]), datasetRef: comparison.datasetRef, expectedRows: 2}],
+    policies: [{groupId: 'declared-group', metric: 'mse', direction: 'min', maxDeterioration: 0, minSamples: 2}],
+    ...(maxAgeMs === undefined ? {} : {maxAgeMs})};
+  const observations = [{groupId: 'declared-group', definitionRef: manifest.groups[0].definitionRef,
+    membershipRef: manifest.groups[0].membershipRef, rows: 2,
+    baseline: createEvaluationReceipt({modelRef: f.models[0], ...comparison, evaluationId: 'baseline-group',
+      createdAt: NOW - 20, metrics: {mse: 0.04}}),
+    candidate: createEvaluationReceipt({modelRef: f.models[1], ...comparison, evaluationId: 'candidate-group',
+      createdAt: NOW, metrics: {mse: candidateMse}})}];
+  const {createRegressionReceipt} = await import('../dist/index.js');
+  const receipt = createRegressionReceipt({regressionId: 'paired-group-evaluation', createdAt: NOW + 1, manifest, observations});
+  const manifestRef = await f.store.putJson(manifest), observationsRef = await f.store.putJson(observations),
+    receiptRef = await f.store.putJson(receipt);
+  await f.changePlan(plan => {plan.regression = {manifestRef, observationsRef, receiptRef};});
+  return Object.assign(f, {regressionManifest: manifest, regressionObservations: observations, regressionReceipt: receipt});
+}
+
+test('required group regression blocks an overall winner before a publisher is called', async () => {
+  const f = await regressionFixture({candidateMse: 0.06}), publisher = receiver();
+  const result = await releaseModel({...f.input(), publisher});
+  assert.equal(result.status, 'deny'); assert.equal(result.decision.checks.selection.allowed, true);
+  assert.equal(result.decision.checks.quality.allowed, true); assert.equal(result.decision.checks.regression.allowed, false);
+  assert.ok(reason(result, 'release-regression-failed')); assert.equal(publisher.requests.length, 0);
+});
+
+test('passing regression evidence is loaded, bound in the semantic payload and repeated before publication', async () => {
+  const f = await regressionFixture(), prepared = await prepareModelRelease(f.input());
+  assert.equal(prepared.allowed, true, JSON.stringify(prepared.reasons));
+  assert.equal(prepared.record.regressionDecision.allowed, true);
+  for (const [key, ref] of [['regressionManifest', 'manifestRef'], ['regressionObservations', 'observationsRef'], ['regressionReceipt', 'receiptRef']])
+    assert.equal(prepared.record.payload.evidence[key].sha256, f.plan.regression[ref].sha256);
+  const publisher = receiver();
+  const result = await publishModelRelease({...f.input(), preparedRef: prepared.preparedRef, publisher});
+  assert.equal(result.status, 'published'); assert.equal(publisher.requests.length, 1);
+  assert.equal(publisher.requests[0].payload.evidence.regressionReceipt.sha256, f.plan.regression.receiptRef.sha256);
+  const retry = await publishModelRelease({planRef: f.planRef, store: f.store, preparedRef: prepared.preparedRef, publisher, now: NOW + 100_000});
+  assert.equal(retry.status, 'already-published'); assert.equal(publisher.requests.length, 1);
+});
+
+test('required but missing regression receipt or observations cannot authorize publication', async () => {
+  const f = await regressionFixture();
+  await f.changePlan(plan => {delete plan.regression.receiptRef;});
+  const missing = await prepareModelRelease(f.input());
+  assert.equal(missing.status, 'unknown'); assert.equal(missing.allowed, false);
+  assert.equal(missing.decision.checks.regression.status, 'unknown');
+  const g = await regressionFixture();
+  const incomplete = await g.store.putJson([]);
+  await g.changePlan(plan => {plan.regression.observationsRef = incomplete;});
+  assert.equal((await prepareModelRelease(g.input())).allowed, false);
+});
+
+test('the release measures required group definitions, membership and dataset bytes', async () => {
+  for (const field of ['definitionRef', 'membershipRef', 'datasetRef']) {
+    const f = await regressionFixture(), group = f.regressionManifest.groups[0];
+    const reference = field === 'datasetRef' ? group.datasetRef.artifact : group[field];
+    f.data.set(reference.path, encode('swapped bytes'));
+    const result = await prepareModelRelease(f.input());
+    assert.equal(result.status, 'deny'); assert.ok(reason(result, 'release-artifact-mismatch'));
+  }
+});
+
+test('regression baseline age constrains publication even when quality evidence is newer', async () => {
+  const f = await regressionFixture({maxAgeMs: 100}), prepared = await prepareModelRelease(f.input());
+  assert.equal(prepared.allowed, true); assert.equal(prepared.record.payload.validUntil, NOW + 80);
+  const publisher = receiver();
+  const result = await publishModelRelease({...f.input(f.models[1], NOW + 81), preparedRef: prepared.preparedRef, publisher});
+  assert.equal(result.status, 'deny'); assert.ok(reason(result, 'release-approval-expired'));
+  assert.equal(publisher.requests.length, 0);
+});
+
+test('a changed independent regression plan or observation cannot reuse an approved preparation', async () => {
+  const f = await regressionFixture(), prepared = await prepareModelRelease(f.input());
+  const changed = copy(f.regressionObservations); changed[0].candidate.metrics.mse = 0.06;
+  const changedRef = await f.store.putJson(changed);
+  await f.changePlan(plan => {plan.regression.observationsRef = changedRef;});
+  const publisher = receiver(), result = await publishModelRelease({...f.input(), preparedRef: prepared.preparedRef, publisher});
+  assert.equal(result.status, 'deny'); assert.equal(publisher.requests.length, 0);
+});
+
+test('a required regression declaration cannot opt itself out with unsupported fields', async () => {
+  const f = await regressionFixture();
+  assert.throws(() => readModelReleasePlan({...f.plan, regression: {...f.plan.regression, required: false}}));
+  const {readModelPublicationPayload} = await import('../dist/release.js');
+  const prepared = await prepareModelRelease(f.input());
+  const payload = copy(prepared.record.payload); delete payload.evidence.regressionObservations;
+  assert.throws(() => readModelPublicationPayload(payload));
+});
+
+test('legacy plans keep their original preparation shape for historical reconstruction', async () => {
+  const f = await fixture(), result = await prepareModelRelease(f.input());
+  assert.equal(Object.hasOwn(result.record, 'regressionDecision'), false);
+  assert.equal(Object.hasOwn(result.record.decision.checks, 'regression'), false);
+  assert.equal(Object.hasOwn(result.record.payload.evidence, 'regressionReceipt'), false);
+});

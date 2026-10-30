@@ -54,29 +54,46 @@ def main(out):
             'policy':{'metric':'mse','direction':'min','tieBreak':'candidate-id-ascending'}})
         results=[{'candidateId':'a','configuration':{'seed':1},'modelRef':model,'evaluation':evaluation}]
         selected=capture.create_selection_receipt({'selectionId':'installed-selection','createdAt':1,'manifest':manifest,'results':results})
+        group={'groupId':'all','definitionRef':put({'where':'all rows'}),'membershipRef':put([0]),'datasetRef':dataset,'expectedRows':1}
+        regression_manifest=capture.read_regression_manifest({'kind':'regression-manifest','schemaVersion':1,'comparisonId':'installed-paired',
+            'baselineModelRef':model,'candidateModelRef':model,'comparison':comparison,'groups':[group],
+            'policies':[{'groupId':'all','metric':'mse','direction':'min','maxDeterioration':0,'minSamples':1}]})
+        observations=[{'groupId':'all','definitionRef':group['definitionRef'],'membershipRef':group['membershipRef'],'rows':1,
+            'baseline':evaluation,'candidate':evaluation}]
+        regression_receipt=capture.create_regression_receipt({'regressionId':'installed-regression','createdAt':1,
+            'manifest':regression_manifest,'observations':observations})
+        assert capture.read_regression_receipt(regression_receipt)==regression_receipt
+        assert capture.check_regression({'manifest':regression_manifest,'observations':observations,
+            'receipt':regression_receipt,'modelRef':model,'now':2})['allowed']
         plan=capture.read_model_release_plan({'kind':'model-release-plan','schemaVersion':1,'releaseId':'installed-release','idempotencyKey':'installed-key',
             'target':{'name':publisher.target_name,'expectedRevision':None},'modelArtifact':artifact,
             'manifestRef':put(manifest),'resultsRef':put(results),'selectionReceiptRef':put(selected),
-            'qualityPolicy':{'metric':'mse','operator':'lte','threshold':0}})
+            'qualityPolicy':{'metric':'mse','operator':'lte','threshold':0},
+            'regression':{'manifestRef':put(regression_manifest),'observationsRef':put(observations),'receiptRef':put(regression_receipt)}})
         plan_ref=put(plan)
+        def compact(value):
+            # Full native responses remain intact in managed evidence; scope
+            # keeps a small exact approval/status/preparation projection.
+            return {'allowed':value['allowed'],'status':value['status'],'preparedRef':value['preparedRef'],
+                'responseRef':put(value),'regressionAllowed':value['decision']['checks']['regression']['allowed']}
         def verify(request):
             observed=copy.deepcopy(request['modelRef'])
             assert observed['originArtifact']['sha256']==hashlib.sha256(model_content).hexdigest()
             return observed
         with capture.stage('installed-prepare') as scope:
             scope['planRef']=plan_ref;scope['modelRef']=model
-            scope['preparation']=capture.prepare_model_release({'planRef':scope['planRef'],'modelRef':scope['modelRef']},store_root=store,verify_model=verify)
+            scope['preparation']=compact(capture.prepare_model_release({'planRef':scope['planRef'],'modelRef':scope['modelRef']},store_root=store,verify_model=verify))
         with capture.stage('installed-publish') as scope:
             prepared=scope['preparation'];assert prepared['allowed'],prepared
-            scope['publication']=capture.publish_model_release({'planRef':scope['planRef'],'preparedRef':prepared['preparedRef'],'modelRef':scope['modelRef']},
-                store_root=store,publisher=publisher,verify_model=verify)
+            scope['publication']=compact(capture.publish_model_release({'planRef':scope['planRef'],'preparedRef':prepared['preparedRef'],'modelRef':scope['modelRef']},
+                store_root=store,publisher=publisher,verify_model=verify))
             assert scope['publication']['status']=='published',scope['publication']
         with capture.stage('installed-acknowledge') as scope:
-            scope['retry']=capture.publish_model_release({'planRef':scope['planRef'],'preparedRef':scope['preparation']['preparedRef']},store_root=store,publisher=publisher)
+            scope['retry']=compact(capture.publish_model_release({'planRef':scope['planRef'],'preparedRef':scope['preparation']['preparedRef']},store_root=store,publisher=publisher))
             assert scope['retry']['status']=='already-published',scope['retry']
     assert client.mutations==1 and client.alias=='1'
     return {'passed':True,'installedModule':True,'nativeCheckedReleaseCallbacks':True,'receiverConsumesApprovedArtifact':True,
-            'historicalRetryWithoutVerifier':True,'aliasMutations':client.mutations,'syntheticClient':True,'numericalTraining':False}
+            'historicalRetryWithoutVerifier':True,'aliasMutations':client.mutations,'syntheticClient':True,'numericalTraining':False,'installedRegressionContracts':True,'requiredRegressionInPublication':True}
 
 
 if __name__=='__main__':

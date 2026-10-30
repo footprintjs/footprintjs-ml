@@ -4,6 +4,12 @@ Use Node.js 22 or 24 and Python 3.11 or newer. Install the pinned development de
 
 The optional import-graph observation uses Node registerHooks and explicitly skips on Node versions without that API. Python protocol tests explicitly skip when their configured Python executable is unavailable; CI installs Python so these run there. The fixture worker tests are not mathematical validation of a numerical framework.
 
+## Paired baseline/group regression
+
+The [regression proof](examples/regression/README.md) declares an imbalanced two-population dataset, configurations, group definition and acceptance limits before evaluation. Actual NumPy weighted and pooled least squares show an overall improvement with a worse predefined group. The shared guard checks paired evidence; composed publication refuses the group regression although overall quality and selection pass. A separately declared unchanged-model control demonstrates successful publication. Missing/insufficient evidence, wrong model/context, swapped pinned artifacts, freshness and historical retry are separate controls.
+
+The focused contract tests use synthetic metrics to isolate schema and guard behavior. The numerical example retains actual predictions outside scope and reopens native Lens/foottrace history with trainer spawning forbidden. A separate saved audit checks arithmetic and artifact bindings without numerical packages. The [audit acceptance controls](examples/regression/audit-controls.py) mutate disposable saved copies to reject empty paired sets, missing native responses, rewritten policies/metrics and rebound evidence. The original run remains unchanged. These checks do not establish statistical significance, group-discovery ability, fairness, independent adoption or an investigation-speed advantage over complete logs.
+
 ## Python checked MLflow promotion
 
 The [promotion example](examples/mlflow-promotion/README.md) performs actual local NumPy training and evaluation, registers two complete predictor bundles with MLflow, and exercises the same core checked-release APIs through Python callbacks. It includes stale A evidence for B, a B proposal against an independent A plan, wrong registered bytes refused before alias mutation, exact A promotion with a lost outer reply, an uncertain setter after its effect, and a separate alias occupied by an uncoordinated writer. The latter controls distinguish a committed local journal from an unresolved pending intent; they do not establish MLflow CAS or distributed exactly-once behavior.
