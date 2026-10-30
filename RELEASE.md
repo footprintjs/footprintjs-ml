@@ -158,6 +158,18 @@ If no existing effect is confirmed, expired approval cannot authorize a new publ
 
 To simulate a lost acknowledgement, an example transport can throw **after** its receiver's `publish` has returned a committed result. That tests acknowledgement recovery. It must not pretend that an exception before the receiver commits proves an existing effect.
 
+## Python release callbacks and MLflow promotion
+
+The started Python facade exposes `read_model_release_plan`, `put_release_artifact`, `prepare_model_release`, `publish_model_release` and `release_model`. These delegate this same core implementation through the explicit Node helper and managed file store. They do not duplicate the release algorithm in Python. The [Python guide](PYTHON.md#publish-an-exact-checked-artifact) lists signatures and request fields.
+
+`verify_model` receives `{modelRef}` and must return the actual backend-measured model reference. The publisher's `publish` and optional read-only `lookup` receive `payload`, `payloadCanonicalJson`, `payloadSha256` and `preparedRef`. `publish` additionally receives `modelArtifact`: a managed reference to the exact core-approved bytes in `store_root`. This replaces the TypeScript callback's transient `Uint8Array` at the Python transport boundary. The receiver must consume and recheck that artifact; a path or expected digest alone is insufficient. No numerical buffer is sent through JSON or workflow scope.
+
+Read the actual request inputs and publisher configuration through tracked scope and write returned observations/decisions explicitly. Callback methods cannot make nested capture/scope requests. The main Python thread waits synchronously while bounded helper threads execute callbacks; a timeout does not cancel or roll back a client operation. An uncertain callback result never authorizes a new effect.
+
+`footprint_ml_promotion.MlflowModelPublisher` is a standard-library optional receiver for one pre-existing registered version and one complete predictor artifact under a canonical `runs:/` source. It verifies version/run/source and actual downloaded bytes before alias mutation. A local pending intent precedes the effect; confirmation records a committed receipt. A committed outer-reply loss can be acknowledged without a new effect. A setter timeout leaves pending intent unknown and blocks automatic repetition even if an alias currently matches. Historical acknowledgements do not establish current deployment.
+
+Every writer to the target must cooperate through the same one-host journal and lock. This is not a remote MLflow compare-and-swap primitive, distributed exactly-once service or automatic reconciliation of pending intent. The [MLflow guide](MLFLOW.md#checked-registered-model-promotion) defines coordinates, limits and trust boundaries; the [real local example](examples/mlflow-promotion/README.md) exercises actual registered versions, wrong bytes, lost replies and an uncoordinated alias. The SDK does not create arbitrary MLflow flavor bundles or implement serving.
+
 ## Trust and extension boundaries
 
 The direct publisher port is a trusted low-level receiver for core-approved requests. It does not authenticate ML approval, verify every ML guard itself, sign receipts or establish remote authorization. Supplying a payload and its matching self-computed hash directly to `publisher.publish` bypasses the core's authority/ML checks. Integrations should expose the checked release API and retain an appropriate trust boundary around the port.

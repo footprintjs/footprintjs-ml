@@ -207,6 +207,8 @@ class WorkflowCapture:
         self._owner: int | None = None
         self._active_scope: _Scope | None = None
         self._closed = False
+        self._callback_active = False
+        self._last_callback_id = 0
         self.run_id: str | None = None
 
     def __enter__(self) -> "WorkflowCapture":
@@ -289,6 +291,8 @@ class WorkflowCapture:
             return
 
     def _require_started(self) -> None:
+        if self._callback_active:
+            raise CaptureError("Capture and scope operations are forbidden inside release callbacks", code="capture-callback-reentry")
         if self._closed or self._process is None:
             raise CaptureError("Start the capture explicitly, or use it as a context manager")
         if self._owner != threading.get_ident():
@@ -303,29 +307,75 @@ class WorkflowCapture:
         self._abort()
         raise CaptureError(message, code="capture-protocol-error")
 
-    def _rpc(self, operation: str, **arguments: Any) -> Any:
+    def _rpc(self, operation: str, *, _callbacks: dict[str, Any] | None = None, **arguments: Any) -> Any:
         self._require_started()
         self._request_id += 1
-        encoded = _json_bytes({"id": self._request_id, "op": operation, **arguments}) + b"\n"
+        request_id = self._request_id
+        encoded = _json_bytes({"id": request_id, "op": operation, **arguments}) + b"\n"
         assert self._process is not None and self._process.stdin is not None
         deadline = time.monotonic() + self.timeout
-        written: queue.Queue[Any] = queue.Queue(maxsize=1)
         pipe = self._process.stdin
 
-        def write_request() -> None:
-            try:
-                pipe.write(encoded)
-                pipe.flush()
-                written.put(None)
-            except (BrokenPipeError, OSError, ValueError) as error:
-                written.put(error)
-
-        threading.Thread(target=write_request, daemon=True).start()
-        try:
-            write_error = written.get(timeout=self.timeout)
+        def send(packet: bytes) -> None:
+            written: queue.Queue[Any] = queue.Queue(maxsize=1)
+            def write_request() -> None:
+                try:
+                    pipe.write(packet)
+                    pipe.flush()
+                    written.put(None)
+                except (BrokenPipeError, OSError, ValueError) as error:
+                    written.put(error)
+            threading.Thread(target=write_request, daemon=True).start()
+            write_error = written.get(timeout=max(0, deadline - time.monotonic()))
             if write_error is not None:
                 self._protocol_error(f"Capture worker input failed during {operation}: {write_error}")
-            response = self._responses.get(timeout=max(0, deadline - time.monotonic()))
+
+        try:
+            send(encoded)
+            while True:
+                response = self._responses.get(timeout=max(0, deadline - time.monotonic()))
+                if not (type(response) is dict and response.get("type") == "callback"):
+                    break
+                if (set(response) != {"type", "id", "callId", "method", "input"}
+                        or type(response["id"]) is not int or response["id"] != request_id
+                        or type(response["callId"]) is not int
+                        or not self._last_callback_id < response["callId"] <= MAX_SAFE_INTEGER
+                        or type(response["method"]) is not str or response["method"] not in (_callbacks or {})
+                        or type(response["input"]) is not dict):
+                    self._protocol_error("Release callback did not match its active request")
+                try:
+                    _json_bytes(response)
+                except (TypeError, ValueError):
+                    self._protocol_error("Release callback exceeded its JSON contract")
+                self._last_callback_id = response["callId"]
+                completed: queue.Queue[Any] = queue.Queue(maxsize=1)
+                callback = (_callbacks or {})[response["method"]]
+                callback_input = response["input"]
+                def invoke() -> None:
+                    try:
+                        completed.put((True, callback(callback_input)))
+                    except Exception as error:
+                        completed.put((False, error))
+                self._callback_active = True
+                try:
+                    threading.Thread(target=invoke, daemon=True).start()
+                    ok, result = completed.get(timeout=max(0, deadline - time.monotonic()))
+                finally:
+                    self._callback_active = False
+                reply = {"op": "callback_result", "id": request_id, "callId": response["callId"], "ok": ok}
+                if ok:
+                    try:
+                        _json_bytes(result)
+                        reply["result"] = result
+                    except (TypeError, ValueError) as error:
+                        ok, result = False, error
+                        reply["ok"] = False
+                if not ok:
+                    details = _stage_error(type(result), result)
+                    code = getattr(result, "code", None)
+                    reply["error"] = {"code": code if type(code) is str and 0 < len(code) <= 128 else "python-callback-error",
+                                      "message": details["message"]}
+                send(_json_bytes(reply) + b"\n")
         except queue.Empty:
             self._abort()
             raise CaptureError(f"Capture worker timed out during {operation}", code="capture-timeout") from None
@@ -335,7 +385,7 @@ class WorkflowCapture:
             detail = b"".join(self._stderr).decode("utf-8", errors="replace")[-4096:]
             self._protocol_error(f"Capture worker response failed: {response}" + (f"; {detail}" if detail else ""))
         if (type(response) is not dict or type(response.get("id")) is not int
-                or response["id"] != self._request_id or type(response.get("ok")) is not bool):
+                or response["id"] != request_id or type(response.get("ok")) is not bool):
             self._protocol_error("Capture response did not match its request")
         if not response["ok"]:
             error = response.get("error")
@@ -417,10 +467,59 @@ class WorkflowCapture:
         """Compare observed prediction use with independent request context."""
         return self._rpc("check_inference", input=input)
 
+    def read_model_release_plan(self, input: dict[str, Any]) -> Any:
+        """Validate independently supplied release authority through the core contract."""
+        return self._rpc("read_model_release_plan", input=input)
+
+    def put_release_artifact(self, file_path: str | os.PathLike[str], *,
+                             store_root: str | os.PathLike[str], format: str) -> Any:
+        """Import checked local-file bytes into the native managed release store."""
+        return self._rpc("put_release_artifact", filePath=str(Path(file_path).expanduser().absolute()),
+                         storeRoot=str(Path(store_root).expanduser().absolute()), format=_text(format, "format"))
+
+    def _checked_release(self, operation: str, input: dict[str, Any], *, store_root: str | os.PathLike[str],
+                         verify_model: Any = None, publisher: Any = None) -> Any:
+        self._require_started()
+        callbacks = {}
+        if verify_model is not None:
+            if not callable(verify_model):
+                raise TypeError("verify_model must be callable")
+            callbacks["verify_model"] = verify_model
+        if operation == "prepare_model_release" and verify_model is None:
+            raise TypeError("prepare_model_release requires verify_model")
+        lookup = None
+        if operation != "prepare_model_release":
+            publish = getattr(publisher, "publish", None)
+            lookup = getattr(publisher, "lookup", None)
+            if not callable(publish) or (lookup is not None and not callable(lookup)):
+                raise TypeError("publisher must provide publish(request) and an optional callable lookup(request)")
+            callbacks["publisher.publish"] = publish
+            if lookup is not None:
+                callbacks["publisher.lookup"] = lookup
+        return self._rpc(operation, _callbacks=callbacks, input=input,
+                         storeRoot=str(Path(store_root).expanduser().absolute()),
+                         verifyModel=verify_model is not None, publisherLookup=lookup is not None)
+
+    def prepare_model_release(self, input: dict[str, Any], *, store_root: str | os.PathLike[str],
+                              verify_model: Any) -> Any:
+        return self._checked_release("prepare_model_release", input, store_root=store_root, verify_model=verify_model)
+
+    def publish_model_release(self, input: dict[str, Any], *, store_root: str | os.PathLike[str],
+                              publisher: Any, verify_model: Any = None) -> Any:
+        return self._checked_release("publish_model_release", input, store_root=store_root,
+                                     publisher=publisher, verify_model=verify_model)
+
+    def release_model(self, input: dict[str, Any], *, store_root: str | os.PathLike[str],
+                      publisher: Any, verify_model: Any = None) -> Any:
+        return self._checked_release("release_model", input, store_root=store_root,
+                                     publisher=publisher, verify_model=verify_model)
+
     def snapshot(self) -> dict[str, Any]:
         return self._rpc("snapshot")
 
     def close(self) -> Any:
+        if self._callback_active:
+            raise CaptureError("Capture and scope operations are forbidden inside release callbacks", code="capture-callback-reentry")
         if self._closed:
             return None
         if self._process is None:

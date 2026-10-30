@@ -96,3 +96,10 @@ jobs:
         run: node --permission --allow-fs-read=node_modules --allow-fs-read=examples/inference --allow-fs-read=package.json --allow-fs-read=lens --allow-fs-read=.artifacts/native-inference-proof/recording.json --allow-fs-read=.artifacts/native-inference-proof/outcome.json --allow-fs-write=.artifacts/native-inference-proof/native-investigation.json examples/inference/native-investigate.mjs --run .artifacts/native-inference-proof
       - name: Independently audit native-workflow prediction labels
         run: python -I -S examples/inference/audit.py --run .artifacts/native-inference-proof
+
+      - name: Exercise checked Python promotion against a real local MLflow registry
+        run: python examples/mlflow-promotion/run.py --out .artifacts/mlflow-promotion-proof
+      - name: Investigate saved promotion with backend processes forbidden
+        run: node --permission --allow-fs-read=. --allow-fs-write=.artifacts/mlflow-promotion-proof examples/mlflow-promotion/investigate.mjs --run .artifacts/mlflow-promotion-proof
+      - name: Audit saved promotion arithmetic and journal evidence using stdlib only
+        run: python -I -S examples/mlflow-promotion/verify.py --run .artifacts/mlflow-promotion-proof

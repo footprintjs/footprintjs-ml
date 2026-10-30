@@ -179,19 +179,20 @@
   },
   "libraryStatus": {
     "stage": "beta",
-    "version": "0.6.0-beta.9",
+    "version": "0.6.0-beta.10",
     "notice": "Library APIs may change."
   },
   "currentRelease": {
-    "version": "0.6.0-beta.9",
+    "version": "0.6.0-beta.10",
     "stage": "beta",
-    "url": "https://github.com/footprintjs/footprintjs-ml/releases/tag/v0.6.0-beta.9",
-    "summary": "Seven reliability fixes strengthen existing capabilities; no new chapter or runtime dependency.",
+    "url": "https://github.com/footprintjs/footprintjs-ml/releases/tag/v0.6.0-beta.10",
+    "summary": "Python checked promotion to a real local MLflow registry strengthens the existing publication capability.",
     "sourceIds": [
-      "beta9-reliability-review",
-      "beta9-release-verification"
+      "promotion-outcome",
+      "promotion-native",
+      "promotion-audit"
     ],
-    "historicalEvidenceNotice": "Earlier experiments keep their recorded versions and original evidence. Beta 9 checks validate the reliability fixes, not new model training."
+    "historicalEvidenceNotice": "Earlier experiments retain their original versions and evidence. This is a separate small NumPy/MLflow publication example, not a rerun of the earlier JAX release."
   },
   "format": "Self-contained HTML; StoryDeck custom element; editable HTML/SVG text",
   "audience": "Sanjay and developers following the experiments testing FootPrint’s flowchart pattern in ML",
@@ -3756,6 +3757,22 @@
             "beta9-reliability-review",
             "beta9-release-verification"
           ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The later promotion example reopens its saved Python reference history using the existing Lens and foottrace tools after the workflow exits. Backtracking follows the wrong actual registry version to its consumed binding and independent release plan without starting Python, training or registry access.",
+          "sourceIds": [
+            "promotion-outcome",
+            "promotion-recording",
+            "promotion-native",
+            "promotion-audit",
+            "promotion-numerical",
+            "promotion-workflow",
+            "promotion-publisher",
+            "promotion-bridge",
+            "promotion-guide",
+            "promotion-audit-code"
+          ]
         }
       ],
       "storyText": {
@@ -5639,6 +5656,22 @@
             "beta9-reliability-review",
             "beta9-release-verification"
           ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 10 adds Python checked preparation/publication by delegating to the existing TypeScript release API. The separate real local MLflow proof uses complete JSON NumPy predictor bundles, not the earlier JAX checkpoints. It rejects stale A evaluation for B, the independent A plan offered with B, and actual B registered bytes before promotion. Champion points to pre-existing registered version 1 containing approved A.",
+          "sourceIds": [
+            "promotion-outcome",
+            "promotion-recording",
+            "promotion-native",
+            "promotion-audit",
+            "promotion-numerical",
+            "promotion-workflow",
+            "promotion-publisher",
+            "promotion-bridge",
+            "promotion-guide",
+            "promotion-audit-code"
+          ]
         }
       ],
       "storyText": {
@@ -5903,6 +5936,22 @@
           "sourceIds": [
             "beta9-reliability-review",
             "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "In the separate Python/MLflow proof, the lost outer reply occurs after a confirmed local journal commit. A retry acknowledges that exact publication with one alias change. A timeout inside the registry alias call retains pending intent; matching current aliases do not prove commit and its retry stays unknown without repeating the effect. This is a cooperating-writer single-host profile, not MLflow compare-and-swap or distributed exactly-once publication.",
+          "sourceIds": [
+            "promotion-outcome",
+            "promotion-recording",
+            "promotion-native",
+            "promotion-audit",
+            "promotion-numerical",
+            "promotion-workflow",
+            "promotion-publisher",
+            "promotion-bridge",
+            "promotion-guide",
+            "promotion-audit-code"
           ]
         }
       ],
@@ -6625,6 +6674,22 @@
           "sourceIds": [
             "beta9-reliability-review",
             "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The later beta 10 integration adds Python-callable checked publication through the existing core and an injected optional MLflow client. Model buffers remain in the backend and managed artifact store; scope records references and small decisions. General file import is whole-file, while the receiver has its separate 132 MiB predictor limit.",
+          "sourceIds": [
+            "promotion-outcome",
+            "promotion-recording",
+            "promotion-native",
+            "promotion-audit",
+            "promotion-numerical",
+            "promotion-workflow",
+            "promotion-publisher",
+            "promotion-bridge",
+            "promotion-guide",
+            "promotion-audit-code"
           ]
         }
       ],
@@ -8520,6 +8585,22 @@
           "sourceIds": [
             "beta9-reliability-review",
             "beta9-release-verification"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 10 strengthens the existing publication capability: real local MLflow promotion from Python, refusal of wrong registered bytes, and explicit confirmed-versus-pending retry outcomes. A saved standard-library audit binds predictor arithmetic to captured artifacts; existing Lens follows the retained decisions. No new capability node, numerical framework, remote-registry guarantee or independent adoption result is claimed.",
+          "sourceIds": [
+            "promotion-outcome",
+            "promotion-recording",
+            "promotion-native",
+            "promotion-audit",
+            "promotion-numerical",
+            "promotion-workflow",
+            "promotion-publisher",
+            "promotion-bridge",
+            "promotion-guide",
+            "promotion-audit-code"
           ]
         }
       ],
@@ -11983,6 +12064,207 @@
         "path": "evidence/beta9-release-verification.json",
         "sha256": "b6fbceedab605fc2f8f70f15a29c12348fab0f056ecaeb7e29199d3c6c6e272d",
         "bytes": 4001,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "promotion-outcome",
+      "path": "evidence/promotion-outcome.json",
+      "label": "Actual Python/NumPy promotion outcomes against a real local MLflow registry",
+      "note": "Actual Python/NumPy promotion outcomes against a real local MLflow registry",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/promotion-outcome.json",
+      "sha256": "501116e4fca044f40fcbc458e7d984f247f62bf866a18688314f31204c698c26",
+      "bytes": 9868,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/promotion-outcome.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/promotion-outcome.json",
+        "sha256": "501116e4fca044f40fcbc458e7d984f247f62bf866a18688314f31204c698c26",
+        "bytes": 9868,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "promotion-recording",
+      "path": "evidence/promotion-recording.json",
+      "label": "Saved native reference reads and writes for Python-owned MLflow promotion",
+      "note": "Saved native reference reads and writes for Python-owned MLflow promotion",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/promotion-recording.json",
+      "sha256": "f324de288260857a0cdccada01e9538b7b0857cf326e7cba62c44d15efb4f843",
+      "bytes": 2629730,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/promotion-recording.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/promotion-recording.json",
+        "sha256": "f324de288260857a0cdccada01e9538b7b0857cf326e7cba62c44d15efb4f843",
+        "bytes": 2629730,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "promotion-native",
+      "path": "evidence/promotion-native.json",
+      "label": "Existing Lens backtracking of registry bindings, pinned plans and publication decisions",
+      "note": "Existing Lens backtracking of registry bindings, pinned plans and publication decisions",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/promotion-native.json",
+      "sha256": "3d17d29b082790b9049a35253b828be8611ba5baf37fffed1ba424f8098ccc88",
+      "bytes": 22606,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/promotion-native.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/promotion-native.json",
+        "sha256": "3d17d29b082790b9049a35253b828be8611ba5baf37fffed1ba424f8098ccc88",
+        "bytes": 22606,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "promotion-audit",
+      "path": "evidence/promotion-audit.json",
+      "label": "Saved-only scalar audit bound to the actual captured model and validation artifacts",
+      "note": "Saved-only scalar audit bound to the actual captured model and validation artifacts",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/promotion-audit.json",
+      "sha256": "6a9738eba496c1b6a6e1d5e7954e1baf17c4f06801c9a32220e471fc37ede36e",
+      "bytes": 1693,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/promotion-audit.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/promotion-audit.json",
+        "sha256": "6a9738eba496c1b6a6e1d5e7954e1baf17c4f06801c9a32220e471fc37ede36e",
+        "bytes": 1693,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "promotion-numerical",
+      "path": "evidence/promotion-numerical.json",
+      "label": "Retained numerical arrays and predictor bundles outside workflow scope",
+      "note": "Retained numerical arrays and predictor bundles outside workflow scope",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/promotion-numerical.json",
+      "sha256": "96acbaf6efb23a8cc3828992c756e9c72fcff98729ffce32a1897c4588b77aa2",
+      "bytes": 3668,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/promotion-numerical.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/promotion-numerical.json",
+        "sha256": "96acbaf6efb23a8cc3828992c756e9c72fcff98729ffce32a1897c4588b77aa2",
+        "bytes": 3668,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "promotion-workflow",
+      "path": "evidence/promotion-workflow.py.txt",
+      "label": "Python-owned workflow with real registry clients and deliberate reply faults",
+      "note": "Python-owned workflow with real registry clients and deliberate reply faults",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/promotion-workflow.py.txt",
+      "sha256": "2247e477f235502843263e19cf627b838b85636866efd39589006f023543f558",
+      "bytes": 21285,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/promotion-workflow.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/promotion-workflow.py.txt",
+        "sha256": "2247e477f235502843263e19cf627b838b85636866efd39589006f023543f558",
+        "bytes": 21285,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "promotion-publisher",
+      "path": "evidence/promotion-publisher.py.txt",
+      "label": "Optional single-host cooperating-writer MLflow publisher with pending and committed journal states",
+      "note": "Optional single-host cooperating-writer MLflow publisher with pending and committed journal states",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/promotion-publisher.py.txt",
+      "sha256": "653244b496154cd2e562ce386fd9aa2412e5540da283fbe055936dba07d14a2a",
+      "bytes": 25576,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/promotion-publisher.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/promotion-publisher.py.txt",
+        "sha256": "653244b496154cd2e562ce386fd9aa2412e5540da283fbe055936dba07d14a2a",
+        "bytes": 25576,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "promotion-bridge",
+      "path": "evidence/promotion-bridge.ts.txt",
+      "label": "Optional Python bridge to the existing checked prepare/publish/release core",
+      "note": "Optional Python bridge to the existing checked prepare/publish/release core",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/promotion-bridge.ts.txt",
+      "sha256": "1d9e5f106ff5ad48780fe15e1a6cf2b31b288678f9cd48c8e1bf2637f4c17642",
+      "bytes": 3930,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/promotion-bridge.ts.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/promotion-bridge.ts.txt",
+        "sha256": "1d9e5f106ff5ad48780fe15e1a6cf2b31b288678f9cd48c8e1bf2637f4c17642",
+        "bytes": 3930,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "promotion-guide",
+      "path": "evidence/promotion-guide.md",
+      "label": "Checked Python promotion profile, commands and evidence boundaries",
+      "note": "Checked Python promotion profile, commands and evidence boundaries",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/promotion-guide.md",
+      "sha256": "2b22cce0ec83a6c44c098cb9d447a84fd4c9667ab816a9725bbe9d6c94dd0370",
+      "bytes": 4548,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/promotion-guide.md",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/promotion-guide.md",
+        "sha256": "5290561375ffe1e5622e0879c134562b3d27c98c79bd3b898b49f8366e236909",
+        "bytes": 4598,
+        "pathsProjected": 0,
+        "linksProjected": 1,
+        "byteIdenticalToRetainedSource": false
+      }
+    },
+    {
+      "id": "promotion-audit-code",
+      "path": "evidence/promotion-audit-code.py.txt",
+      "label": "Independent saved-artifact arithmetic and binding audit; no numerical framework or registry access",
+      "note": "Independent saved-artifact arithmetic and binding audit; no numerical framework or registry access",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/promotion-audit-code.py.txt",
+      "sha256": "2e1fa73acf5bf412f77ddb38c06d9d85c101d7a87e84902024095119e112aed4",
+      "bytes": 8224,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/promotion-audit-code.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/promotion-audit-code.py.txt",
+        "sha256": "2e1fa73acf5bf412f77ddb38c06d9d85c101d7a87e84902024095119e112aed4",
+        "bytes": 8224,
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }

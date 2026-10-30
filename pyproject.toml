@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "footprintjs-ml"
-version = "0.6.0b9"
+version = "0.6.0b10"
 description = "Python workflow capture and ML evidence bindings over the FootPrint runtime"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -27,7 +27,7 @@ Issues = "https://github.com/footprintjs/footprintjs-ml/issues"
 
 [tool.setuptools]
 package-dir = {"" = "python"}
-py-modules = ["footprint_ml_workflow", "footprint_ml_setup", "footprint_ml_versions"]
+py-modules = ["footprint_ml_workflow", "footprint_ml_setup", "footprint_ml_versions", "footprint_ml_promotion"]
 
 [tool.setuptools.packages.find]
 where = ["python"]
@@ -64,3 +64,5 @@ namespaces = false
 "share/footprintjs-ml/features/inference" = ["features/inference/README.md"]
 "share/footprintjs-ml/examples/inference" = ["examples/inference/*.py", "examples/inference/*.mjs", "examples/inference/*.json", "examples/inference/*.md", "examples/inference/*.txt"]
 "share/footprintjs-ml/examples/inference/fixtures" = ["examples/inference/fixtures/*.json"]
+
+"share/footprintjs-ml/examples/mlflow-promotion" = ["examples/mlflow-promotion/*.py", "examples/mlflow-promotion/*.mjs", "examples/mlflow-promotion/*.md", "examples/mlflow-promotion/*.txt"]

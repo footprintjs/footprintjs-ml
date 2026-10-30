@@ -9,6 +9,9 @@ import {createDataLineageReceipt,readDataLineageReceipt,checkDataLineage} from '
 import {createEvaluationReceipt,readEvaluationReceipt} from '../receipts.js';
 import {readSelectionManifest,createSelectionReceipt,readSelectionReceipt,checkSelection} from '../selection.js';
 import {createPredictionContract,readPredictionContract,createInferenceReceipt,readInferenceReceipt,checkInference} from '../inference.js';
+import {readModelReleasePlan} from '../release.js';
+import {executePythonRelease,putPythonReleaseArtifact} from './python-release.js';
+import type {PythonReleaseCallback} from './python-release.js';
 
 export interface PythonCaptureServeOptions {
   readonly input?: Readable;
@@ -55,6 +58,16 @@ export async function servePythonCapture(options: PythonCaptureServeOptions={}):
     lifecycle:'open'|'closed'|'interrupted'}|undefined;
   let active:{frame:InstanceType<typeof RecordFrame>;node:StageNode;observation:StageObservation;operations:number}|undefined;
   let executionIndex=0,lastId=0,ended=false,persistenceFailed=false;
+  let callbackId=0,transportEnded=false,protocolFailed=false;
+  let pendingCallback:{id:number;callId:number;accept:(value:unknown)=>void;reject:(error:Error)=>void}|undefined;
+  const callback=(id:number,method:Parameters<PythonReleaseCallback>[0],value:unknown):Promise<unknown>=>{
+    if(transportEnded||protocolFailed||pendingCallback)throw new CaptureError('protocol','A release callback cannot start in this transport state.');
+    const callId=++callbackId,packet=boundedJson({type:'callback',id,callId,method,input:value},limits.maxPacketBytes-1,'release callback');
+    return new Promise((accept,reject)=>{
+      pendingCallback={id,callId,accept,reject};
+      void respond(packet).catch(error=>{pendingCallback=undefined;reject(error);});
+    });
+  };
   const opened=()=>{if(!session)throw new CaptureError('state','Open a capture first.');return session;};
   const current=()=>{opened();if(!active)throw new CaptureError('state','Begin a stage first.');return active;};
   const scopeOperation=()=>{const a=current();if(a.operations>=limits.maxStageOperations)throw new CaptureError('limit','Stage exceeds maxStageOperations.');a.operations++;return a;};
@@ -94,7 +107,10 @@ export async function servePythonCapture(options: PythonCaptureServeOptions={}):
       get:['key'],set:['key','value'],commit:[],discard:['error'],snapshot:[],close:[],check_release:['input'],create_evaluation_receipt:['input'],
       read_evaluation_receipt:['input'],create_data_lineage_receipt:['input'],read_data_lineage_receipt:['input'],check_data_lineage:['input'],
       read_selection_manifest:['input'],create_selection_receipt:['input'],read_selection_receipt:['input'],check_selection:['input'],
-      create_prediction_contract:['input'],read_prediction_contract:['input'],create_inference_receipt:['input'],read_inference_receipt:['input'],check_inference:['input']};
+      create_prediction_contract:['input'],read_prediction_contract:['input'],create_inference_receipt:['input'],read_inference_receipt:['input'],check_inference:['input'],
+      read_model_release_plan:['input'],put_release_artifact:['filePath','storeRoot','format'],
+      prepare_model_release:['input','storeRoot','verifyModel','publisherLookup'],publish_model_release:['input','storeRoot','verifyModel','publisherLookup'],
+      release_model:['input','storeRoot','verifyModel','publisherLookup']};
     const allowed=Object.hasOwn(fields,String(request.op))?fields[String(request.op)]:undefined;
     if(!allowed)throw new CaptureError('protocol','Unknown capture operation.');
     if(Object.keys(request).some(key=>key!=='id'&&key!=='op'&&!allowed.includes(key)))throw new CaptureError('protocol','Capture request has an unsupported field.');
@@ -179,6 +195,12 @@ export async function servePythonCapture(options: PythonCaptureServeOptions={}):
         opened();return readInferenceReceipt(boundedJson(request.input,limits.maxPacketBytes,'inference receipt'));
       case 'check_inference':
         opened();return checkInference(boundedJson(request.input,limits.maxPacketBytes,'inference request') as unknown as Parameters<typeof checkInference>[0]);
+      case 'read_model_release_plan':
+        opened();return readModelReleasePlan(boundedJson(request.input,limits.maxPacketBytes,'release plan'));
+      case 'put_release_artifact':
+        opened();return putPythonReleaseArtifact(request);
+      case 'prepare_model_release':case 'publish_model_release':case 'release_model':
+        opened();return executePythonRelease(request,(method,value)=>callback(request.id as number,method,value));
       case 'close':{
         const s=opened();if(active)throw new CaptureError('state','Commit or discard the active stage before close.');
         s.log.close('ok');s.lifecycle='closed';await save();ended=true;
@@ -195,21 +217,51 @@ export async function servePythonCapture(options: PythonCaptureServeOptions={}):
     }
     await new Promise<void>((accept,reject)=>output.write(encoded,error=>error?reject(error):accept()));
   };
+  const failure=(id:number|null,error:unknown)=>{
+    const code=error instanceof CaptureError?error.code:isRecord(error)&&typeof error.code==='string'?error.code:'capture';
+    const message=error instanceof Error?error.message:'Capture request failed.';
+    return {id,ok:false,error:{code,message}};
+  };
+  let work=Promise.resolve();
+  const enqueue=(operation:()=>Promise<void>)=>{work=work.then(operation);void work.catch(()=>{});};
+  const abortCallback=(error:Error)=>{const pending=pendingCallback;pendingCallback=undefined;pending?.reject(error);};
   const line=async(value:string,oversized=false)=>{
-    let id:number|null=null;
+    let id:number|null=null,callbackPacket=false;
     try{
       if(oversized)throw new CaptureError('limit','Request exceeds maxPacketBytes.');
       let parsed:unknown;try{parsed=JSON.parse(value);}catch{throw new CaptureError('protocol','Request is not JSON.');}
       const request=jsonObject(parsed,'capture request');
+      callbackPacket=request.op==='callback_result';
       if(!positive(request.id))throw new CaptureError('protocol','Request id must be a positive safe integer.');
       id=request.id;
+      if(request.op==='callback_result'){
+        const pending=pendingCallback;
+        if(!pending||request.id!==pending.id||request.callId!==pending.callId||typeof request.ok!=='boolean'||
+          Object.keys(request).some(key=>!['id','op','callId','ok',request.ok?'result':'error'].includes(key))||
+          !Object.hasOwn(request,request.ok?'result':'error'))
+          throw new CaptureError('protocol','Callback result did not match the active parent request and callId.');
+        if(!request.ok){const error=jsonObject(request.error,'callback error');
+          if(Object.keys(error).some(key=>!['code','message'].includes(key))||typeof error.code!=='string'||!error.code||error.code.length>128||
+            typeof error.message!=='string'||error.message.length>4096)throw new CaptureError('protocol','Callback error details are invalid.');
+          pendingCallback=undefined;pending.reject(new CaptureError(error.code,error.message));
+        }else{pendingCallback=undefined;pending.accept(request.result);}
+        return;
+      }
+      if(protocolFailed)throw new CaptureError('protocol','Capture transport failed.');
+      if(pendingCallback)throw new CaptureError('protocol','Nested capture requests are not permitted during a release callback.');
       if(id<=lastId)throw new CaptureError('protocol','Request ids must increase.');lastId=id;
       if(typeof request.op!=='string')throw new CaptureError('protocol','Request op must be a string.');
-      const result=await execute(request);await respond({id,ok:true,result});
+      const requestId=id;
+      enqueue(async()=>{
+        try{if(ended||protocolFailed)throw new CaptureError('state','Capture is closed or its transport failed.');
+          const result=await execute(request);await respond({id:requestId,ok:true,result});if(ended)input.destroy();
+        }catch(error){await respond(failure(requestId,error));}
+      });
     }catch(error){
-      const code=error instanceof CaptureError?error.code:isRecord(error)&&typeof error.code==='string'?error.code:'capture';
-      const message=error instanceof Error?error.message:'Capture request failed.';
-      await respond({id,ok:false,error:{code,message}});
+      if(pendingCallback||callbackPacket){
+        protocolFailed=true;abortCallback(new CaptureError('protocol','Invalid release callback transport.'));input.destroy();
+      }
+      enqueue(async()=>{await respond(failure(id,error));});
     }
   };
   const decoder=new StringDecoder('utf8');let buffered='',oversized=false;
@@ -220,12 +272,14 @@ export async function servePythonCapture(options: PythonCaptureServeOptions={}):
       while((boundary=buffered.indexOf('\n'))>=0){
         const packet=buffered.slice(0,boundary);buffered=buffered.slice(boundary+1);
         await line(packet,oversized||Buffer.byteLength(packet)>limits.maxPacketBytes);oversized=false;
-        if(ended)return;
       }
       if(Buffer.byteLength(buffered)>limits.maxPacketBytes){buffered='';oversized=true;}
     }
     buffered+=decoder.end();if(buffered.trim()||oversized)await line(buffered,oversized);
+  }catch(error){if(!ended&&!protocolFailed)throw error;
   }finally{
+    transportEnded=true;abortCallback(new CaptureError('protocol','Capture input ended before a release callback completed.'));
+    await work;
     if(session&&!ended){
       if(active){active.frame.discard();active.observation.status='discarded';active.observation.error={type:'CaptureTransportEnded',message:'Capture input ended before stage commit.'};
         active.node.errors={python:active.observation.error};active=undefined;}

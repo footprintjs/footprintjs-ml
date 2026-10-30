@@ -11,7 +11,8 @@ This integration is a beta addition with a local Node capture process. Python co
 | npm root SDK | No runtime dependencies. Importing the core does not load the Python capture process. |
 | `python/footprint_ml_workflow.py` | Python 3.11+ standard library only. Importing it, constructing `WorkflowCapture`, or constructing `MlflowArtifacts` starts no process and imports no MLflow or numerical framework. |
 | Capture worker | Node.js 22+ and the host's explicit foottrace installation. Entering `WorkflowCapture` or calling `start()` launches the shipped worker. |
-| MLflow binding | An application-supplied client. The module does not import MLflow, install it, create runs, change aliases or select credentials. |
+| `MlflowArtifacts` binding | An application-supplied client. The binder does not import MLflow, install it, create runs, change aliases or select credentials. |
+| `footprint_ml_promotion.MlflowModelPublisher` | Standard-library receiver with an injected client. An explicit checked publication may change one pinned version's alias under the documented local coordination profile. Construction performs no effect. |
 | Example | Explicit MLflow, NumPy and scikit-learn dependencies in [requirements.txt](examples/mlflow/requirements.txt). |
 
 Install the Python wheel of the same SDK and explicitly set up its Node helper using [PYTHON.md](PYTHON.md). This removes the need to add an npm package's Python directory to `PYTHONPATH`. The Python module also remains in the npm archive under `python/` for existing integrations. The earlier numerical adapter remains optional and still requires NumPy when used.
@@ -79,7 +80,7 @@ These are whole-key JSON operations. Reads return detached values. Assign modifi
 
 A started capture calls the existing TypeScript JSON contracts through the worker: evaluation creation/reading and `check_release`; lineage creation/reading and `check_data_lineage`; and selection manifest/receipt reading, receipt creation and `check_selection`. Python method names and their complete list are in [PYTHON.md](PYTHON.md); request fields retain the TypeScript camelCase names. These helpers need an open connection but do not require an active stage. Read their actual operands through scope and write the returned receipt or decision through scope when they belong in the history. A helper call does not invent those dependencies or write its result automatically.
 
-Python keeps the candidate loop, numerical work and retries. The guard helpers neither query MLflow for missing evidence nor infer memberships from a run ID. Supply independently declared comparison inputs and backend-observed lineage. Checked publication and the `runExperiment` callback driver remain TypeScript APIs. The [Python guard example](examples/python-guards/README.md) uses retained observations without new training; its JAX candidate and digit-lineage sections describe separate original runs.
+Python keeps the candidate loop, numerical work and retries. The guard helpers neither query MLflow for missing evidence nor infer memberships from a run ID. Supply independently declared comparison inputs and backend-observed lineage. `runExperiment` remains a TypeScript callback driver. The [Python guard example](examples/python-guards/README.md) uses retained observations without new training; its JAX candidate and digit-lineage sections describe separate original runs.
 
 The connection is synchronous and supports one active stage on its owning Python thread. Its timeout bounds request writing and response waiting. Protocol failure or timeout terminates the child process. There is no automatic worker restart or replay. `snapshot()` returns the current recording within the response-size limit; read larger recordings from the saved file. Normal `close()` persists and closes it. Capture files are replaced at recording boundaries. They are not a durable workflow scheduler or a write-ahead log for recovery from arbitrary crashes.
 
@@ -98,6 +99,39 @@ The retained local proof observed:
 The raw held-out data and weight artifact hashes stayed unchanged. The measured scaler hash changed on retry and returned to its original value after correction. The complete predictor identity includes both weight and fitted-preprocessing identity. The registered model version identifies the numeric classifier source in this example; it alone does not identify every preprocessing choice.
 
 These scores belong to this controlled local run. FootPrint did not create its prediction accuracy. scikit-learn and the supplied evaluation computed it. The proof records local approval without changing a registry alias or deploying a model. It does not establish general model quality or a debugging advantage over complete structured logs.
+
+## Checked registered-model promotion
+
+The Python facade's `prepare_model_release`, `publish_model_release` and `release_model` call the same existing TypeScript release APIs. They load pinned evidence through the Node managed artifact store, compose quality/selection/required-lineage checks and require live model verification for a new handoff. `put_release_artifact(file_path, store_root=..., format=...)` imports real bytes; scope and callback messages carry references, never numerical buffers.
+
+The optional receiver is explicit:
+
+```python
+from footprint_ml_promotion import MlflowModelPublisher
+
+publisher = MlflowModelPublisher(
+    client,
+    store_root="./release-store",
+    journal_dir="./promotion-journal",
+    registry_id="local-registry",
+    model_name="my-predictor",
+    alias="champion",
+    binding={"version": "7", "runId": run_id,
+             "source": f"runs:/{run_id}/predictor",
+             "artifactPath": "predictor/bundle.json"},
+    coordination="single-host-cooperating-writers/v1",
+)
+```
+
+These are illustrative coordinates, not existing approved evidence. Registered versions are created by the application beforehand. This profile requires a canonical `runs:/{runId}/{directory}` source and one artifact inside that directory. The application-defined artifact must contain the complete predictor state it intends to approve. The supplied [NumPy example](examples/mlflow-promotion/README.md) uses a single safe JSON bundle with weights, fitted scaler and ordered input/output semantics; the receiver does not package arbitrary MLflow flavor directories or provide serving.
+
+`target_name` is `mlflow:{registry_id}/{model_name}@{alias}`. Pin that exact target and expected revision in the independent release plan. Consume the actual version/run/source/artifact configuration through scope when constructing the publisher. A closure-configured receiver plus an unused equivalent scope label does not record which version it consumed.
+
+Before alias mutation the receiver checks the registered version's name, version, run, source and READY status, downloads the specified artifact, and measures its bytes against the exact approved artifact. It writes a pending intent before the alias setter, then verifies the observed alias/version/artifact before committing a local receipt. All cooperating writers for that target must share the same one-host journal and lock. This is not an MLflow compare-and-swap primitive or a distributed exactly-once service.
+
+A lost outer reply after the receiver committed can recover through read-only `lookup`; that historical receipt does not claim the alias is still current. A timeout inside the setter can occur after its external effect. The pending journal then stays unknown; a matching alias or tag is not commit evidence, and retry performs no second mutation. Pending intent, abandoned locks and ambiguous outcomes need operator investigation. Client credentials, registry identity, timeouts, trusted storage and coordination of writers remain application responsibilities. Helper callback timeouts do not cancel external operations.
+
+The journal is limited to 16 MiB and 2,048 entries; this receiver's single artifact is limited to 132 MiB. General `put_release_artifact` import happens earlier and reads a complete file bounded to its descriptor size; it does not apply that predictor-profile cap. The application controls import sizes and memory use. These are complete-buffer local profiles, without streaming/constant-memory transfer, process-crash recovery, fsync/power-loss durability, hostile-filesystem protection, producer authentication or numerical-correctness proof. See [the release guide](RELEASE.md#python-release-callbacks-and-mlflow-promotion) for the callback protocol and [the real local proof](examples/mlflow-promotion/README.md) for refusal, acknowledgement and uncertain-effect controls.
 
 ## Reopen the saved run
 

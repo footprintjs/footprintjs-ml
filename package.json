@@ -1,6 +1,6 @@
 {
   "name": "footprintjs-ml",
-  "version": "0.6.0-beta.9",
+  "version": "0.6.0-beta.10",
   "description": "ML evidence, selection and release APIs with optional trainer, publisher and Lens subpaths",
   "license": "MIT",
   "type": "module",
@@ -86,7 +86,11 @@
     "examples/inference/*.json",
     "examples/inference/*.md",
     "examples/inference/*.txt",
-    "examples/inference/fixtures/*.json"
+    "examples/inference/fixtures/*.json",
+    "examples/mlflow-promotion/*.py",
+    "examples/mlflow-promotion/*.mjs",
+    "examples/mlflow-promotion/*.md",
+    "examples/mlflow-promotion/*.txt"
   ],
   "scripts": {
     "build": "node build.mjs",

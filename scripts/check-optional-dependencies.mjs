@@ -25,10 +25,12 @@ original=subprocess.Popen
 def no_spawn(*args,**kwargs):raise AssertionError('Import or constructor started a process')
 subprocess.Popen=no_spawn
 try:
-    import footprint_ml_workflow
+    import footprint_ml_workflow,footprint_ml_promotion
     with tempfile.TemporaryDirectory() as tmp:
         capture=footprint_ml_workflow.WorkflowCapture(Path(tmp)/'unused.json')
         binding=footprint_ml_workflow.MlflowArtifacts(object(),Path(tmp)/'cache')
+        publisher=footprint_ml_promotion.MlflowModelPublisher(object(),store_root=Path(tmp)/'store',journal_dir=Path(tmp)/'journal',registry_id='lazy',model_name='model',alias='champion',binding={'version':'1','runId':'lazy-run','source':'runs:/lazy-run/model','artifactPath':'model/bundle.json'})
+        assert not (Path(tmp)/'journal').exists()
 finally:subprocess.Popen=original
 loaded=sorted(name for name in sys.modules if name.split('.')[0] in forbidden)
 assert not blocked and not loaded

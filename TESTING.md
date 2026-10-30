@@ -4,6 +4,16 @@ Use Node.js 22 or 24 and Python 3.11 or newer. Install the pinned development de
 
 The optional import-graph observation uses Node registerHooks and explicitly skips on Node versions without that API. Python protocol tests explicitly skip when their configured Python executable is unavailable; CI installs Python so these run there. The fixture worker tests are not mathematical validation of a numerical framework.
 
+## Python checked MLflow promotion
+
+The [promotion example](examples/mlflow-promotion/README.md) performs actual local NumPy training and evaluation, registers two complete predictor bundles with MLflow, and exercises the same core checked-release APIs through Python callbacks. It includes stale A evidence for B, a B proposal against an independent A plan, wrong registered bytes refused before alias mutation, exact A promotion with a lost outer reply, an uncertain setter after its effect, and a separate alias occupied by an uncoordinated writer. The latter controls distinguish a committed local journal from an unresolved pending intent; they do not establish MLflow CAS or distributed exactly-once behavior.
+
+Its separate [saved verifier](examples/mlflow-promotion/verify.py) uses only the standard library to check retained byte identities, scalar prediction arithmetic, receipt metrics and journal observations. Its [investigator](examples/mlflow-promotion/investigate.mjs) runs the existing Lens/foottrace toolpack with child-process permission absent, following the actual consumed version binding and independently pinned evidence. Saved investigation imports no Python numerical code or MLflow client, performs no new release, and preserves native missing-control warnings. This is a controlled local integration proof, not a human debugging-speed study or authentication of the producer.
+
+The [saved-audit regressions](https://github.com/footprintjs/footprintjs-ml/blob/main/python/tests/test_promotion_audit.py) use synthetic metadata fixtures without training. They refuse empty/truncated/extra prediction rows, unbound or mismatched validation operands, invalid recorded row counts, boolean/nonfinite values, substituted bundle references and altered sidecar metrics. The real saved audit binds its validation/training sidecars to the actual captured length/hash-checked managed artifacts before checking every predicted row.
+
+The Python publisher tests use fake clients for protocol/error boundaries; the example separately checks compatibility with the real local MLflow client. SDK imports and constructors remain inert with no MLflow/NumPy installed. Callback timeout tests do not imply cancellation of external effects. See [the release guide](RELEASE.md#python-release-callbacks-and-mlflow-promotion) for the supported bounds.
+
 ## Beta 9 reliability regressions
 
 The [evidence regressions](https://github.com/footprintjs/footprintjs-ml/blob/main/tests/review-evidence-hardening.test.mjs), [platform regressions](https://github.com/footprintjs/footprintjs-ml/blob/main/tests/review-platform-hardening.test.mjs) and [Python I/O regressions](https://github.com/footprintjs/footprintjs-ml/blob/main/python/tests/test_review_io_hardening.py) cover seven fixes:

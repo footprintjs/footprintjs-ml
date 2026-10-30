@@ -67,7 +67,8 @@ export async function checkAgentDocs(root){
   assert(/export function openWorkflowRecording\b/.test(lens),'Documented saved-recording reader is no longer exported');
   const python=await readFile(join(root,'python/footprint_ml_workflow.py'),'utf8');
   for(const name of ['WorkflowCapture','MlflowArtifacts'])assert(new RegExp(`class ${name}\\b`).test(python),`Documented Python API is missing: ${name}`);
-  for(const name of ['create_evaluation_receipt','read_evaluation_receipt','check_release','create_data_lineage_receipt','read_data_lineage_receipt','check_data_lineage','read_selection_manifest','create_selection_receipt','read_selection_receipt','check_selection','create_prediction_contract','read_prediction_contract','create_inference_receipt','read_inference_receipt','check_inference'])assert(new RegExp(`def ${name}\\(`).test(python),`Documented Python contract is missing: ${name}`);
+  for(const name of ['create_evaluation_receipt','read_evaluation_receipt','check_release','create_data_lineage_receipt','read_data_lineage_receipt','check_data_lineage','read_selection_manifest','create_selection_receipt','read_selection_receipt','check_selection','create_prediction_contract','read_prediction_contract','create_inference_receipt','read_inference_receipt','check_inference','read_model_release_plan','put_release_artifact','prepare_model_release','publish_model_release','release_model'])assert(new RegExp(`def ${name}\\(`).test(python),`Documented Python contract is missing: ${name}`);
+  assert(/class MlflowModelPublisher\b/.test(await readFile(join(root,'python/footprint_ml_promotion.py'),'utf8')),'Documented Python publisher is missing');
   return {schema:'footprint-ml-agent-guidance/v1',passed:true,
     checks:{skillHasIdentityAndDescription:true,skillPromptInvokesSkill:true,localGuidanceLinksResolve:true,
       guideApisExist:true,documentationResourceFilesPresent:true},

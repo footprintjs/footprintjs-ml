@@ -187,6 +187,22 @@ footprint_ml_workflow.WorkflowCapture('recording.json', runtime_dir='runtime not
         self.assertEqual(out.getvalue(), "")
         self.assertIn("numerical warning", err.getvalue())
 
+    def test_promotion_launcher_uses_the_selected_installed_example_and_active_interpreter(self):
+        runtime = self.root / "selected runtime with spaces"
+        script = runtime / "node_modules" / "footprintjs-ml" / "examples" / "mlflow-promotion" / "run.py"
+        script.parent.mkdir(parents=True)
+        script.write_text("import json,sys; print(json.dumps({'entry':__file__,'python':sys.executable,'args':sys.argv[1:]}))")
+        output = io.StringIO()
+        destination = self.root / "new proof"
+        with redirect_stdout(output), patch.object(setup, "_ready", return_value=(runtime, {})):
+            code = setup.main(["example-promotion", "--out", str(destination), "--runtime-dir", str(runtime)])
+        self.assertEqual(code, 0)
+        report = json.loads(output.getvalue())
+        self.assertEqual(report["exampleResult"]["entry"], str(script))
+        self.assertEqual(Path(report["exampleResult"]["python"]).resolve(), Path(sys.executable).resolve())
+        self.assertEqual(report["exampleResult"]["args"], ["--out", str(destination), "--runtime-dir", str(runtime)])
+        self.assertFalse(destination.exists(), "The launcher must not create or replace the example's output itself")
+
     def test_cli_uses_json_failures_and_does_not_install_on_doctor(self):
         output = io.StringIO()
         with redirect_stdout(output), patch.object(setup, "doctor", return_value={"schema": "footprint-ml-python-doctor/v1", "ok": False}), patch.object(setup, "setup") as install:

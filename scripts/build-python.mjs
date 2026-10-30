@@ -43,7 +43,7 @@ with zipfile.ZipFile(sys.argv[1]) as archive:
     metadata_files=[name for name in names if name.endswith('.dist-info/METADATA')]
     assert len(metadata_files)==1, 'Expected one METADATA file'
     metadata=email.message_from_bytes(archive.read(metadata_files[0]))
-    required=['footprint_ml_workflow.py','footprint_ml_setup.py','footprint_ml_versions.py','footprint_ml_adapter/__init__.py']
+    required=['footprint_ml_workflow.py','footprint_ml_setup.py','footprint_ml_versions.py','footprint_ml_promotion.py','footprint_ml_adapter/__init__.py']
     assert all(name in names for name in required), 'Missing public Python module'
     assert metadata['Name']=='footprintjs-ml', 'Unexpected Python distribution name'
     assert metadata['Version']==sys.argv[2], 'Unexpected Python distribution version'

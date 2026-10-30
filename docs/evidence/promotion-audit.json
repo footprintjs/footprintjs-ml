@@ -1,0 +1,48 @@
+{
+  "schema": "footprint-ml-mlflow-promotion-saved-verification/v1",
+  "passed": true,
+  "checks": {
+    "outcomeMatchesCapturedValue": true,
+    "workflowChecksPass": true,
+    "allCasesRetained": true,
+    "validationBoundToCapturedArtifact": true,
+    "trainingBoundToCapturedArtifact": true,
+    "AManagedBundleMatches": true,
+    "ASavedPredictionsMatchScalarArithmetic": true,
+    "AMeasuredMetricMatchesReceipt": true,
+    "BManagedBundleMatches": true,
+    "BSavedPredictionsMatchScalarArithmetic": true,
+    "BMeasuredMetricMatchesReceipt": true,
+    "AIsMeasuredMinimum": true,
+    "ConfirmedReceiptBindsExactA": true,
+    "ConfirmedReceiptBindsActualRegisteredA": true,
+    "RecordedWrongBindingActuallyChoosesB": true,
+    "WrongBindingDownloadedActualB": true,
+    "CommittedJournalHasOneEntry": true,
+    "PendingJournalHasNoReceipt": true,
+    "NoRawCoefficientsInScope": true
+  },
+  "sources": {
+    "recording.json": {
+      "sha256": "f324de288260857a0cdccada01e9538b7b0857cf326e7cba62c44d15efb4f843",
+      "bytes": 2629730
+    },
+    "outcome.json": {
+      "sha256": "501116e4fca044f40fcbc458e7d984f247f62bf866a18688314f31204c698c26",
+      "bytes": 9868
+    },
+    "numerical-observations.json": {
+      "sha256": "96acbaf6efb23a8cc3828992c756e9c72fcff98729ffce32a1897c4588b77aa2",
+      "bytes": 3668
+    }
+  },
+  "execution": {
+    "savedJsonOnly": true,
+    "scalarArithmeticAudit": true,
+    "mlflowImported": false,
+    "trainingRepeated": false,
+    "registryContacted": false,
+    "guardRecomputed": false
+  },
+  "boundary": "Checks saved prediction arithmetic, identities and journal observations; does not prove training or authenticate the original producer."
+}

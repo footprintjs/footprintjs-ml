@@ -1,0 +1,178 @@
+{
+  "schema": "footprint-ml-mlflow-promotion-investigation/v1",
+  "passed": true,
+  "checks": {
+    "capturedOutcomeMatches": true,
+    "staleDecisionReachesBothCandidateObservations": true,
+    "wrongVersionReachesConsumedRegistryBinding": true,
+    "wrongVersionReachesIndependentPinnedPlan": true,
+    "wrongVersionReachesCompleteComparison": true,
+    "wrongVersionDoesNotBorrowLaterFix": true,
+    "correctedPromotionReachesItsOwnBinding": true,
+    "correctedPromotionReachesAcknowledgement": true,
+    "pendingRetryKeepsItsOwnPinnedInputs": true,
+    "occupiedAliasReachesItsOwnConfiguration": true,
+    "actualVersionValuesVisible": true,
+    "pythonOrderingNotRelabeledNativeRetry": true,
+    "snapshotOnlyMissingControlPreserved": true,
+    "allWorkflowChecksPass": true,
+    "sourceRecordingUnchanged": true,
+    "outcomeUnchanged": true
+  },
+  "source": {
+    "recording": {
+      "sha256": "f324de288260857a0cdccada01e9538b7b0857cf326e7cba62c44d15efb4f843",
+      "bytes": 2629730
+    },
+    "outcome": {
+      "sha256": "501116e4fca044f40fcbc458e7d984f247f62bf866a18688314f31204c698c26",
+      "bytes": 9868
+    }
+  },
+  "nativeQueries": 12,
+  "transcript": [
+    {
+      "ordinal": 1,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "staleDecision"
+      },
+      "result": "SLICE for 'staleDecision' — reads via: custom-fn\nRefuse A's evidence when B is proposed (check-stale-receipt#3) [wrote: staleDecision]\n  Train A and B and register their actual predictor bundles (train-register-candidates#1) ← via candidateResults [wrote: candidateResults, modelARef, modelBRef, mlflowBindings]\n    Pin two configurations and the independent validation rule (declare-comparison#0) ← via comparison [wrote: trainingDatasetArtifact, datasetRef, candidateConfigurations, qualityPolicy, comparison, mlflowRun]\n  ↳ declare-comparison#0 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 2,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "wrongPublication"
+      },
+      "result": "SLICE for 'wrongPublication' — reads via: custom-fn\nAttempt the wrong checked handoff (publish-wrong#6) [wrote: wrongPublication, wrongAliasCalls, wrongDownloadedArtifactObservations, wrongJournalObservation]\n  Choose the actual registered-version binding for wrong (bind-wrong-publisher#4) ← via wrongPublisherConfiguration [wrote: wrongPublisherConfiguration]\n    Pin two configurations and the independent validation rule (declare-comparison#0) ← via mlflowRun [wrote: trainingDatasetArtifact, datasetRef, candidateConfigurations, qualityPolicy, comparison, mlflowRun]\n    Train A and B and register their actual predictor bundles (train-register-candidates#1) ← via modelARef [wrote: candidateResults, modelARef, modelBRef, mlflowBindings]\n      ↳ declare-comparison#0 (see above)\n  Pin and check the exact wrong promotion (prepare-wrong#5) ← via wrongPlanRef [wrote: wrongPlanRef, wrongPreparation, wrongVerificationObservations, wrongPreparedRef]\n    ↳ bind-wrong-publisher#4 (see above)\n    ↳ train-register-candidates#1 (see above)\n    Persist complete comparison evidence and select the measured winner (pin-selection#2) ← via manifestRef [wrote: manifestRef, resultsRef, selectionReceiptRef]\n      ↳ declare-comparison#0 (see above)\n      ↳ train-register-candidates#1 (see above)\n    ↳ declare-comparison#0 (see above)\n  ↳ train-register-candidates#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 3,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "lostReplyPublication"
+      },
+      "result": "SLICE for 'lostReplyPublication' — reads via: custom-fn\nAttempt the lostReply checked handoff (publish-lostReply#11) [wrote: lostReplyPublication, lostReplyVerificationObservations, lostReplyAliasCalls, lostReplyDownloadedArtifactObservations, lostReplyJournalObservation, lostReplyCommittedBeforeOuterLoss]\n  Choose the actual registered-version binding for main (bind-main-publisher#9) ← via mainPublisherConfiguration [wrote: mainPublisherConfiguration]\n    Pin two configurations and the independent validation rule (declare-comparison#0) ← via mlflowRun [wrote: trainingDatasetArtifact, datasetRef, candidateConfigurations, qualityPolicy, comparison, mlflowRun]\n    Train A and B and register their actual predictor bundles (train-register-candidates#1) ← via modelARef [wrote: candidateResults, modelARef, modelBRef, mlflowBindings]\n      ↳ declare-comparison#0 (see above)\n  Pin and check the exact main promotion (prepare-main#10) ← via mainPlanRef [wrote: mainPlanRef, mainPreparation, mainVerificationObservations, mainPreparedRef]\n    ↳ bind-main-publisher#9 (see above)\n    ↳ train-register-candidates#1 (see above)\n    Persist complete comparison evidence and select the measured winner (pin-selection#2) ← via manifestRef [wrote: manifestRef, resultsRef, selectionReceiptRef]\n      ↳ declare-comparison#0 (see above)\n      ↳ train-register-candidates#1 (see above)\n    ↳ declare-comparison#0 (see above)\n  ↳ train-register-candidates#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 4,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "recoveredPublication"
+      },
+      "result": "SLICE for 'recoveredPublication' — reads via: custom-fn\nAttempt the recovered checked handoff (publish-recovered#12) [wrote: recoveredPublication, recoveredVerificationObservations, recoveredAliasCalls, recoveredDownloadedArtifactObservations, recoveredJournalObservation]\n  Choose the actual registered-version binding for main (bind-main-publisher#9) ← via mainPublisherConfiguration [wrote: mainPublisherConfiguration]\n    Pin two configurations and the independent validation rule (declare-comparison#0) ← via mlflowRun [wrote: trainingDatasetArtifact, datasetRef, candidateConfigurations, qualityPolicy, comparison, mlflowRun]\n    Train A and B and register their actual predictor bundles (train-register-candidates#1) ← via mlflowBindings [wrote: candidateResults, modelARef, modelBRef, mlflowBindings]\n      ↳ declare-comparison#0 (see above)\n  Pin and check the exact main promotion (prepare-main#10) ← via mainPlanRef [wrote: mainPlanRef, mainPreparation, mainVerificationObservations, mainPreparedRef]\n    ↳ bind-main-publisher#9 (see above)\n    ↳ train-register-candidates#1 (see above)\n    Persist complete comparison evidence and select the measured winner (pin-selection#2) ← via manifestRef [wrote: manifestRef, resultsRef, selectionReceiptRef]\n      ↳ declare-comparison#0 (see above)\n      ↳ train-register-candidates#1 (see above)\n    ↳ declare-comparison#0 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 5,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "uncertainFirstPublication"
+      },
+      "result": "SLICE for 'uncertainFirstPublication' — reads via: custom-fn\nAttempt the uncertainFirst checked handoff (publish-uncertainFirst#16) [wrote: uncertainFirstPublication, uncertainFirstVerificationObservations, uncertainFirstAliasCalls, uncertainFirstDownloadedArtifactObservations, uncertainFirstJournalObservation]\n  Choose the actual registered-version binding for uncertain (bind-uncertain-publisher#14) ← via uncertainPublisherConfiguration [wrote: uncertainPublisherConfiguration]\n    Pin two configurations and the independent validation rule (declare-comparison#0) ← via mlflowRun [wrote: trainingDatasetArtifact, datasetRef, candidateConfigurations, qualityPolicy, comparison, mlflowRun]\n    Train A and B and register their actual predictor bundles (train-register-candidates#1) ← via modelARef [wrote: candidateResults, modelARef, modelBRef, mlflowBindings]\n      ↳ declare-comparison#0 (see above)\n  Pin and check the exact uncertain promotion (prepare-uncertain#15) ← via uncertainPlanRef [wrote: uncertainPlanRef, uncertainPreparation, uncertainVerificationObservations, uncertainPreparedRef]\n    ↳ bind-uncertain-publisher#14 (see above)\n    ↳ train-register-candidates#1 (see above)\n    Persist complete comparison evidence and select the measured winner (pin-selection#2) ← via manifestRef [wrote: manifestRef, resultsRef, selectionReceiptRef]\n      ↳ declare-comparison#0 (see above)\n      ↳ train-register-candidates#1 (see above)\n    ↳ declare-comparison#0 (see above)\n  ↳ train-register-candidates#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 6,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "uncertainRetryPublication"
+      },
+      "result": "SLICE for 'uncertainRetryPublication' — reads via: custom-fn\nAttempt the uncertainRetry checked handoff (publish-uncertainRetry#17) [wrote: uncertainRetryPublication, uncertainRetryVerificationObservations, uncertainRetryAliasCalls, uncertainRetryDownloadedArtifactObservations, uncertainRetryJournalObservation]\n  Choose the actual registered-version binding for uncertain (bind-uncertain-publisher#14) ← via uncertainPublisherConfiguration [wrote: uncertainPublisherConfiguration]\n    Pin two configurations and the independent validation rule (declare-comparison#0) ← via mlflowRun [wrote: trainingDatasetArtifact, datasetRef, candidateConfigurations, qualityPolicy, comparison, mlflowRun]\n    Train A and B and register their actual predictor bundles (train-register-candidates#1) ← via mlflowBindings [wrote: candidateResults, modelARef, modelBRef, mlflowBindings]\n      ↳ declare-comparison#0 (see above)\n  Pin and check the exact uncertain promotion (prepare-uncertain#15) ← via uncertainPlanRef [wrote: uncertainPlanRef, uncertainPreparation, uncertainVerificationObservations, uncertainPreparedRef]\n    ↳ bind-uncertain-publisher#14 (see above)\n    ↳ train-register-candidates#1 (see above)\n    Persist complete comparison evidence and select the measured winner (pin-selection#2) ← via manifestRef [wrote: manifestRef, resultsRef, selectionReceiptRef]\n      ↳ declare-comparison#0 (see above)\n      ↳ train-register-candidates#1 (see above)\n    ↳ declare-comparison#0 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 7,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "occupiedPublication"
+      },
+      "result": "SLICE for 'occupiedPublication' — reads via: custom-fn\nAttempt the occupied checked handoff (publish-occupied#21) [wrote: occupiedPublication, occupiedAliasCalls, occupiedDownloadedArtifactObservations, occupiedJournalObservation]\n  Choose the actual registered-version binding for occupied (bind-occupied-publisher#19) ← via occupiedPublisherConfiguration [wrote: occupiedPublisherConfiguration]\n    Pin two configurations and the independent validation rule (declare-comparison#0) ← via mlflowRun [wrote: trainingDatasetArtifact, datasetRef, candidateConfigurations, qualityPolicy, comparison, mlflowRun]\n    Train A and B and register their actual predictor bundles (train-register-candidates#1) ← via modelARef [wrote: candidateResults, modelARef, modelBRef, mlflowBindings]\n      ↳ declare-comparison#0 (see above)\n  Pin and check the exact occupied promotion (prepare-occupied#20) ← via occupiedPlanRef [wrote: occupiedPlanRef, occupiedPreparation, occupiedVerificationObservations, occupiedPreparedRef]\n    ↳ bind-occupied-publisher#19 (see above)\n    ↳ train-register-candidates#1 (see above)\n    Persist complete comparison evidence and select the measured winner (pin-selection#2) ← via manifestRef [wrote: manifestRef, resultsRef, selectionReceiptRef]\n      ↳ declare-comparison#0 (see above)\n      ↳ train-register-candidates#1 (see above)\n    ↳ declare-comparison#0 (see above)\n  ↳ train-register-candidates#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 8,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 160,
+        "variable": "approvedMlflowPromotion"
+      },
+      "result": "SLICE for 'approvedMlflowPromotion' — reads via: custom-fn\nHandoff only the acknowledged exact A promotion (retain-confirmed-promotion#13) [wrote: approvedMlflowPromotion]\n  Attempt the recovered checked handoff (publish-recovered#12) ← via recoveredPublication [wrote: recoveredPublication, recoveredVerificationObservations, recoveredAliasCalls, recoveredDownloadedArtifactObservations, recoveredJournalObservation]\n    Choose the actual registered-version binding for main (bind-main-publisher#9) ← via mainPublisherConfiguration [wrote: mainPublisherConfiguration]\n      Pin two configurations and the independent validation rule (declare-comparison#0) ← via mlflowRun [wrote: trainingDatasetArtifact, datasetRef, candidateConfigurations, qualityPolicy, comparison, mlflowRun]\n      Train A and B and register their actual predictor bundles (train-register-candidates#1) ← via mlflowBindings [wrote: candidateResults, modelARef, modelBRef, mlflowBindings]\n        ↳ declare-comparison#0 (see above)\n    Pin and check the exact main promotion (prepare-main#10) ← via mainPlanRef [wrote: mainPlanRef, mainPreparation, mainVerificationObservations, mainPreparedRef]\n      ↳ bind-main-publisher#9 (see above)\n      ↳ train-register-candidates#1 (see above)\n      Persist complete comparison evidence and select the measured winner (pin-selection#2) ← via manifestRef [wrote: manifestRef, resultsRef, selectionReceiptRef]\n        ↳ declare-comparison#0 (see above)\n        ↳ train-register-candidates#1 (see above)\n      ↳ declare-comparison#0 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 9,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "publish-wrong#6",
+        "key": "wrongPublisherConfiguration\u001fbinding\u001fversion"
+      },
+      "result": "VALUE of 'wrongPublisherConfiguration.binding.version' as of publish-wrong#6:\n\"2\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 10,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "publish-recovered#12",
+        "key": "recoveredPublication\u001fpublisherReceipt\u001fregistry\u001fversion"
+      },
+      "result": "VALUE of 'recoveredPublication.publisherReceipt.registry.version' as of publish-recovered#12:\n\"1\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 11,
+      "tool": "who_wrote",
+      "args": {
+        "key": "wrongPublisherConfiguration",
+        "beforeStageId": "publish-wrong#6"
+      },
+      "result": "'wrongPublisherConfiguration' was last written by bind-wrong-publisher#4 — \"Choose the actual registered-version binding for wrong\" (verb: set): {\"modelName\":\"footprint-linear-predictor\",\"registryId\":\"local-proof-registry\",\"alias\":\"wrong-version\",\"journalKey\":\"wrong\",\"binding\":{\"version\":\"2\",\"runId\":\"bc6… (297 chars total — get_value('bind-wrong-publisher#4', 'wrongPublisherConfiguration') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 12,
+      "tool": "trace_node",
+      "args": {
+        "runtimeStageId": "publish-uncertainRetry#17"
+      },
+      "result": "STEP publish-uncertainRetry#17 — \"Attempt the uncertainRetry checked handoff\"\nwrote (5):\n- uncertainRetryPublication (set): {\"kind\":\"model-release-publication\",\"schemaVersion\":1,\"allowed\":false,\"status\":\"unknown\",\"reasons\":[{\"code\":\"model-publisher-lookup-refused\",\"message\":\"promotio… (42026 chars total — get_value('publish-uncertainRetry#17', 'uncertainRetryPublication') for full)\n- uncertainRetryVerificationObservations (set): []\n- uncertainRetryAliasCalls (set): [{\"name\":\"footprint-linear-predictor\",\"alias\":\"champion\",\"version\":\"1\"},{\"name\":\"footprint-linear-predictor\",\"alias\":\"uncertain\",\"version\":\"1\"}]\n- uncertainRetryDownloadedArtifactObservations (set): [{\"runId\":\"bc61d9f369774ba397165648c4c5bf98\",\"artifactPath\":\"predictors/B/bundle.json\",\"sha256\":\"d26c9556a3838678605a926668a3f7510ac60c0715ee24d082c39f337a8eeaa… (701 chars total — get_value('publish-uncertainRetry#17', 'uncertainRetryDownloadedArtifactObservations') for full)\n- uncertainRetryJournalObservation (set): {\"kind\":\"mlflow-promotion-journal\",\"schemaVersion\":1,\"target\":{\"registryId\":\"local-proof-registry\",\"modelName\":\"footprint-linear-predictor\",\"alias\":\"uncertain\"}… (3771 chars total — get_value('publish-uncertainRetry#17', 'uncertainRetryJournalObservation') for full)\nread (3): uncertainPublisherConfiguration, uncertainPlanRef, uncertainPreparedRef\nparents:\n- data: uncertainPublisherConfiguration ← bind-uncertain-publisher#14 \"Choose the actual registered-version binding for uncertain\"\n- data: uncertainPlanRef ← prepare-uncertain#15 \"Pin and check the exact uncertain promotion\"\n- data: uncertainPreparedRef ← prepare-uncertain#15 \"Pin and check the exact uncertain promotion\"\n⚠ control-dependence lookup not provided — the decision that routed here is unknown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    }
+  ],
+  "retryNode": "STEP publish-uncertainRetry#17 — \"Attempt the uncertainRetry checked handoff\"\nwrote (5):\n- uncertainRetryPublication (set): {\"kind\":\"model-release-publication\",\"schemaVersion\":1,\"allowed\":false,\"status\":\"unknown\",\"reasons\":[{\"code\":\"model-publisher-lookup-refused\",\"message\":\"promotio… (42026 chars total — get_value('publish-uncertainRetry#17', 'uncertainRetryPublication') for full)\n- uncertainRetryVerificationObservations (set): []\n- uncertainRetryAliasCalls (set): [{\"name\":\"footprint-linear-predictor\",\"alias\":\"champion\",\"version\":\"1\"},{\"name\":\"footprint-linear-predictor\",\"alias\":\"uncertain\",\"version\":\"1\"}]\n- uncertainRetryDownloadedArtifactObservations (set): [{\"runId\":\"bc61d9f369774ba397165648c4c5bf98\",\"artifactPath\":\"predictors/B/bundle.json\",\"sha256\":\"d26c9556a3838678605a926668a3f7510ac60c0715ee24d082c39f337a8eeaa… (701 chars total — get_value('publish-uncertainRetry#17', 'uncertainRetryDownloadedArtifactObservations') for full)\n- uncertainRetryJournalObservation (set): {\"kind\":\"mlflow-promotion-journal\",\"schemaVersion\":1,\"target\":{\"registryId\":\"local-proof-registry\",\"modelName\":\"footprint-linear-predictor\",\"alias\":\"uncertain\"}… (3771 chars total — get_value('publish-uncertainRetry#17', 'uncertainRetryJournalObservation') for full)\nread (3): uncertainPublisherConfiguration, uncertainPlanRef, uncertainPreparedRef\nparents:\n- data: uncertainPublisherConfiguration ← bind-uncertain-publisher#14 \"Choose the actual registered-version binding for uncertain\"\n- data: uncertainPlanRef ← prepare-uncertain#15 \"Pin and check the exact uncertain promotion\"\n- data: uncertainPreparedRef ← prepare-uncertain#15 \"Pin and check the exact uncertain promotion\"\n⚠ control-dependence lookup not provided — the decision that routed here is unknown.",
+  "execution": {
+    "savedJsonOnly": true,
+    "trainingStarted": false,
+    "mlflowImported": false,
+    "registryContacted": false,
+    "guardRecomputed": false,
+    "publicationPerformed": false
+  },
+  "boundaries": [
+    "One complete safe JSON predictor profile, not arbitrary MLflow flavors or serving.",
+    "The application controls Python stages/retries and supplies trusted numerical/live-model observations.",
+    "Alias coordination is one-host cooperating writers with a shared journal, not MLflow compare-and-swap or distributed exactly-once.",
+    "An alias setter timeout remains unknown even when a later alias read matches. Pending intent is not proof of commit.",
+    "Backend/model/registry observations are consistency evidence, not producer authentication or proof of numerical correctness."
+  ]
+}

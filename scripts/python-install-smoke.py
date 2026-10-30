@@ -71,8 +71,11 @@ sys.meta_path.insert(0,BlockHeavyImports())
 def no_process(*args,**kwargs):
     raise RuntimeError('Import or construction started a process')
 subprocess.Popen=no_process
-import footprint_ml_workflow,footprint_ml_setup,footprint_ml_versions
+import footprint_ml_workflow,footprint_ml_setup,footprint_ml_versions,footprint_ml_promotion
 capture=footprint_ml_workflow.WorkflowCapture(pathlib.Path('constructor-only.json'))
+assert all(callable(getattr(capture,name)) for name in ('put_release_artifact','read_model_release_plan','prepare_model_release','publish_model_release','release_model'))
+publisher=footprint_ml_promotion.MlflowModelPublisher(object(),store_root='untouched-store',journal_dir='untouched-journal',registry_id='smoke',model_name='model',alias='champion',binding={'version':'1','runId':'smoke-run','source':'runs:/smoke-run/model','artifactPath':'model/bundle.json'})
+assert not pathlib.Path('untouched-journal').exists() and not pathlib.Path('untouched-store').exists()
 distribution=importlib.metadata.distribution('footprintjs-ml')
 assert not distribution.requires, 'Wheel has runtime dependencies'
 assert pathlib.Path(footprint_ml_workflow.__file__).resolve().is_relative_to(pathlib.Path(sys.prefix).resolve())
@@ -114,6 +117,10 @@ except Exception as error:
         for name, expected in guidance_bytes.items():
             if (runtime / "node_modules" / "footprintjs-ml" / name).read_bytes() != expected:
                 raise ValueError("npm and Python guidance copies disagree: " + name)
+        promotion = json.loads(run(python, ["-I", Path(__file__).with_name("python-promotion-install-smoke.py").resolve(),
+                                            "--out", root / "installed-promotion"], root))
+        if promotion.get("passed") is not True:
+            raise ValueError("Installed checked promotion did not pass")
         recording = root / "installed-recording.json"
         execution = json.loads(run(python, ["-I", "-c", r'''
 import json,pathlib,sys
@@ -271,12 +278,12 @@ console.log(JSON.stringify({lineage:apply(requests.lineage,checkDataLineage),sel
                            "nativeCliBacktracking": True, "investigatorChildProcessesForbidden": True,
                            "installedPythonInvestigationCommand": True,
                            "recordingUnchangedAfterInvestigation": True,
-                           "wheelGuidanceInstalledIntact": True, "featureGuideLinksResolveAfterInstall": True,
+                           "installedPromotionCallbacks": promotion["nativeCheckedReleaseCallbacks"], "installedPublisherBytes": promotion["receiverConsumesApprovedArtifact"], "installedHistoricalRetry": promotion["historicalRetryWithoutVerifier"], "wheelGuidanceInstalledIntact": True, "featureGuideLinksResolveAfterInstall": True,
                            "npmAndWheelGuidanceAgree": True},
                 "guidance": {"files": len(guidance_bytes), "localLinks": guidance_links,
                              "skillSha256": hashlib.sha256(guidance_bytes["skills/footprintjs-ml/SKILL.md"]).hexdigest(),
                              "featureCount": 9, "nativeCompiledRuntimeBundled": False},
-                "import": imported, "nativeVersions": versions, "setup": setup, "repeatedSetup": repeated_setup,
+                "import": imported, "promotion": promotion, "nativeVersions": versions, "setup": setup, "repeatedSetup": repeated_setup,
                 "doctor": doctor, "missingRuntime": missing,
                 "investigation": {"report": native_report, "stdout": native_stdout,
                                   "pythonCommand": python_investigation},

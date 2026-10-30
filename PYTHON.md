@@ -8,16 +8,16 @@ Prerequisites: Python 3.11+ and Node.js 22+ with npm. The current CI targets Pyt
 
 ```sh
 python3 -m venv .venv
-.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.9/footprintjs_ml-0.6.0b9-py3-none-any.whl
+.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.10/footprintjs_ml-0.6.0b10-py3-none-any.whl
 .venv/bin/python -m footprint_ml_workflow setup
 .venv/bin/python -m footprint_ml_workflow doctor
 ```
 
-Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b9` corresponds to npm version `0.6.0-beta.9`.
+Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b10` corresponds to npm version `0.6.0-beta.10`.
 
 The wheel has no required Python packages. It does not install MLflow, NumPy, scikit-learn or JAX. Importing the module and constructing a capture object do not install dependencies or launch a process. The optional numerical trainer adapter still needs NumPy when explicitly used.
 
-`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.8.0`, `agentfootprint@11.0.0` and `footprintjs@10.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.9` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
+`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.8.0`, `agentfootprint@11.0.0` and `footprintjs@10.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.10` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
 
 The helper is checked in a temporary sibling directory before it is made available. A failed setup preserves the prior runtime. A completed matching installation can be checked again. `doctor` is read-only: it checks versions and imports without starting a trainer or connecting to MLflow. It is an environment check, not an authenticity or security certificate. Release `SHA256SUMS` identifies the distributed files.
 
@@ -68,7 +68,7 @@ with capture.stage("check-selected-model") as scope:
 
 The expected manifest/results must be retained independently of the offered receipt. For lineage, observed memberships, overlap counts and fitted-preprocessing inputs come from the backend; missing evidence remains unknown. A guard authorizes only when `allowed` is explicitly true. Compose the quality, selection and data-use checks required by the application.
 
-Python keeps its training code, candidate loop, branches and retries. `runExperiment` and checked publication remain TypeScript APIs. Calling a helper requires an open capture connection, but no active stage; calls outside stages have no automatic scope provenance. See the [data-lineage guide](DATA-LINEAGE.md), [selection guide](SELECTION.md) and [retained-observation Python proof](examples/python-guards/README.md).
+Python keeps its training code, candidate loop, branches and retries. `runExperiment` remains a TypeScript callback driver. Calling a helper requires an open capture connection, but no active stage; calls outside stages have no automatic scope provenance. See the [data-lineage guide](DATA-LINEAGE.md), [selection guide](SELECTION.md) and [retained-observation Python proof](examples/python-guards/README.md).
 
 Try the retained-observation guard proof after setup, using only the Python standard library and the explicit Node helper:
 
@@ -78,6 +78,34 @@ Try the retained-observation guard proof after setup, using only the Python stan
 ```
 
 This checks recorded JAX candidate results and separate digit-lineage evidence. It does not train or numerically re-evaluate a model, and it does not publish one. The second command reopens saved scope history after the example's capture worker exits. Use a new output directory for each run.
+
+## Publish an exact checked artifact
+
+The started facade also delegates the existing release APIs. It uses the Node file artifact store; numerical arrays and model buffers do not travel through JSON packets or scope.
+
+| Python method | Purpose |
+| --- | --- |
+| `put_release_artifact(file_path, *, store_root, format)` | Import actual local bytes into the managed release store and return their reference. |
+| `read_model_release_plan(input)` | Validate an independently authorized plan with the core reader. |
+| `prepare_model_release(input, *, store_root, verify_model)` | Load pinned evidence, compose the guards and verify the actual live model. |
+| `publish_model_release(input, *, store_root, publisher, verify_model=None)` | Reconstruct approval and hand off exact bytes, or acknowledge an existing matching publication. |
+| `release_model(input, *, store_root, publisher, verify_model=None)` | Use the same core convenience operation; new publication requires live verification. |
+
+Request fields retain camelCase: preparation takes `planRef`, `modelRef` and optional `now`; publication also takes `preparedRef`. `verify_model(request)` returns a measured actual `ModelRef`. The publisher implements `publish(request)` and optional read-only `lookup(request)`. Callback requests contain the semantic payload, canonical payload string, digest and preparation reference. Publication additionally supplies a managed `modelArtifact` reference to the exact approved bytes in `store_root`.
+
+Artifact import is a general whole-file operation bounded to the opened descriptor's size. It has no automatic 132 MiB predictor-profile cap; the MLflow receiver applies that separate cap after import. The application must control import sizes and memory use. This is not streaming or constant-memory transfer.
+
+Read actual release inputs through scope and assign returned metadata to scope. Callbacks cannot issue nested capture or scope requests. They run on bounded helper threads; a timeout does not cancel an external client operation. An uncertain effect remains unknown. Keep client timeouts and recovery policy explicit rather than blindly repeating a registry update.
+
+`from footprint_ml_promotion import MlflowModelPublisher` supplies an optional receiver for one pre-existing registered MLflow version backed by one complete artifact under a canonical `runs:/` source. It imports no MLflow itself. The application injects its client and coordinates all writers using the same local journal/lock. See [checked MLflow promotion](MLFLOW.md#checked-registered-model-promotion), the [release boundary](RELEASE.md#python-release-callbacks-and-mlflow-promotion) and the [real local proof](examples/mlflow-promotion/README.md).
+
+After setup, explicitly install the example dependencies and launch the packaged proof:
+
+```sh
+python -m pip install numpy==2.2.6 mlflow==3.17.2
+python -m footprint_ml_workflow example-promotion --out ./promotion-run
+python -m footprint_ml_workflow investigate --run ./promotion-run --variable approvedMlflowPromotion
+```
 
 ## Check a prediction backend's actual model and contract
 

@@ -1,12 +1,16 @@
 # Beta compatibility
 
-The current SDK beta is `0.6.0-beta.9`. APIs and supported integration profiles may change during the beta.
+The current SDK beta is `0.6.0-beta.10`. APIs and supported integration profiles may change during the beta.
+
+Beta 10 exposes the existing checked-release API to Python callbacks and adds the optional standard-library `MlflowModelPublisher` with an injected application client. The local proof uses NumPy 2.2.6 and MLflow 3.17.2, two real trained predictors and a local SQLite registry. This is a path for the existing publication capability, with no tenth feature or new required runtime dependency. The supported receiver profile promotes one pre-existing version backed by one complete predictor artifact under a canonical `runs:/` source. It requires one-host cooperating writers sharing a journal/lock; it does not provide remote alias CAS, distributed exactly-once, arbitrary flavor packaging or serving. A committed outer-reply loss can be acknowledged; an uncertain alias setter remains pending/unknown and is not repeated automatically. Callbacks run on helper threads, cannot make nested capture/scope calls, and may finish an external effect after a timeout. See [MLFLOW.md](MLFLOW.md#checked-registered-model-promotion) and [the proof](examples/mlflow-promotion/README.md).
 
 Beta 9 hardens existing contracts: investigation reports preserve source recordings; saved readers reject conflicting recording aliases; approval policies reject unsupported fields; successful legacy evaluations retain handle identities; failed lock-owner writes clean up their owned files; Node/Python file consumers check descriptor sizes before bounded reads; and conformance reports must match the requested plan. Local registry metadata and CLI investigation reports each have a separate 16 MiB limit, while checkpoint profiles retain their own limits. This release adds no ML feature, numerical algorithm or recording engine. See [TESTING.md](TESTING.md) for the regression scope.
 
 Beta 2 adds a saved-record entry point without release bindings and explicit CLI investigation targets. It reuses the existing FootPrint/foottrace toolpack. Its selection proof recomputes ranking from retained JAX evaluations; it does not repeat numerical training. The reference quickstart separately trains its NumPy model. See [BACKTRACKING.md](BACKTRACKING.md) for capture requirements and limits.
 
 Beta 3 adds an optional standard-library Python workflow helper and injected MLflow artifact binding. Python controls its own stages and retries; an explicitly started Node helper records reference reads and writes through the native foottrace writer. This path uses no FootPrint executor and does not capture arbitrary Python locals. MLflow and numerical packages are application dependencies, not SDK runtime dependencies. The reference MLflow proof uses Python 3.12, MLflow 3.17.2, scikit-learn 1.7.2 and NumPy 2.2.6 with a local SQLite store. See [MLFLOW.md](MLFLOW.md).
+
+General Python artifact import reads one complete file bounded to its opened descriptor size; it has no built-in predictor-profile cap. The application controls input sizes and memory resources. The optional MLflow receiver separately limits a model artifact to 132 MiB and its journal to 16 MiB / 2,048 entries. Neither path is a streaming or constant-memory transfer API.
 
 ## Runtime scope
 

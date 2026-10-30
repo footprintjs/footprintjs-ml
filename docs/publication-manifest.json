@@ -7,16 +7,16 @@
   "hashScope": "files hashes cover published bytes. originalRetainedSource hashes cover private retained authoring inputs. The manifest itself is intentionally excluded from its own hash list. These checksums are integrity references, not signatures.",
   "projection": "Only local path strings, repository-document link targets and publication-specific source/checksum descriptions are changed. Logical recorded digests, model IDs and numerical claims are retained.",
   "evidence": {
-    "count": 165,
-    "byteIdentical": 146,
+    "count": 175,
+    "byteIdentical": 155,
     "pathProjected": 13,
-    "documentLinksProjected": 6
+    "documentLinksProjected": 7
   },
   "validation": {
     "passed": true,
-    "staticLinksChecked": 172,
+    "staticLinksChecked": 182,
     "classicScriptsParsed": 9,
-    "embeddedSourceMappingsChecked": 660,
+    "embeddedSourceMappingsChecked": 700,
     "personalFilesystemPaths": 0,
     "localServerDependencies": 0,
     "credentialPatternMatches": 0,
@@ -2387,15 +2387,157 @@
       "byteIdenticalToRetainedSource": true
     },
     {
+      "path": "evidence/promotion-outcome.json",
+      "published": {
+        "sha256": "501116e4fca044f40fcbc458e7d984f247f62bf866a18688314f31204c698c26",
+        "bytes": 9868
+      },
+      "originalRetainedSource": {
+        "path": "evidence/promotion-outcome.json",
+        "sha256": "501116e4fca044f40fcbc458e7d984f247f62bf866a18688314f31204c698c26",
+        "bytes": 9868
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/promotion-recording.json",
+      "published": {
+        "sha256": "f324de288260857a0cdccada01e9538b7b0857cf326e7cba62c44d15efb4f843",
+        "bytes": 2629730
+      },
+      "originalRetainedSource": {
+        "path": "evidence/promotion-recording.json",
+        "sha256": "f324de288260857a0cdccada01e9538b7b0857cf326e7cba62c44d15efb4f843",
+        "bytes": 2629730
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/promotion-native.json",
+      "published": {
+        "sha256": "3d17d29b082790b9049a35253b828be8611ba5baf37fffed1ba424f8098ccc88",
+        "bytes": 22606
+      },
+      "originalRetainedSource": {
+        "path": "evidence/promotion-native.json",
+        "sha256": "3d17d29b082790b9049a35253b828be8611ba5baf37fffed1ba424f8098ccc88",
+        "bytes": 22606
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/promotion-audit.json",
+      "published": {
+        "sha256": "6a9738eba496c1b6a6e1d5e7954e1baf17c4f06801c9a32220e471fc37ede36e",
+        "bytes": 1693
+      },
+      "originalRetainedSource": {
+        "path": "evidence/promotion-audit.json",
+        "sha256": "6a9738eba496c1b6a6e1d5e7954e1baf17c4f06801c9a32220e471fc37ede36e",
+        "bytes": 1693
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/promotion-numerical.json",
+      "published": {
+        "sha256": "96acbaf6efb23a8cc3828992c756e9c72fcff98729ffce32a1897c4588b77aa2",
+        "bytes": 3668
+      },
+      "originalRetainedSource": {
+        "path": "evidence/promotion-numerical.json",
+        "sha256": "96acbaf6efb23a8cc3828992c756e9c72fcff98729ffce32a1897c4588b77aa2",
+        "bytes": 3668
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/promotion-workflow.py.txt",
+      "published": {
+        "sha256": "2247e477f235502843263e19cf627b838b85636866efd39589006f023543f558",
+        "bytes": 21285
+      },
+      "originalRetainedSource": {
+        "path": "evidence/promotion-workflow.py.txt",
+        "sha256": "2247e477f235502843263e19cf627b838b85636866efd39589006f023543f558",
+        "bytes": 21285
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/promotion-publisher.py.txt",
+      "published": {
+        "sha256": "653244b496154cd2e562ce386fd9aa2412e5540da283fbe055936dba07d14a2a",
+        "bytes": 25576
+      },
+      "originalRetainedSource": {
+        "path": "evidence/promotion-publisher.py.txt",
+        "sha256": "653244b496154cd2e562ce386fd9aa2412e5540da283fbe055936dba07d14a2a",
+        "bytes": 25576
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/promotion-bridge.ts.txt",
+      "published": {
+        "sha256": "1d9e5f106ff5ad48780fe15e1a6cf2b31b288678f9cd48c8e1bf2637f4c17642",
+        "bytes": 3930
+      },
+      "originalRetainedSource": {
+        "path": "evidence/promotion-bridge.ts.txt",
+        "sha256": "1d9e5f106ff5ad48780fe15e1a6cf2b31b288678f9cd48c8e1bf2637f4c17642",
+        "bytes": 3930
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/promotion-guide.md",
+      "published": {
+        "sha256": "5290561375ffe1e5622e0879c134562b3d27c98c79bd3b898b49f8366e236909",
+        "bytes": 4598
+      },
+      "originalRetainedSource": {
+        "path": "evidence/promotion-guide.md",
+        "sha256": "2b22cce0ec83a6c44c098cb9d447a84fd4c9667ab816a9725bbe9d6c94dd0370",
+        "bytes": 4548
+      },
+      "projectionFlags": [
+        "repository-document-links"
+      ],
+      "byteIdenticalToRetainedSource": false
+    },
+    {
+      "path": "evidence/promotion-audit-code.py.txt",
+      "published": {
+        "sha256": "2e1fa73acf5bf412f77ddb38c06d9d85c101d7a87e84902024095119e112aed4",
+        "bytes": 8224
+      },
+      "originalRetainedSource": {
+        "path": "evidence/promotion-audit-code.py.txt",
+        "sha256": "2e1fa73acf5bf412f77ddb38c06d9d85c101d7a87e84902024095119e112aed4",
+        "bytes": 8224
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
       "path": "index.html",
       "published": {
-        "sha256": "e559c7a3d229f3e3d4153940608efddb9d7a12e3053d144d51d3509559993ace",
-        "bytes": 793237
+        "sha256": "62d400c207057857d23156844d279627baa71b807d1a35046e4082624878c480",
+        "bytes": 830425
       },
       "originalRetainedSource": {
         "path": "index.html",
-        "sha256": "fac6dfcdf909e864818355632e28f8c637a7b91f722ca52bf2215bb8008fa010",
-        "bytes": 643299
+        "sha256": "4361da750847e3b3283bf023ba5698faa8cb8b5e51ea0b5cc8658b873fb77ce5",
+        "bytes": 671357
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -2406,13 +2548,13 @@
     {
       "path": "technical-story.html",
       "published": {
-        "sha256": "aeddf42103f1e893dd43b4d15b4a946df08311f3a5bcd154e2e6d872ca6f20e6",
-        "bytes": 1114877
+        "sha256": "56584216f1ad0fcb39721930f2cdaf746c1e7509bd4bc5c6256ca3f10fb69cbe",
+        "bytes": 1140084
       },
       "originalRetainedSource": {
         "path": "technical-story.html",
-        "sha256": "0f97220cd0f3d745c3773afa453e32633bb953f9d09c38fac5d72e3aa67876a1",
-        "bytes": 965200
+        "sha256": "51fa54cb250f3bcaf81d278ec45efbe6f7e95b7244f8d041346826f554d7c871",
+        "bytes": 981277
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -2424,13 +2566,13 @@
     {
       "path": "presentation-manifest.json",
       "published": {
-        "sha256": "eee409f89d172d82c764f108c3167f95b5fb93d8047093fb0f73a21f38b87a72",
-        "bytes": 474820
+        "sha256": "cf7db0e2a9ff4195099328579c8c734c9ed275511e386f729caecf179201cea3",
+        "bytes": 490044
       },
       "originalRetainedSource": {
         "path": "presentation-manifest.json",
-        "sha256": "a6f6e1e76d7d282684e2ac87da6bac6a636bc05abbc836e0309dbe993484ae7e",
-        "bytes": 412252
+        "sha256": "d5171471a6869fe3cbef35025d711e1626894d12d9cac47228639c3ea1ee4b9d",
+        "bytes": 423739
       },
       "projectionFlags": [
         "public-source-mappings",
@@ -2442,13 +2584,13 @@
     {
       "path": "EVIDENCE.md",
       "published": {
-        "sha256": "005d31d57492879b000e9ffddea0cbef6247314cc50a3b379398a36d5806ed8f",
-        "bytes": 205305
+        "sha256": "357cb73ed0380df335f67ab238b3e405c0346667e51b8e062fd7588d74ed88e4",
+        "bytes": 213675
       },
       "originalRetainedSource": {
         "path": "EVIDENCE.md",
-        "sha256": "c3644f6c5c857ad0ad4cfc7b05843e93954d8c912f4d340c40b2dbed84c017f3",
-        "bytes": 195842
+        "sha256": "a7e6e77690e29ad38406186bf9ce7f812e381d66f61b8a1bd05624becc98eea5",
+        "bytes": 203789
       },
       "projectionFlags": [
         "public-evidence-links",
@@ -2483,8 +2625,8 @@
     {
       "path": "README.md",
       "published": {
-        "sha256": "4508ba9b81bff5f5d2b3d7fe44ce4ed135598451833591de4551c64af858cc59",
-        "bytes": 2028
+        "sha256": "3935296c44ba65661b4ea3d568ded12064835fb2ff980504758e0f1dad1f83c6",
+        "bytes": 2030
       },
       "projectionFlags": [],
       "byteIdenticalToRetainedSource": null

@@ -1161,6 +1161,76 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Published copy SHA-256: b6fbceedab605fc2f8f70f15a29c12348fab0f056ecaeb7e29199d3c6c6e272d
   - Published copy bytes: 4001
   - Path projection: 0 string(s); byte-identical to retained source.
+- **promotion-outcome** — Actual Python/NumPy promotion outcomes against a real local MLflow registry
+  - Public copy: [evidence/promotion-outcome.json](evidence/promotion-outcome.json)
+  - Original retained source SHA-256: 501116e4fca044f40fcbc458e7d984f247f62bf866a18688314f31204c698c26
+  - Original retained source bytes: 9868
+  - Published copy SHA-256: 501116e4fca044f40fcbc458e7d984f247f62bf866a18688314f31204c698c26
+  - Published copy bytes: 9868
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **promotion-recording** — Saved native reference reads and writes for Python-owned MLflow promotion
+  - Public copy: [evidence/promotion-recording.json](evidence/promotion-recording.json)
+  - Original retained source SHA-256: f324de288260857a0cdccada01e9538b7b0857cf326e7cba62c44d15efb4f843
+  - Original retained source bytes: 2629730
+  - Published copy SHA-256: f324de288260857a0cdccada01e9538b7b0857cf326e7cba62c44d15efb4f843
+  - Published copy bytes: 2629730
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **promotion-native** — Existing Lens backtracking of registry bindings, pinned plans and publication decisions
+  - Public copy: [evidence/promotion-native.json](evidence/promotion-native.json)
+  - Original retained source SHA-256: 3d17d29b082790b9049a35253b828be8611ba5baf37fffed1ba424f8098ccc88
+  - Original retained source bytes: 22606
+  - Published copy SHA-256: 3d17d29b082790b9049a35253b828be8611ba5baf37fffed1ba424f8098ccc88
+  - Published copy bytes: 22606
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **promotion-audit** — Saved-only scalar audit bound to the actual captured model and validation artifacts
+  - Public copy: [evidence/promotion-audit.json](evidence/promotion-audit.json)
+  - Original retained source SHA-256: 6a9738eba496c1b6a6e1d5e7954e1baf17c4f06801c9a32220e471fc37ede36e
+  - Original retained source bytes: 1693
+  - Published copy SHA-256: 6a9738eba496c1b6a6e1d5e7954e1baf17c4f06801c9a32220e471fc37ede36e
+  - Published copy bytes: 1693
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **promotion-numerical** — Retained numerical arrays and predictor bundles outside workflow scope
+  - Public copy: [evidence/promotion-numerical.json](evidence/promotion-numerical.json)
+  - Original retained source SHA-256: 96acbaf6efb23a8cc3828992c756e9c72fcff98729ffce32a1897c4588b77aa2
+  - Original retained source bytes: 3668
+  - Published copy SHA-256: 96acbaf6efb23a8cc3828992c756e9c72fcff98729ffce32a1897c4588b77aa2
+  - Published copy bytes: 3668
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **promotion-workflow** — Python-owned workflow with real registry clients and deliberate reply faults
+  - Public copy: [evidence/promotion-workflow.py.txt](evidence/promotion-workflow.py.txt)
+  - Original retained source SHA-256: 2247e477f235502843263e19cf627b838b85636866efd39589006f023543f558
+  - Original retained source bytes: 21285
+  - Published copy SHA-256: 2247e477f235502843263e19cf627b838b85636866efd39589006f023543f558
+  - Published copy bytes: 21285
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **promotion-publisher** — Optional single-host cooperating-writer MLflow publisher with pending and committed journal states
+  - Public copy: [evidence/promotion-publisher.py.txt](evidence/promotion-publisher.py.txt)
+  - Original retained source SHA-256: 653244b496154cd2e562ce386fd9aa2412e5540da283fbe055936dba07d14a2a
+  - Original retained source bytes: 25576
+  - Published copy SHA-256: 653244b496154cd2e562ce386fd9aa2412e5540da283fbe055936dba07d14a2a
+  - Published copy bytes: 25576
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **promotion-bridge** — Optional Python bridge to the existing checked prepare/publish/release core
+  - Public copy: [evidence/promotion-bridge.ts.txt](evidence/promotion-bridge.ts.txt)
+  - Original retained source SHA-256: 1d9e5f106ff5ad48780fe15e1a6cf2b31b288678f9cd48c8e1bf2637f4c17642
+  - Original retained source bytes: 3930
+  - Published copy SHA-256: 1d9e5f106ff5ad48780fe15e1a6cf2b31b288678f9cd48c8e1bf2637f4c17642
+  - Published copy bytes: 3930
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **promotion-guide** — Checked Python promotion profile, commands and evidence boundaries
+  - Public copy: [evidence/promotion-guide.md](evidence/promotion-guide.md)
+  - Original retained source SHA-256: 2b22cce0ec83a6c44c098cb9d447a84fd4c9667ab816a9725bbe9d6c94dd0370
+  - Original retained source bytes: 4548
+  - Published copy SHA-256: 5290561375ffe1e5622e0879c134562b3d27c98c79bd3b898b49f8366e236909
+  - Published copy bytes: 4598
+  - Path projection: 0 string(s); published bytes differ from retained source.
+- **promotion-audit-code** — Independent saved-artifact arithmetic and binding audit; no numerical framework or registry access
+  - Public copy: [evidence/promotion-audit-code.py.txt](evidence/promotion-audit-code.py.txt)
+  - Original retained source SHA-256: 2e1fa73acf5bf412f77ddb38c06d9d85c101d7a87e84902024095119e112aed4
+  - Original retained source bytes: 8224
+  - Published copy SHA-256: 2e1fa73acf5bf412f77ddb38c06d9d85c101d7a87e84902024095119e112aed4
+  - Published copy bytes: 8224
+  - Path projection: 0 string(s); byte-identical to retained source.
 
 ## Claims by scene
 
@@ -1247,6 +1317,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — This remains a local private unpublished preview. [build]
 - **VERIFIED** — Beta 9 reliability update (R1): Opening an investigation cannot replace its source recording. Valid reports can still be updated safely. [beta9-reliability-review, beta9-release-verification]
 - **VERIFIED** — Beta 9 reliability update (R6): Conflicting snapshot aliases are rejected instead of silently opening one of two different recordings. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — The later promotion example reopens its saved Python reference history using the existing Lens and foottrace tools after the workflow exits. Backtracking follows the wrong actual registry version to its consumed binding and independent release plan without starting Python, training or registry access. [promotion-outcome, promotion-recording, promotion-native, promotion-audit, promotion-numerical, promotion-workflow, promotion-publisher, promotion-bridge, promotion-guide, promotion-audit-code]
 
 ### 14. A good validation score still hid contaminated data
 
@@ -1321,6 +1392,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **OPEN** — The pin is supplied by an authorized caller; hashing does not establish who is permitted to approve a release. Trusted adapters, complete comparison evidence and a publisher honoring its contract remain required. These local checks do not prove ML quality, data suitability, universal backend correctness or an atomic cloud deployment. [release-contracts, release-workflow, release-publisher, release-results]
 - **VERIFIED** — Twenty direct saved-evidence groups and twenty-seven combined source/native/HTML checks pass. The new release API and optional helpers remain an unpublished private preview. [release-proof, release-verify, release-contracts, release-guide]
 - **VERIFIED** — Beta 9 reliability update (R5): Readers check file type and expected size or a profile limit before bounded reads; registry metadata has its own limit. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 10 adds Python checked preparation/publication by delegating to the existing TypeScript release API. The separate real local MLflow proof uses complete JSON NumPy predictor bundles, not the earlier JAX checkpoints. It rejects stale A evaluation for B, the independent A plan offered with B, and actual B registered bytes before promotion. Champion points to pre-existing registered version 1 containing approved A. [promotion-outcome, promotion-recording, promotion-native, promotion-audit, promotion-numerical, promotion-workflow, promotion-publisher, promotion-bridge, promotion-guide, promotion-audit-code]
 
 ### 23. A lost reply did not create a second local release
 
@@ -1332,6 +1404,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — Existing Lens and foottrace execute 100 native evidence calls over five decision views, with original returned strings and missing-evidence warnings preserved. Child processes are denied during the saved-run verification; opening the evidence performs no training, checkpoint load or publication. [release-native, release-verify]
 - **VERIFIED** — A separate real-clock expiry case first publishes before its deadline, then waits until after expiry. Read-only lookup confirms the original publication without a model or live verifier; it does not authorize another release. The same expired evidence with no existing publication is denied. The separate expiry registry retains one original publication while the main retry registry remains at one. [release-results, release-proof, release-verify, release-guide, release-contracts]
 - **VERIFIED** — Beta 9 reliability update (R4): A failed write of the release-lock owner file is cleaned up, allowing a later local attempt. This does not recover a crashed process. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — In the separate Python/MLflow proof, the lost outer reply occurs after a confirmed local journal commit. A retry acknowledges that exact publication with one alias change. A timeout inside the registry alias call retains pending intent; matching current aliases do not prove commit and its retry stays unknown without repeating the effect. This is a cooperating-writer single-host profile, not MLflow compare-and-swap or distributed exactly-once publication. [promotion-outcome, promotion-recording, promotion-native, promotion-audit, promotion-numerical, promotion-workflow, promotion-publisher, promotion-bridge, promotion-guide, promotion-audit-code]
 
 ### 24. A saved ML choice led back to its scores
 
@@ -1356,6 +1429,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — The MLflow artifact binding receives an application-supplied client, reads actual run metadata, downloads selected regular files and hashes their bytes. Consumption rechecks cached bytes. The example uses explicit local SQLite tracking and registers a local numeric model source. Run IDs and tags do not supply approval authority. [mlflow-python, mlflow-workflow, mlflow-outcome]
 - **OPEN** — The bridge captures explicit whole-key JSON operations, not arbitrary Python locals or tensor operations. The direct writer does not apply FootPrint executor redaction. The application selects and filters captured metadata. Boundary snapshots are not a durable workflow scheduler or write-ahead recovery log. [mlflow-guide, mlflow-capture, mlflow-recording]
 - **VERIFIED** — Beta 9 reliability update (R5): Readers check file type and expected size or a profile limit before bounded reads; registry metadata has its own limit. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — The later beta 10 integration adds Python-callable checked publication through the existing core and an injected optional MLflow client. Model buffers remain in the backend and managed artifact store; scope records references and small decisions. General file import is whole-file, while the receiver has its separate 132 MiB predictor limit. [promotion-outcome, promotion-recording, promotion-native, promotion-audit, promotion-numerical, promotion-workflow, promotion-publisher, promotion-bridge, promotion-guide, promotion-audit-code]
 
 ### 27. A retry changed preprocessing and accuracy fell
 
@@ -1426,6 +1500,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — Beta 9 reliability update (R6): Conflicting snapshot aliases are rejected instead of silently opening one of two different recordings. [beta9-reliability-review, beta9-release-verification]
 - **VERIFIED** — Beta 9 reliability update (R7): A trainer conformance report must name the exact requested plan before it can be accepted. [beta9-reliability-review, beta9-release-verification]
 - **VERIFIED** — Beta 9 passed 242 JavaScript tests, 43 Python tests, 25 clean-install checks and five CI jobs. Two independent agent reviewers cleared the same frozen changes. This is not an external human audit or a new numerical experiment. Existing storage and backend-trust limits remain. [beta9-reliability-review, beta9-release-verification]
+- **VERIFIED** — Beta 10 strengthens the existing publication capability: real local MLflow promotion from Python, refusal of wrong registered bytes, and explicit confirmed-versus-pending retry outcomes. A saved standard-library audit binds predictor arithmetic to captured artifacts; existing Lens follows the retained decisions. No new capability node, numerical framework, remote-registry guarantee or independent adoption result is claimed. [promotion-outcome, promotion-recording, promotion-native, promotion-audit, promotion-numerical, promotion-workflow, promotion-publisher, promotion-bridge, promotion-guide, promotion-audit-code]
 
 ## Relationships
 
