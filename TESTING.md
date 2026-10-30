@@ -4,6 +4,12 @@ Use Node.js 22 or 24 and Python 3.11 or newer. Install the pinned development de
 
 The optional import-graph observation uses Node registerHooks and explicitly skips on Node versions without that API. Python protocol tests explicitly skip when their configured Python executable is unavailable; CI installs Python so these run there. The fixture worker tests are not mathematical validation of a numerical framework.
 
+## Monitoring after release
+
+The [closed-batch proof](examples/monitoring/README.md) uses one actual locally published model and two distinct incoming batches. The backend loads the observed target's installed bytes, computes predictions, and joins delayed outcomes by row ID, event time and window. Missing or insufficient outcomes stay unknown; actual later error can trigger a declared review recommendation. Borrowed-window evidence, deployment conflicts, duplicate/foreign row identities and a valid label-order change are separate controls.
+
+The pure core reuses existing inference and metric guards and checks reported identities/counts. Numerical joins and metrics remain backend observations; no service is paused. Saved arithmetic and native Lens inspection have separate scopes and repeat no numerical work. The [audit controls](examples/monitoring/audit-controls.py) mutate disposable saved copies to refuse missing cases, rebound responses, rewritten policies/sources, wrong validation references and altered numerical metadata; original evidence stays unchanged. Coverage floors do not establish statistical significance, and an injected target-process change is not a drift/root-cause diagnosis by the library.
+
 ## Paired baseline/group regression
 
 The [regression proof](examples/regression/README.md) declares an imbalanced two-population dataset, configurations, group definition and acceptance limits before evaluation. Actual NumPy weighted and pooled least squares show an overall improvement with a worse predefined group. The shared guard checks paired evidence; composed publication refuses the group regression although overall quality and selection pass. A separately declared unchanged-model control demonstrates successful publication. Missing/insufficient evidence, wrong model/context, swapped pinned artifacts, freshness and historical retry are separate controls.

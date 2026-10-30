@@ -112,3 +112,11 @@ jobs:
         run: python -I -S examples/regression/audit.py --run .artifacts/regression-proof
       - name: Refuse incomplete or rebound saved group evidence
         run: python -I -S examples/regression/audit-controls.py --run .artifacts/regression-proof --out .artifacts/regression-audit-controls.json
+      - name: Monitor one actual released model across delayed-label batches
+        run: python examples/monitoring/run.py --out .artifacts/monitoring-proof
+      - name: Investigate the saved monitoring decision without numerical processes
+        run: node --permission --allow-fs-read=. --allow-fs-write=.artifacts/monitoring-proof examples/monitoring/investigate.mjs --run .artifacts/monitoring-proof
+      - name: Audit saved prediction-label joins and metrics with scalar arithmetic
+        run: python -I -S examples/monitoring/audit.py --run .artifacts/monitoring-proof
+      - name: Refuse corrupted saved monitoring evidence
+        run: python -I -S examples/monitoring/audit-controls.py --run .artifacts/monitoring-proof --out .artifacts/monitoring-audit-controls.json

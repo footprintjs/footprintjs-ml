@@ -1,6 +1,6 @@
 # Beta compatibility
 
-The current SDK beta is `0.6.0-beta.11`. APIs and supported integration profiles may change during the beta.
+The current SDK beta is `0.6.0-beta.12`. APIs and supported integration profiles may change during the beta.
 
 Beta 10 exposes the existing checked-release API to Python callbacks and adds the optional standard-library `MlflowModelPublisher` with an injected application client. The local proof uses NumPy 2.2.6 and MLflow 3.17.2, two real trained predictors and a local SQLite registry. This is a path for the existing publication capability, with no tenth feature or new required runtime dependency. The supported receiver profile promotes one pre-existing version backed by one complete predictor artifact under a canonical `runs:/` source. It requires one-host cooperating writers sharing a journal/lock; it does not provide remote alias CAS, distributed exactly-once, arbitrary flavor packaging or serving. A committed outer-reply loss can be acknowledged; an uncertain alias setter remains pending/unknown and is not repeated automatically. Callbacks run on helper threads, cannot make nested capture/scope calls, and may finish an external effect after a timeout. See [MLFLOW.md](MLFLOW.md#checked-registered-model-promotion) and [the proof](examples/mlflow-promotion/README.md).
 
@@ -63,3 +63,5 @@ The Python identity protocol currently limits a numerical array to 64 MiB and to
 The reference trainer and hooks are trusted application code. Hashes establish the compared content identity; they do not authenticate an untrusted producer or prove numerical correctness. The application owns access control, retention and appropriate capture/redaction settings.
 
 The beta 11 paired baseline/group guard uses the same JSON and TypeScript/Python bridge. Its optional release-plan block adds required evidence without changing older plan/preparation shapes. Numerical metrics, group generation, membership semantics and producer truth remain application responsibilities. Minimum sample counts are declared coverage requirements, not statistical power or fairness guarantees.
+
+Beta 12 monitoring is a serial closed-batch evidence profile. It connects an observed deployment snapshot, one batch prediction and delayed-label coverage through the shared pure guards. It supplies no hosted monitoring service, automatic pause/rollback, producer authentication, statistical drift diagnosis or complete serving-history attestation.

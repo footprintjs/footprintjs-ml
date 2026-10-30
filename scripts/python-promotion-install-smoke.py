@@ -9,6 +9,7 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import time
 from types import SimpleNamespace
 
 from footprint_ml_workflow import WorkflowCapture
@@ -45,7 +46,8 @@ def main(out):
             path.write_bytes(content if isinstance(content,bytes) else json.dumps(content,separators=(',',':'),allow_nan=False).encode())
             return capture.put_release_artifact(path,store_root=store,format=format)
         artifact=put(model_content,'synthetic-install-predictor/v1')
-        model={'kind':'model','sessionId':'installed-synthetic-release','handle':1,'originArtifact':artifact}
+        model={'kind':'model','sessionId':'installed-synthetic-release','handle':1,'originArtifact':artifact,
+            'inferenceIdentity':{'kind':'inference-identity','schemaVersion':1,'profile':'synthetic-installed-predictor/v1','sha256':hashlib.sha256(model_content).hexdigest()}}
         dataset={'kind':'dataset','sessionId':model['sessionId'],'handle':1,'rows':1,'shape':[1,1],'role':'validation','artifact':put(b'{"row":1}','synthetic-data/v1')}
         comparison={'datasetRef':dataset,'preprocessingVersion':'synthetic/v1','evaluationMethodVersion':'synthetic/v1','parameters':{}}
         evaluation=capture.create_evaluation_receipt({**comparison,'modelRef':model,'evaluationId':'installed-synthetic','createdAt':1,'metrics':{'mse':0}})
@@ -75,7 +77,7 @@ def main(out):
             # Full native responses remain intact in managed evidence; scope
             # keeps a small exact approval/status/preparation projection.
             return {'allowed':value['allowed'],'status':value['status'],'preparedRef':value['preparedRef'],
-                'responseRef':put(value),'regressionAllowed':value['decision']['checks']['regression']['allowed']}
+                'responseRef':put(value),'publisherReceipt':value.get('publisherReceipt'),'regressionAllowed':value['decision']['checks']['regression']['allowed']}
         def verify(request):
             observed=copy.deepcopy(request['modelRef'])
             assert observed['originArtifact']['sha256']==hashlib.sha256(model_content).hexdigest()
@@ -91,9 +93,51 @@ def main(out):
         with capture.stage('installed-acknowledge') as scope:
             scope['retry']=compact(capture.publish_model_release({'planRef':scope['planRef'],'preparedRef':scope['preparation']['preparedRef']},store_root=store,publisher=publisher))
             assert scope['retry']['status']=='already-published',scope['retry']
+        with capture.stage('installed-monitoring') as scope:
+            clock=int(time.time()*1000)
+            contract=capture.create_prediction_contract({'profile':'synthetic-install-input-output/v1',
+                'input':{'fields':[{'name':'x','dtype':'float64'}]},'output':{'fields':[{'name':'y','dtype':'float64'}]},
+                'preprocessingVersion':'synthetic/v1','parameters':{}})
+            receipt=scope['publication']['publisherReceipt']
+            deployment={'targetName':receipt['targetName'],'revision':receipt['revision'],'modelRef':scope['modelRef'],'publicationRef':put(receipt)}
+            window={'windowId':'installed-window','startAt':clock-20,'endAt':clock-10,'inputRef':dataset['artifact'],
+                'membershipRef':put({'rowIds':['p1']}),'expectedRows':1,'inferenceId':'installed-invocation'}
+            declared=capture.read_monitoring_manifest({'kind':'monitoring-manifest','schemaVersion':1,'monitorId':'installed-monitor',
+                'deployment':deployment,'window':window,'contract':contract,'labelSource':{'name':'installed-labels','version':'1'},
+                'joinMode':'row-id-window-time/v1','evaluation':{key:comparison[key] for key in ('preprocessingVersion','evaluationMethodVersion','parameters')},
+                'policy':{'metric':'mse','operator':'lte','threshold':0,'minSamples':1,'minCoverage':1,'maxAgeMs':1000}})
+            output_ref=put({'prediction':1});label_ref=put({'outcome':1})
+            prediction=capture.create_inference_receipt({'inferenceId':window['inferenceId'],'createdAt':clock+1,
+                'inputRef':window['inputRef'],'outputRef':output_ref,'inputRows':1,'outputRows':1,'modelRef':model,'contract':contract})
+            observed={'deployment':{**deployment,'observedAt':clock},'window':{key:window[key] for key in ('windowId','startAt','endAt','inputRef','membershipRef')},
+                'prediction':prediction}
+            observed['window'].update(rows=1,closedAt=clock-1)
+            pending=capture.create_monitoring_receipt({'monitoringId':'installed-pending','createdAt':clock+2,'manifest':declared,'observation':observed})
+            delayed=capture.check_monitoring({'receipt':pending,'manifest':declared,'observation':observed,'now':clock+10})
+            assert delayed['status']=='unknown' and delayed['health'] is None,delayed
+            joined_dataset={**dataset,'artifact':put({'rowId':'p1','prediction':1,'outcome':1}),'role':'monitoring'}
+            measured=capture.create_evaluation_receipt({**comparison,'datasetRef':joined_dataset,'modelRef':model,
+                'evaluationId':'installed-monitoring-eval','createdAt':clock+4,'metrics':{'mse':0}})
+            observed.update(labels={'batchId':'installed-label-batch','windowId':window['windowId'],'source':declared['labelSource'],
+                    'labelRef':label_ref,'availableAt':clock+2},
+                join={'windowId':window['windowId'],'joinMode':declared['joinMode'],'joinRef':put({'matchedRows':1}),
+                    'inputRef':window['inputRef'],'outputRef':output_ref,'labelRef':label_ref,'membershipRef':window['membershipRef'],
+                    'joinedDatasetRef':joined_dataset,'matchedRows':1,'missingRows':0,'duplicateRows':0,'unmatchedRows':0,'crossWindowRows':0,'createdAt':clock+3},
+                evaluation=measured)
+            scope['monitoringManifest']=declared;scope['monitoringObservation']=observed
+            scope['monitoringReceipt']=capture.create_monitoring_receipt({'monitoringId':'installed-complete','createdAt':clock+5,
+                'manifest':scope['monitoringManifest'],'observation':scope['monitoringObservation']})
+            assert capture.read_monitoring_receipt(scope['monitoringReceipt'])==scope['monitoringReceipt']
+            result=capture.check_monitoring({'receipt':scope['monitoringReceipt'],'manifest':scope['monitoringManifest'],
+                'observation':scope['monitoringObservation'],'now':clock+10})
+            assert result['allowed'] and result['health']=='healthy',result
+            wrong=copy.deepcopy(declared);wrong['window']['windowId']='another-window'
+            borrowed=capture.check_monitoring({'receipt':scope['monitoringReceipt'],'manifest':wrong,'observation':scope['monitoringObservation'],'now':clock+10})
+            assert borrowed['status']=='deny' and borrowed['health'] is None,borrowed
+            scope['monitoringStatus']={'complete':result['status'],'delayed':delayed['status'],'borrowed':borrowed['status']}
     assert client.mutations==1 and client.alias=='1'
     return {'passed':True,'installedModule':True,'nativeCheckedReleaseCallbacks':True,'receiverConsumesApprovedArtifact':True,
-            'historicalRetryWithoutVerifier':True,'aliasMutations':client.mutations,'syntheticClient':True,'numericalTraining':False,'installedRegressionContracts':True,'requiredRegressionInPublication':True}
+            'historicalRetryWithoutVerifier':True,'aliasMutations':client.mutations,'syntheticClient':True,'numericalTraining':False,'installedRegressionContracts':True,'requiredRegressionInPublication':True,'installedMonitoringContracts':True,'delayedMonitoringUnknown':True,'borrowedMonitoringEvidenceDenied':True}
 
 
 if __name__=='__main__':

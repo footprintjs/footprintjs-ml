@@ -1,0 +1,52 @@
+{
+  "schema": "footprint-ml-monitoring-audit-controls/v1",
+  "passed": true,
+  "controls": {
+    "complete": {
+      "accepted": true
+    },
+    "emptyNativeResponseSet": {
+      "rejected": true,
+      "reason": "All nine independently declared cases are required"
+    },
+    "missingDeclaredCase": {
+      "rejected": true,
+      "reason": "All nine independently declared cases are required"
+    },
+    "rewrittenPredeclaredPolicy": {
+      "rejected": true,
+      "reason": "W1RequirementsMatchIndependentDeclarations"
+    },
+    "rewrittenLabelSource": {
+      "rejected": true,
+      "reason": "W1RequirementsMatchIndependentDeclarations"
+    },
+    "reboundNativeResponse": {
+      "rejected": true,
+      "reason": "healthyNativeBindingsAndCompactViewMatch"
+    },
+    "differentValidationArtifact": {
+      "rejected": true,
+      "reason": "Approval validation dataset differs"
+    },
+    "changedMeasuredJoinCount": {
+      "rejected": true,
+      "reason": "Join reported count differs"
+    },
+    "missingSourceLabels": {
+      "rejected": true,
+      "reason": "'W1'"
+    },
+    "changedApprovedModelSidecar": {
+      "rejected": true,
+      "reason": "numericalTrainingSidecarBindsApprovedArtifact"
+    }
+  },
+  "execution": {
+    "sourceUnchanged": true,
+    "trainingStarted": false,
+    "guardRecomputed": false,
+    "publicationPerformed": false
+  },
+  "boundary": "Saved-evidence checker acceptance controls; no producer authentication or numerical training."
+}

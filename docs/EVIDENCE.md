@@ -1315,6 +1315,90 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
   - Published copy SHA-256: d4ab473f64ac9bd3b7f7f3768201c6de488550a3f2c36204182a8cf0175671e6
   - Published copy bytes: 15468
   - Path projection: 0 string(s); byte-identical to retained source.
+- **monitoring-outcome** — Actual same-model two-window decisions and unchanged local publication
+  - Public copy: [evidence/monitoring-outcome.json](evidence/monitoring-outcome.json)
+  - Original retained source SHA-256: 45210be0113eacab9ff39fe717093d21a86f668cb40f0aaa3f27d123953e4f6c
+  - Original retained source bytes: 21804
+  - Published copy SHA-256: 45210be0113eacab9ff39fe717093d21a86f668cb40f0aaa3f27d123953e4f6c
+  - Published copy bytes: 21804
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **monitoring-recording** — Actual native scope capture for the Python-owned monitoring workflow
+  - Public copy: [evidence/monitoring-recording.json](evidence/monitoring-recording.json)
+  - Original retained source SHA-256: 515c7dbb5fbda4a1e593f04b3254289ad2e92eb1e3bad1bc98dc5e9dd03c938b
+  - Original retained source bytes: 715176
+  - Published copy SHA-256: a3a65f1eae85818c499977027ea69c6a2caee533cb77f1ddf6840afdf4694bfa
+  - Published copy bytes: 715040
+  - Path projection: 4 string(s); published bytes differ from retained source.
+- **monitoring-native** — Existing Lens/foottrace inspection of actual deployment, prediction and delayed-label writers
+  - Public copy: [evidence/monitoring-native.json](evidence/monitoring-native.json)
+  - Original retained source SHA-256: eaca33a813d6dfa57894e90bf966657f873f030a2ef4c90674e8497b9d9b2291
+  - Original retained source bytes: 36033
+  - Published copy SHA-256: eaca33a813d6dfa57894e90bf966657f873f030a2ef4c90674e8497b9d9b2291
+  - Published copy bytes: 36033
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **monitoring-audit** — Saved scalar prediction, installed-artifact and keyed-label-join audit
+  - Public copy: [evidence/monitoring-audit.json](evidence/monitoring-audit.json)
+  - Original retained source SHA-256: d263223fb01661575b0ccb155336445f1c11a921736693a83df4677ffe201acc
+  - Original retained source bytes: 4350
+  - Published copy SHA-256: d263223fb01661575b0ccb155336445f1c11a921736693a83df4677ffe201acc
+  - Published copy bytes: 4350
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **monitoring-audit-controls** — Corrupted saved evidence is refused on disposable copies; original run unchanged
+  - Public copy: [evidence/monitoring-audit-controls.json](evidence/monitoring-audit-controls.json)
+  - Original retained source SHA-256: 5a7b85b87e113ac92348c90518675f569016ecfce350708cb04dc0dd97d2a4fd
+  - Original retained source bytes: 1482
+  - Published copy SHA-256: 5a7b85b87e113ac92348c90518675f569016ecfce350708cb04dc0dd97d2a4fd
+  - Published copy bytes: 1482
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **monitoring-numerical** — Retained numerical and artifact references outside workflow scope
+  - Public copy: [evidence/monitoring-numerical.json](evidence/monitoring-numerical.json)
+  - Original retained source SHA-256: e249946ce1cf62cf78c3adb88582b7bdc0c39c89a6bdd1666a4cf500b0255e20
+  - Original retained source bytes: 15386
+  - Published copy SHA-256: e249946ce1cf62cf78c3adb88582b7bdc0c39c89a6bdd1666a4cf500b0255e20
+  - Published copy bytes: 15386
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **monitoring-workflow** — Python-owned workflow with actual publication, target reads, restored model and monitoring cases
+  - Public copy: [evidence/monitoring-workflow.py.txt](evidence/monitoring-workflow.py.txt)
+  - Original retained source SHA-256: 60e5fc578b182e1bf3080b0c84182adc662a6970cc7c4544a1fef9f564f672fc
+  - Original retained source bytes: 24265
+  - Published copy SHA-256: 60e5fc578b182e1bf3080b0c84182adc662a6970cc7c4544a1fef9f564f672fc
+  - Published copy bytes: 24265
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **monitoring-core** — Reusable closed-batch monitoring contracts and pure shared guard
+  - Public copy: [evidence/monitoring-core.ts.txt](evidence/monitoring-core.ts.txt)
+  - Original retained source SHA-256: bd7d4c5b57129b3c5e1d9c3000447f743f9d9e98aabacd5dbdac2d374deae8be
+  - Original retained source bytes: 28088
+  - Published copy SHA-256: bd7d4c5b57129b3c5e1d9c3000447f743f9d9e98aabacd5dbdac2d374deae8be
+  - Published copy bytes: 28088
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **monitoring-guide** — Actual closed-batch proof, commands, measurements and interpretation limits
+  - Public copy: [evidence/monitoring-guide.md](evidence/monitoring-guide.md)
+  - Original retained source SHA-256: fc952bcd7bde6a1e0601556318da7ef4f9cfcba53f848ff0810dfcd03c829666
+  - Original retained source bytes: 4956
+  - Published copy SHA-256: fc952bcd7bde6a1e0601556318da7ef4f9cfcba53f848ff0810dfcd03c829666
+  - Published copy bytes: 4956
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **monitoring-audit-code** — Standard-library saved arithmetic, join and artifact binding audit
+  - Public copy: [evidence/monitoring-audit-code.py.txt](evidence/monitoring-audit-code.py.txt)
+  - Original retained source SHA-256: b8bf58f85780db73b049d97be6264730f505c0bcbba333a0536b381de3a84a54
+  - Original retained source bytes: 24966
+  - Published copy SHA-256: b8bf58f85780db73b049d97be6264730f505c0bcbba333a0536b381de3a84a54
+  - Published copy bytes: 24966
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **monitoring-audit-controls-code** — Adversarial saved-evidence acceptance checks without numerical work
+  - Public copy: [evidence/monitoring-audit-controls-code.py.txt](evidence/monitoring-audit-controls-code.py.txt)
+  - Original retained source SHA-256: bc14faebe40b36fa30ec4ab314bbc8ec687e3f47f260f5f9549f9f185aa78457
+  - Original retained source bytes: 4619
+  - Published copy SHA-256: bc14faebe40b36fa30ec4ab314bbc8ec687e3f47f260f5f9549f9f185aa78457
+  - Published copy bytes: 4619
+  - Path projection: 0 string(s); byte-identical to retained source.
+- **monitoring-backend** — Actual held predictor, exact installed-byte restoration and keyed outcome matching
+  - Public copy: [evidence/monitoring-backend.py.txt](evidence/monitoring-backend.py.txt)
+  - Original retained source SHA-256: 2af59506327f0c1dcfc1e58f47f1cecb78c8dc3b67405b2b8dd3b9be97c9dfb2
+  - Original retained source bytes: 6310
+  - Published copy SHA-256: 2af59506327f0c1dcfc1e58f47f1cecb78c8dc3b67405b2b8dd3b9be97c9dfb2
+  - Published copy bytes: 6310
+  - Path projection: 0 string(s); byte-identical to retained source.
 
 ## Claims by scene
 
@@ -1571,7 +1655,15 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — Existing Lens and foottrace follow the captured release refusal to the independently declared group policy and separately retained paired observations after numerical work has stopped. No custom query engine or training rerun is required. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 - **OPEN** — Absolute tolerances and sample floors are declared policy, not statistical significance, fairness certification, automatic group discovery or proof of producer truth. Complete structured logs can retain the same facts; a human investigation-speed advantage remains unmeasured. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 
-### 33. FootPrint explained ML release mistakes through saved workflow state
+### 33. The same released model had worse later results
+
+- **VERIFIED** — The fixed local proof trains one NumPy linear predictor, publishes the exact approved artifact through the existing receiver, reads the actual current target and restores that receiver’s installed bytes into a distinct backend session. Both batches use the same measured restored model. Event-time batches are processed locally now; no historical hosted serving interval is asserted. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **VERIFIED** — W1 is healthy under the declared mean-squared-error policy. W2 initially has no outcomes and stays unknown; an explicit three-of-twelve coverage control also stays unknown. Once actual full outcomes arrive, W2’s measured error of approximately 9 exceeds the fixed threshold of 1 and produces a review recommendation. This is regression error, not classification accuracy. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **VERIFIED** — Actual keyed row-ID/window/time joins accept intact reordered labels. Duplicated, unmatched and foreign-window labels are distinct reported conflicts. Borrowing W1’s good receipt for W2 is refused. Full native decisions remain pinned artifacts, and scope retains compact exact views and references. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **VERIFIED** — The TypeScript/Python guard reuses existing inference and evaluation checks and adds deployment/window/join/coverage bindings. Existing Lens/foottrace tools reopen the recommendation’s actual consumed inputs without a training, prediction, guard or publication rerun. The original local publication remains unchanged. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **OPEN** — The fixture explicitly changes W2’s label process while keeping the same feature pattern. The library does not diagnose feature drift, authenticate label truth, establish statistical significance, attest a complete serving history or pause/roll back a service. Complete logs can retain the same facts; an independent human investigation advantage remains unmeasured. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+
+### 34. FootPrint explained ML release mistakes through saved workflow state
 
 - **DERIVED** — The retained experiments support using FootPrint’s flowchart stages, reference state and provenance around ML computation. They do not establish a new numerical/autodiff framework. [wasm-summary, workflow, jax-digits-verification, gp-conformance, lineage-results, lineage-verification, crash-summary, crash-audit]
 - **VERIFIED** — Complete structured logs solved the demonstrated diagnosis questions too; FootPrint’s value is a reusable connected recording/investigation pattern, not unique detectability. [legacy-checkpoint, legacy-retry, benchmark-investigation, lineage-verification, trial-pilot, trial-verify]
@@ -1594,6 +1686,7 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **VERIFIED** — Beta 9 passed 242 JavaScript tests, 43 Python tests, 25 clean-install checks and five CI jobs. Two independent agent reviewers cleared the same frozen changes. This is not an external human audit or a new numerical experiment. Existing storage and backend-trust limits remain. [beta9-reliability-review, beta9-release-verification]
 - **VERIFIED** — Beta 10 strengthens the existing publication capability: real local MLflow promotion from Python, refusal of wrong registered bytes, and explicit confirmed-versus-pending retry outcomes. A saved standard-library audit binds predictor arithmetic to captured artifacts; existing Lens follows the retained decisions. No new capability node, numerical framework, remote-registry guarantee or independent adoption result is claimed. [promotion-outcome, promotion-recording, promotion-native, promotion-audit, promotion-numerical, promotion-workflow, promotion-publisher, promotion-bridge, promotion-guide, promotion-audit-code]
 - **VERIFIED** — Beta 11 adds a paired baseline/group regression guard and required release composition. The fixed imbalance proof blocks a group regression hidden by an overall improvement; the unchanged-model control publishes. Earlier nine capabilities and historical evidence remain separate. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **VERIFIED** — Beta 12 adds closed-batch monitoring evidence for an actual deployed snapshot, predictions, delayed outcomes and measured join coverage. The same-model proof records healthy, unknown, degraded and conflicting-evidence cases without changing the local publication. Earlier ten capabilities and historical evidence remain separate. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
 
 ## Relationships
 
@@ -1663,6 +1756,9 @@ This deck follows the retained experiments testing FootPrint’s flowchart patte
 - **DERIVED**: evidence → regression; compares paired group results [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 - **DERIVED**: regression → publication; can refuse an overall winner [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 - **DERIVED**: regression → lens; reopens the refusal [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **DERIVED**: publication → monitoring; binds the observed released version [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **DERIVED**: prediction → monitoring; joins predictions with later outcomes [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **DERIVED**: monitoring → lens; reopens the review decision [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
 
 ## Limits
 
@@ -1932,6 +2028,14 @@ The sequence is a derived teaching path, not a dated development history.
 - **VERIFIED · learned** — The overall winner failed the required group check before publication. An unchanged-model control passed. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 - **OPEN · next** — Try declared group policies in an unfamiliar existing ML workflow. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 
+### The same released model had worse later results
+
+- **VERIFIED · what** — Publish one predictor, restore its actual installed bytes and process two closed input batches. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **DERIVED · why** — A matching released model can still produce worse results on a later batch. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **VERIFIED · how** — Keep the deployed revision, predictions, matched outcomes, coverage and measurement connected. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **VERIFIED · learned** — Absent outcomes stayed unknown; later measured error triggered review. Valid row reordering passed. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **OPEN · next** — Try these evidence boundaries in an unfamiliar existing ML workflow. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+
 ### FootPrint explained ML release mistakes through saved workflow state
 
 - **DERIVED · what** — Nine ML capabilities now use the existing stages, reference state and saved history. [lineage-results, crash-summary, jax-digits-verification, trial-pilot, trial-protocol, trial-code, selection-results, selection-contracts, selection-native, release-results, release-proof, release-contracts, release-workflow, release-publisher, inference-contracts, inference-results, inference-native]
@@ -2008,6 +2112,9 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED** — Ordinary evaluator receipts cover the independently declared baseline and candidate on the same subset. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 - **DERIVED** — A release plan requiring group evidence cannot publish when the group guard refuses or remains unknown. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
 - **DERIVED** — Lens follows the captured decision to the group declaration and actual consumed paired observations. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **DERIVED** — A monitoring declaration binds the intended publication and actual target snapshot to the model used for the batch. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **DERIVED** — The backend matches actual outcome rows to prediction IDs, event times and the declared closed window. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
+- **DERIVED** — Lens follows the recorded monitoring recommendation through its actual consumed inputs without repeating numerical work. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
 
 ## Opening briefing
 
@@ -2055,4 +2162,5 @@ The sequence is a derived teaching path, not a dated development history.
 - **DERIVED** — Check what actually made the prediction. Does approving A mean the prediction worker used A? Record actual model use from Python, then test FootPrint-controlled branches and retry. [inference-contracts, inference-results, inference-recording, inference-native, inference-verify, inference-workflow, inference-worker, inference-client, inference-numerical, inference-fixture-manifest, inference-fixture-preparation, inference-guide, inference-contract-guide, inference-contract-tests, inference-python-tests, inference-native-investigator, inference-requirements, mlflow-capture, mlflow-python]
 - **DERIVED** — Let FootPrint choose branches and retry. Can the existing flowchart own the inference control flow too? Observe the real decision branch and native retry, then reopen their saved evidence. [native-inference-results, native-inference-recording, native-inference-native, native-inference-verify, native-inference-audit, native-inference-run, native-inference-client, native-inference-worker, native-inference-package]
 - **DERIVED** — Check the important group too. Does the overall winner still meet the declared group rule? Use paired evidence and reopen the saved refusal. [regression-outcome, regression-recording, regression-native, regression-audit, regression-numerical, regression-workflow, regression-core, regression-release, regression-guide, regression-audit-controls, regression-audit-controls-code, regression-audit-code]
+- **DERIVED** — Follow the model after release. What explains a later batch with worse measured results? Bind the actual model, predictions and delayed outcomes, then reopen the decision. [monitoring-outcome, monitoring-recording, monitoring-native, monitoring-audit, monitoring-audit-controls, monitoring-numerical, monitoring-workflow, monitoring-core, monitoring-guide, monitoring-audit-code, monitoring-audit-controls-code, monitoring-backend]
 - **DERIVED** — Review the ML debugging results. Which mistakes did these local model checks explain? Review the ML-specific checks and the still-open human comparison. [lineage-results, lineage-verification, crash-summary, crash-audit, build, trial-pilot, trial-protocol, selection-results, selection-contracts, release-results, release-contracts]

@@ -26,3 +26,8 @@ export type { PredictionField, PredictionFields, PredictionContractInput, Predic
 export {readRegressionManifest, createRegressionReceipt, readRegressionReceipt, checkRegression} from './regression.js';
 export type {RegressionGroup, RegressionPolicy, RegressionManifest, RegressionObservation, RegressionReceiptInput,
   RegressionReceipt, RegressionRequest, RegressionReason, RegressionComparison, RegressionDecision} from './regression.js';
+export {readMonitoringManifest, createMonitoringReceipt, readMonitoringReceipt, checkMonitoring} from './monitoring.js';
+export type {MonitoringDeployment, MonitoringWindow, MonitoringLabelSource, MonitoringEvaluationContext,
+  MonitoringPolicy, MonitoringManifest, MonitoringObservedDeployment, MonitoringObservedWindow,
+  MonitoringLabelBatch, MonitoringJoin, MonitoringObservation, MonitoringReceiptInput,
+  MonitoringReceipt, MonitoringRequest, MonitoringReason, MonitoringDecision} from './monitoring.js';

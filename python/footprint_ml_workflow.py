@@ -483,6 +483,22 @@ class WorkflowCapture:
         """Check paired evidence against independently declared comparison inputs."""
         return self._rpc("check_regression", input=input)
 
+    def read_monitoring_manifest(self, input: dict[str, Any]) -> Any:
+        """Validate independently declared production monitoring requirements."""
+        return self._rpc("read_monitoring_manifest", input=input)
+
+    def create_monitoring_receipt(self, input: dict[str, Any]) -> Any:
+        """Retain actual monitoring observations through the shared core contract."""
+        return self._rpc("create_monitoring_receipt", input=input)
+
+    def read_monitoring_receipt(self, input: dict[str, Any]) -> Any:
+        """Validate persisted monitoring evidence without repeating evaluation."""
+        return self._rpc("read_monitoring_receipt", input=input)
+
+    def check_monitoring(self, input: dict[str, Any]) -> Any:
+        """Check model/window evidence and return a health decision without effects."""
+        return self._rpc("check_monitoring", input=input)
+
     def read_model_release_plan(self, input: dict[str, Any]) -> Any:
         """Validate independently supplied release authority through the core contract."""
         return self._rpc("read_model_release_plan", input=input)

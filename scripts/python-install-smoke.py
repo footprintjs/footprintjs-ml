@@ -33,7 +33,7 @@ def smoke(wheel, archive):
                           if name.startswith(prefix) and not name.endswith("/")}
     required_guides = ["skills/footprintjs-ml/SKILL.md", "skills/footprintjs-ml/agents/openai.yaml", "features/README.md"]
     required_guides += ["features/" + name + "/README.md" for name in
-                       ("references", "evaluation", "trainer-adapter", "approval", "inference", "investigation", "data-lineage", "selection", "regression", "publication")]
+                       ("references", "evaluation", "trainer-adapter", "approval", "inference", "investigation", "data-lineage", "selection", "regression", "monitoring", "publication")]
     if not all(name in guidance_bytes for name in required_guides):
         raise ValueError("Wheel is missing the skill or an individual feature guide")
     with tempfile.TemporaryDirectory(prefix="footprint-python-install-") as temporary:
@@ -73,7 +73,7 @@ def no_process(*args,**kwargs):
 subprocess.Popen=no_process
 import footprint_ml_workflow,footprint_ml_setup,footprint_ml_versions,footprint_ml_promotion
 capture=footprint_ml_workflow.WorkflowCapture(pathlib.Path('constructor-only.json'))
-assert all(callable(getattr(capture,name)) for name in ('read_regression_manifest','create_regression_receipt','read_regression_receipt','check_regression','put_release_artifact','read_model_release_plan','prepare_model_release','publish_model_release','release_model'))
+assert all(callable(getattr(capture,name)) for name in ('read_monitoring_manifest','create_monitoring_receipt','read_monitoring_receipt','check_monitoring','read_regression_manifest','create_regression_receipt','read_regression_receipt','check_regression','put_release_artifact','read_model_release_plan','prepare_model_release','publish_model_release','release_model'))
 publisher=footprint_ml_promotion.MlflowModelPublisher(object(),store_root='untouched-store',journal_dir='untouched-journal',registry_id='smoke',model_name='model',alias='champion',binding={'version':'1','runId':'smoke-run','source':'runs:/smoke-run/model','artifactPath':'model/bundle.json'})
 assert not pathlib.Path('untouched-journal').exists() and not pathlib.Path('untouched-store').exists()
 distribution=importlib.metadata.distribution('footprintjs-ml')
@@ -278,13 +278,16 @@ console.log(JSON.stringify({lineage:apply(requests.lineage,checkDataLineage),sel
                            "nativeCliBacktracking": True, "investigatorChildProcessesForbidden": True,
                            "installedPythonInvestigationCommand": True,
                            "recordingUnchangedAfterInvestigation": True,
+                           "installedMonitoringContracts": promotion["installedMonitoringContracts"],
+                           "delayedMonitoringUnknown": promotion["delayedMonitoringUnknown"],
+                           "borrowedMonitoringEvidenceDenied": promotion["borrowedMonitoringEvidenceDenied"],
                            "installedRegressionContracts": promotion["installedRegressionContracts"],
                            "requiredRegressionInPublication": promotion["requiredRegressionInPublication"],
                            "installedPromotionCallbacks": promotion["nativeCheckedReleaseCallbacks"], "installedPublisherBytes": promotion["receiverConsumesApprovedArtifact"], "installedHistoricalRetry": promotion["historicalRetryWithoutVerifier"], "wheelGuidanceInstalledIntact": True, "featureGuideLinksResolveAfterInstall": True,
                            "npmAndWheelGuidanceAgree": True},
                 "guidance": {"files": len(guidance_bytes), "localLinks": guidance_links,
                              "skillSha256": hashlib.sha256(guidance_bytes["skills/footprintjs-ml/SKILL.md"]).hexdigest(),
-                             "featureCount": 10, "nativeCompiledRuntimeBundled": False},
+                             "featureCount": 11, "nativeCompiledRuntimeBundled": False},
                 "import": imported, "promotion": promotion, "nativeVersions": versions, "setup": setup, "repeatedSetup": repeated_setup,
                 "doctor": doctor, "missingRuntime": missing,
                 "investigation": {"report": native_report, "stdout": native_stdout,

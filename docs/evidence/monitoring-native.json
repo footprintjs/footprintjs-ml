@@ -1,0 +1,261 @@
+{
+  "schema": "footprint-ml-monitoring-investigation/v1",
+  "passed": true,
+  "checks": {
+    "capturedOutcomeMatches": true,
+    "poorWindowReachesExecutedPrediction": true,
+    "poorWindowReachesActualLabelArrival": true,
+    "poorWindowReachesPredeclaredPolicy": true,
+    "monitoringReachesActualPublishedModelLoad": true,
+    "expectedModelRequirementReachesCheckedPublication": true,
+    "externalTargetReadHasNoInventedProducerEdge": true,
+    "unavailableLabelsDoNotBorrowLaterArrival": true,
+    "incompleteLabelsPreserveUnknown": true,
+    "healthWaitsForMeasuredLabels": true,
+    "actualThresholdViolationVisible": true,
+    "reviewRecommendationVisible": true,
+    "actualPartialCoverageVisible": true,
+    "keyedReorderingIsAccepted": true,
+    "actualDuplicateAndForeignBoundsVisible": true,
+    "borrowedReceiptTracesEarlierWindow": true,
+    "snapshotMissingControlWarningsPreserved": true,
+    "noServingPauseWasInvented": true,
+    "allWorkflowControlsPass": true,
+    "recordingUnchanged": true,
+    "outcomeUnchanged": true
+  },
+  "nativeQueries": 19,
+  "sources": {
+    "recording": {
+      "sha256": "515c7dbb5fbda4a1e593f04b3254289ad2e92eb1e3bad1bc98dc5e9dd03c938b",
+      "bytes": 715176
+    },
+    "outcome": {
+      "sha256": "45210be0113eacab9ff39fe717093d21a86f668cb40f0aaa3f27d123953e4f6c",
+      "bytes": 21804
+    }
+  },
+  "transcript": [
+    {
+      "ordinal": 1,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "degradedDecision"
+      },
+      "result": "SLICE for 'degradedDecision' — reads via: custom-fn\nCheck actual monitoring evidence: degraded (monitor-degraded#12) [wrote: degradedObservation, degradedReceipt, degradedDecisionRef, degradedDecision]\n  Declare model, window schema and monitoring limits before numerical work (declare-before-training#0) ← via caseDeclarations [wrote: protocol, protocolRef, expectedContract, labelSource, monitoringEvaluation, monitoringPolicy, candidateDeclaration, qualityPolicy, publisherConfiguration, caseDeclarations]\n  Observe the target snapshot and execute the actual W2 batch (predict-W2#6) ← via W2Manifest [wrote: W2Manifest, W2BaseObservation, W2PredictionRef]\n    Generate disjoint training, validation and closed-window row memberships (generate-declared-inputs#1) ← via windows [wrote: trainingArtifact, validationArtifact, validationDatasetRef, windows]\n      ↳ declare-before-training#0 (see above)\n    ↳ declare-before-training#0 (see above)\n    Read the actual current local target and restore its own artifact bytes (read-target-and-load-published-bytes#4) ← via loadedModelRef [wrote: observedTarget, observedPublicationRef, loadedModelRef, loadedArtifactObservation]\n      ↳ declare-before-training#0 (see above)\n    Publish the exact single-candidate model through existing checked release (publish-exact-approved-model#3) ← via release [wrote: releasePlanRef, releaseRef, release, approvedPublicationRef]\n      ↳ declare-before-training#0 (see above)\n      Fit one actual model and measure its validation evidence (fit-and-evaluate-approved-model#2) ← via approvedModelRef [wrote: approvedModelRef, approvalComparison, approvalReceipt]\n        ↳ generate-declared-inputs#1 (see above)\n        ↳ declare-before-training#0 (see above)\n    ↳ fit-and-evaluate-approved-model#2 (see above)\n  Create the separately arriving labeled outcome batches after prediction (receive-label-batches#8) ← via labelBatchRefs [wrote: labelBatchRefs]\n    ↳ declare-before-training#0 (see above)\n    ↳ generate-declared-inputs#1 (see above)\n  ↳ read-target-and-load-published-bytes#4 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 2,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "healthyDecision"
+      },
+      "result": "SLICE for 'healthyDecision' — reads via: custom-fn\nCheck actual monitoring evidence: healthy (monitor-healthy#9) [wrote: healthyObservation, healthyReceipt, healthyDecisionRef, healthyDecision]\n  Declare model, window schema and monitoring limits before numerical work (declare-before-training#0) ← via caseDeclarations [wrote: protocol, protocolRef, expectedContract, labelSource, monitoringEvaluation, monitoringPolicy, candidateDeclaration, qualityPolicy, publisherConfiguration, caseDeclarations]\n  Observe the target snapshot and execute the actual W1 batch (predict-W1#5) ← via W1Manifest [wrote: W1Manifest, W1BaseObservation, W1PredictionRef]\n    Generate disjoint training, validation and closed-window row memberships (generate-declared-inputs#1) ← via windows [wrote: trainingArtifact, validationArtifact, validationDatasetRef, windows]\n      ↳ declare-before-training#0 (see above)\n    ↳ declare-before-training#0 (see above)\n    Read the actual current local target and restore its own artifact bytes (read-target-and-load-published-bytes#4) ← via loadedModelRef [wrote: observedTarget, observedPublicationRef, loadedModelRef, loadedArtifactObservation]\n      ↳ declare-before-training#0 (see above)\n    Publish the exact single-candidate model through existing checked release (publish-exact-approved-model#3) ← via release [wrote: releasePlanRef, releaseRef, release, approvedPublicationRef]\n      ↳ declare-before-training#0 (see above)\n      Fit one actual model and measure its validation evidence (fit-and-evaluate-approved-model#2) ← via approvedModelRef [wrote: approvedModelRef, approvalComparison, approvalReceipt]\n        ↳ generate-declared-inputs#1 (see above)\n        ↳ declare-before-training#0 (see above)\n    ↳ fit-and-evaluate-approved-model#2 (see above)\n  Create the separately arriving labeled outcome batches after prediction (receive-label-batches#8) ← via labelBatchRefs [wrote: labelBatchRefs]\n    ↳ declare-before-training#0 (see above)\n    ↳ generate-declared-inputs#1 (see above)\n  ↳ read-target-and-load-published-bytes#4 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 3,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "missingLabelsDecision"
+      },
+      "result": "SLICE for 'missingLabelsDecision' — reads via: custom-fn\nCheck actual monitoring evidence: missingLabels (monitor-missingLabels#7) [wrote: missingLabelsObservation, missingLabelsReceipt, missingLabelsDecisionRef, missingLabelsDecision]\n  Declare model, window schema and monitoring limits before numerical work (declare-before-training#0) ← via caseDeclarations [wrote: protocol, protocolRef, expectedContract, labelSource, monitoringEvaluation, monitoringPolicy, candidateDeclaration, qualityPolicy, publisherConfiguration, caseDeclarations]\n  Observe the target snapshot and execute the actual W2 batch (predict-W2#6) ← via W2Manifest [wrote: W2Manifest, W2BaseObservation, W2PredictionRef]\n    Generate disjoint training, validation and closed-window row memberships (generate-declared-inputs#1) ← via windows [wrote: trainingArtifact, validationArtifact, validationDatasetRef, windows]\n      ↳ declare-before-training#0 (see above)\n    ↳ declare-before-training#0 (see above)\n    Read the actual current local target and restore its own artifact bytes (read-target-and-load-published-bytes#4) ← via loadedModelRef [wrote: observedTarget, observedPublicationRef, loadedModelRef, loadedArtifactObservation]\n      ↳ declare-before-training#0 (see above)\n    Publish the exact single-candidate model through existing checked release (publish-exact-approved-model#3) ← via release [wrote: releasePlanRef, releaseRef, release, approvedPublicationRef]\n      ↳ declare-before-training#0 (see above)\n      Fit one actual model and measure its validation evidence (fit-and-evaluate-approved-model#2) ← via approvedModelRef [wrote: approvedModelRef, approvalComparison, approvalReceipt]\n        ↳ generate-declared-inputs#1 (see above)\n        ↳ declare-before-training#0 (see above)\n    ↳ fit-and-evaluate-approved-model#2 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 4,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "insufficientLabelsDecision"
+      },
+      "result": "SLICE for 'insufficientLabelsDecision' — reads via: custom-fn\nCheck actual monitoring evidence: insufficientLabels (monitor-insufficientLabels#11) [wrote: insufficientLabelsObservation, insufficientLabelsReceipt, insufficientLabelsDecisionRef, insufficientLabelsDecision]\n  Declare model, window schema and monitoring limits before numerical work (declare-before-training#0) ← via caseDeclarations [wrote: protocol, protocolRef, expectedContract, labelSource, monitoringEvaluation, monitoringPolicy, candidateDeclaration, qualityPolicy, publisherConfiguration, caseDeclarations]\n  Observe the target snapshot and execute the actual W2 batch (predict-W2#6) ← via W2Manifest [wrote: W2Manifest, W2BaseObservation, W2PredictionRef]\n    Generate disjoint training, validation and closed-window row memberships (generate-declared-inputs#1) ← via windows [wrote: trainingArtifact, validationArtifact, validationDatasetRef, windows]\n      ↳ declare-before-training#0 (see above)\n    ↳ declare-before-training#0 (see above)\n    Read the actual current local target and restore its own artifact bytes (read-target-and-load-published-bytes#4) ← via loadedModelRef [wrote: observedTarget, observedPublicationRef, loadedModelRef, loadedArtifactObservation]\n      ↳ declare-before-training#0 (see above)\n    Publish the exact single-candidate model through existing checked release (publish-exact-approved-model#3) ← via release [wrote: releasePlanRef, releaseRef, release, approvedPublicationRef]\n      ↳ declare-before-training#0 (see above)\n      Fit one actual model and measure its validation evidence (fit-and-evaluate-approved-model#2) ← via approvedModelRef [wrote: approvedModelRef, approvalComparison, approvalReceipt]\n        ↳ generate-declared-inputs#1 (see above)\n        ↳ declare-before-training#0 (see above)\n    ↳ fit-and-evaluate-approved-model#2 (see above)\n  Create the separately arriving labeled outcome batches after prediction (receive-label-batches#8) ← via labelBatchRefs [wrote: labelBatchRefs]\n    ↳ declare-before-training#0 (see above)\n    ↳ generate-declared-inputs#1 (see above)\n  ↳ read-target-and-load-published-bytes#4 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 5,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "reorderedLabelsDecision"
+      },
+      "result": "SLICE for 'reorderedLabelsDecision' — reads via: custom-fn\nCheck actual monitoring evidence: reorderedLabels (monitor-reorderedLabels#10) [wrote: reorderedLabelsObservation, reorderedLabelsReceipt, reorderedLabelsDecisionRef, reorderedLabelsDecision]\n  Declare model, window schema and monitoring limits before numerical work (declare-before-training#0) ← via caseDeclarations [wrote: protocol, protocolRef, expectedContract, labelSource, monitoringEvaluation, monitoringPolicy, candidateDeclaration, qualityPolicy, publisherConfiguration, caseDeclarations]\n  Observe the target snapshot and execute the actual W1 batch (predict-W1#5) ← via W1Manifest [wrote: W1Manifest, W1BaseObservation, W1PredictionRef]\n    Generate disjoint training, validation and closed-window row memberships (generate-declared-inputs#1) ← via windows [wrote: trainingArtifact, validationArtifact, validationDatasetRef, windows]\n      ↳ declare-before-training#0 (see above)\n    ↳ declare-before-training#0 (see above)\n    Read the actual current local target and restore its own artifact bytes (read-target-and-load-published-bytes#4) ← via loadedModelRef [wrote: observedTarget, observedPublicationRef, loadedModelRef, loadedArtifactObservation]\n      ↳ declare-before-training#0 (see above)\n    Publish the exact single-candidate model through existing checked release (publish-exact-approved-model#3) ← via release [wrote: releasePlanRef, releaseRef, release, approvedPublicationRef]\n      ↳ declare-before-training#0 (see above)\n      Fit one actual model and measure its validation evidence (fit-and-evaluate-approved-model#2) ← via approvedModelRef [wrote: approvedModelRef, approvalComparison, approvalReceipt]\n        ↳ generate-declared-inputs#1 (see above)\n        ↳ declare-before-training#0 (see above)\n    ↳ fit-and-evaluate-approved-model#2 (see above)\n  Create the separately arriving labeled outcome batches after prediction (receive-label-batches#8) ← via labelBatchRefs [wrote: labelBatchRefs]\n    ↳ declare-before-training#0 (see above)\n    ↳ generate-declared-inputs#1 (see above)\n  ↳ read-target-and-load-published-bytes#4 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 6,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "duplicateLabelsDecision"
+      },
+      "result": "SLICE for 'duplicateLabelsDecision' — reads via: custom-fn\nCheck actual monitoring evidence: duplicateLabels (monitor-duplicateLabels#13) [wrote: duplicateLabelsObservation, duplicateLabelsReceipt, duplicateLabelsDecisionRef, duplicateLabelsDecision]\n  Declare model, window schema and monitoring limits before numerical work (declare-before-training#0) ← via caseDeclarations [wrote: protocol, protocolRef, expectedContract, labelSource, monitoringEvaluation, monitoringPolicy, candidateDeclaration, qualityPolicy, publisherConfiguration, caseDeclarations]\n  Observe the target snapshot and execute the actual W2 batch (predict-W2#6) ← via W2Manifest [wrote: W2Manifest, W2BaseObservation, W2PredictionRef]\n    Generate disjoint training, validation and closed-window row memberships (generate-declared-inputs#1) ← via windows [wrote: trainingArtifact, validationArtifact, validationDatasetRef, windows]\n      ↳ declare-before-training#0 (see above)\n    ↳ declare-before-training#0 (see above)\n    Read the actual current local target and restore its own artifact bytes (read-target-and-load-published-bytes#4) ← via loadedModelRef [wrote: observedTarget, observedPublicationRef, loadedModelRef, loadedArtifactObservation]\n      ↳ declare-before-training#0 (see above)\n    Publish the exact single-candidate model through existing checked release (publish-exact-approved-model#3) ← via release [wrote: releasePlanRef, releaseRef, release, approvedPublicationRef]\n      ↳ declare-before-training#0 (see above)\n      Fit one actual model and measure its validation evidence (fit-and-evaluate-approved-model#2) ← via approvedModelRef [wrote: approvedModelRef, approvalComparison, approvalReceipt]\n        ↳ generate-declared-inputs#1 (see above)\n        ↳ declare-before-training#0 (see above)\n    ↳ fit-and-evaluate-approved-model#2 (see above)\n  Create the separately arriving labeled outcome batches after prediction (receive-label-batches#8) ← via labelBatchRefs [wrote: labelBatchRefs]\n    ↳ declare-before-training#0 (see above)\n    ↳ generate-declared-inputs#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 7,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "crossWindowLabelsDecision"
+      },
+      "result": "SLICE for 'crossWindowLabelsDecision' — reads via: custom-fn\nCheck actual monitoring evidence: crossWindowLabels (monitor-crossWindowLabels#15) [wrote: crossWindowLabelsObservation, crossWindowLabelsReceipt, crossWindowLabelsDecisionRef, crossWindowLabelsDecision]\n  Declare model, window schema and monitoring limits before numerical work (declare-before-training#0) ← via caseDeclarations [wrote: protocol, protocolRef, expectedContract, labelSource, monitoringEvaluation, monitoringPolicy, candidateDeclaration, qualityPolicy, publisherConfiguration, caseDeclarations]\n  Observe the target snapshot and execute the actual W2 batch (predict-W2#6) ← via W2Manifest [wrote: W2Manifest, W2BaseObservation, W2PredictionRef]\n    Generate disjoint training, validation and closed-window row memberships (generate-declared-inputs#1) ← via windows [wrote: trainingArtifact, validationArtifact, validationDatasetRef, windows]\n      ↳ declare-before-training#0 (see above)\n    ↳ declare-before-training#0 (see above)\n    Read the actual current local target and restore its own artifact bytes (read-target-and-load-published-bytes#4) ← via loadedModelRef [wrote: observedTarget, observedPublicationRef, loadedModelRef, loadedArtifactObservation]\n      ↳ declare-before-training#0 (see above)\n    Publish the exact single-candidate model through existing checked release (publish-exact-approved-model#3) ← via release [wrote: releasePlanRef, releaseRef, release, approvedPublicationRef]\n      ↳ declare-before-training#0 (see above)\n      Fit one actual model and measure its validation evidence (fit-and-evaluate-approved-model#2) ← via approvedModelRef [wrote: approvedModelRef, approvalComparison, approvalReceipt]\n        ↳ generate-declared-inputs#1 (see above)\n        ↳ declare-before-training#0 (see above)\n    ↳ fit-and-evaluate-approved-model#2 (see above)\n  Create the separately arriving labeled outcome batches after prediction (receive-label-batches#8) ← via labelBatchRefs [wrote: labelBatchRefs]\n    ↳ declare-before-training#0 (see above)\n    ↳ generate-declared-inputs#1 (see above)\n  ↳ generate-declared-inputs#1 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 8,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "borrowedReportDecision"
+      },
+      "result": "SLICE for 'borrowedReportDecision' — reads via: custom-fn\nCheck actual monitoring evidence: borrowedReport (monitor-borrowedReport#16) [wrote: borrowedReportObservation, borrowedReportReceipt, borrowedReportDecisionRef, borrowedReportDecision]\n  Declare model, window schema and monitoring limits before numerical work (declare-before-training#0) ← via caseDeclarations [wrote: protocol, protocolRef, expectedContract, labelSource, monitoringEvaluation, monitoringPolicy, candidateDeclaration, qualityPolicy, publisherConfiguration, caseDeclarations]\n  Observe the target snapshot and execute the actual W2 batch (predict-W2#6) ← via W2Manifest [wrote: W2Manifest, W2BaseObservation, W2PredictionRef]\n    Generate disjoint training, validation and closed-window row memberships (generate-declared-inputs#1) ← via windows [wrote: trainingArtifact, validationArtifact, validationDatasetRef, windows]\n      ↳ declare-before-training#0 (see above)\n    ↳ declare-before-training#0 (see above)\n    Read the actual current local target and restore its own artifact bytes (read-target-and-load-published-bytes#4) ← via loadedModelRef [wrote: observedTarget, observedPublicationRef, loadedModelRef, loadedArtifactObservation]\n      ↳ declare-before-training#0 (see above)\n    Publish the exact single-candidate model through existing checked release (publish-exact-approved-model#3) ← via release [wrote: releasePlanRef, releaseRef, release, approvedPublicationRef]\n      ↳ declare-before-training#0 (see above)\n      Fit one actual model and measure its validation evidence (fit-and-evaluate-approved-model#2) ← via approvedModelRef [wrote: approvedModelRef, approvalComparison, approvalReceipt]\n        ↳ generate-declared-inputs#1 (see above)\n        ↳ declare-before-training#0 (see above)\n    ↳ fit-and-evaluate-approved-model#2 (see above)\n  Create the separately arriving labeled outcome batches after prediction (receive-label-batches#8) ← via labelBatchRefs [wrote: labelBatchRefs]\n    ↳ declare-before-training#0 (see above)\n    ↳ generate-declared-inputs#1 (see above)\n  ↳ read-target-and-load-published-bytes#4 (see above)\n  Check actual monitoring evidence: healthy (monitor-healthy#9) ← via healthyReceipt [wrote: healthyObservation, healthyReceipt, healthyDecisionRef, healthyDecision]\n    ↳ declare-before-training#0 (see above)\n    Observe the target snapshot and execute the actual W1 batch (predict-W1#5) ← via W1Manifest [wrote: W1Manifest, W1BaseObservation, W1PredictionRef]\n      ↳ generate-declared-inputs#1 (see above)\n      ↳ declare-before-training#0 (see above)\n      ↳ read-target-and-load-published-bytes#4 (see above)\n      ↳ publish-exact-approved-model#3 (see above)\n      ↳ fit-and-evaluate-approved-model#2 (see above)\n    ↳ receive-label-batches#8 (see above)\n    ↳ read-target-and-load-published-bytes#4 (see above)\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 9,
+      "tool": "backtrack",
+      "args": {
+        "maxDepth": 24,
+        "maxNodes": 180,
+        "variable": "loadedArtifactObservation"
+      },
+      "result": "SLICE for 'loadedArtifactObservation' — reads via: custom-fn\nRead the actual current local target and restore its own artifact bytes (read-target-and-load-published-bytes#4) [wrote: observedTarget, observedPublicationRef, loadedModelRef, loadedArtifactObservation]\n  Declare model, window schema and monitoring limits before numerical work (declare-before-training#0) ← via publisherConfiguration [wrote: protocol, protocolRef, expectedContract, labelSource, monitoringEvaluation, monitoringPolicy, candidateDeclaration, qualityPolicy, publisherConfiguration, caseDeclarations]\n\ndrill any (stepId) with trace_node; fetch values with get_value; array variables take 'element' for per-element attribution.\n⚠ control edges unavailable — artifacts carry no controlDeps lookup; decisions that routed execution are not shown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 10,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "monitor-degraded#12",
+        "key": "degradedObservation\u001fevaluation\u001fmetrics\u001fmse"
+      },
+      "result": "VALUE of 'degradedObservation.evaluation.metrics.mse' as of monitor-degraded#12:\n9.000000000000002",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 11,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "monitor-insufficientLabels#11",
+        "key": "insufficientLabelsDecision\u001fcoverage"
+      },
+      "result": "VALUE of 'insufficientLabelsDecision.coverage' as of monitor-insufficientLabels#11:\n{\"matchedRows\":3,\"expectedRows\":12,\"ratio\":0.25,\"minSamples\":8,\"minCoverage\":1}",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 12,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "monitor-degraded#12",
+        "key": "degradedDecision\u001frecommendation"
+      },
+      "result": "VALUE of 'degradedDecision.recommendation' as of monitor-degraded#12:\n\"review\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 13,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "monitor-duplicateLabels#13",
+        "key": "duplicateLabelsObservation\u001fjoin\u001fduplicateRows"
+      },
+      "result": "VALUE of 'duplicateLabelsObservation.join.duplicateRows' as of monitor-duplicateLabels#13:\n1",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 14,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "monitor-crossWindowLabels#15",
+        "key": "crossWindowLabelsObservation\u001fjoin\u001fcrossWindowRows"
+      },
+      "result": "VALUE of 'crossWindowLabelsObservation.join.crossWindowRows' as of monitor-crossWindowLabels#15:\n12",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 15,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "monitor-borrowedReport#16",
+        "key": "healthyReceipt\u001fmanifest\u001fwindow\u001fwindowId"
+      },
+      "result": "VALUE of 'healthyReceipt.manifest.window.windowId' as of monitor-borrowedReport#16:\n\"W1\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 16,
+      "tool": "get_value",
+      "args": {
+        "runtimeStageId": "monitor-borrowedReport#16",
+        "key": "W2Manifest\u001fwindow\u001fwindowId"
+      },
+      "result": "VALUE of 'W2Manifest.window.windowId' as of monitor-borrowedReport#16:\n\"W2\"",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 17,
+      "tool": "who_wrote",
+      "args": {
+        "key": "labelBatchRefs",
+        "beforeStageId": "monitor-degraded#12"
+      },
+      "result": "'labelBatchRefs' was last written by receive-label-batches#8 — \"Create the separately arriving labeled outcome batches after prediction\" (verb: set): {\"W1\":{\"kind\":\"artifact\",\"path\":\"sha256-b9ef8e39c800e1381c613475efc41065da4a60b0d6cf98a7ae06b31269e3568b-bacb769b46f6d169fb227ea026550f411d46cbe66a9c2a6ba36449c… (585 chars total — get_value('receive-label-batches#8', 'labelBatchRefs') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 18,
+      "tool": "who_wrote",
+      "args": {
+        "key": "W2PredictionRef",
+        "beforeStageId": "monitor-degraded#12"
+      },
+      "result": "'W2PredictionRef' was last written by predict-W2#6 — \"Observe the target snapshot and execute the actual W2 batch\" (verb: set): {\"kind\":\"artifact\",\"path\":\"sha256-227846920ea6170022182a25b11759cf0db9c4e510a085fee8d0bbf49a767b62-bacb769b46f6d169fb227ea026550f411d46cbe66a9c2a6ba36449c8cf8e4… (286 chars total — get_value('predict-W2#6', 'W2PredictionRef') for full)",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    },
+    {
+      "ordinal": 19,
+      "tool": "trace_node",
+      "args": {
+        "runtimeStageId": "monitor-degraded#12"
+      },
+      "result": "STEP monitor-degraded#12 — \"Check actual monitoring evidence: degraded\"\nwrote (4):\n- degradedObservation (set): {\"deployment\":{\"targetName\":\"monitoring-proof-model\",\"revision\":\"49f4a9db70c36277c04952c773caf74682b898722a862687aeafbe764b5530cf\",\"modelRef\":{\"kind\":\"model\",\"s… (7944 chars total — get_value('monitor-degraded#12', 'degradedObservation') for full)\n- degradedReceipt (set): {\"kind\":\"monitoring-receipt\",\"schemaVersion\":1,\"monitoringId\":\"degraded\",\"createdAt\":1793384475558,\"manifest\":{\"kind\":\"monitoring-manifest\",\"schemaVersion\":1,\"m… (10567 chars total — get_value('monitor-degraded#12', 'degradedReceipt') for full)\n- degradedDecisionRef (set): {\"kind\":\"artifact\",\"path\":\"sha256-2093f308194c40449034140cc31a2edcac90ba7fc5278cb4985b8919103eab34-bacb769b46f6d169fb227ea026550f411d46cbe66a9c2a6ba36449c8cf8e4… (287 chars total — get_value('monitor-degraded#12', 'degradedDecisionRef') for full)\n- degradedDecision (set): {\"kind\":\"monitoring-decision\",\"schemaVersion\":1,\"allowed\":false,\"status\":\"deny\",\"health\":\"degraded\",\"recommendation\":\"review\",\"reasons\":[{\"code\":\"monitoring-hea… (1369 chars total — get_value('monitor-degraded#12', 'degradedDecision') for full)\nread (9): caseDeclarations, W2Manifest, W2BaseObservation, W2PredictionRef, labelBatchRefs, monitoringEvaluation, loadedModelRef, degradedObservation, degradedReceipt\nparents:\n- data: caseDeclarations ← declare-before-training#0 \"Declare model, window schema and monitoring limits before numerical work\"\n- data: W2Manifest ← predict-W2#6 \"Observe the target snapshot and execute the actual W2 batch\"\n- data: W2BaseObservation ← predict-W2#6 \"Observe the target snapshot and execute the actual W2 batch\"\n- data: W2PredictionRef ← predict-W2#6 \"Observe the target snapshot and execute the actual W2 batch\"\n- data: labelBatchRefs ← receive-label-batches#8 \"Create the separately arriving labeled outcome batches after prediction\"\n- data: monitoringEvaluation ← declare-before-training#0 \"Declare model, window schema and monitoring limits before numerical work\"\n- data: loadedModelRef ← read-target-and-load-published-bytes#4 \"Read the actual current local target and restore its own artifact bytes\"\n- data: degradedObservation ← (no tracked writer ⚠ never-written)\n- data: degradedReceipt ← (no tracked writer ⚠ never-written)\n⚠ never-written: No commit in the range asked about wrote the key — not its whole value, not a path inside it, and not a container around it in a way that changed it (a forward slice or a timeline also found no recorded read on, inside or around it) — so there is no write to start from: any value it has came from the initial state, the frozen run input or a closure, none of which the commit log can see.\n⚠ control-dependence lookup not provided — the decision that routed here is unknown.",
+      "owner": "agentfootprint/observe: existing Lens toolpack"
+    }
+  ],
+  "monitoringNode": "STEP monitor-degraded#12 — \"Check actual monitoring evidence: degraded\"\nwrote (4):\n- degradedObservation (set): {\"deployment\":{\"targetName\":\"monitoring-proof-model\",\"revision\":\"49f4a9db70c36277c04952c773caf74682b898722a862687aeafbe764b5530cf\",\"modelRef\":{\"kind\":\"model\",\"s… (7944 chars total — get_value('monitor-degraded#12', 'degradedObservation') for full)\n- degradedReceipt (set): {\"kind\":\"monitoring-receipt\",\"schemaVersion\":1,\"monitoringId\":\"degraded\",\"createdAt\":1793384475558,\"manifest\":{\"kind\":\"monitoring-manifest\",\"schemaVersion\":1,\"m… (10567 chars total — get_value('monitor-degraded#12', 'degradedReceipt') for full)\n- degradedDecisionRef (set): {\"kind\":\"artifact\",\"path\":\"sha256-2093f308194c40449034140cc31a2edcac90ba7fc5278cb4985b8919103eab34-bacb769b46f6d169fb227ea026550f411d46cbe66a9c2a6ba36449c8cf8e4… (287 chars total — get_value('monitor-degraded#12', 'degradedDecisionRef') for full)\n- degradedDecision (set): {\"kind\":\"monitoring-decision\",\"schemaVersion\":1,\"allowed\":false,\"status\":\"deny\",\"health\":\"degraded\",\"recommendation\":\"review\",\"reasons\":[{\"code\":\"monitoring-hea… (1369 chars total — get_value('monitor-degraded#12', 'degradedDecision') for full)\nread (9): caseDeclarations, W2Manifest, W2BaseObservation, W2PredictionRef, labelBatchRefs, monitoringEvaluation, loadedModelRef, degradedObservation, degradedReceipt\nparents:\n- data: caseDeclarations ← declare-before-training#0 \"Declare model, window schema and monitoring limits before numerical work\"\n- data: W2Manifest ← predict-W2#6 \"Observe the target snapshot and execute the actual W2 batch\"\n- data: W2BaseObservation ← predict-W2#6 \"Observe the target snapshot and execute the actual W2 batch\"\n- data: W2PredictionRef ← predict-W2#6 \"Observe the target snapshot and execute the actual W2 batch\"\n- data: labelBatchRefs ← receive-label-batches#8 \"Create the separately arriving labeled outcome batches after prediction\"\n- data: monitoringEvaluation ← declare-before-training#0 \"Declare model, window schema and monitoring limits before numerical work\"\n- data: loadedModelRef ← read-target-and-load-published-bytes#4 \"Read the actual current local target and restore its own artifact bytes\"\n- data: degradedObservation ← (no tracked writer ⚠ never-written)\n- data: degradedReceipt ← (no tracked writer ⚠ never-written)\n⚠ never-written: No commit in the range asked about wrote the key — not its whole value, not a path inside it, and not a container around it in a way that changed it (a forward slice or a timeline also found no recorded read on, inside or around it) — so there is no write to start from: any value it has came from the initial state, the frozen run input or a closure, none of which the commit log can see.\n⚠ control-dependence lookup not provided — the decision that routed here is unknown.",
+  "externalReadBoundary": {
+    "automaticallyLinkedToPublisherStage": false,
+    "explanation": "The receiver read returned an actual target receipt and checked bytes. Native scope backtracking does not infer the external file producer; the independently consumed expected publication and the saved artifact audit supply separate evidence."
+  },
+  "execution": {
+    "savedJsonOnly": true,
+    "numpyImported": false,
+    "trainingStarted": false,
+    "predictionRepeated": false,
+    "labelJoinRepeated": false,
+    "guardRecomputed": false,
+    "publicationPerformed": false,
+    "servingPaused": false
+  },
+  "boundaries": [
+    "Two predefined closed event-time batches are processed by a local restored backend now; no claim of historical hosted deployment.",
+    "W2 has an explicitly simulated changed target process with the same x pattern. The monitoring decision does not identify feature drift or a statistical root cause.",
+    "Labels and mapping facts remain trusted application observations; hashes cannot detect incorrect label truth assigned to otherwise valid IDs.",
+    "Keyed joins accept reordered intact rows. Partial, duplicate, unmatched and foreign-bounds inputs are explicitly derived controls.",
+    "Healthy/degraded/unknown is evidence for review, not an automatic serving pause, deployment rollback or durable streaming system.",
+    "Full native decisions are pinned artifacts; scope retains exact compact views without duplicated bindings. Numerical arrays remain outside scope."
+  ]
+}

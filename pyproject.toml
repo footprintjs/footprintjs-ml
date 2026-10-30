@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "footprintjs-ml"
-version = "0.6.0b11"
+version = "0.6.0b12"
 description = "Python workflow capture and ML evidence bindings over the FootPrint runtime"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -69,3 +69,6 @@ namespaces = false
 
 "share/footprintjs-ml/features/regression" = ["features/regression/README.md"]
 "share/footprintjs-ml/examples/regression" = ["examples/regression/*.py", "examples/regression/*.mjs", "examples/regression/*.md", "examples/regression/*.txt"]
+
+"share/footprintjs-ml/features/monitoring" = ["features/monitoring/README.md"]
+"share/footprintjs-ml/examples/monitoring" = ["examples/monitoring/*.py", "examples/monitoring/*.mjs", "examples/monitoring/*.md", "examples/monitoring/*.txt"]

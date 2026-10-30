@@ -179,20 +179,20 @@
   },
   "libraryStatus": {
     "stage": "beta",
-    "version": "0.6.0-beta.11",
+    "version": "0.6.0-beta.12",
     "notice": "Library APIs may change."
   },
   "currentRelease": {
-    "version": "0.6.0-beta.11",
+    "version": "0.6.0-beta.12",
     "stage": "beta",
-    "url": "https://github.com/footprintjs/footprintjs-ml/releases/tag/v0.6.0-beta.11",
-    "summary": "Paired baseline/group regression evidence becomes a required release check when independently declared.",
+    "url": "https://github.com/footprintjs/footprintjs-ml/releases/tag/v0.6.0-beta.12",
+    "summary": "Closed-batch monitoring binds deployed versions, predictions and delayed outcomes to a recorded health/review decision.",
     "sourceIds": [
-      "regression-outcome",
-      "regression-native",
-      "regression-audit"
+      "monitoring-outcome",
+      "monitoring-native",
+      "monitoring-audit"
     ],
-    "historicalEvidenceNotice": "Earlier experiments retain their original versions and evidence. This is a separate fixed NumPy imbalance proof, not a rerun of earlier JAX or MLflow training."
+    "historicalEvidenceNotice": "Separate fixed NumPy closed-batch proof. Earlier numerical runs, versions and evidence remain unchanged."
   },
   "format": "Self-contained HTML; StoryDeck custom element; editable HTML/SVG text",
   "audience": "Sanjay and developers following the experiments testing FootPrint’s flowchart pattern in ML",
@@ -293,13 +293,21 @@
         "sourceIds": [
           "regression-core"
         ]
+      },
+      {
+        "id": "monitoring",
+        "label": "Monitoring evidence",
+        "chapter": 33,
+        "sourceIds": [
+          "monitoring-core"
+        ]
       }
     ],
     "foundation": "Existing FootPrint stages, scope, branches, retries and read/write history.",
     "external": "Numerical trainers compute; native Lens and foottrace inspect saved workflow state.",
     "exampleOnly": "Crash/recovery helpers and benchmark/trial harnesses remain examples, not general ML-package APIs.",
     "historicalPrototypeVersion": "0.5.0",
-    "packageVersionScope": "The first nine capability sources retain the beta 8 teaching-map snapshot. The separately source-bound tenth group-regression capability is a beta 11 extension; currentRelease identifies the latest SDK.",
+    "packageVersionScope": "The first nine capability sources retain the beta 8 teaching-map snapshot. Group regression is a separately source-bound beta 11 extension; monitoring is a beta 12 extension. currentRelease identifies the latest SDK.",
     "extensions": [
       {
         "version": "0.6.0-beta.11",
@@ -308,6 +316,15 @@
         ],
         "sourceIds": [
           "regression-core"
+        ]
+      },
+      {
+        "version": "0.6.0-beta.12",
+        "layers": [
+          "monitoring"
+        ],
+        "sourceIds": [
+          "monitoring-core"
         ]
       }
     ],
@@ -697,9 +714,25 @@
         "lens": true
       },
       {
+        "id": "monitoring",
+        "kind": "added",
+        "summary": "The same model had worse later outcomes and a recorded review recommendation.",
+        "focus": [
+          "monitoring",
+          "prediction",
+          "publication",
+          "investigation"
+        ],
+        "added": [
+          "monitoring"
+        ],
+        "trainer": true,
+        "lens": true
+      },
+      {
         "id": "verdict",
         "kind": "verdict",
-        "summary": "Ten ML capabilities above the existing FootPrint foundation.",
+        "summary": "Eleven ML capabilities above the existing FootPrint foundation.",
         "focus": [
           "refs",
           "evaluation",
@@ -710,7 +743,8 @@
           "selection",
           "publication",
           "prediction",
-          "regression"
+          "regression",
+          "monitoring"
         ],
         "added": []
       }
@@ -723,7 +757,7 @@
         "since": 7,
         "version": "v0.1",
         "x": 132,
-        "y": 100,
+        "y": 92,
         "evidence": {
           "path": "evidence/contracts.ts.txt",
           "sha256": "29e11f0a987db1dc5cca1ec4716069daec0beeec8ee699e05244d074e3825c6e",
@@ -738,7 +772,7 @@
         "since": 7,
         "version": "v0.1",
         "x": 375,
-        "y": 100,
+        "y": 92,
         "evidence": {
           "path": "evidence/evaluation-contracts.ts.txt",
           "sha256": "f8473393d7374fad0b308f48c07a56c7a5dd496ec0bf017827e9ce3b293c774b",
@@ -753,7 +787,7 @@
         "since": 7,
         "version": "v0.1 → v0.3",
         "x": 132,
-        "y": 143,
+        "y": 130,
         "evidence": {
           "path": "evidence/adapter.ts.txt",
           "sha256": "5fe3f6d6e209874edc2790d8f78a2a4754b148eb777df8f2c8da95b35bc59437",
@@ -768,7 +802,7 @@
         "since": 7,
         "version": "v0.1 → v0.2",
         "x": 375,
-        "y": 143,
+        "y": 130,
         "evidence": {
           "path": "evidence/guard.ts.txt",
           "sha256": "1748b08a94316cc21a5e410882559e5748f9801e4ab6f10d794c49a8bac3d712",
@@ -783,7 +817,7 @@
         "since": 12,
         "version": "v0.3",
         "x": 132,
-        "y": 186,
+        "y": 168,
         "evidence": {
           "path": "evidence/lens.mjs.txt",
           "sha256": "5c3d8ea491ea78f7be79dd048aa6da6b168b22d291d4f232d43d47e6d916e815",
@@ -798,7 +832,7 @@
         "since": 14,
         "version": "v0.3 lineage",
         "x": 375,
-        "y": 186,
+        "y": 168,
         "evidence": {
           "path": "evidence/lineage-contracts.ts.txt",
           "sha256": "aacafe9a51f4b980f0dc2c5728d882d920bfbc6a9421b6cbf8e2476d2ff4a4e5",
@@ -813,7 +847,7 @@
         "since": 20,
         "version": "v0.4",
         "x": 132,
-        "y": 229,
+        "y": 206,
         "evidence": {
           "path": "evidence/selection-contracts.ts.txt",
           "sha256": "399b2757f6eb5898faa7f483971d9752f3e6200bf93257a6bf2f62ae1d115b8a",
@@ -828,7 +862,7 @@
         "since": 21,
         "version": "v0.5",
         "x": 375,
-        "y": 229,
+        "y": 206,
         "evidence": {
           "path": "evidence/release-contracts.ts.txt",
           "sha256": "048eed3a23d1757b9d4ec04d6d912e8906bf81a7c0feb9f44e87c7b38053a93f",
@@ -849,7 +883,7 @@
         "since": 29,
         "version": "v0.6 beta.7",
         "x": 132,
-        "y": 272,
+        "y": 244,
         "evidence": {
           "path": "evidence/inference-contracts.ts.txt",
           "sha256": "2fbe53db47e3b2010d5a7c84dc6499ba8205a361591540cae5acc95ffabed02e",
@@ -864,10 +898,25 @@
         "since": 31,
         "version": "v0.6 beta.11",
         "x": 375,
-        "y": 272,
+        "y": 244,
         "evidence": {
           "path": "evidence/regression-core.ts.txt",
           "sha256": "f34b04c90f44a4acad93eb85bf031524db57f367b482098d3de384f6a746da2b",
+          "type": "SOURCE",
+          "classification": "VERIFIED"
+        }
+      },
+      {
+        "id": "monitoring",
+        "label": "Monitoring evidence",
+        "detail": "Deployed model + later outcomes",
+        "since": 32,
+        "version": "v0.6 beta.12",
+        "x": 132,
+        "y": 282,
+        "evidence": {
+          "path": "evidence/monitoring-core.ts.txt",
+          "sha256": "bd7d4c5b57129b3c5e1d9c3000447f743f9d9e98aabacd5dbdac2d374deae8be",
           "type": "SOURCE",
           "classification": "VERIFIED"
         }
@@ -961,8 +1010,8 @@
     "Trusted adapter/profile; no authentication or atomic deployment guarantee.",
     "FootPrint records workflow state at instrumented boundaries; it does not record every tensor operation."
   ],
-  "sceneCount": 33,
-  "clickStateCount": 65,
+  "sceneCount": 34,
+  "clickStateCount": 67,
   "nodes": [
     {
       "id": "fp",
@@ -1233,6 +1282,15 @@
       "x": 5.1,
       "y": -3.4,
       "z": 0.6
+    },
+    {
+      "id": "monitoring",
+      "label": "Monitor",
+      "fullLabel": "Deployed-model closed-batch monitoring evidence",
+      "kind": "evidence",
+      "x": 5.3,
+      "y": 1.5,
+      "z": 1.2
     }
   ],
   "edges": [
@@ -2051,6 +2109,72 @@
         "regression-audit-controls",
         "regression-audit-controls-code",
         "regression-audit-code"
+      ]
+    },
+    {
+      "id": "publication-monitoring",
+      "from": "publication",
+      "to": "monitoring",
+      "label": "binds the observed released version",
+      "sentence": "A monitoring declaration binds the intended publication and actual target snapshot to the model used for the batch.",
+      "classification": "DERIVED",
+      "sourceIds": [
+        "monitoring-outcome",
+        "monitoring-recording",
+        "monitoring-native",
+        "monitoring-audit",
+        "monitoring-audit-controls",
+        "monitoring-numerical",
+        "monitoring-workflow",
+        "monitoring-core",
+        "monitoring-guide",
+        "monitoring-audit-code",
+        "monitoring-audit-controls-code",
+        "monitoring-backend"
+      ]
+    },
+    {
+      "id": "prediction-monitoring",
+      "from": "prediction",
+      "to": "monitoring",
+      "label": "joins predictions with later outcomes",
+      "sentence": "The backend matches actual outcome rows to prediction IDs, event times and the declared closed window.",
+      "classification": "DERIVED",
+      "sourceIds": [
+        "monitoring-outcome",
+        "monitoring-recording",
+        "monitoring-native",
+        "monitoring-audit",
+        "monitoring-audit-controls",
+        "monitoring-numerical",
+        "monitoring-workflow",
+        "monitoring-core",
+        "monitoring-guide",
+        "monitoring-audit-code",
+        "monitoring-audit-controls-code",
+        "monitoring-backend"
+      ]
+    },
+    {
+      "id": "monitoring-lens",
+      "from": "monitoring",
+      "to": "lens",
+      "label": "reopens the review decision",
+      "sentence": "Lens follows the recorded monitoring recommendation through its actual consumed inputs without repeating numerical work.",
+      "classification": "DERIVED",
+      "sourceIds": [
+        "monitoring-outcome",
+        "monitoring-recording",
+        "monitoring-native",
+        "monitoring-audit",
+        "monitoring-audit-controls",
+        "monitoring-numerical",
+        "monitoring-workflow",
+        "monitoring-core",
+        "monitoring-guide",
+        "monitoring-audit-code",
+        "monitoring-audit-controls-code",
+        "monitoring-backend"
       ]
     }
   ],
@@ -8846,10 +8970,356 @@
       "edgeCount": 64
     },
     {
+      "id": "monitoring",
+      "title": "The same released model had worse later results",
+      "category": "A new ML evidence check",
+      "caption": "Two closed batches used the same correctly restored predictor. Missing outcomes stayed unknown; measured later error triggered a review recommendation.",
+      "visual": {
+        "kind": "monitoring",
+        "journey": "monitoring",
+        "showMetricsInPrimaryView": false,
+        "showHashesInPrimaryView": false
+      },
+      "adds": {
+        "nodes": [
+          "monitoring"
+        ],
+        "edges": [
+          "publication-monitoring",
+          "prediction-monitoring",
+          "monitoring-lens"
+        ]
+      },
+      "focus": [
+        "monitoring",
+        "publication",
+        "prediction",
+        "lens"
+      ],
+      "transition": {
+        "change": "Follow the model after release",
+        "why": "Passing release checks does not establish performance for every later batch.",
+        "consequence": "The actual deployed model, batch and delayed outcomes become connected evidence."
+      },
+      "claims": [
+        {
+          "classification": "VERIFIED",
+          "text": "The fixed local proof trains one NumPy linear predictor, publishes the exact approved artifact through the existing receiver, reads the actual current target and restores that receiver’s installed bytes into a distinct backend session. Both batches use the same measured restored model. Event-time batches are processed locally now; no historical hosted serving interval is asserted.",
+          "sourceIds": [
+            "monitoring-outcome",
+            "monitoring-recording",
+            "monitoring-native",
+            "monitoring-audit",
+            "monitoring-audit-controls",
+            "monitoring-numerical",
+            "monitoring-workflow",
+            "monitoring-core",
+            "monitoring-guide",
+            "monitoring-audit-code",
+            "monitoring-audit-controls-code",
+            "monitoring-backend"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "W1 is healthy under the declared mean-squared-error policy. W2 initially has no outcomes and stays unknown; an explicit three-of-twelve coverage control also stays unknown. Once actual full outcomes arrive, W2’s measured error of approximately 9 exceeds the fixed threshold of 1 and produces a review recommendation. This is regression error, not classification accuracy.",
+          "sourceIds": [
+            "monitoring-outcome",
+            "monitoring-recording",
+            "monitoring-native",
+            "monitoring-audit",
+            "monitoring-audit-controls",
+            "monitoring-numerical",
+            "monitoring-workflow",
+            "monitoring-core",
+            "monitoring-guide",
+            "monitoring-audit-code",
+            "monitoring-audit-controls-code",
+            "monitoring-backend"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Actual keyed row-ID/window/time joins accept intact reordered labels. Duplicated, unmatched and foreign-window labels are distinct reported conflicts. Borrowing W1’s good receipt for W2 is refused. Full native decisions remain pinned artifacts, and scope retains compact exact views and references.",
+          "sourceIds": [
+            "monitoring-outcome",
+            "monitoring-recording",
+            "monitoring-native",
+            "monitoring-audit",
+            "monitoring-audit-controls",
+            "monitoring-numerical",
+            "monitoring-workflow",
+            "monitoring-core",
+            "monitoring-guide",
+            "monitoring-audit-code",
+            "monitoring-audit-controls-code",
+            "monitoring-backend"
+          ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "The TypeScript/Python guard reuses existing inference and evaluation checks and adds deployment/window/join/coverage bindings. Existing Lens/foottrace tools reopen the recommendation’s actual consumed inputs without a training, prediction, guard or publication rerun. The original local publication remains unchanged.",
+          "sourceIds": [
+            "monitoring-outcome",
+            "monitoring-recording",
+            "monitoring-native",
+            "monitoring-audit",
+            "monitoring-audit-controls",
+            "monitoring-numerical",
+            "monitoring-workflow",
+            "monitoring-core",
+            "monitoring-guide",
+            "monitoring-audit-code",
+            "monitoring-audit-controls-code",
+            "monitoring-backend"
+          ]
+        },
+        {
+          "classification": "OPEN",
+          "text": "The fixture explicitly changes W2’s label process while keeping the same feature pattern. The library does not diagnose feature drift, authenticate label truth, establish statistical significance, attest a complete serving history or pause/roll back a service. Complete logs can retain the same facts; an independent human investigation advantage remains unmeasured.",
+          "sourceIds": [
+            "monitoring-outcome",
+            "monitoring-recording",
+            "monitoring-native",
+            "monitoring-audit",
+            "monitoring-audit-controls",
+            "monitoring-numerical",
+            "monitoring-workflow",
+            "monitoring-core",
+            "monitoring-guide",
+            "monitoring-audit-code",
+            "monitoring-audit-controls-code",
+            "monitoring-backend"
+          ]
+        }
+      ],
+      "storyText": {
+        "what": "Publish one predictor, restore its actual installed bytes and process two closed input batches.",
+        "why": "A matching released model can still produce worse results on a later batch.",
+        "how": "Keep the deployed revision, predictions, matched outcomes, coverage and measurement connected.",
+        "learned": "Absent outcomes stayed unknown; later measured error triggered review. Valid row reordering passed.",
+        "next": "Try these evidence boundaries in an unfamiliar existing ML workflow."
+      },
+      "storyTextEvidence": {
+        "what": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "monitoring-outcome",
+            "monitoring-recording",
+            "monitoring-native",
+            "monitoring-audit",
+            "monitoring-audit-controls",
+            "monitoring-numerical",
+            "monitoring-workflow",
+            "monitoring-core",
+            "monitoring-guide",
+            "monitoring-audit-code",
+            "monitoring-audit-controls-code",
+            "monitoring-backend"
+          ]
+        },
+        "why": {
+          "classification": "DERIVED",
+          "sourceIds": [
+            "monitoring-outcome",
+            "monitoring-recording",
+            "monitoring-native",
+            "monitoring-audit",
+            "monitoring-audit-controls",
+            "monitoring-numerical",
+            "monitoring-workflow",
+            "monitoring-core",
+            "monitoring-guide",
+            "monitoring-audit-code",
+            "monitoring-audit-controls-code",
+            "monitoring-backend"
+          ]
+        },
+        "how": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "monitoring-outcome",
+            "monitoring-recording",
+            "monitoring-native",
+            "monitoring-audit",
+            "monitoring-audit-controls",
+            "monitoring-numerical",
+            "monitoring-workflow",
+            "monitoring-core",
+            "monitoring-guide",
+            "monitoring-audit-code",
+            "monitoring-audit-controls-code",
+            "monitoring-backend"
+          ]
+        },
+        "learned": {
+          "classification": "VERIFIED",
+          "sourceIds": [
+            "monitoring-outcome",
+            "monitoring-recording",
+            "monitoring-native",
+            "monitoring-audit",
+            "monitoring-audit-controls",
+            "monitoring-numerical",
+            "monitoring-workflow",
+            "monitoring-core",
+            "monitoring-guide",
+            "monitoring-audit-code",
+            "monitoring-audit-controls-code",
+            "monitoring-backend"
+          ]
+        },
+        "next": {
+          "classification": "OPEN",
+          "sourceIds": [
+            "monitoring-outcome",
+            "monitoring-recording",
+            "monitoring-native",
+            "monitoring-audit",
+            "monitoring-audit-controls",
+            "monitoring-numerical",
+            "monitoring-workflow",
+            "monitoring-core",
+            "monitoring-guide",
+            "monitoring-audit-code",
+            "monitoring-audit-controls-code",
+            "monitoring-backend"
+          ]
+        }
+      },
+      "teachingClassification": "DERIVED",
+      "narrativeNote": "The capability map is an authored explanation of reusable pieces, not a tensor graph or complete causal/serving graph.",
+      "nextCard": {
+        "title": "Follow the model after release",
+        "why": "What explains a later batch with worse measured results?",
+        "after": "Bind the actual model, predictions and delayed outcomes, then reopen the decision.",
+        "classification": "DERIVED",
+        "sourceIds": [
+          "monitoring-outcome",
+          "monitoring-recording",
+          "monitoring-native",
+          "monitoring-audit",
+          "monitoring-audit-controls",
+          "monitoring-numerical",
+          "monitoring-workflow",
+          "monitoring-core",
+          "monitoring-guide",
+          "monitoring-audit-code",
+          "monitoring-audit-controls-code",
+          "monitoring-backend"
+        ]
+      },
+      "index": 32,
+      "clickIndex": 64,
+      "nodeIds": [
+        "fp",
+        "compute",
+        "references",
+        "trainer",
+        "history",
+        "retry",
+        "cost",
+        "view",
+        "lens",
+        "replay",
+        "library",
+        "evidence",
+        "guard",
+        "jax",
+        "identity",
+        "inspect",
+        "plugin",
+        "conformance",
+        "package",
+        "data-use",
+        "data-guard",
+        "audit",
+        "recovery",
+        "continuity",
+        "trial",
+        "selection",
+        "publication",
+        "prediction",
+        "regression",
+        "monitoring"
+      ],
+      "edgeIds": [
+        "fp-compute",
+        "compute-references",
+        "fp-references",
+        "compute-trainer",
+        "trainer-history",
+        "references-history",
+        "fp-retry",
+        "history-retry",
+        "fp-cost",
+        "retry-cost",
+        "history-view",
+        "retry-view",
+        "fp-lens",
+        "fp-replay",
+        "lens-replay",
+        "references-library",
+        "lens-library",
+        "library-evidence",
+        "evidence-guard",
+        "library-jax",
+        "guard-jax",
+        "jax-identity",
+        "evidence-identity",
+        "identity-inspect",
+        "library-inspect",
+        "library-plugin",
+        "plugin-conformance",
+        "library-package",
+        "package-lens",
+        "package-plugin",
+        "trainer-data-use",
+        "evidence-data-use",
+        "data-use-data-guard",
+        "guard-data-guard",
+        "data-use-audit",
+        "lens-audit",
+        "cost-audit",
+        "references-recovery",
+        "history-recovery",
+        "recovery-continuity",
+        "identity-continuity",
+        "audit-continuity",
+        "evidence-continuity",
+        "continuity-guard",
+        "recovery-lens",
+        "recovery-replay",
+        "lens-trial",
+        "history-trial",
+        "trial-selection",
+        "library-selection",
+        "evidence-selection",
+        "selection-guard",
+        "selection-lens",
+        "guard-publication",
+        "selection-publication",
+        "library-publication",
+        "retry-publication",
+        "publication-lens",
+        "references-prediction",
+        "library-prediction",
+        "prediction-lens",
+        "evaluation-regression",
+        "regression-publication",
+        "regression-lens",
+        "publication-monitoring",
+        "prediction-monitoring",
+        "monitoring-lens"
+      ],
+      "nodeCount": 30,
+      "edgeCount": 67
+    },
+    {
       "id": "verdict",
       "title": "FootPrint explained ML release mistakes through saved workflow state",
       "category": "What we learned",
-      "caption": "Ten reusable ML capabilities sit above FootPrint’s stages and history. Independent adoption and broader scale remain open.",
+      "caption": "Eleven reusable ML capabilities sit above FootPrint’s stages and history. Independent adoption and broader scale remain open.",
       "visual": {
         "kind": "verdict",
         "journey": "verdict",
@@ -9087,6 +9557,24 @@
             "regression-audit-controls-code",
             "regression-audit-code"
           ]
+        },
+        {
+          "classification": "VERIFIED",
+          "text": "Beta 12 adds closed-batch monitoring evidence for an actual deployed snapshot, predictions, delayed outcomes and measured join coverage. The same-model proof records healthy, unknown, degraded and conflicting-evidence cases without changing the local publication. Earlier ten capabilities and historical evidence remain separate.",
+          "sourceIds": [
+            "monitoring-outcome",
+            "monitoring-recording",
+            "monitoring-native",
+            "monitoring-audit",
+            "monitoring-audit-controls",
+            "monitoring-numerical",
+            "monitoring-workflow",
+            "monitoring-core",
+            "monitoring-guide",
+            "monitoring-audit-code",
+            "monitoring-audit-controls-code",
+            "monitoring-backend"
+          ]
         }
       ],
       "storyText": {
@@ -9216,8 +9704,8 @@
           "release-contracts"
         ]
       },
-      "index": 32,
-      "clickIndex": 64,
+      "index": 33,
+      "clickIndex": 66,
       "nodeIds": [
         "fp",
         "compute",
@@ -9248,6 +9736,7 @@
         "publication",
         "prediction",
         "regression",
+        "monitoring",
         "future"
       ],
       "edgeIds": [
@@ -9315,11 +9804,14 @@
         "evaluation-regression",
         "regression-publication",
         "regression-lens",
+        "publication-monitoring",
+        "prediction-monitoring",
+        "monitoring-lens",
         "package-future",
         "trial-future"
       ],
-      "nodeCount": 30,
-      "edgeCount": 66
+      "nodeCount": 31,
+      "edgeCount": 69
     }
   ],
   "sources": [
@@ -12997,6 +13489,246 @@
         "pathsProjected": 0,
         "byteIdenticalToRetainedSource": true
       }
+    },
+    {
+      "id": "monitoring-outcome",
+      "path": "evidence/monitoring-outcome.json",
+      "label": "Actual same-model two-window decisions and unchanged local publication",
+      "note": "Actual same-model two-window decisions and unchanged local publication",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-outcome.json",
+      "sha256": "45210be0113eacab9ff39fe717093d21a86f668cb40f0aaa3f27d123953e4f6c",
+      "bytes": 21804,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-outcome.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-outcome.json",
+        "sha256": "45210be0113eacab9ff39fe717093d21a86f668cb40f0aaa3f27d123953e4f6c",
+        "bytes": 21804,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "monitoring-recording",
+      "path": "evidence/monitoring-recording.json",
+      "label": "Actual native scope capture for the Python-owned monitoring workflow",
+      "note": "Actual native scope capture for the Python-owned monitoring workflow",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-recording.json",
+      "sha256": "515c7dbb5fbda4a1e593f04b3254289ad2e92eb1e3bad1bc98dc5e9dd03c938b",
+      "bytes": 715176,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-recording.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-recording.json",
+        "sha256": "a3a65f1eae85818c499977027ea69c6a2caee533cb77f1ddf6840afdf4694bfa",
+        "bytes": 715040,
+        "pathsProjected": 4,
+        "byteIdenticalToRetainedSource": false
+      }
+    },
+    {
+      "id": "monitoring-native",
+      "path": "evidence/monitoring-native.json",
+      "label": "Existing Lens/foottrace inspection of actual deployment, prediction and delayed-label writers",
+      "note": "Existing Lens/foottrace inspection of actual deployment, prediction and delayed-label writers",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-native.json",
+      "sha256": "eaca33a813d6dfa57894e90bf966657f873f030a2ef4c90674e8497b9d9b2291",
+      "bytes": 36033,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-native.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-native.json",
+        "sha256": "eaca33a813d6dfa57894e90bf966657f873f030a2ef4c90674e8497b9d9b2291",
+        "bytes": 36033,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "monitoring-audit",
+      "path": "evidence/monitoring-audit.json",
+      "label": "Saved scalar prediction, installed-artifact and keyed-label-join audit",
+      "note": "Saved scalar prediction, installed-artifact and keyed-label-join audit",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-audit.json",
+      "sha256": "d263223fb01661575b0ccb155336445f1c11a921736693a83df4677ffe201acc",
+      "bytes": 4350,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-audit.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-audit.json",
+        "sha256": "d263223fb01661575b0ccb155336445f1c11a921736693a83df4677ffe201acc",
+        "bytes": 4350,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "monitoring-audit-controls",
+      "path": "evidence/monitoring-audit-controls.json",
+      "label": "Corrupted saved evidence is refused on disposable copies; original run unchanged",
+      "note": "Corrupted saved evidence is refused on disposable copies; original run unchanged",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-audit-controls.json",
+      "sha256": "5a7b85b87e113ac92348c90518675f569016ecfce350708cb04dc0dd97d2a4fd",
+      "bytes": 1482,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-audit-controls.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-audit-controls.json",
+        "sha256": "5a7b85b87e113ac92348c90518675f569016ecfce350708cb04dc0dd97d2a4fd",
+        "bytes": 1482,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "monitoring-numerical",
+      "path": "evidence/monitoring-numerical.json",
+      "label": "Retained numerical and artifact references outside workflow scope",
+      "note": "Retained numerical and artifact references outside workflow scope",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-numerical.json",
+      "sha256": "e249946ce1cf62cf78c3adb88582b7bdc0c39c89a6bdd1666a4cf500b0255e20",
+      "bytes": 15386,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-numerical.json",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-numerical.json",
+        "sha256": "e249946ce1cf62cf78c3adb88582b7bdc0c39c89a6bdd1666a4cf500b0255e20",
+        "bytes": 15386,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "monitoring-workflow",
+      "path": "evidence/monitoring-workflow.py.txt",
+      "label": "Python-owned workflow with actual publication, target reads, restored model and monitoring cases",
+      "note": "Python-owned workflow with actual publication, target reads, restored model and monitoring cases",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-workflow.py.txt",
+      "sha256": "60e5fc578b182e1bf3080b0c84182adc662a6970cc7c4544a1fef9f564f672fc",
+      "bytes": 24265,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-workflow.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-workflow.py.txt",
+        "sha256": "60e5fc578b182e1bf3080b0c84182adc662a6970cc7c4544a1fef9f564f672fc",
+        "bytes": 24265,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "monitoring-core",
+      "path": "evidence/monitoring-core.ts.txt",
+      "label": "Reusable closed-batch monitoring contracts and pure shared guard",
+      "note": "Reusable closed-batch monitoring contracts and pure shared guard",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-core.ts.txt",
+      "sha256": "bd7d4c5b57129b3c5e1d9c3000447f743f9d9e98aabacd5dbdac2d374deae8be",
+      "bytes": 28088,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-core.ts.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-core.ts.txt",
+        "sha256": "bd7d4c5b57129b3c5e1d9c3000447f743f9d9e98aabacd5dbdac2d374deae8be",
+        "bytes": 28088,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "monitoring-guide",
+      "path": "evidence/monitoring-guide.md",
+      "label": "Actual closed-batch proof, commands, measurements and interpretation limits",
+      "note": "Actual closed-batch proof, commands, measurements and interpretation limits",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-guide.md",
+      "sha256": "fc952bcd7bde6a1e0601556318da7ef4f9cfcba53f848ff0810dfcd03c829666",
+      "bytes": 4956,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-guide.md",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-guide.md",
+        "sha256": "fc952bcd7bde6a1e0601556318da7ef4f9cfcba53f848ff0810dfcd03c829666",
+        "bytes": 4956,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "monitoring-audit-code",
+      "path": "evidence/monitoring-audit-code.py.txt",
+      "label": "Standard-library saved arithmetic, join and artifact binding audit",
+      "note": "Standard-library saved arithmetic, join and artifact binding audit",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-audit-code.py.txt",
+      "sha256": "b8bf58f85780db73b049d97be6264730f505c0bcbba333a0536b381de3a84a54",
+      "bytes": 24966,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-audit-code.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-audit-code.py.txt",
+        "sha256": "b8bf58f85780db73b049d97be6264730f505c0bcbba333a0536b381de3a84a54",
+        "bytes": 24966,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "monitoring-audit-controls-code",
+      "path": "evidence/monitoring-audit-controls-code.py.txt",
+      "label": "Adversarial saved-evidence acceptance checks without numerical work",
+      "note": "Adversarial saved-evidence acceptance checks without numerical work",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-audit-controls-code.py.txt",
+      "sha256": "bc14faebe40b36fa30ec4ab314bbc8ec687e3f47f260f5f9549f9f185aa78457",
+      "bytes": 4619,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-audit-controls-code.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-audit-controls-code.py.txt",
+        "sha256": "bc14faebe40b36fa30ec4ab314bbc8ec687e3f47f260f5f9549f9f185aa78457",
+        "bytes": 4619,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
+    },
+    {
+      "id": "monitoring-backend",
+      "path": "evidence/monitoring-backend.py.txt",
+      "label": "Actual held predictor, exact installed-byte restoration and keyed outcome matching",
+      "note": "Actual held predictor, exact installed-byte restoration and keyed outcome matching",
+      "classification": "VERIFIED",
+      "relativeUrl": "evidence/monitoring-backend.py.txt",
+      "sha256": "2af59506327f0c1dcfc1e58f47f1cecb78c8dc3b67405b2b8dd3b9be97c9dfb2",
+      "bytes": 6310,
+      "verificationMethod": "Original retained source hash is preserved in sha256. The published copy is checked separately in publishedCopy and publication-manifest.json.",
+      "retainedSourceLocation": "evidence/monitoring-backend.py.txt",
+      "sha256Scope": "Original retained source bytes before the public path projection.",
+      "publishedCopy": {
+        "path": "evidence/monitoring-backend.py.txt",
+        "sha256": "2af59506327f0c1dcfc1e58f47f1cecb78c8dc3b67405b2b8dd3b9be97c9dfb2",
+        "bytes": 6310,
+        "pathsProjected": 0,
+        "byteIdenticalToRetainedSource": true
+      }
     }
   ],
   "ending": "The local experiments support FootPrint’s flowchart pattern for ML orchestration, recorded data-use checks, explicit checkpoint recovery and saved investigation. Numerical trainers own computation; independent developer value and broader scale need further proof.",
@@ -13229,6 +13961,13 @@
       },
       {
         "click": 65,
+        "type": "fade",
+        "seconds": 0.8,
+        "ease": "inOut",
+        "p": {}
+      },
+      {
+        "click": 67,
         "type": "fade",
         "seconds": 0.8,
         "ease": "inOut",

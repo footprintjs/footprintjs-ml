@@ -7,16 +7,16 @@
   "hashScope": "files hashes cover published bytes. originalRetainedSource hashes cover private retained authoring inputs. The manifest itself is intentionally excluded from its own hash list. These checksums are integrity references, not signatures.",
   "projection": "Only local path strings, repository-document link targets and publication-specific source/checksum descriptions are changed. Logical recorded digests, model IDs and numerical claims are retained.",
   "evidence": {
-    "count": 187,
-    "byteIdentical": 166,
-    "pathProjected": 14,
+    "count": 199,
+    "byteIdentical": 177,
+    "pathProjected": 15,
     "documentLinksProjected": 7
   },
   "validation": {
     "passed": true,
-    "staticLinksChecked": 194,
+    "staticLinksChecked": 206,
     "classicScriptsParsed": 9,
-    "embeddedSourceMappingsChecked": 748,
+    "embeddedSourceMappingsChecked": 796,
     "personalFilesystemPaths": 0,
     "localServerDependencies": 0,
     "credentialPatternMatches": 0,
@@ -2700,15 +2700,186 @@
       "byteIdenticalToRetainedSource": true
     },
     {
+      "path": "evidence/monitoring-outcome.json",
+      "published": {
+        "sha256": "45210be0113eacab9ff39fe717093d21a86f668cb40f0aaa3f27d123953e4f6c",
+        "bytes": 21804
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-outcome.json",
+        "sha256": "45210be0113eacab9ff39fe717093d21a86f668cb40f0aaa3f27d123953e4f6c",
+        "bytes": 21804
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/monitoring-recording.json",
+      "published": {
+        "sha256": "a3a65f1eae85818c499977027ea69c6a2caee533cb77f1ddf6840afdf4694bfa",
+        "bytes": 715040
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-recording.json",
+        "sha256": "515c7dbb5fbda4a1e593f04b3254289ad2e92eb1e3bad1bc98dc5e9dd03c938b",
+        "bytes": 715176
+      },
+      "projectionFlags": [
+        "local-path-strings",
+        "json-serialization"
+      ],
+      "byteIdenticalToRetainedSource": false
+    },
+    {
+      "path": "evidence/monitoring-native.json",
+      "published": {
+        "sha256": "eaca33a813d6dfa57894e90bf966657f873f030a2ef4c90674e8497b9d9b2291",
+        "bytes": 36033
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-native.json",
+        "sha256": "eaca33a813d6dfa57894e90bf966657f873f030a2ef4c90674e8497b9d9b2291",
+        "bytes": 36033
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/monitoring-audit.json",
+      "published": {
+        "sha256": "d263223fb01661575b0ccb155336445f1c11a921736693a83df4677ffe201acc",
+        "bytes": 4350
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-audit.json",
+        "sha256": "d263223fb01661575b0ccb155336445f1c11a921736693a83df4677ffe201acc",
+        "bytes": 4350
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/monitoring-audit-controls.json",
+      "published": {
+        "sha256": "5a7b85b87e113ac92348c90518675f569016ecfce350708cb04dc0dd97d2a4fd",
+        "bytes": 1482
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-audit-controls.json",
+        "sha256": "5a7b85b87e113ac92348c90518675f569016ecfce350708cb04dc0dd97d2a4fd",
+        "bytes": 1482
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/monitoring-numerical.json",
+      "published": {
+        "sha256": "e249946ce1cf62cf78c3adb88582b7bdc0c39c89a6bdd1666a4cf500b0255e20",
+        "bytes": 15386
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-numerical.json",
+        "sha256": "e249946ce1cf62cf78c3adb88582b7bdc0c39c89a6bdd1666a4cf500b0255e20",
+        "bytes": 15386
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/monitoring-workflow.py.txt",
+      "published": {
+        "sha256": "60e5fc578b182e1bf3080b0c84182adc662a6970cc7c4544a1fef9f564f672fc",
+        "bytes": 24265
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-workflow.py.txt",
+        "sha256": "60e5fc578b182e1bf3080b0c84182adc662a6970cc7c4544a1fef9f564f672fc",
+        "bytes": 24265
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/monitoring-core.ts.txt",
+      "published": {
+        "sha256": "bd7d4c5b57129b3c5e1d9c3000447f743f9d9e98aabacd5dbdac2d374deae8be",
+        "bytes": 28088
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-core.ts.txt",
+        "sha256": "bd7d4c5b57129b3c5e1d9c3000447f743f9d9e98aabacd5dbdac2d374deae8be",
+        "bytes": 28088
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/monitoring-guide.md",
+      "published": {
+        "sha256": "fc952bcd7bde6a1e0601556318da7ef4f9cfcba53f848ff0810dfcd03c829666",
+        "bytes": 4956
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-guide.md",
+        "sha256": "fc952bcd7bde6a1e0601556318da7ef4f9cfcba53f848ff0810dfcd03c829666",
+        "bytes": 4956
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/monitoring-audit-code.py.txt",
+      "published": {
+        "sha256": "b8bf58f85780db73b049d97be6264730f505c0bcbba333a0536b381de3a84a54",
+        "bytes": 24966
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-audit-code.py.txt",
+        "sha256": "b8bf58f85780db73b049d97be6264730f505c0bcbba333a0536b381de3a84a54",
+        "bytes": 24966
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/monitoring-audit-controls-code.py.txt",
+      "published": {
+        "sha256": "bc14faebe40b36fa30ec4ab314bbc8ec687e3f47f260f5f9549f9f185aa78457",
+        "bytes": 4619
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-audit-controls-code.py.txt",
+        "sha256": "bc14faebe40b36fa30ec4ab314bbc8ec687e3f47f260f5f9549f9f185aa78457",
+        "bytes": 4619
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
+      "path": "evidence/monitoring-backend.py.txt",
+      "published": {
+        "sha256": "2af59506327f0c1dcfc1e58f47f1cecb78c8dc3b67405b2b8dd3b9be97c9dfb2",
+        "bytes": 6310
+      },
+      "originalRetainedSource": {
+        "path": "evidence/monitoring-backend.py.txt",
+        "sha256": "2af59506327f0c1dcfc1e58f47f1cecb78c8dc3b67405b2b8dd3b9be97c9dfb2",
+        "bytes": 6310
+      },
+      "projectionFlags": [],
+      "byteIdenticalToRetainedSource": true
+    },
+    {
       "path": "index.html",
       "published": {
-        "sha256": "e21b8b84c2216fbd9bfc9e050315621020afb9faa16e7f719b96b1870eceb87c",
-        "bytes": 874582
+        "sha256": "2a358d1cce8de5dc8b618e53e0d30fd26e85786b6aa3780128e0f2181111d9b3",
+        "bytes": 919636
       },
       "originalRetainedSource": {
         "path": "index.html",
-        "sha256": "a261a11c8d51e3f9a9f35978b2739d27c5a9460b09f6230e506622471bffae1f",
-        "bytes": 704316
+        "sha256": "939a94e9f4b136b16c439a78a121a1f562291f18b636a996ed949f5f33853f7e",
+        "bytes": 738172
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -2719,13 +2890,13 @@
     {
       "path": "technical-story.html",
       "published": {
-        "sha256": "a9c07edc01fff7cd6ced5425de556a14917aa841418ecbd0d1e648dbc808f95f",
-        "bytes": 1188454
+        "sha256": "17120afd8d18822c0bab01e747242365626114ca605c9583e64bfc9c7daaab8c",
+        "bytes": 1237470
       },
       "originalRetainedSource": {
         "path": "technical-story.html",
-        "sha256": "5d191205252357a44b79a6dabf61d631b602a9596834a2a767ab41de12fb2822",
-        "bytes": 1018449
+        "sha256": "b2dd673716063c0d54cd02af47aba9614f53821619e4b5cda9756f28dd9662dd",
+        "bytes": 1056267
       },
       "projectionFlags": [
         "embedded-public-source-mappings",
@@ -2737,13 +2908,13 @@
     {
       "path": "presentation-manifest.json",
       "published": {
-        "sha256": "397c37edb483d13ce27dd5c96c80f95a05ce72d0e4c624677f5b2c1226847bd7",
-        "bytes": 519795
+        "sha256": "f05e9391b67ca22e8934138f519e2ce4b1e231b50fc131a33571e150e2f5b381",
+        "bytes": 549936
       },
       "originalRetainedSource": {
         "path": "presentation-manifest.json",
-        "sha256": "bf0b2fb904847c355d17fa2d8b805e725bb7b869f61b97530d68a9f60ae616b8",
-        "bytes": 448922
+        "sha256": "b56f562452a8d79e865a28cc2d0720fc9e4a9258035d090f27a093681f3e5817",
+        "bytes": 474495
       },
       "projectionFlags": [
         "public-source-mappings",
@@ -2755,13 +2926,13 @@
     {
       "path": "EVIDENCE.md",
       "published": {
-        "sha256": "511c46336c03a6ad4446299181e606c70472cd6ef66cf8861d9d177a42feba57",
-        "bytes": 228124
+        "sha256": "4bdf375f2ce3d1561f874c51694ba1b6e3e77203b6e625bb37c97bb88e70ec33",
+        "bytes": 242911
       },
       "originalRetainedSource": {
         "path": "EVIDENCE.md",
-        "sha256": "1d23f53ad2fea8859e4d06862632fb41cdcbfd9afe481ceae402e257f5fb6e8a",
-        "bytes": 217609
+        "sha256": "078baa8820d303d37a827a998f0d6bd15b05275fed878b39a60a0072edf6a03d",
+        "bytes": 231767
       },
       "projectionFlags": [
         "public-evidence-links",
@@ -2796,7 +2967,7 @@
     {
       "path": "README.md",
       "published": {
-        "sha256": "21a5055da314157ae431d5691a462211f2552ef1d2a73e15d2244939cd2d5d16",
+        "sha256": "06662715ff8167394098787a5fc08e5940caae2a375d640d3ea6870052541e81",
         "bytes": 2030
       },
       "projectionFlags": [],
