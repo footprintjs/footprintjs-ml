@@ -2,6 +2,8 @@
 
 **Beta — APIs may change.** Check that a proposed model has matching evaluation evidence, then reopen the recorded release decision after training has stopped.
 
+For ML engineers and platform teams keeping existing Python trainers while checking which model, data and evaluation evidence a workflow actually used. [Supported environments and beta limits](COMPATIBILITY.md) explain the current boundary.
+
 FootPrint coordinates the workflow. Your trainer keeps its models, tensors and numerical code. Scope holds small references, evaluation receipts and decisions. Lens and foottrace inspect the saved execution record, including the tracked inputs and writers behind an ML result.
 
 [Feature guides](features/README.md) · [AI coding skill](skills/footprintjs-ml/SKILL.md) · [Quickstart](QUICKSTART.md) · [Visual story](https://footprintjs.github.io/footprintjs-ml/#1)
