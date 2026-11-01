@@ -1,7 +1,7 @@
 {
   "name": "footprintjs-ml",
   "version": "0.6.0-beta.12",
-  "description": "ML evidence, selection and release APIs with optional trainer, publisher and Lens subpaths",
+  "description": "Beta: Python and TypeScript ML evidence: model and dataset references, evaluation receipts, release guards and saved-workflow investigation.",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -139,9 +139,13 @@
     "machine-learning",
     "provenance",
     "model-release",
+    "model-lineage",
+    "evaluation",
+    "mlflow",
     "footprintjs",
     "typescript",
-    "python"
+    "python",
+    "beta"
   ],
   "publishConfig": {
     "access": "public",
