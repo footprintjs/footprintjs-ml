@@ -1,6 +1,6 @@
 # footprintjs-ml
 
-**Beta — APIs may change.** Check that a proposed model has matching evaluation evidence, then reopen the recorded release decision after training has stopped.
+**Beta — APIs may change. No npm release is available; use the [source-archive quickstart](QUICKSTART.md).** Check that a proposed model has matching evaluation evidence, then reopen the recorded release decision after training has stopped.
 
 For ML engineers and platform teams keeping existing Python trainers while checking which model, data and evaluation evidence a workflow actually used. [Supported environments and beta limits](COMPATIBILITY.md) explain the current boundary.
 
