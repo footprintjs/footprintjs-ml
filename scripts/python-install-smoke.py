@@ -114,6 +114,15 @@ except Exception as error:
             if package["version"] != expected:
                 raise ValueError("Installed native dependency version differs: " + name)
             versions[name] = package["version"]
+        npm = shutil.which("npm")
+        if not npm:
+            raise ValueError("npm is needed to inspect the explicitly installed helper")
+        native_names = ("footprintjs", "agentfootprint", "foottrace")
+        installed_paths = run(npm, ["ls", *native_names, "--all", "--parseable"], runtime).splitlines()
+        for name in native_names:
+            copies = {Path(path).resolve(strict=True) for path in installed_paths if Path(path).name == name}
+            if len(copies) != 1:
+                raise ValueError("Expected one physical native package: " + name)
         for name, expected in guidance_bytes.items():
             if (runtime / "node_modules" / "footprintjs-ml" / name).read_bytes() != expected:
                 raise ValueError("npm and Python guidance copies disagree: " + name)
@@ -265,7 +274,7 @@ console.log(JSON.stringify({lineage:apply(requests.lineage,checkDataLineage),sel
                 "wheel": {"file": wheel.name, "sha256": hashlib.sha256(wheel.read_bytes()).hexdigest()},
                 "checks": {"freshVenvOutsideCheckout": True, "noIndexWheelInstall": True,
                            "zeroPythonRuntimeDependencies": True, "isolatedImportsAndConstructor": True,
-                           "explicitLocalArchiveSetup": True, "pinnedNativeVersions": True,
+                           "explicitLocalArchiveSetup": True, "pinnedNativeVersions": True, "singlePhysicalNativeCopies": True,
                            "doctorPassed": True, "idempotentSetup": True, "missingRuntimeActionable": True,
                            "defaultVenvRuntimeDiscovery": True, "installedLiveCapture": True,
                            "nativeSyntheticReceiptAndGuard": True,

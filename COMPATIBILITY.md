@@ -2,6 +2,8 @@
 
 The current SDK beta is `0.6.0-beta.12`. APIs and supported integration profiles may change during the beta.
 
+The current source checkout targets `footprintjs` 11.0.0, `agentfootprint` 14.0.0 and `foottrace` 1.11.1 together. This is an unreleased compatibility update: existing beta.12 archives and wheels are unchanged. Build the SDK archive and wheel from this checkout to exercise the updated helper; the released beta.12 helper still pins the earlier versions. Native stage/retry, Python capture and saved-investigation checks remain required for the updated source.
+
 Beta 10 exposes the existing checked-release API to Python callbacks and adds the optional standard-library `MlflowModelPublisher` with an injected application client. The local proof uses NumPy 2.2.6 and MLflow 3.17.2, two real trained predictors and a local SQLite registry. This is a path for the existing publication capability, with no tenth feature or new required runtime dependency. The supported receiver profile promotes one pre-existing version backed by one complete predictor artifact under a canonical `runs:/` source. It requires one-host cooperating writers sharing a journal/lock; it does not provide remote alias CAS, distributed exactly-once, arbitrary flavor packaging or serving. A committed outer-reply loss can be acknowledged; an uncertain alias setter remains pending/unknown and is not repeated automatically. Callbacks run on helper threads, cannot make nested capture/scope calls, and may finish an external effect after a timeout. See [MLFLOW.md](MLFLOW.md#checked-registered-model-promotion) and [the proof](examples/mlflow-promotion/README.md).
 
 Beta 9 hardens existing contracts: investigation reports preserve source recordings; saved readers reject conflicting recording aliases; approval policies reject unsupported fields; successful legacy evaluations retain handle identities; failed lock-owner writes clean up their owned files; Node/Python file consumers check descriptor sizes before bounded reads; and conformance reports must match the requested plan. Local registry metadata and CLI investigation reports each have a separate 16 MiB limit, while checkpoint profiles retain their own limits. This release adds no ML feature, numerical algorithm or recording engine. See [TESTING.md](TESTING.md) for the regression scope.
@@ -30,7 +32,8 @@ Beta 4 adds a Python wheel (`0.6.0b4`, matching npm `0.6.0-beta.4`) from this sa
 | Python workflow capture and guards | Python 3.11+ standard library; the explicit recording helper requires Node.js 22+ and pinned helper packages. |
 | Python adapter | Python 3.11+ and NumPy; numerical frameworks are supplied by the application. |
 | Reference quickstart | Python 3.11 or 3.12 with NumPy 2.2.6, CPU, local process and trusted local files. |
-| Workflow/investigation example | `footprintjs` 10.0.0, `agentfootprint` 11.0.0 and `foottrace` 1.8.0. |
+| Current source workflow/investigation | `footprintjs` 11.0.0, `agentfootprint` 14.0.0 and `foottrace` 1.11.1; explicit host/helper installations, no new core runtime dependencies. |
+| Released beta.12 helper | `footprintjs` 10.0.0, `agentfootprint` 11.0.0 and `foottrace` 1.8.0; existing release assets are unchanged. |
 | Optional local publisher | One host with cooperating processes and the documented filesystem/locking assumptions. |
 
 The core has browser-compatible contracts, but this beta’s end-to-end supported path is Node plus a local Python worker. Browser numerical training, GPU synchronization, multi-host publication and distributed checkpoint recovery are not established by the quickstart.
