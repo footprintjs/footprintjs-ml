@@ -14,6 +14,7 @@ export async function investigateNativeInference(directory,output){
   const root=resolve(directory),recordPath=resolve(root,'recording.json'),outcomePath=resolve(root,'outcome.json');
   const before=await readFile(recordPath),outcomeBytes=await readFile(outcomePath);
   const recording=JSON.parse(before),outcome=JSON.parse(outcomeBytes),snapshot=recording.snapshot,state=snapshot.sharedState;
+  const snapshotDigest=sha(JSON.stringify(snapshot));
   assert.equal(recording.schema,'native-inference-recording/v1');
   assert.equal(recording.workflow.orchestration,'footprintjs-flowchart');
   assert.deepEqual(outcome,state.outcome,'Outcome sidecar must equal its captured scope value');
@@ -77,7 +78,8 @@ export async function investigateNativeInference(directory,output){
     snapshotOnlyBaselinePreservesMissingControl:[baselineHandoff,baselineRepair].every(text=>text.includes('control edges unavailable')),
     restoredLookupDoesNotClaimMissingControl:Object.values(chains).every(text=>!text.includes('control edges unavailable')),
     measuredActualAndExpectedIdentitiesVisible:actual.result.includes(identity(state.staleReceipt.modelRef))&&expected.result.includes(identity(state.approvedModelRef)),
-    noEngineCaptureAttestationInvented:snapshot.recorders===undefined,
+    nativeSnapshotPreserved:[snapshot,run.artifacts.snapshot,baseline.artifacts.snapshot]
+      .every(value=>sha(JSON.stringify(value))===snapshotDigest),
     snapshotCompletenessLimitRemainsVisible:attentionResult.confidence==='incomplete',
     recordingUnchanged:sha(before)===sha(await readFile(recordPath)),
     outcomeUnchanged:sha(outcomeBytes)===sha(await readFile(outcomePath)),
