@@ -146,8 +146,8 @@ jobs:
           printf '%s' "$BINDING" > binding.json
           [[ "$GITHUB_REF" == refs/heads/main && "$GITHUB_RUN_ATTEMPT" == 1 ]]
           [[ "$SOURCE_SHA" =~ ^[a-f0-9]{40}$ && "$ARTIFACT_ID" =~ ^[1-9][0-9]*$ && "$ARTIFACT_DIGEST" =~ ^[a-f0-9]{64}$ ]]
-          jq -e --arg sha "$SOURCE_SHA" --arg version "$RELEASE_VERSION" --argjson run "$GITHUB_RUN_ID" \
-            '.sha==$sha and .version==$version and .producer.repository=="footprintjs/footprintjs-ml" and .producer.workflow==".github/workflows/publish.yml" and .producer.sha==$sha and .producer.run==$run and .producer.attempt==1' binding.json >/dev/null
+          jq -e --arg sha "$SOURCE_SHA" --arg version "$RELEASE_VERSION" --argjson run "$GITHUB_RUN_ID" --argjson number "$GITHUB_RUN_NUMBER" \
+            '.sha==$sha and .version==$version and .producer.repository=="footprintjs/footprintjs-ml" and .producer.workflow==".github/workflows/publish.yml" and .producer.sha==$sha and .producer.run==$run and .producer.runNumber==$number and .producer.attempt==1' binding.json >/dev/null
           request() {
             local method=$1 url=$2 out=$3 expected=$4; shift 4
             local code
@@ -230,6 +230,9 @@ jobs:
               for key in ('commit','tree'):assert type(item[key]) is str and re.fullmatch(r'[a-f0-9]{40}',item[key])
           assert source['commit']==verify['commit']==b['sha'] and source['tree']==verify['tree']==b['tree']
           Path('candidate/release-notes.md').read_text(encoding='utf-8')
+          for obj,keys in ((b['producer'],('run','runNumber','attempt')),(verify['producer'],('run','runNumber','attempt')),(verify['hosted'],('id','attempt'))):
+              assert type(obj) is dict
+              for key in keys:assert type(obj[key]) is int and 0<obj[key]<=9007199254740991
           assert verify['producer']==b['producer'] and verify['hosted']['id']==b['ciRun'] and verify['hosted']['attempt']==b['ciAttempt']
           PY
           guard() {

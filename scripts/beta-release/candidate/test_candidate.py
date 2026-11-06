@@ -60,6 +60,9 @@ class CandidateTests(unittest.TestCase):
    if case=='duplicate-wheel':z.writestr('footprint_ml_versions.py',py)
   admission={'sha':sha,'version':V,'runId':91,'runNumber':1,'attempt':1,'allowed':True,'mode':'first-attempt',
     'sourceCI':{'id':73,'attempt':1,'headSha':sha,'conclusion':'success','jobs':[{}]*5}}
+  if case.startswith('native-integer:'):
+   _,target,key,variant=case.split(':');obj=admission['sourceCI'] if target=='ci' else admission
+   obj[key]=True if variant=='true' else float(obj[key])
   ap=base/'admission.json';ap.write_text(json.dumps(admission))
   env={k:v for k,v in os.environ.items() if k in ('PATH','LANG','LC_ALL')}
   env.update(GITHUB_REPOSITORY='footprintjs/footprintjs-ml',GITHUB_RUN_ID='91',GITHUB_RUN_ATTEMPT='1',GITHUB_RUN_NUMBER='1',GITHUB_SHA=sha,GITHUB_WORKFLOW_REF='footprintjs/footprintjs-ml/.github/workflows/publish.yml@refs/heads/main')
@@ -69,6 +72,13 @@ class CandidateTests(unittest.TestCase):
   r,out=self.candidate('positive');self.assertEqual(r.returncode,0,r.stderr)
   proof=json.loads((out/'verification.json').read_text());self.assertTrue(proof['passed'])
   self.assertEqual(proof['producer']['attempt'],1);self.assertEqual(proof['wheel']['requiresDist'],[])
+ def test_admission_native_fields_require_integers(self):
+  for target,keys in [('admission',['runId','runNumber','attempt']),('ci',['id','attempt'])]:
+   for key in keys:
+    for variant in ['true','float']:
+     case=':'.join(['native-integer',target,key,variant])
+     with self.subTest(case=case):
+      result,_=self.candidate(case);self.assertNotEqual(result.returncode,0)
  def test_wheel_format_is_supported(self):
   good,_=self.candidate('positive');self.assertEqual(good.returncode,0,good.stderr)
   for case in ['wheel-format-future','wheel-format-minor','wheel-format-missing','wheel-format-malformed','wheel-format-duplicate']:

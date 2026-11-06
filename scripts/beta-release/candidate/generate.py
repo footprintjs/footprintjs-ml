@@ -6,6 +6,9 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from inspect_release import inspect_candidate
 root,out,commit,admission_file=Path(sys.argv[1]),Path(sys.argv[2]),sys.argv[3],Path(sys.argv[4])
 a=json.loads(admission_file.read_text())
+for key in ('runId','runNumber','attempt'):assert type(a[key]) is int and 0<a[key]<=9007199254740991
+ci=a['sourceCI'];assert type(ci) is dict
+for key in ('id','attempt'):assert type(ci[key]) is int and 0<ci[key]<=9007199254740991
 assert a['allowed'] is True and a['mode']=='first-attempt' and a['sha']==commit
 assert os.environ['GITHUB_WORKFLOW_REF']=='footprintjs/footprintjs-ml/.github/workflows/publish.yml@refs/heads/main'
 assert os.environ['GITHUB_REPOSITORY']=='footprintjs/footprintjs-ml' and os.environ['GITHUB_SHA']==commit
@@ -21,7 +24,7 @@ def receipt(path):
     data=path.read_bytes();return {'file':path.name,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
 manifest=out/'source-manifest.json';assert not manifest.exists()
 manifest.write_text(json.dumps(result['manifest'],indent=2)+'\n')
-ci=a['sourceCI'];assert ci['headSha']==commit and ci['conclusion']=='success' and len(ci['jobs'])==5
+assert ci['headSha']==commit and ci['conclusion']=='success' and len(ci['jobs'])==5
 verification={'schema':'footprint-ml-release-verification/v1','passed':True,'commit':commit,'tree':result['manifest']['tree'],
     'version':version,'pythonVersion':pv,'cohort':result['cohort'],'hosted':ci,'producer':producer,
     'assets':[receipt(p) for p in (archive,wheel,manifest)],'sourceFiles':result['sourceFiles'],'npm':result['npm'],'wheel':result['wheel'],

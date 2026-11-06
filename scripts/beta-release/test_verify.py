@@ -10,7 +10,7 @@ class PublicVerificationTests(unittest.TestCase):
   files=[]
   for n,b in payload.items():
    (candidate/n).write_bytes(b);files.append({'file':n,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
-  binding={'version':version,'sha':sha,'tree':'b'*40,'files':files,'producer':{'run':91,'attempt':1}}
+  binding={'version':version,'sha':sha,'tree':'b'*40,'files':files,'producer':{'run':91,'runNumber':1,'attempt':1}}
   release={'id':201,'tag_name':'v'+version,'draft':False,'prerelease':True,'target_commitish':sha,'body':payload['release-notes.md'].decode()}
   tag={'object':{'type':'commit','sha':sha}}
   assets=[{'id':1000+i,'name':f['file'],'state':'uploaded','size':f['bytes'],'digest':'sha256:'+f['sha256']} for i,f in enumerate(files[:-1])]
@@ -21,6 +21,10 @@ class PublicVerificationTests(unittest.TestCase):
   if case=='same-count-duplicate':assets[-1]=assets[0]
   if case=='wrong-size':assets[0]['size']+=1
   if case=='wrong-digest':assets[0]['digest']='sha256:'+'f'*64
+  if case.startswith('native-integer:'):
+   _,target,key,variant=case.split(':')
+   obj={'producer':binding['producer'],'asset':assets[0],'release':release}[target]
+   obj[key]=True if variant=='true' else float(obj[key])
   calls=[]
   def read(route):
    if route.startswith('/git/ref'):return tag
@@ -36,6 +40,12 @@ class PublicVerificationTests(unittest.TestCase):
   result,calls=self.check('positive');self.assertEqual(len(calls),4);self.assertTrue(result['passed'])
   self.assertFalse(result['signatureVerified']);self.assertFalse(result['consumerAdoptionClaimed'])
   self.assertFalse(result['publisherReturnedSuccess'])
+ def test_public_native_fields_require_integers(self):
+  for target,keys in [('producer',['run','runNumber','attempt']),('asset',['id','size']),('release',['id'])]:
+   for key in keys:
+    for variant in ['true','float']:
+     case=':'.join(['native-integer',target,key,variant])
+     with self.subTest(case=case):self.assertRaises(AssertionError,self.check,case)
  def test_mismatch_refuses(self):
   for case in ['wrong-tag','draft','wrong-body','missing-asset','same-count-duplicate','wrong-size','wrong-digest','wrong-bytes']:
    with self.subTest(case=case):self.assertRaises(AssertionError,self.check,case)

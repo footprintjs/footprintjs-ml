@@ -8,11 +8,21 @@ class PublisherTests(unittest.TestCase):
   t=tempfile.TemporaryDirectory();self.addCleanup(t.cleanup);base=Path(t.name);work=base/'work';work.mkdir();bin=base/'bin';bin.mkdir()
   (bin/'curl').symlink_to(HERE/'fake_curl.py')
   source='a'*40;tree='b'*40;run=92 if previous else 91;number=2 if case.startswith(('prior-','earlier-','bad-title','history-gap')) else 1;version='0.6.0-beta.14'
-  producer={'repository':'footprintjs/footprintjs-ml','workflow':'.github/workflows/publish.yml','sha':source,'run':run,'attempt':1}
+  producer={'repository':'footprintjs/footprintjs-ml','workflow':'.github/workflows/publish.yml','sha':source,'run':run,'runNumber':number,'attempt':1}
   payloads={'footprintjs-ml-'+version+'.tgz':b'reviewed npm bytes','footprintjs_ml-0.6.0b14-py3-none-any.whl':b'reviewed wheel bytes',
    'source-manifest.json':json.dumps({'commit':source,'tree':tree}).encode(),
    'verification.json':json.dumps({'commit':source,'tree':tree,'producer':producer,'hosted':{'id':73,'attempt':1}}).encode(),'release-notes.md':b'Reviewed SDK release reason.\n'}
   files=[{'file':n,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in payloads.items()]
+  if case=='coherent-wrong-run-number':
+   producer['runNumber']=number+1;verification=json.loads(payloads['verification.json']);verification['producer']['runNumber']=number+1;payloads['verification.json']=json.dumps(verification).encode()
+  if case.startswith('receipt:'):
+   _,target,key,variant=case.split(':');verification=json.loads(payloads['verification.json'])
+   obj=producer if target=='binding-producer' else verification[target]
+   if variant=='missing':obj.pop(key,None)
+   else:obj[key]={'true':True,'false':False,'float':float(obj[key]),'null':None,'string':str(obj[key])}[variant]
+   payloads['verification.json']=json.dumps(verification).encode()
+  if case.startswith('receipt:') or case=='coherent-wrong-run-number':
+   files=[{'file':n,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in payloads.items()]
   if case=='unsafe-member':payloads['../escape.py']=b'bad'
   if case=='changed-bytes':payloads['release-notes.md']=b'changed'
   if case=='changed-bytes-same-size':payloads['release-notes.md']=b'x'*len(payloads['release-notes.md'])
@@ -51,6 +61,18 @@ class PublisherTests(unittest.TestCase):
    with self.subTest(case=case):
     result,state=self.run_case(case);self.assertNotEqual(result.returncode,0)
     self.assertFalse(any(c['method']!='GET' for c in state['calls']))
+ def test_candidate_native_run_number_matches_current_producer(self):
+  bad,state=self.run_case('coherent-wrong-run-number');self.assertNotEqual(bad.returncode,0)
+  self.assertFalse(any(c['method']!='GET' for c in state['calls']))
+ def test_candidate_native_integers_are_not_booleans_or_floats(self):
+  good,state=self.run_case('positive');self.assertEqual(good.returncode,0,good.stderr)
+  for target,keys in [('producer',['run','runNumber','attempt']),('hosted',['id','attempt']),('binding-producer',['run','runNumber','attempt'])]:
+   for key in keys:
+    for variant in ['true','false','float','null','missing','string']:
+     case=':'.join(['receipt',target,key,variant])
+     with self.subTest(case=case):
+      bad,state=self.run_case(case);self.assertNotEqual(bad.returncode,0)
+      self.assertFalse(any(c['method']!='GET' for c in state['calls']))
  def test_unknown_postwrite_shapes_stop_at_prior_count(self):
   for case,posts in [('field:created:assets:missing',1),('field:created:assets:null',1),
    ('field:created:assets:object',1),('field:final-array:shape:object',5)]:
