@@ -7,6 +7,7 @@ test('ML beta distribution has a checked-in native release workflow',()=>{
 });
 test('closed release job permissions and immutable actions',()=>{
  const source=readFileSync(path,'utf8'),publisher=source.split('  publish:\n')[1].split('  verify:\n')[0];
+ assert.doesNotMatch(source,/^\s+(?:- )?run: (?![|>])/m);
  assert.match(source,/dry_run:[\s\S]*?default: true/);
  assert.match(source,/on:\n  workflow_dispatch:/);
  assert.doesNotMatch(source,/pull_request_target:|schedule:|repository_dispatch:/);

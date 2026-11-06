@@ -42,7 +42,8 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: 24.21.0
-      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: |
+          npm ci --ignore-scripts --no-audit --no-fund
       - name: Record native release admission
         id: admit
         env:
@@ -50,7 +51,8 @@ jobs:
           RELEASE_SHA: ${{ inputs.sha }}
           RELEASE_VERSION: ${{ inputs.version }}
           RELEASE_DRY_RUN: ${{ inputs.dry_run }}
-        run: node scripts/beta-release/admit.mjs
+        run: |
+          node scripts/beta-release/admit.mjs
       - name: Retain admission on refusal too
         if: always()
         id: record
@@ -105,7 +107,8 @@ jobs:
         env:
           CANDIDATE: ${{ runner.temp }}/beta-candidate
           SOURCE_SHA: ${{ inputs.sha }}
-        run: python3 -I scripts/beta-release/candidate/generate.py "$PWD" "$CANDIDATE" "$SOURCE_SHA" .artifacts/admission/admission.json
+        run: |
+          python3 -I scripts/beta-release/candidate/generate.py "$PWD" "$CANDIDATE" "$SOURCE_SHA" .artifacts/admission/admission.json
       - name: Retain immutable five-member candidate
         id: candidate
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -317,7 +320,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           BINDING: ${{ needs.build.outputs.binding }}
           PUBLISHER_SUCCESS: ${{ needs.publish.result == 'success' }}
-        run: python3 -I scripts/beta-release/verify.py .artifacts/published-candidate .artifacts/public-verification
+        run: |
+          python3 -I scripts/beta-release/verify.py .artifacts/published-candidate .artifacts/public-verification
       - name: Retain actual public verification
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -333,4 +337,5 @@ jobs:
     runs-on: ubuntu-24.04
     permissions: {}
     steps:
-      - run: echo 'Refused, unknown, existing version or rerun: observed-state admission record retained; no write, retry or package-origin claim. A person must inspect the hold.' >> "$GITHUB_STEP_SUMMARY"
+      - run: |
+          echo 'Refused, unknown, existing version or rerun: observed-state admission record retained; no write, retry or package-origin claim. A person must inspect the hold.' >> "$GITHUB_STEP_SUMMARY"
