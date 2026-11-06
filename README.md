@@ -49,7 +49,7 @@ The npm package includes this same skill and guide tree. The Python wheel instal
 The beta is distributed as a versioned GitHub release tarball. These commands do not depend on an npm registry release of `footprintjs-ml`:
 
 ```sh
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.12/footprintjs-ml-0.6.0-beta.12.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.13/footprintjs-ml-0.6.0-beta.13.tgz footprintjs@11.0.0 agentfootprint@14.0.0 foottrace@1.11.1
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy==2.2.6
 npx --no-install footprint-ml demo --out ./quickstart-run --python .venv/bin/python
@@ -88,7 +88,7 @@ Saved replay reconstructs recorded state. It does not resume training or recreat
 
 ## Develop and verify
 
-Current source uses FootPrint 11.0.0, AgentFootprint 14.0.0 and Foottrace 1.11.1 together. This compatibility update is not in the released beta.12 assets used above. Build/package this checkout to test the updated cohort; the SDK core still has no runtime dependencies. See [compatibility](COMPATIBILITY.md) for the source/release boundary.
+Beta 13 uses FootPrint 11.0.0, AgentFootprint 14.0.0 and Foottrace 1.11.1 together, including the release archives used above. The SDK core still has no runtime dependencies. Earlier beta assets remain unchanged. See [compatibility](COMPATIBILITY.md) for the supported cohort.
 
 ```sh
 git clone https://github.com/footprintjs/footprintjs-ml.git

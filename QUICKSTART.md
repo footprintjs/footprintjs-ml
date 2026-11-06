@@ -14,7 +14,7 @@ Create a new directory and install the exact beta archive plus the example’s w
 mkdir footprint-ml-try
 cd footprint-ml-try
 npm init -y
-npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.12/footprintjs-ml-0.6.0-beta.12.tgz footprintjs@10.0.0 agentfootprint@11.0.0 foottrace@1.8.0
+npm install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.13/footprintjs-ml-0.6.0-beta.13.tgz footprintjs@11.0.0 agentfootprint@14.0.0 foottrace@1.11.1
 python3 -m venv .venv
 .venv/bin/python -m pip install numpy==2.2.6
 ```
@@ -46,7 +46,7 @@ The investigator opens the saved FootPrint record through Lens/foottrace. It sho
 
 ## Backtrack another saved value
 
-The generic reader supports `footprint-ml investigate --run ./quickstart-run --variable modelRef`. It delegates to the existing Lens toolpack and needs no release descriptor or browser. An optional `--before INDEX` asks about an earlier exclusive commit boundary. See [the backtracking guide](BACKTRACKING.md) for the API, exact decision-stage selection and the limit imposed by inputs read outside tracked scope. This command is included in `0.6.0-beta.12`.
+The generic reader supports `footprint-ml investigate --run ./quickstart-run --variable modelRef`. It delegates to the existing Lens toolpack and needs no release descriptor or browser. An optional `--before INDEX` asks about an earlier exclusive commit boundary. See [the backtracking guide](BACKTRACKING.md) for the API, exact decision-stage selection and the limit imposed by inputs read outside tracked scope. This command is included in `0.6.0-beta.13`.
 
 ## Connect your trainer
 
@@ -62,7 +62,7 @@ The numerical trainer stays in Python. FootPrint’s workflow driver runs in Jav
 
 ## Build and verify from source
 
-The current source targets FootPrint 11.0.0, AgentFootprint 14.0.0 and Foottrace 1.11.1. The release-archive commands above retain beta.12's original versions; they do not fetch this unreleased source update. The clean-consumer check below packs this checkout and uses its exact current dependency versions with strict peer resolution.
+Beta 13 targets FootPrint 11.0.0, AgentFootprint 14.0.0 and Foottrace 1.11.1 in both the release archives above and this source checkout. The clean-consumer check below packs this checkout and uses those exact dependency versions with strict peer resolution.
 
 ```sh
 git clone https://github.com/footprintjs/footprintjs-ml.git
@@ -77,4 +77,4 @@ PYTHON="$PWD/.venv/bin/python" npm run beta:smoke
 
 The smoke check is the clean-install acceptance test: it packs the SDK, installs it into a temporary consumer, runs the quickstart against the installed package, and reopens its recording in a new process. It must fail if the wrong-model proposal is accepted or the saved investigation cannot explain the decisions. Python and NumPy must be available to the smoke check’s selected Python interpreter.
 
-You can also create a tarball for another local project with `npm pack`, then install the resulting `footprintjs-ml-0.6.0-beta.12.tgz` using `npm install /path/to/footprintjs-ml-0.6.0-beta.12.tgz`. This uses the package you built and does not require an npm registry publication.
+You can also create a tarball for another local project with `npm pack`, then install the resulting `footprintjs-ml-0.6.0-beta.13.tgz` using `npm install /path/to/footprintjs-ml-0.6.0-beta.13.tgz`. This uses the package you built and does not require an npm registry publication.
