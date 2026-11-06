@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {mkdtemp,writeFile,readFile,mkdir,rename,copyFile,realpath} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
-import {basename,join,resolve} from 'node:path';
+import {join,resolve} from 'node:path';
+import {inspectNativeCopies} from './native-copies.mjs';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 
@@ -31,16 +32,8 @@ const nativePins=nativeNames.map(name=>{
 });
 npm(['install',archive,...nativePins,
  '--strict-peer-deps','--ignore-scripts','--no-audit','--no-fund','--loglevel','error','--registry=https://registry.npmjs.org','--cache',join(temp,'npm-cache')]);
-// Inspect nested installations too: top-level versions can hide split writer
-// and investigation instances in the installed dependency tree.
-const nativePaths=npm(['ls',...nativeNames,'--all','--parseable']).trim().split(/\r?\n/);
-const nativeVersions={};
-for(const name of nativeNames){
- const copies=new Set(await Promise.all(nativePaths.filter(path=>basename(path)===name).map(path=>realpath(path))));
- assert.equal(copies.size,1,`Expected one physical ${name} installation`);
- const actual=JSON.parse(await readFile(join([...copies][0],'package.json'),'utf8')).version;
- assert.equal(actual,pkg.devDependencies[name]);nativeVersions[name]=actual;
-}
+// Inspect manifest identities, including aliases and nested physical copies.
+const nativeVersions=await inspectNativeCopies(consumer,Object.fromEntries(nativeNames.map(name=>[name,pkg.devDependencies[name]])));
 const installed=join(consumer,'node_modules','footprintjs-ml');
 const installedPkg=JSON.parse(await readFile(join(installed,'package.json'),'utf8'));
 assert.equal(installedPkg.version,pkg.version);assert.equal(installedPkg.private,undefined);
