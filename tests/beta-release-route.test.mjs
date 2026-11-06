@@ -8,6 +8,7 @@ import '../scripts/beta-release/admission/chart.test.mjs';
 import '../scripts/beta-release/admission/cli.test.mjs';
 import '../scripts/beta-release/io/github.test.mjs';
 import '../scripts/beta-release/io/history.test.mjs';
+import '../scripts/beta-release/io/collect.test.mjs';
 import '../scripts/beta-release/route.test.mjs';
 for(const folder of ['candidate','publisher',''])test('beta route Python '+(folder||'public verification'),()=>{
  const result=spawnSync(process.env.PYTHON||'python3',['-I','-m','unittest','discover',

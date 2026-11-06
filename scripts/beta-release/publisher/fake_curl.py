@@ -52,16 +52,33 @@ elif path==prefix+'/actions/workflows/publish.yml/runs':
  if kind=='history-incomplete':value={'total_count':101,'workflow_runs':[]}
 elif path==prefix+'/actions/runs/'+str(state.get('priorRun',90))+'/jobs':
  conclusion='skipped' if kind=='prior-skipped' else 'failure'
- jobs=[{'name':'publish','status':'completed','conclusion':conclusion,'steps':[] if conclusion=='skipped' else [{'name':'Create draft'}]}]
+ jobs=[{'id':1,'run_id':state.get('priorRun',90),'name':'publish','status':'completed','conclusion':conclusion,'steps':[] if conclusion=='skipped' else [{'name':'Create draft'}]}]
  if kind=='prior-unknown':jobs=[]
- if kind=='prior-rerun-skipped':jobs.append({'name':'publish','status':'completed','conclusion':'skipped','steps':[]})
- value={'total_count':len(jobs),'jobs':jobs}
+ if kind=='prior-rerun-skipped':jobs.append({'id':2,'run_id':state.get('priorRun',90),'name':'publish','status':'completed','conclusion':'skipped','steps':[]})
+ if kind.startswith('prior-pages-'):
+  jobs=[{'id':i+1,'run_id':state.get('priorRun',90),'name':'publish' if i in (0,100) else 'admit','status':'completed','conclusion':'skipped' if i in (0,100) else 'success','steps':[]} for i in range(101)]
+  last=jobs[-1]
+  if kind=='prior-pages-duplicate':last=jobs[0]
+  if kind=='prior-pages-missing-id':last={k:v for k,v in last.items() if k!='id'}
+  if kind=='prior-pages-wrong-run':last={**last,'run_id':1}
+  if kind=='prior-pages-missing-run':last={k:v for k,v in last.items() if k!='run_id'}
+  if kind=='prior-pages-started':last={**last,'conclusion':'failure','steps':[{'name':'Create draft'}]}
+  jobs=(jobs if kind=='prior-pages-oversized' else jobs[:100]) if q.get('page',['1'])[0]=='1' else [last]
+  value={'total_count':101,'jobs':jobs}
+ else:value={'total_count':len(jobs),'jobs':jobs}
 elif path.startswith(prefix+'/git/ref/tags/'):
  status=404
  if state.get('created') and kind in ('tag-moved','tag-correct'):
   status=200;value={'object':{'type':'commit','sha':'b'*40 if kind=='tag-moved' else sha}}
 elif path==prefix+'/releases' and method=='GET':
  value=[release(True)] if kind=='same-tag-draft' else []
+ if kind.startswith('release-pages-'):
+  rows=[{'id':i+1,'tag_name':'v0.1.0-beta.'+str(i),'draft':False} for i in range(101)]
+  if q.get('page',['1'])[0]=='1':
+   value=rows if kind=='release-pages-oversized' else rows[:100];extra='Link: <https://api.github.com/repos/footprintjs/footprintjs-ml/releases?page=2>; rel="next"\r\n'
+  else:
+   value=[rows[0] if kind=='release-pages-duplicate' else rows[-1]]
+   if kind=='release-pages-missing-id':value=[{k:v for k,v in value[0].items() if k!='id'}]
 elif path==prefix+'/releases' and method=='POST':
  status=201;state['created']=True;value=release(True)
  if kind=='create-unknown':lost=True

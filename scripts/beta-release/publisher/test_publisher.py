@@ -51,6 +51,18 @@ class PublisherTests(unittest.TestCase):
    with self.subTest(case=case):
     result,state=self.run_case(case);self.assertNotEqual(result.returncode,0)
     self.assertFalse(any(c['method']!='GET' for c in state['calls']))
+ def test_release_census_identity(self):
+  good,state=self.run_case('release-pages-unique');self.assertEqual(good.returncode,0,good.stderr)
+  for case in ['release-pages-duplicate','release-pages-missing-id','release-pages-oversized']:
+   with self.subTest(case=case):
+    bad,state=self.run_case(case);self.assertNotEqual(bad.returncode,0)
+    self.assertFalse(any(c['method']!='GET' for c in state['calls']))
+ def test_complete_unique_job_census(self):
+  good,state=self.run_case('prior-pages-skipped');self.assertEqual(good.returncode,0,good.stderr)
+  for case in ['prior-pages-duplicate','prior-pages-missing-id','prior-pages-wrong-run','prior-pages-missing-run','prior-pages-started','prior-pages-oversized']:
+   with self.subTest(case=case):
+    bad,state=self.run_case(case);self.assertNotEqual(bad.returncode,0)
+    self.assertFalse(any(c['method']!='GET' for c in state['calls']))
  def test_stop_after_unknown_or_failed_write(self):
   for case,posts,patches in [('create-unknown',1,0),('create-wrong-id',1,0),('create-wrong-source',1,0),('upload-2-fail',3,0),
    ('upload-2-unknown',3,0),('upload-wrong-digest',2,0),('final-renamed',5,0),('tag-moved',5,0),('undraft-unknown',5,1)]:

@@ -4,7 +4,7 @@ import {facts} from './fixture.mjs';
 import {checkGate} from './policy.mjs';
 const previous=()=>({id:90,number:1,workflowId:5,title:'ML beta 0.6.0-beta.14 / dry_run=false',
  sha:'a'.repeat(40),event:'workflow_dispatch',path:'.github/workflows/publish.yml',status:'completed',
- jobs:[{name:'publish',status:'completed',conclusion:'skipped',steps:[]}]});
+ jobs:[{id:1,runId:90,name:'publish',status:'completed',conclusion:'skipped',steps:[]}]});
 function twoRun() {const f=facts();f.runNumber=2;f.history.runs[0].number=2;f.history.runs.unshift(previous());return f;}
 test('earlier LIVE with publish skipped does not consume version',()=>assert.equal(checkGate('history',twoRun()),true));
 for(const conclusion of ['success','failure','cancelled','timed_out',null])
@@ -30,6 +30,6 @@ test('earlier dry run does not consume a version',()=>{
  f.history.runs[0].jobs=null;assert.equal(checkGate('history',f),true);
 });
 test('a skipped later attempt cannot erase an earlier UNKNOWN publish',()=>{
- const f=twoRun();f.history.runs[0].jobs.push({name:'publish',status:'completed',conclusion:'failure',steps:[{name:'Create draft'}]});
+ const f=twoRun();f.history.runs[0].jobs.push({id:2,runId:90,name:'publish',status:'completed',conclusion:'failure',steps:[{name:'Create draft'}]});
  assert.equal(checkGate('history',f),false);
 });

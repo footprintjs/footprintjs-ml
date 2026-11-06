@@ -30,7 +30,9 @@ function validChecks(f) {
       !r || r.headSha!==f.sha || r.event!=='push' || r.branch!=='main' ||
       r.path!=='.github/workflows/ci.yml' || r.status!=='completed' || r.conclusion!=='success' ||
       !Number.isSafeInteger(r.id)||r.id<=0||!Number.isSafeInteger(r.attempt)||r.attempt<1||
-      !Array.isArray(r.jobs)||r.jobs.length!==names.length) return false;
+      !Array.isArray(r.jobs)||r.jobs.length!==names.length||
+      r.jobs.some(j=>!j||!Number.isSafeInteger(j.id)||j.id<=0)||
+      new Set(r.jobs.map(j=>j.id)).size!==r.jobs.length) return false;
   return names.every(name=> {
     const matched=r.jobs.filter(j=>j.name===name);
     return matched.length===1 && matched[0].runId===r.id &&

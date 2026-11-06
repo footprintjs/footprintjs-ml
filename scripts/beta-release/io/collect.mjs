@@ -1,7 +1,7 @@
 import {readFile} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import {getJson} from './github.mjs';
-import {collectHistory} from './history.mjs';
+import {allPages,collectHistory} from './history.mjs';
 const json=async p=>JSON.parse(await readFile(p,'utf8'));
 const git=(...args)=>execFileSync('git',args,{encoding:'utf8',stdio:['ignore','pipe','ignore']}).trim();
 export async function collectFacts({env=process.env,get=getJson}={}) {
@@ -15,9 +15,8 @@ export async function collectFacts({env=process.env,get=getJson}={}) {
   const runs=await get('/actions/workflows/ci.yml/runs?head_sha='+sha+'&event=push&per_page=1');
   const r=runs.value?.workflow_runs?.[0];let jobs=[];
   if(r && Number.isSafeInteger(r.id) && Number.isSafeInteger(r.run_attempt)) {
-    const page=await get('/actions/runs/'+r.id+'/attempts/'+r.run_attempt+'/jobs?per_page=100');
-    jobs=page.value?.jobs||[];
-    if(page.status!==200||page.value.total_count!==jobs.length)jobs=[];
+    try {jobs=await allPages(get,'/actions/runs/'+r.id+'/attempts/'+r.run_attempt+'/jobs','jobs');}
+    catch {jobs=[];}
   }
   const tag=await get('/git/ref/tags/v'+version),release=await get('/releases/tags/v'+version);
   const notesPath='release-notes/'+version+'.md';
@@ -34,6 +33,6 @@ export async function collectFacts({env=process.env,get=getJson}={}) {
     notes,notesTracked,tagStatus:tag.status,releaseStatus:release.status,expectedChecks:profile.checks,
     history:await collectHistory(get,version),
     ci:r?{id:r.id,attempt:r.run_attempt,headSha:r.head_sha,event:r.event,branch:r.head_branch,path:r.path,
-      status:r.status,conclusion:r.conclusion,jobs:jobs.map(j=>({name:j.name,runId:j.run_id,status:j.status,
+      status:r.status,conclusion:r.conclusion,jobs:jobs.map(j=>({id:j.id,name:j.name,runId:j.run_id,status:j.status,
         conclusion:j.conclusion,steps:j.steps?.map(s=>({name:s.name,status:s.status,conclusion:s.conclusion}))}))}:null};
 }

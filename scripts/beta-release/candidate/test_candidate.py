@@ -42,6 +42,10 @@ class CandidateTests(unittest.TestCase):
    prefix+'python/reference_worker.py':b'# inspectable source, not an importable wheel module\n',
    d+'WHEEL':b'Wheel-Version: 1.0\nRoot-Is-Purelib: true\nTag: py3-none-any\n',
    d+'top_level.txt':b'footprint_ml_versions\nfootprint_ml_workflow\n',d+'licenses/LICENSE':b'MIT\n'}
+  formats={'wheel-format-future':b'2.0','wheel-format-minor':b'1.1','wheel-format-malformed':b'v1.0'}
+  if case in formats:files[d+'WHEEL']=files[d+'WHEEL'].replace(b'1.0',formats[case],1)
+  if case=='wheel-format-missing':files[d+'WHEEL']=files[d+'WHEEL'].replace(b'Wheel-Version: 1.0\n',b'')
+  if case=='wheel-format-duplicate':files[d+'WHEEL']=b'Wheel-Version: 2.0\n'+files[d+'WHEEL']
   if case=='missing-module':files.pop('footprint_ml_workflow.py')
   if case=='missing-resource':files.pop(prefix+'README.md')
   if case=='wheel-hook':files['injected.pth']=b'import side_effect\n'
@@ -65,6 +69,11 @@ class CandidateTests(unittest.TestCase):
   r,out=self.candidate('positive');self.assertEqual(r.returncode,0,r.stderr)
   proof=json.loads((out/'verification.json').read_text());self.assertTrue(proof['passed'])
   self.assertEqual(proof['producer']['attempt'],1);self.assertEqual(proof['wheel']['requiresDist'],[])
+ def test_wheel_format_is_supported(self):
+  good,_=self.candidate('positive');self.assertEqual(good.returncode,0,good.stderr)
+  for case in ['wheel-format-future','wheel-format-minor','wheel-format-missing','wheel-format-malformed','wheel-format-duplicate']:
+   with self.subTest(case=case):
+    bad,_=self.candidate(case);self.assertNotEqual(bad.returncode,0)
  def test_changed_or_unsafe_candidate_refused(self):
   for case in ['wrong-cohort','wrong-lock','missing-npm','changed-npm','duplicate-tar','alias-tar','unsafe-tar','linked-tar',
    'wrong-wheel-version','runtime-dep','missing-module','missing-resource','wheel-hook','bad-record','duplicate-wheel']:

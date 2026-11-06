@@ -24,6 +24,8 @@ for(const [gate,key,value] of cases)test('refuse '+gate+' '+key+' '+String(value
  const f=facts();f[key]=value;assert.equal(checkGate(gate,f),false);
 });
 const ciCases={
+ 'duplicate CI identity':f=>f.ci.jobs[1].id=f.ci.jobs[0].id,
+ 'missing CI identity':f=>delete f.ci.jobs[0].id,
  'empty expected names':f=>f.expectedChecks=[],
  'missing job':f=>f.ci.jobs.pop(),
  'duplicate job':f=>f.ci.jobs[1]=f.ci.jobs[0],

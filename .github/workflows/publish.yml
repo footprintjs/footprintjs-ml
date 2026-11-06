@@ -166,11 +166,12 @@ jobs:
               get "$route&per_page=100&page=$page" page.json
               total=$(jq -er '.total_count|select(type=="number" and floor==. and .>=0 and .<=1000)' page.json)
               [[ "$prior_total" == -1 || "$prior_total" == "$total" ]]; prior_total=$total
-              jq -e --arg key "$key" '.[$key]|type=="array"' page.json >/dev/null
+              jq -e --arg key "$key" '.[$key]|type=="array" and length<=100' page.json >/dev/null
               jq --arg key "$key" '.[$key]' page.json > part.json
               jq -s '.[0]+.[1]' "$out" part.json > joined.json
               mv joined.json "$out"; got=$(jq length "$out")
               [[ "$got" -le "$total" ]]
+              jq -e 'all(.[];(.id|type)=="number" and (.id|floor)==.id and .id>0 and .id<=9007199254740991) and (map(.id)|unique|length)==length' "$out" >/dev/null
               if [[ "$got" == "$total" ]]; then return; fi
               [[ $(jq length part.json) == 100 ]]
             done
@@ -249,15 +250,19 @@ jobs:
             while read -r prior || [[ -n "$prior" ]]; do
               [[ -z "$prior" ]] && continue
               pages "/actions/runs/$prior/jobs?filter=all" jobs jobs.json
-              jq -e '[.[]|select(.name=="publish")] as $p|($p|length)>0 and all($p[];.status=="completed" and .conclusion=="skipped" and (.steps|type)=="array" and (.steps|length)==0)' jobs.json >/dev/null
+              jq -e --argjson run "$prior" 'all(.[];.run_id==$run and (.name|type)=="string" and (.name|length)>0) and ([.[]|select(.name=="publish")] as $p|($p|length)>0 and all($p[];.status=="completed" and .conclusion=="skipped" and (.steps|type)=="array" and (.steps|length)==0))' jobs.json >/dev/null
             done < prior-live.txt
           }
           guard
           request GET "$API/git/ref/tags/v$RELEASE_VERSION" absent-tag.json 404
           # Push-capable token and complete authenticated listing include drafts.
+          printf '[]' > release-census.json
           for page in {1..10}; do
             get "/releases?per_page=100&page=$page" releases.json
-            jq -e --arg tag "v$RELEASE_VERSION" 'type=="array" and all(.[];.tag_name!=$tag)' releases.json >/dev/null
+            jq -e --arg tag "v$RELEASE_VERSION" 'type=="array" and length<=100 and all(.[];.tag_name!=$tag)' releases.json >/dev/null
+            jq -s '.[0]+.[1]' release-census.json releases.json > joined.json
+            mv joined.json release-census.json
+            jq -e 'all(.[];(.id|type)=="number" and (.id|floor)==.id and .id>0 and .id<=9007199254740991) and (map(.id)|unique|length)==length' release-census.json >/dev/null
             if ! grep -qi 'rel="next"' releases.json.headers; then break; fi
             [[ "$page" -lt 10 && $(jq length releases.json) == 100 ]]
           done

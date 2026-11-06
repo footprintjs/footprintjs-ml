@@ -12,6 +12,6 @@ export function facts() {
     notesTracked:true,notes:'A separately reviewed SDK release reason.',tagStatus:404,releaseStatus:404,
     expectedChecks:names,ci:{id,attempt:1,headSha:sha,event:'push',branch:'main',
       path:'.github/workflows/ci.yml',status:'completed',conclusion:'success',
-      jobs:names.map(name=>({name,runId:id,status:'completed',conclusion:'success',
+      jobs:names.map((name,index)=>({id:index+1,name,runId:id,status:'completed',conclusion:'success',
         steps:[{name:'Actual required step',status:'completed',conclusion:'success'}]}))}};
 }

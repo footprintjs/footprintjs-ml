@@ -26,7 +26,7 @@ The real main dry-run proofs include a wrong version and a dispatch while the ne
 
 The read-only admit job executes the existing locked FootPrint chart. Each machine gate records a native decide row, and its recording is retained on refusal too. Failed or unknown reads are refusals, not absence. The record describes observations; it does not save permission for another run.
 
-The read-only build job produces one archive and one wheel, inspects their complete source/build membership and wheel RECORD, and generates the two receipts. The immutable candidate artifact also carries the reviewed notes as a hashed sidecar. The notes are the release body, not a fifth public asset. Its exact source, tree, workflow, run, attempt, artifact and file hashes are retained.
+The read-only build job produces one archive and one wheel, inspects their complete source/build membership and wheel RECORD and supported Wheel-Version 1.0 format, and generates the two receipts. The immutable candidate artifact also carries the reviewed notes as a hashed sidecar. The notes are the release body, not a fifth public asset. Its exact source, tree, workflow, run, attempt, artifact and file hashes are retained.
 
 Only publish gets contents:write and actions:read. It has no checkout, npm, installed dependency or candidate-code execution. Fixed standard-tool glue compares the retained artifact with actual build outputs and producer metadata, rechecks current main and CI, creates its own draft prerelease, uploads exactly four files once, reads their hashes back, then undrafts that exact release. Requests use fixed GitHub hosts and no automatic retry.
 
@@ -36,7 +36,7 @@ The read-only verify job downloads each public file once and compares the comple
 
 Native workflow history can only deny publication, never permit it. Every prior live run for that version is inspected, across all attempts. If its publish job started, any conclusion consumes the version; an unreadable or missing job is treated as started. A fully observed skipped publish job did not write. Dry runs do not consume a version.
 
-The native census must be complete through the current run, with no deleted or lagged run-number gap, duplicated identity or unparseable title. All pages are read up to 1,000 runs; missing, changing or larger history is HOLD. The publisher repeats this denial check immediately before effects. A complete authenticated release listing in that job also excludes same-tag drafts; a by-tag404 alone cannot prove draft absence.
+The native census must be complete through the current run, with no deleted or lagged run-number gap, duplicated identity or unparseable title. Deleting any old workflow run leaves a permanent gap; the route never repairs or bypasses it. Every job page must have unique positive identities bound to the inspected run, including every attempt. All pages are read up to 1,000 runs; missing, changing or larger history is HOLD. The publisher repeats this denial check immediately before effects. A complete authenticated release listing in that job also excludes same-tag drafts; a by-tag404 alone cannot prove draft absence.
 
 Reruns, existing versions and all unknown outcomes are GET-only/HOLD. The route never retries an uncertain create, upload or undraft, never deletes or overwrites assets, and never force-moves a tag. A leftover draft stays for a person. If a version was consumed without publication, use a new version through the normal review procedure. There is no journal, saved grant, override or automatic repair.
 

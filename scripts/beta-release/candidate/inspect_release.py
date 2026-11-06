@@ -117,6 +117,7 @@ def inspect_candidate(root,archive,wheel,commit):
         assert m['Requires-Python']==project['project']['requires-python']
         assert not m.get_all('Requires-Dist'), 'Wheel adds runtime dependency'
         wm=email.message_from_bytes(z.read(dist+'WHEEL'))
+        assert wm.get_all('Wheel-Version')==['1.0'],'Unsupported or ambiguous wheel format'
         assert wm['Root-Is-Purelib']=='true' and wm.get_all('Tag')==['py3-none-any']
         assert z.read(dist+'licenses/LICENSE')==(root/'LICENSE').read_bytes()
         record=[n for n in z.namelist() if n.endswith('.dist-info/RECORD')]
