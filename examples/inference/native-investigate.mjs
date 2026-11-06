@@ -80,6 +80,8 @@ export async function investigateNativeInference(directory,output){
     measuredActualAndExpectedIdentitiesVisible:actual.result.includes(identity(state.staleReceipt.modelRef))&&expected.result.includes(identity(state.approvedModelRef)),
     nativeSnapshotPreserved:[snapshot,run.artifacts.snapshot,baseline.artifacts.snapshot]
       .every(value=>sha(JSON.stringify(value))===snapshotDigest),
+    noEngineCaptureAttestationInvented:snapshot.capture===undefined&&
+      (snapshot.recorders??[]).every(recorder=>recorder.capture===undefined),
     snapshotCompletenessLimitRemainsVisible:attentionResult.confidence==='incomplete',
     recordingUnchanged:sha(before)===sha(await readFile(recordPath)),
     outcomeUnchanged:sha(outcomeBytes)===sha(await readFile(outcomePath)),
