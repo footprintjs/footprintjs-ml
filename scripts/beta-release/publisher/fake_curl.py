@@ -66,6 +66,7 @@ elif path==prefix+'/releases' and method=='POST':
  status=201;state['created']=True;value=release(True)
  if kind=='create-unknown':lost=True
  if kind=='create-wrong-id':value['id']='wrong'
+ if kind=='create-wrong-source':value['target_commitish']='b'*40
 elif u.hostname=='uploads.github.com':
  name=q['name'][0];payload=Path(data[1:]).read_bytes();asset={'id':1000+len(state['assets']),'name':name,'size':len(payload),
   'digest':'sha256:'+hashlib.sha256(payload).hexdigest(),'state':'uploaded'}

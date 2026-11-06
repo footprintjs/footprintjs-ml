@@ -22,7 +22,7 @@ class PublisherTests(unittest.TestCase):
   state={'priorRun':previous['run'] if previous else 90,'case':case,'sha':source,'version':version,'run':run,'number':number,'digest':digest,'calls':[],'assets':[]}
   (base/'state.json').write_text(json.dumps(state))
   binding={'sha':source,'tree':tree,'version':version,'producer':producer,'ciRun':73,'ciAttempt':1,'files':files}
-  workflow=(ROOT/'.github/workflows/publish.yml').read_text()
+  workflow=getattr(self,'workflow',ROOT/'.github/workflows/publish.yml').read_text()
   glue=textwrap.dedent(workflow.split('# BEGIN PUBLISH GLUE\n',1)[1].split('          # END PUBLISH GLUE',1)[0])
   (base/'publisher.sh').write_text(glue)
   env={k:v for k,v in os.environ.items() if k in ('PATH','LANG','LC_ALL','SYSTEMROOT')}
@@ -51,7 +51,7 @@ class PublisherTests(unittest.TestCase):
     result,state=self.run_case(case);self.assertNotEqual(result.returncode,0)
     self.assertFalse(any(c['method']!='GET' for c in state['calls']))
  def test_stop_after_unknown_or_failed_write(self):
-  for case,posts,patches in [('create-unknown',1,0),('create-wrong-id',1,0),('upload-2-fail',3,0),
+  for case,posts,patches in [('create-unknown',1,0),('create-wrong-id',1,0),('create-wrong-source',1,0),('upload-2-fail',3,0),
    ('upload-2-unknown',3,0),('upload-wrong-digest',2,0),('final-renamed',5,0),('tag-moved',5,0),('undraft-unknown',5,1)]:
    with self.subTest(case=case):
     result,state=self.run_case(case);self.assertNotEqual(result.returncode,0)
