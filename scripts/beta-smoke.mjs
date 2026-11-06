@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {mkdtemp,writeFile,readFile,mkdir,rename,copyFile,realpath} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
-import {join,resolve} from 'node:path';
+import {basename,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 
@@ -23,8 +23,24 @@ const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 await writeFile(join(consumer,'package.json'),JSON.stringify({name:'footprint-ml-fresh-consumer',private:true,type:'module'}));
 npm(['pack','--loglevel','error','--pack-destination',temp],root);
 const filename=`footprintjs-ml-${pkg.version}.tgz`, archive=join(temp,filename);
-npm(['install',archive,'footprintjs@10.0.0','agentfootprint@11.0.0','foottrace@1.8.0',
- '--ignore-scripts','--no-audit','--no-fund','--loglevel','error','--registry=https://registry.npmjs.org','--cache',join(temp,'npm-cache')]);
+const nativeNames=['footprintjs','agentfootprint','foottrace'];
+const nativePins=nativeNames.map(name=>{
+ const version=pkg.devDependencies[name];
+ assert.match(version,/^\d+\.\d+\.\d+$/,'The clean consumer requires exact native versions');
+ return `${name}@${version}`;
+});
+npm(['install',archive,...nativePins,
+ '--strict-peer-deps','--ignore-scripts','--no-audit','--no-fund','--loglevel','error','--registry=https://registry.npmjs.org','--cache',join(temp,'npm-cache')]);
+// Inspect nested installations too: top-level versions can hide split writer
+// and investigation instances in the installed dependency tree.
+const nativePaths=npm(['ls',...nativeNames,'--all','--parseable']).trim().split(/\r?\n/);
+const nativeVersions={};
+for(const name of nativeNames){
+ const copies=new Set(await Promise.all(nativePaths.filter(path=>basename(path)===name).map(path=>realpath(path))));
+ assert.equal(copies.size,1,`Expected one physical ${name} installation`);
+ const actual=JSON.parse(await readFile(join([...copies][0],'package.json'),'utf8')).version;
+ assert.equal(actual,pkg.devDependencies[name]);nativeVersions[name]=actual;
+}
 const installed=join(consumer,'node_modules','footprintjs-ml');
 const installedPkg=JSON.parse(await readFile(join(installed,'package.json'),'utf8'));
 assert.equal(installedPkg.version,pkg.version);assert.equal(installedPkg.private,undefined);
@@ -172,7 +188,8 @@ const report={schema:'footprint-ml-clean-consumer/v1',passed:true,version:pkg.ve
   nativeLensQueries:nativeQueryCount,recordingUnchanged:true,transitiveBacktracking:true,historicalCutoff:true,
   explicitDecisionStage:true,evaluationWithoutRelease:true,missingReadsDisclosed:true,
   installedSelectionProof:true,selectionProducerInNativeSlice:true,unrelatedStagesExcluded:true},
- dependencies:{coreRuntime:0,automaticallyInstalledOptionalRuntime:0,pythonCaptureStdlibOnly:true,
+ nativeVersions,
+ dependencies:{coreRuntime:0,automaticallyInstalledOptionalRuntime:0,singlePhysicalNativeCopies:true,pythonCaptureStdlibOnly:true,
   pythonCaptureImportsNoMLflowOrNumericalFramework:true,installedPythonNativeCapture:true},
  metrics:{aMse:outcome.evaluationA.metrics.mse,bMse:outcome.evaluationB.metrics.mse},
  execution:{modelRegistryPublication:false},

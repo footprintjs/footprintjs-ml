@@ -89,6 +89,28 @@ footprint_ml_workflow.WorkflowCapture('recording.json', runtime_dir='runtime not
         self.assertFalse(report["checks"]["packageVersionsMatch"])
         invoke.assert_not_called()
 
+    def test_doctor_accepts_the_current_published_native_cohort(self):
+        target = self.root / "current-cohort"
+        fixture_runtime(target)
+        current = {"footprintjs": "11.0.0", "agentfootprint": "14.0.0", "foottrace": "1.11.1"}
+        for name, version in current.items():
+            (target / "node_modules" / name / "package.json").write_text(json.dumps({"name": name, "version": version}))
+        with patch.object(setup, "_node", return_value=NODE), patch.object(setup, "_invoke", return_value=READY) as invoke:
+            report = setup.doctor(target)
+        self.assertTrue(report["ok"], report["packages"])
+        self.assertEqual(invoke.call_count, 1)
+
+    def test_doctor_refuses_each_previous_native_version_before_import(self):
+        for name, version in {"footprintjs": "10.0.0", "agentfootprint": "11.0.0", "foottrace": "1.8.0"}.items():
+            with self.subTest(package=name):
+                target = self.root / name
+                fixture_runtime(target)
+                (target / "node_modules" / name / "package.json").write_text(json.dumps({"name": name, "version": version}))
+                with patch.object(setup, "_node", return_value=NODE), patch.object(setup, "_invoke", return_value=READY) as invoke:
+                    report = setup.doctor(target)
+                self.assertFalse(report["ok"], name)
+                invoke.assert_not_called()
+
     def test_default_setup_refuses_system_environment_without_any_command(self):
         with patch.object(setup.sys, "prefix", "/fixture/system"), patch.object(setup.sys, "base_prefix", "/fixture/system"), patch.object(setup, "_invoke") as invoke:
             with self.assertRaisesRegex(setup.SetupError, "virtual environment"):
@@ -169,7 +191,7 @@ footprint_ml_workflow.WorkflowCapture('recording.json', runtime_dir='runtime not
         (target / "node_modules" / "foottrace" / "package.json").write_text(json.dumps({"name": "foottrace", "version": "0.0.0"}))
         with patch("footprint_ml_workflow.subprocess.Popen") as process:
             capture = WorkflowCapture(self.root / "recording.json", runtime_dir=target)
-            with self.assertRaisesRegex(CaptureError, "foottrace@1.8.0"):
+            with self.assertRaisesRegex(CaptureError, "foottrace@1.11.1"):
                 capture.start()
             process.assert_not_called()
 

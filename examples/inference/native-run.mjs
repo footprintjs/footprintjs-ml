@@ -244,7 +244,7 @@ export async function runNativeProof({out, python = process.env.PYTHON || 'pytho
         'The caller checks the worker PID, session, cache generation and actual model identity before retaining prediction evidence. Native scope tracking does not automatically observe worker internals.',
         'The failed attempt occurs before numerical computation or artifact creation. Native retry discards staged scope writes; it does not roll back arbitrary external side effects.',
         'The native commit log has one successful predict-corrected commit. Its retry event separately records the failed attempt; failed pending writes are not fabricated as commits.',
-        'Public controlDepRecorder lookup results are saved separately as explicit application observations. The untouched executor snapshot does not contain an engine-attested control-dependency recorder.',
+        'Public controlDepRecorder lookup results are saved separately as explicit application observations. Native recorder metadata in the untouched executor snapshot is preserved; this adapter adds no capture acknowledgement or producer authentication.',
         'Evaluation approval and prediction-observation checks are separate decisions; neither establishes general model suitability or numerical quality.',
         'Model source hashes are checked on load. Prediction identity is measured from actual in-memory classifier/scaler state before and after computation.',
         'Blocked output artifacts remain private debugging evidence. Only the accepted A output reference is exposed by the application handoff scope key.',

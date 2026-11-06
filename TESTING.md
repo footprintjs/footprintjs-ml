@@ -2,6 +2,8 @@
 
 Use Node.js 22 or 24 and Python 3.11 or newer. Install the pinned development dependencies with `npm ci`. Run `npm test` to build and execute the portable JavaScript contract, lifecycle, publication and saved-state tests. `npm run test:python` separately requires NumPy and checks the Python identity, NPZ and runtime boundary.
 
+The current-source compatibility cohort is FootPrint 11.0.0, AgentFootprint 14.0.0 and Foottrace 1.11.1. The npm and wheel clean-install checks inspect the actual installed dependency tree and require one physical copy of each native library, in addition to exact versions. The existing smoke checks execute capture and reopen its saved record in a separate process without permission to spawn numerical work. Python setup tests separately accept the new cohort and reject each stale native version before importing it. These checks do not upgrade existing released beta.12 assets.
+
 The optional import-graph observation uses Node registerHooks and explicitly skips on Node versions without that API. Python protocol tests explicitly skip when their configured Python executable is unavailable; CI installs Python so these run there. The fixture worker tests are not mathematical validation of a numerical framework.
 
 ## Monitoring after release

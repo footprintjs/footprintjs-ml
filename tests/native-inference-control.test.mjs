@@ -55,3 +55,23 @@ test('retained native control cannot name another run, unknown executions, futur
   const sameRunDifferentSnapshot=plain(valid);sameRunDifferentSnapshot.snapshot.sharedState.handoff='changed';
   assert.throws(()=>custom.openRecording(sameRunDifferentSnapshot),/different captured snapshot/);
 });
+
+test('native recorder snapshots are retained, and changed recorder data or capture facts cannot borrow their lookup',async()=>{
+  const recording=await capturedChoice(),before=plain(recording.snapshot);
+  assert(Array.isArray(before.recorders)&&before.recorders.length>0,'FootPrint 11 must retain its attached recorder');
+  assert.equal(before.capture,undefined,'This example does not enable native capture acknowledgements');
+  assert(before.recorders.every(recorder=>recorder.capture===undefined));
+  const custom=recordedControlBridge(recording,bridge);
+  const opened=openWorkflowRecording(recording,custom);
+  assert.deepEqual(opened.artifacts.snapshot,before);
+  assert.deepEqual(recording.snapshot,before);
+  for(const mutate of [
+    r=>{delete r.snapshot.recorders;},
+    r=>{r.snapshot.recorders[0].data={invented:true};},
+    r=>{r.snapshot.recorders[0].capture={invented:true};},
+    r=>{r.snapshot.capture={invented:true};},
+  ]){
+    const changed=plain(recording);mutate(changed);
+    assert.throws(()=>custom.openRecording(changed),/different captured snapshot/);
+  }
+});

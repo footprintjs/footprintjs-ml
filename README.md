@@ -88,6 +88,8 @@ Saved replay reconstructs recorded state. It does not resume training or recreat
 
 ## Develop and verify
 
+Current source uses FootPrint 11.0.0, AgentFootprint 14.0.0 and Foottrace 1.11.1 together. This compatibility update is not in the released beta.12 assets used above. Build/package this checkout to test the updated cohort; the SDK core still has no runtime dependencies. See [compatibility](COMPATIBILITY.md) for the source/release boundary.
+
 ```sh
 git clone https://github.com/footprintjs/footprintjs-ml.git
 cd footprintjs-ml

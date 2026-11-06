@@ -62,6 +62,8 @@ The numerical trainer stays in Python. FootPrint’s workflow driver runs in Jav
 
 ## Build and verify from source
 
+The current source targets FootPrint 11.0.0, AgentFootprint 14.0.0 and Foottrace 1.11.1. The release-archive commands above retain beta.12's original versions; they do not fetch this unreleased source update. The clean-consumer check below packs this checkout and uses its exact current dependency versions with strict peer resolution.
+
 ```sh
 git clone https://github.com/footprintjs/footprintjs-ml.git
 cd footprintjs-ml
