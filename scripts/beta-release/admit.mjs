@@ -6,7 +6,9 @@ const out=resolve(process.env.RELEASE_OUT||'.artifacts/beta-admission');
 await mkdir(out,{recursive:true});
 let facts;
 try {facts=await collectFacts();}
-catch {facts={collectionError:true,sha:process.env.RELEASE_SHA||null,version:process.env.RELEASE_VERSION||null,
+catch {facts={collectionError:true,
+  sha:/^[a-f0-9]{40}$/.test(process.env.RELEASE_SHA||'')?process.env.RELEASE_SHA:null,
+  version:/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-beta\.(0|[1-9]\d*)$/.test(process.env.RELEASE_VERSION||'')?process.env.RELEASE_VERSION:null,
   runId:Number(process.env.GITHUB_RUN_ID)||null,attempt:Number(process.env.GITHUB_RUN_ATTEMPT)||null};}
 const record=await runAdmission(facts);
 await writeFile(join(out,'recording.json'),JSON.stringify(record,null,2)+'\n',{flag:'wx'});
