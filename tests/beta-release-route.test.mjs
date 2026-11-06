@@ -5,6 +5,7 @@ import {spawnSync} from 'node:child_process';
 import '../scripts/beta-release/admission/stages/gate/policy.test.mjs';
 import '../scripts/beta-release/admission/stages/gate/history.test.mjs';
 import '../scripts/beta-release/admission/chart.test.mjs';
+import '../scripts/beta-release/admission/cli.test.mjs';
 import '../scripts/beta-release/io/github.test.mjs';
 import '../scripts/beta-release/io/history.test.mjs';
 import '../scripts/beta-release/route.test.mjs';
