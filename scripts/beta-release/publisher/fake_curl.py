@@ -51,7 +51,7 @@ elif path==prefix+'/actions/workflows/publish.yml/runs':
  if kind=='history-cap':value['total_count']=1001
  if kind=='history-incomplete':value={'total_count':101,'workflow_runs':[]}
 elif path==prefix+'/actions/runs/'+str(state.get('priorRun',90))+'/jobs':
- conclusion='skipped' if kind=='prior-skipped' else 'failure'
+ conclusion='skipped' if kind=='prior-skipped' or kind.startswith('prior-field:') else 'failure'
  jobs=[{'id':1,'run_id':state.get('priorRun',90),'name':'publish','status':'completed','conclusion':conclusion,'steps':[] if conclusion=='skipped' else [{'name':'Create draft'}]}]
  if kind=='prior-unknown':jobs=[]
  if kind=='prior-rerun-skipped':jobs.append({'id':2,'run_id':state.get('priorRun',90),'name':'publish','status':'completed','conclusion':'skipped','steps':[]})
@@ -100,6 +100,23 @@ elif path==prefix+'/releases/201' and method=='PATCH':
  state['published']=True;value=release(False)
  if kind=='undraft-unknown':lost=True
 else:raise AssertionError('Unexpected request '+method+' '+path)
+# Malformed native data remains inert JSON; this transport never networks.
+if kind.startswith(('field:','prior-field:')):
+ _,location,field,variant=kind.split(':')
+ target=None
+ if location=='release-row' and path==prefix+'/releases' and method=='GET':
+  value=[{'id':101,'tag_name':'v0.1.0-beta.1'}];target=value[0]
+ if location=='prior-run' and path==prefix+'/actions/workflows/publish.yml/runs':target=value['workflow_runs'][0]
+ if location=='prior-job' and path==prefix+'/actions/runs/'+str(state.get('priorRun',90))+'/jobs':
+  value['jobs'].append({'id':2,'run_id':state.get('priorRun',90),'name':'admit','status':'completed','conclusion':'success','steps':[]})
+  value['total_count']=2;target=value['jobs'][1]
+ if location=='ci' and path==prefix+'/actions/workflows/ci.yml/runs':target=value['workflow_runs'][0]
+ if location=='artifact' and path==prefix+'/actions/artifacts/102':target=value
+ if location=='created' and path==prefix+'/releases' and method=='POST':target=value
+ if location=='final-array' and method=='GET' and path==prefix+'/releases/201/assets':value={str(i):row for i,row in enumerate(value)}
+ if target is not None:
+  if variant=='missing':target.pop(field,None)
+  else:target[field]={'null':None,'number':7,'empty':'','array':['completed'],'object':{}}[variant]
 (base/'state.json').write_text(json.dumps(state))
 if headers:headers.write_text('HTTP/1.1 '+str(status)+' Result\r\n'+extra+'\r\n')
 if out:out.write_bytes(blob if blob is not None else json.dumps(value).encode())

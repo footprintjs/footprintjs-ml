@@ -145,7 +145,7 @@ jobs:
           mkdir candidate
           printf '%s' "$BINDING" > binding.json
           [[ "$GITHUB_REF" == refs/heads/main && "$GITHUB_RUN_ATTEMPT" == 1 ]]
-          [[ "$SOURCE_SHA" =~ ^[a-f0-9]{40}$ && "$ARTIFACT_ID" =~ ^[1-9][0-9]*$ ]]
+          [[ "$SOURCE_SHA" =~ ^[a-f0-9]{40}$ && "$ARTIFACT_ID" =~ ^[1-9][0-9]*$ && "$ARTIFACT_DIGEST" =~ ^[a-f0-9]{64}$ ]]
           jq -e --arg sha "$SOURCE_SHA" --arg version "$RELEASE_VERSION" --argjson run "$GITHUB_RUN_ID" \
             '.sha==$sha and .version==$version and .producer.repository=="footprintjs/footprintjs-ml" and .producer.workflow==".github/workflows/publish.yml" and .producer.sha==$sha and .producer.run==$run and .producer.attempt==1' binding.json >/dev/null
           request() {
@@ -181,7 +181,7 @@ jobs:
           get "/actions/artifacts/$ARTIFACT_ID" artifact.json
           jq -e --argjson run "$GITHUB_RUN_ID" --arg sha "$SOURCE_SHA" --arg digest "sha256:$ARTIFACT_DIGEST" \
             --argjson id "$ARTIFACT_ID" --arg name "beta-candidate-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" \
-            '.id==$id and .workflow_run.head_branch=="main" and .workflow_run.id==$run and .workflow_run.head_sha==$sha and .name==$name and .digest==$digest and .expired==false' artifact.json >/dev/null
+            'type=="object" and (.workflow_run|type)=="object" and .id==$id and .workflow_run.head_branch=="main" and .workflow_run.id==$run and .workflow_run.head_sha==$sha and .name==$name and .digest==$digest and .expired==false' artifact.json >/dev/null
           request GET "$API/actions/artifacts/$ARTIFACT_ID/zip" redirect.bin 302
           LOCATION=$(python3 -I - <<'PY'
           from pathlib import Path
@@ -202,6 +202,14 @@ jobs:
           import hashlib,json,re,stat,zipfile
           from pathlib import Path
           b=json.loads(Path('binding.json').read_text());v=b['version']
+          assert type(b) is dict and type(v) is str
+          for key in ('sha','tree'):assert type(b[key]) is str and re.fullmatch(r'[a-f0-9]{40}',b[key])
+          for key in ('ciRun','ciAttempt'):assert type(b[key]) is int and 0<b[key]<=9007199254740991
+          assert type(b['files']) is list
+          for item in b['files']:
+              assert type(item) is dict and type(item['file']) is str
+              assert type(item['sha256']) is str and re.fullmatch(r'[a-f0-9]{64}',item['sha256'])
+              assert type(item['bytes']) is int and 0<item['bytes']<=67108864
           m=re.fullmatch(r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-beta\.(0|[1-9]\d*)',v);assert m
           py='.'.join(m.groups()[:3])+'b'+m[4]
           names={'footprintjs-ml-'+v+'.tgz','footprintjs_ml-'+py+'-py3-none-any.whl','source-manifest.json','verification.json','release-notes.md'}
@@ -217,6 +225,9 @@ jobs:
                   (Path('candidate')/info.filename).write_bytes(data)
           source=json.loads(Path('candidate/source-manifest.json').read_text())
           verify=json.loads(Path('candidate/verification.json').read_text())
+          for item in (source,verify):
+              assert type(item) is dict
+              for key in ('commit','tree'):assert type(item[key]) is str and re.fullmatch(r'[a-f0-9]{40}',item[key])
           assert source['commit']==verify['commit']==b['sha'] and source['tree']==verify['tree']==b['tree']
           Path('candidate/release-notes.md').read_text(encoding='utf-8')
           assert verify['producer']==b['producer'] and verify['hosted']['id']==b['ciRun'] and verify['hosted']['attempt']==b['ciAttempt']
@@ -225,16 +236,22 @@ jobs:
             get /git/ref/heads/main main.json
             jq -e --arg sha "$SOURCE_SHA" '.object.type=="commit" and .object.sha==$sha' main.json >/dev/null
             get "/actions/runs/$GITHUB_RUN_ID" producer.json
-            jq -e --arg sha "$SOURCE_SHA" --argjson number "$GITHUB_RUN_NUMBER" \
-              '.head_sha==$sha and .head_branch=="main" and .event=="workflow_dispatch" and .path==".github/workflows/publish.yml" and .run_attempt==1 and .run_number==$number and .status=="in_progress"' producer.json >/dev/null
+            jq -e --arg sha "$SOURCE_SHA" --argjson number "$GITHUB_RUN_NUMBER" --argjson run "$GITHUB_RUN_ID" \
+              '.id==$run and .head_sha==$sha and .head_branch=="main" and .event=="workflow_dispatch" and .path==".github/workflows/publish.yml" and .run_attempt==1 and .run_number==$number and .status=="in_progress"' producer.json >/dev/null
             get "/actions/workflows/ci.yml/runs?head_sha=$SOURCE_SHA&event=push&per_page=1" ci.json
-            jq -e --slurpfile b binding.json '.workflow_runs[0] as $r|$r.head_sha==$b[0].sha and $r.head_branch=="main" and $r.event=="push" and $r.path==".github/workflows/ci.yml" and $r.id==$b[0].ciRun and $r.run_attempt==$b[0].ciAttempt and $r.status=="completed" and $r.conclusion=="success"' ci.json >/dev/null
+            jq -e --slurpfile b binding.json '(.workflow_runs|type)=="array" and (.workflow_runs|length)==1 and (.workflow_runs[0] as $r|$r.head_sha==$b[0].sha and $r.head_branch=="main" and $r.event=="push" and $r.path==".github/workflows/ci.yml" and $r.id==$b[0].ciRun and $r.run_attempt==$b[0].ciAttempt and $r.status=="completed" and $r.conclusion=="success")' ci.json >/dev/null
             pages '/actions/workflows/publish.yml/runs?' workflow_runs runs.json
             python3 -I - <<'PY'
           import json,os,re
           from pathlib import Path
           rows=json.loads(Path('runs.json').read_text());me=int(os.environ['GITHUB_RUN_ID']);number=int(os.environ['GITHUB_RUN_NUMBER'])
+          for r in rows:
+              assert type(r) is dict
+              for key in ('id','run_number','workflow_id'):assert type(r[key]) is int and 0<r[key]<=9007199254740991
+              for key in ('display_title','head_sha','path','event','status'):assert type(r[key]) is str and len(r[key])>0
+              assert re.fullmatch(r'[a-f0-9]{40}',r['head_sha'])
           own=[r for r in rows if r['id']==me];assert len(own)==1
+          assert own[0]['status']=='in_progress'
           assert own[0]['run_number']==number and own[0]['head_sha']==os.environ['SOURCE_SHA']
           assert len({r['id'] for r in rows})==len(rows)
           earlier=[];numbers=[]
@@ -250,7 +267,7 @@ jobs:
             while read -r prior || [[ -n "$prior" ]]; do
               [[ -z "$prior" ]] && continue
               pages "/actions/runs/$prior/jobs?filter=all" jobs jobs.json
-              jq -e --argjson run "$prior" 'all(.[];.run_id==$run and (.name|type)=="string" and (.name|length)>0) and ([.[]|select(.name=="publish")] as $p|($p|length)>0 and all($p[];.status=="completed" and .conclusion=="skipped" and (.steps|type)=="array" and (.steps|length)==0))' jobs.json >/dev/null
+              jq -e --argjson run "$prior" 'all(.[];.run_id==$run and ([.name,.status,.conclusion]|all(.[];type=="string" and length>0))) and ([.[]|select(.name=="publish")] as $p|($p|length)>0 and all($p[];.status=="completed" and .conclusion=="skipped" and (.steps|type)=="array" and (.steps|length)==0))' jobs.json >/dev/null
             done < prior-live.txt
           }
           guard
@@ -259,7 +276,7 @@ jobs:
           printf '[]' > release-census.json
           for page in {1..10}; do
             get "/releases?per_page=100&page=$page" releases.json
-            jq -e --arg tag "v$RELEASE_VERSION" 'type=="array" and length<=100 and all(.[];.tag_name!=$tag)' releases.json >/dev/null
+            jq -e --arg tag "v$RELEASE_VERSION" 'type=="array" and length<=100 and all(.[];(.tag_name|type)=="string" and (.tag_name|length)>0 and .tag_name!=$tag)' releases.json >/dev/null
             jq -s '.[0]+.[1]' release-census.json releases.json > joined.json
             mv joined.json release-census.json
             jq -e 'all(.[];(.id|type)=="number" and (.id|floor)==.id and .id>0 and .id<=9007199254740991) and (map(.id)|unique|length)==length' release-census.json >/dev/null
@@ -270,8 +287,8 @@ jobs:
             '{tag_name:$tag,target_commitish:$sha,name:("FootPrint ML "+$tag),body:$body,draft:true,prerelease:true,make_latest:"false"}' > create.json
           guard
           request POST "$API/releases" created.json 201 --header 'Content-Type: application/json' --data-binary @create.json
-          jq -e --arg tag "v$RELEASE_VERSION" --arg sha "$SOURCE_SHA" '.tag_name==$tag and .target_commitish==$sha and .draft==true and .prerelease==true and (.assets|length)==0' created.json >/dev/null
-          ID=$(jq -er '.id|select(type=="number" and floor==. and .>0)' created.json)
+          jq -e --arg tag "v$RELEASE_VERSION" --arg sha "$SOURCE_SHA" '.tag_name==$tag and .target_commitish==$sha and .draft==true and .prerelease==true and (.assets|type)=="array" and (.assets|length)==0' created.json >/dev/null
+          ID=$(jq -er '.id|select(type=="number" and floor==. and .>0 and .<=9007199254740991)' created.json)
           jq -c '.files[]|select(.file!="release-notes.md")' binding.json > assets.ndjson
           printf '[]' > uploaded.json
           while read -r file; do
@@ -288,7 +305,7 @@ jobs:
           guard
           get "/releases/$ID/assets?per_page=100" final-assets.json
           ! grep -qi 'rel="next"' final-assets.json.headers
-          jq -e --slurpfile ours uploaded.json 'length==4 and (map({id,name,size,digest,state})|sort_by(.id))==($ours[0]|map({id,name,size,digest,state})|sort_by(.id))' final-assets.json >/dev/null
+          jq -e --slurpfile ours uploaded.json 'type=="array" and length==4 and (map({id,name,size,digest,state})|sort_by(.id))==($ours[0]|map({id,name,size,digest,state})|sort_by(.id))' final-assets.json >/dev/null
           request GET "$API/git/ref/tags/v$RELEASE_VERSION" pre-undraft-tag.json 200-or-404
           if jq -e 'has("object")' pre-undraft-tag.json >/dev/null; then
             jq -e --arg sha "$SOURCE_SHA" '.object.type=="commit" and .object.sha==$sha' pre-undraft-tag.json >/dev/null

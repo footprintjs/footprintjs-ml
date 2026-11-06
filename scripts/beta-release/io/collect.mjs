@@ -2,20 +2,25 @@ import {readFile} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import {getJson} from './github.mjs';
 import {allPages,collectHistory} from './history.mjs';
+import {ciRun,jobRows,text} from './profile.mjs';
 const json=async p=>JSON.parse(await readFile(p,'utf8'));
 const git=(...args)=>execFileSync('git',args,{encoding:'utf8',stdio:['ignore','pipe','ignore']}).trim();
 export async function collectFacts({env=process.env,get=getJson}={}) {
   const profile=await json('scripts/beta-release/data/checks.json');
   const sha=env.RELEASE_SHA, version=env.RELEASE_VERSION;
-  if(!/^[a-f0-9]{40}$/.test(sha||'')||!/^(\d+\.){2}\d+-beta\.\d+$/.test(version||''))throw Error('invalid-input');
+  if(!text(sha)||!text(version)||!/^[a-f0-9]{40}$/.test(sha)||!/^(\d+\.){2}\d+-beta\.\d+$/.test(version))throw Error('invalid-input');
   const pkg=await json('package.json'),lock=await json('package-lock.json');
   const project=await readFile('pyproject.toml','utf8');
   const constants=await readFile('python/footprint_ml_versions.py','utf8');
   const main=await get('/git/ref/heads/main');
   const runs=await get('/actions/workflows/ci.yml/runs?head_sha='+sha+'&event=push&per_page=1');
-  const r=runs.value?.workflow_runs?.[0];let jobs=[];
-  if(r && Number.isSafeInteger(r.id) && Number.isSafeInteger(r.run_attempt)) {
-    try {jobs=await allPages(get,'/actions/runs/'+r.id+'/attempts/'+r.run_attempt+'/jobs','jobs');}
+  if(main.status!==200||main.value?.object?.type!=='commit'||!text(main.value.object.sha)||
+    !/^[a-f0-9]{40}$/.test(main.value.object.sha)||runs.status!==200||
+    !Array.isArray(runs.value?.workflow_runs)||runs.value.workflow_runs.length>1)throw Error('native-collection-profile');
+  const r=runs.value.workflow_runs[0];let jobs=[];
+  if(r) {
+    ciRun(r);
+    try {jobs=await allPages(get,'/actions/runs/'+r.id+'/attempts/'+r.run_attempt+'/jobs','jobs');jobRows(jobs,r.id);}
     catch {jobs=[];}
   }
   const tag=await get('/git/ref/tags/v'+version),release=await get('/releases/tags/v'+version);

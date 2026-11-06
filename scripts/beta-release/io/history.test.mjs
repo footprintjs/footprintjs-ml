@@ -34,3 +34,37 @@ test('native admission refuses a duplicate page hiding an older started publishe
  assert.equal(record.snapshot.sharedState.outcome.allowed,false);
  assert.ok(record.snapshot.sharedState.outcome.refused.includes('history'));
 });
+
+test('native admission refuses unknown strings in otherwise skipped prior history',async()=>{
+ const {collectHistory}=await import('./history.mjs');
+ const {facts}=await import('../admission/stages/gate/fixture.mjs');
+ const {runAdmission}=await import('../admission/run.mjs');
+ for(const [location,field] of [['run','head_sha'],['run','status'],['job','name'],['job','status'],['job','conclusion']])
+ for(const variant of ['missing','null','number']) {
+  const f=facts();f.runNumber=2;
+  const raw=(id,number,dry)=>({id,run_number:number,workflow_id:5,display_title:'ML beta '+f.version+' / dry_run='+dry,
+   head_sha:f.sha,event:'workflow_dispatch',path:'.github/workflows/publish.yml',status:id===91?'in_progress':'completed'});
+  const runs=[raw(90,1,false),raw(91,2,true)];
+  const jobs=[{id:1,run_id:90,name:'publish',status:'completed',conclusion:'skipped',steps:[]},
+   {id:2,run_id:90,name:'admit',status:'completed',conclusion:'success',steps:[]}];
+  const target=location==='run'?runs[0]:jobs[1];
+  if(variant==='missing')delete target[field];else target[field]=variant==='null'?null:7;
+  try {f.history=await collectHistory(async route=>route.startsWith('/actions/workflows/')?
+   {status:200,value:{total_count:2,workflow_runs:runs}}:{status:200,value:{total_count:2,jobs}},f.version);}
+  catch {f.collectionError=true;}
+  const record=await runAdmission(f);
+  assert.equal(record.snapshot.sharedState.outcome.allowed,false,location+'.'+field+':'+variant);
+ }
+});
+
+test('array title cannot coerce into a known dry-run title',async()=>{
+ const {collectHistory}=await import('./history.mjs');
+ const {facts}=await import('../admission/stages/gate/fixture.mjs');
+ const {runAdmission}=await import('../admission/run.mjs');
+ const f=facts();f.runNumber=2;
+ const own={id:91,run_number:2,workflow_id:5,display_title:'ML beta '+f.version+' / dry_run=true',head_sha:f.sha,event:'workflow_dispatch',path:'.github/workflows/publish.yml',status:'in_progress'};
+ const prior={...own,id:90,run_number:1,status:'completed',display_title:[own.display_title]};
+ try {f.history=await collectHistory(async()=>({status:200,value:{total_count:2,workflow_runs:[prior,own]}}),f.version);}
+ catch {f.collectionError=true;}
+ assert.equal((await runAdmission(f)).snapshot.sharedState.outcome.allowed,false);
+});

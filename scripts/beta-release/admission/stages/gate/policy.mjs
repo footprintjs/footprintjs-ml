@@ -26,7 +26,7 @@ export function checkGate(id,f) {
 function validChecks(f) {
   const r=f.ci;
   const names=f.expectedChecks;
-  if(!Array.isArray(names)||names.length!==5||new Set(names).size!==names.length ||
+  if(!Array.isArray(names)||names.length!==5||names.some(n=>typeof n!=='string'||!n)||new Set(names).size!==names.length ||
       !r || r.headSha!==f.sha || r.event!=='push' || r.branch!=='main' ||
       r.path!=='.github/workflows/ci.yml' || r.status!=='completed' || r.conclusion!=='success' ||
       !Number.isSafeInteger(r.id)||r.id<=0||!Number.isSafeInteger(r.attempt)||r.attempt<1||

@@ -51,6 +51,25 @@ class PublisherTests(unittest.TestCase):
    with self.subTest(case=case):
     result,state=self.run_case(case);self.assertNotEqual(result.returncode,0)
     self.assertFalse(any(c['method']!='GET' for c in state['calls']))
+ def test_unknown_postwrite_shapes_stop_at_prior_count(self):
+  for case,posts in [('field:created:assets:missing',1),('field:created:assets:null',1),
+   ('field:created:assets:object',1),('field:final-array:shape:object',5)]:
+   with self.subTest(case=case):
+    result,state=self.run_case(case);self.assertNotEqual(result.returncode,0)
+    self.assertEqual(sum(c['method']=='POST' for c in state['calls']),posts)
+    self.assertEqual(sum(c['method']=='PATCH' for c in state['calls']),0)
+ def test_typed_native_fields_before_writes(self):
+  rows=[('field','release-row','tag_name'),('prior-field','prior-run','head_sha'),
+   ('prior-field','prior-run','status'),('prior-field','prior-job','name'),
+   ('prior-field','prior-job','status'),('prior-field','prior-job','conclusion'),
+   ('field','ci','head_sha'),('field','ci','status'),('field','ci','conclusion'),
+   ('field','artifact','name')]
+  for prefix,location,field in rows:
+   for variant in ['missing','null','number']:
+    case=':'.join([prefix,location,field,variant])
+    with self.subTest(case=case):
+     result,state=self.run_case(case);self.assertNotEqual(result.returncode,0)
+     self.assertFalse(any(c['method']!='GET' for c in state['calls']))
  def test_release_census_identity(self):
   good,state=self.run_case('release-pages-unique');self.assertEqual(good.returncode,0,good.stderr)
   for case in ['release-pages-duplicate','release-pages-missing-id','release-pages-oversized']:
