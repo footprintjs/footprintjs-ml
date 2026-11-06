@@ -8,20 +8,20 @@ Prerequisites: Python 3.11+ and Node.js 22+ with npm. The current CI targets Pyt
 
 ```sh
 python3 -m venv .venv
-.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.12/footprintjs_ml-0.6.0b12-py3-none-any.whl
+.venv/bin/python -m pip install https://github.com/footprintjs/footprintjs-ml/releases/download/v0.6.0-beta.13/footprintjs_ml-0.6.0b13-py3-none-any.whl
 .venv/bin/python -m footprint_ml_workflow setup
 .venv/bin/python -m footprint_ml_workflow doctor
 ```
 
-Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b12` corresponds to npm version `0.6.0-beta.12`.
+Windows uses `.venv\Scripts\python.exe` instead of `.venv/bin/python`. The wheel is a GitHub release asset, not a PyPI publication. The Python version `0.6.0b13` corresponds to npm version `0.6.0-beta.13`.
 
 The wheel has no required Python packages. It does not install MLflow, NumPy, scikit-learn or JAX. Importing the module and constructing a capture object do not install dependencies or launch a process. The optional numerical trainer adapter still needs NumPy when explicitly used.
 
-`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.8.0`, `agentfootprint@11.0.0` and `footprintjs@10.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.12` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
+`setup` is an explicit network operation. It installs exactly the matching SDK archive plus `foottrace@1.11.1`, `agentfootprint@14.0.0` and `footprintjs@11.0.0` in the environment's `share/footprintjs-ml/0.6.0-beta.13` directory. npm lifecycle scripts, audit and funding requests are disabled. The packages support recording and the existing saved investigation tools; they do not become dependencies of the SDK core. Node and npm must already be installed.
 
-Those pins describe the released beta.12 wheel. The current source checkout updates its helper to `foottrace@1.11.1`, `agentfootprint@14.0.0` and `footprintjs@11.0.0`. Until a new SDK release, build the wheel and matching npm archive from this checkout and pass that archive to `setup --archive /path/to/archive.tgz` in a fresh environment. An existing helper is not silently upgraded or overwritten; `doctor` rejects mismatched versions before importing it. Python still owns its workflow and retries.
+Beta 13's wheel and matching npm archive use the same cohort. For a locally built archive, pass `setup --archive /path/to/archive.tgz` in a fresh environment. An existing helper is not silently upgraded or overwritten; the versioned beta 13 helper directory is separate, and `doctor` rejects mismatched versions before importing it. Python still owns its workflow and retries.
 
-The helper is checked in a temporary sibling directory before it is made available. A failed setup preserves the prior runtime. A completed matching installation can be checked again. `doctor` is read-only: it checks versions and imports without starting a trainer or connecting to MLflow. It is an environment check, not an authenticity or security certificate. Release `SHA256SUMS` identifies the distributed files.
+The helper is checked in a temporary sibling directory before it is made available. A failed setup preserves the prior runtime. A completed matching installation can be checked again. `doctor` is read-only: it checks versions and imports without starting a trainer or connecting to MLflow. It is an environment check, not an authenticity or security certificate. The release's `verification.json` identifies the distributed archive and wheel hashes.
 
 To use a project-local helper instead, pass `--runtime-dir ./my-helper` to setup and doctor and `runtime_dir="./my-helper"` to `WorkflowCapture`. The default installation requires a virtual environment; an explicit project directory also works outside one. Importing or entering a capture never silently installs a missing helper.
 

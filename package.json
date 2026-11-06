@@ -1,6 +1,6 @@
 {
   "name": "footprintjs-ml",
-  "version": "0.6.0-beta.12",
+  "version": "0.6.0-beta.13",
   "description": "Beta: Python and TypeScript ML evidence: model and dataset references, evaluation receipts, release guards and saved-workflow investigation.",
   "license": "MIT",
   "type": "module",

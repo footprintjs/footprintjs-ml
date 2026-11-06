@@ -179,20 +179,16 @@
   },
   "libraryStatus": {
     "stage": "beta",
-    "version": "0.6.0-beta.12",
+    "version": "0.6.0-beta.13",
     "notice": "Library APIs may change."
   },
   "currentRelease": {
-    "version": "0.6.0-beta.12",
+    "version": "0.6.0-beta.13",
     "stage": "beta",
-    "url": "https://github.com/footprintjs/footprintjs-ml/releases/tag/v0.6.0-beta.12",
-    "summary": "Closed-batch monitoring binds deployed versions, predictions and delayed outcomes to a recorded health/review decision.",
-    "sourceIds": [
-      "monitoring-outcome",
-      "monitoring-native",
-      "monitoring-audit"
-    ],
-    "historicalEvidenceNotice": "Separate fixed NumPy closed-batch proof. Earlier numerical runs, versions and evidence remain unchanged."
+    "url": "https://github.com/footprintjs/footprintjs-ml/releases/tag/v0.6.0-beta.13",
+    "summary": "Compatibility update for FootPrint 11, AgentFootprint 14 and Foottrace 1.11.1; native recorder data is preserved during saved investigation.",
+    "sourceIds": [],
+    "historicalEvidenceNotice": "Earlier numerical experiments, versioned evidence and beta assets remain unchanged. This release updates the supported dependency cohort."
   },
   "format": "Self-contained HTML; StoryDeck custom element; editable HTML/SVG text",
   "audience": "Sanjay and developers following the experiments testing FootPrint’s flowchart pattern in ML",
