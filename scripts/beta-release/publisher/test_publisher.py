@@ -13,6 +13,8 @@ class PublisherTests(unittest.TestCase):
    'source-manifest.json':json.dumps({'commit':source,'tree':tree}).encode(),
    'verification.json':json.dumps({'commit':source,'tree':tree,'producer':producer,'hosted':{'id':73,'attempt':1}}).encode(),'release-notes.md':b'Reviewed SDK release reason.\n'}
   files=[{'file':n,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in payloads.items()]
+  if case=='unknown-producer-number':
+   producer['unrecognizedInteger']=1;verification=json.loads(payloads['verification.json']);verification['producer']['unrecognizedInteger']=True;payloads['verification.json']=json.dumps(verification).encode()
   if case=='coherent-wrong-run-number':
    producer['runNumber']=number+1;verification=json.loads(payloads['verification.json']);verification['producer']['runNumber']=number+1;payloads['verification.json']=json.dumps(verification).encode()
   if case.startswith('receipt:'):
@@ -21,7 +23,7 @@ class PublisherTests(unittest.TestCase):
    if variant=='missing':obj.pop(key,None)
    else:obj[key]={'true':True,'false':False,'float':float(obj[key]),'null':None,'string':str(obj[key])}[variant]
    payloads['verification.json']=json.dumps(verification).encode()
-  if case.startswith('receipt:') or case=='coherent-wrong-run-number':
+  if case.startswith('receipt:') or case in ('coherent-wrong-run-number','unknown-producer-number'):
    files=[{'file':n,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in payloads.items()]
   if case=='unsafe-member':payloads['../escape.py']=b'bad'
   if case=='changed-bytes':payloads['release-notes.md']=b'changed'
@@ -61,6 +63,9 @@ class PublisherTests(unittest.TestCase):
    with self.subTest(case=case):
     result,state=self.run_case(case);self.assertNotEqual(result.returncode,0)
     self.assertFalse(any(c['method']!='GET' for c in state['calls']))
+ def test_candidate_producer_has_only_native_profile_fields(self):
+  bad,state=self.run_case('unknown-producer-number');self.assertNotEqual(bad.returncode,0)
+  self.assertFalse(any(c['method']!='GET' for c in state['calls']))
  def test_candidate_native_run_number_matches_current_producer(self):
   bad,state=self.run_case('coherent-wrong-run-number');self.assertNotEqual(bad.returncode,0)
   self.assertFalse(any(c['method']!='GET' for c in state['calls']))

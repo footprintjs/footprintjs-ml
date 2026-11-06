@@ -230,6 +230,8 @@ jobs:
               for key in ('commit','tree'):assert type(item[key]) is str and re.fullmatch(r'[a-f0-9]{40}',item[key])
           assert source['commit']==verify['commit']==b['sha'] and source['tree']==verify['tree']==b['tree']
           Path('candidate/release-notes.md').read_text(encoding='utf-8')
+          for obj in (b['producer'],verify['producer']):
+              assert type(obj) is dict and set(obj)=={'repository','workflow','sha','run','runNumber','attempt'}
           for obj,keys in ((b['producer'],('run','runNumber','attempt')),(verify['producer'],('run','runNumber','attempt')),(verify['hosted'],('id','attempt'))):
               assert type(obj) is dict
               for key in keys:assert type(obj[key]) is int and 0<obj[key]<=9007199254740991
