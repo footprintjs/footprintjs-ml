@@ -1,5 +1,5 @@
 """Data-only release inspection; never imports or executes package contents."""
-import ast, base64, csv, email, hashlib, io, json, os, re, stat, subprocess, sys, tarfile, tomllib, zipfile
+import ast, base64, csv, email, fnmatch, hashlib, io, json, os, re, stat, subprocess, sys, tarfile, tomllib, zipfile
 from pathlib import Path, PurePosixPath
 if not __debug__: raise RuntimeError('non-optimized interpreter required')
 
@@ -82,8 +82,22 @@ def inspect_candidate(root,archive,wheel,commit):
                 target='footprintjs_ml-'+python_version+'.data/data/'+destination+'/'+path.name
                 assert target not in resource_sources or resource_sources[target]==name
                 resource_sources[target]=name
-    expected_modules={name[len('python/'):] for name in tracked if name.startswith('python/') and name.endswith('.py')
-        and ('/' not in name[len('python/'):] or name.startswith('python/footprint_ml_adapter/'))}
+    setuptools=project['tool']['setuptools']
+    declared=setuptools.get('py-modules',[])
+    assert isinstance(declared,list) and len(declared)==len(set(declared))
+    assert all(isinstance(n,str) and re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*',n) for n in declared)
+    expected_modules={name+'.py' for name in declared}
+    assert all('python/'+name in tracked for name in expected_modules)
+    find=setuptools.get('packages',{}).get('find',{})
+    if find:
+        assert find['where']==['python'] and find.get('namespaces',True) is False
+        for name in tracked:
+            if not name.startswith('python/') or not name.endswith('.py'):continue
+            relative=PurePosixPath(name[len('python/'):]);parents=list(relative.parents)[:-1]
+            package='.'.join(relative.parts[:-1])
+            if package and any(fnmatch.fnmatchcase(package,pattern) for pattern in find['include']):
+                assert all('python/'+str(parent/'__init__.py') in tracked for parent in parents)
+                expected_modules.add(str(relative))
     modules=resources=0
     with zipfile.ZipFile(wheel) as z:
         assert len(z.namelist())==len(set(z.namelist())),'Duplicate wheel member'

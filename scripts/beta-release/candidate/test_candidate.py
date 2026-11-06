@@ -13,7 +13,8 @@ class CandidateTests(unittest.TestCase):
   source={'package.json':json.dumps(pkg),'package-lock.json':json.dumps({'version':V,'packages':{'':{'version':'bad' if case=='wrong-lock' else V}}}),
    'README.md':'SDK guide\n','LICENSE':'MIT\n','src/index.ts':'export const value=1;\n',
    'python/footprint_ml_versions.py':py,'python/footprint_ml_workflow.py':'# inert fixture\n',
-   'pyproject.toml':'[project]\nname="footprintjs-ml"\nversion="'+PV+'"\nrequires-python=">=3.11"\ndependencies=[]\n[tool.setuptools.data-files]\n"share/footprintjs-ml"=["README.md"]\n',
+   'python/reference_worker.py':'# inspectable source, not an importable wheel module\n',
+   'pyproject.toml':'[project]\nname="footprintjs-ml"\nversion="'+PV+'"\nrequires-python=">=3.11"\ndependencies=[]\n[tool.setuptools]\npy-modules=["footprint_ml_versions","footprint_ml_workflow"]\n[tool.setuptools.data-files]\n"share/footprintjs-ml"=["README.md"]\n"share/footprintjs-ml/python"=["python/reference_worker.py"]\n',
    'release-notes/'+V+'.md':'Real separately reviewed SDK reason.\n'}
   for name,text in source.items():
    p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text)
@@ -38,6 +39,7 @@ class CandidateTests(unittest.TestCase):
   d='footprintjs_ml-'+PV+'.dist-info/';prefix='footprintjs_ml-'+PV+'.data/data/share/footprintjs-ml/'
   files={'footprint_ml_versions.py':py.encode(),'footprint_ml_workflow.py':b'# inert fixture\n',prefix+'README.md':b'SDK guide\n',
    d+'METADATA':('Metadata-Version: 2.4\nName: footprintjs-ml\nVersion: '+('0.6.0b13' if case=='wrong-wheel-version' else PV)+'\nRequires-Python: >=3.11\n'+('Requires-Dist: injected\n' if case=='runtime-dep' else '')).encode(),
+   prefix+'python/reference_worker.py':b'# inspectable source, not an importable wheel module\n',
    d+'WHEEL':b'Wheel-Version: 1.0\nRoot-Is-Purelib: true\nTag: py3-none-any\n',
    d+'top_level.txt':b'footprint_ml_versions\nfootprint_ml_workflow\n',d+'licenses/LICENSE':b'MIT\n'}
   if case=='missing-module':files.pop('footprint_ml_workflow.py')
