@@ -1,0 +1,336 @@
+name: ML beta release
+run-name: ML beta ${{ inputs.version }} / dry_run=${{ inputs.dry_run }}
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: Reviewed main commit (40 lowercase hex)
+        required: true
+        type: string
+      version:
+        description: Reviewed SDK beta version
+        required: true
+        type: string
+      dry_run:
+        description: Retain candidate without publishing
+        type: boolean
+        default: true
+permissions: {}
+concurrency:
+  group: ml-beta-publication
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: bash
+jobs:
+  admit:
+    name: admit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      allowed: ${{ steps.admit.outputs.allowed }}
+      mode: ${{ steps.admit.outputs.mode }}
+      artifact: ${{ steps.record.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 24.21.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Record native release admission
+        id: admit
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ inputs.sha }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_DRY_RUN: ${{ inputs.dry_run }}
+        run: node scripts/beta-release/admit.mjs
+      - name: Retain admission on refusal too
+        if: always()
+        id: record
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: beta-admission-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .artifacts/beta-admission
+          if-no-files-found: error
+          retention-days: 30
+  build:
+    name: build
+    needs: admit
+    if: needs.admit.outputs.allowed == 'true' && needs.admit.outputs.mode == 'first-attempt'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      artifact: ${{ steps.candidate.outputs.artifact-id }}
+      digest: ${{ steps.candidate.outputs.artifact-digest }}
+      binding: ${{ steps.generate.outputs.binding }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 24.21.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          artifact-ids: ${{ needs.admit.outputs.artifact }}
+          merge-multiple: true
+          path: .artifacts/admission
+      - name: Build one candidate
+        env:
+          CANDIDATE: ${{ runner.temp }}/beta-candidate
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          python -m pip install 'setuptools==84.2.1' 'wheel==0.48.0'
+          mkdir "$CANDIDATE"
+          npm run build
+          npm pack --ignore-scripts --pack-destination "$CANDIDATE"
+          node scripts/build-python.mjs --out "$CANDIDATE" --report .artifacts/python-build.json
+      - name: Bind complete candidate to source and producer
+        id: generate
+        env:
+          CANDIDATE: ${{ runner.temp }}/beta-candidate
+          SOURCE_SHA: ${{ inputs.sha }}
+        run: python3 -I scripts/beta-release/candidate/generate.py "$PWD" "$CANDIDATE" "$SOURCE_SHA" .artifacts/admission/admission.json
+      - name: Retain immutable five-member candidate
+        id: candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: beta-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/beta-candidate/*
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+  publish:
+    name: publish
+    needs: [admit, build]
+    if: github.ref == 'refs/heads/main' && github.run_attempt == 1 && !inputs.dry_run && needs.admit.outputs.allowed == 'true' && needs.admit.outputs.mode == 'first-attempt'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      # No checkout, npm or artifact code execution in the write-token job.
+      - name: Compare, create draft, upload and publish exact bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BINDING: ${{ needs.build.outputs.binding }}
+          ARTIFACT_ID: ${{ needs.build.outputs.artifact }}
+          ARTIFACT_DIGEST: ${{ needs.build.outputs.digest }}
+          SOURCE_SHA: ${{ inputs.sha }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          # BEGIN PUBLISH GLUE
+          set -euo pipefail
+          API=https://api.github.com/repos/footprintjs/footprintjs-ml
+          cd "$RUNNER_TEMP"
+          mkdir candidate
+          printf '%s' "$BINDING" > binding.json
+          [[ "$GITHUB_REF" == refs/heads/main && "$GITHUB_RUN_ATTEMPT" == 1 ]]
+          [[ "$SOURCE_SHA" =~ ^[a-f0-9]{40}$ && "$ARTIFACT_ID" =~ ^[1-9][0-9]*$ ]]
+          jq -e --arg sha "$SOURCE_SHA" --arg version "$RELEASE_VERSION" --argjson run "$GITHUB_RUN_ID" \
+            '.sha==$sha and .version==$version and .producer.repository=="footprintjs/footprintjs-ml" and .producer.workflow==".github/workflows/publish.yml" and .producer.sha==$sha and .producer.run==$run and .producer.attempt==1' binding.json >/dev/null
+          request() {
+            local method=$1 url=$2 out=$3 expected=$4; shift 4
+            local code
+            code=$(curl --silent --show-error --fail-with-body --retry 0 --connect-timeout 15 --max-time 60 \
+              --request "$method" --header "Authorization: Bearer $GH_TOKEN" --header 'Accept: application/vnd.github+json' \
+              --dump-header "$out.headers" --output "$out" --write-out '%{http_code}' "$url" "$@") || {
+                [[ "$method" == GET && ( "$expected" == 404 || "$expected" == 200-or-404 ) && "$code" == 404 ]] || exit 1
+              }
+            [[ "$code" == "$expected" || ( "$method" == GET && "$expected" == 200-or-404 && ( "$code" == 200 || "$code" == 404 ) ) ]]
+          }
+          get() { request GET "$API$1" "$2" 200; }
+          pages() {
+            local route=$1 key=$2 out=$3 page total got prior_total=-1
+            printf '[]' > "$out"
+            for page in {1..10}; do
+              get "$route&per_page=100&page=$page" page.json
+              total=$(jq -er '.total_count|select(type=="number" and floor==. and .>=0 and .<=1000)' page.json)
+              [[ "$prior_total" == -1 || "$prior_total" == "$total" ]]; prior_total=$total
+              jq -e --arg key "$key" '.[$key]|type=="array"' page.json >/dev/null
+              jq --arg key "$key" '.[$key]' page.json > part.json
+              jq -s '.[0]+.[1]' "$out" part.json > joined.json
+              mv joined.json "$out"; got=$(jq length "$out")
+              [[ "$got" -le "$total" ]]
+              if [[ "$got" == "$total" ]]; then return; fi
+              [[ $(jq length part.json) == 100 ]]
+            done
+            return 1
+          }
+          # Binding is independent of self-described candidate metadata.
+          get "/actions/artifacts/$ARTIFACT_ID" artifact.json
+          jq -e --argjson run "$GITHUB_RUN_ID" --arg sha "$SOURCE_SHA" --arg digest "sha256:$ARTIFACT_DIGEST" \
+            --argjson id "$ARTIFACT_ID" --arg name "beta-candidate-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" \
+            '.id==$id and .workflow_run.head_branch=="main" and .workflow_run.id==$run and .workflow_run.head_sha==$sha and .name==$name and .digest==$digest and .expired==false' artifact.json >/dev/null
+          request GET "$API/actions/artifacts/$ARTIFACT_ID/zip" redirect.bin 302
+          LOCATION=$(python3 -I - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlsplit
+          headers=Path('redirect.bin.headers').read_text().splitlines()
+          locations=[line.split(':',1)[1].strip() for line in headers if line.lower().startswith('location:')]
+          assert len(locations)==1
+          u=urlsplit(locations[0])
+          assert u.scheme=='https' and not u.username and not u.password and not u.fragment and u.port in (None,443)
+          assert u.hostname.endswith('.blob.core.windows.net') or u.hostname.endswith('.githubusercontent.com')
+          print(locations[0])
+          PY
+          )
+          # Deliberately no Authorization header and no redirect following here.
+          curl --silent --show-error --fail-with-body --retry 0 --connect-timeout 15 --max-time 90 "$LOCATION" -o candidate.zip
+          [[ $(sha256sum candidate.zip | cut -d' ' -f1) == "$ARTIFACT_DIGEST" ]]
+          python3 -I - <<'PY'
+          import hashlib,json,re,stat,zipfile
+          from pathlib import Path
+          b=json.loads(Path('binding.json').read_text());v=b['version']
+          m=re.fullmatch(r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-beta\.(0|[1-9]\d*)',v);assert m
+          py='.'.join(m.groups()[:3])+'b'+m[4]
+          names={'footprintjs-ml-'+v+'.tgz','footprintjs_ml-'+py+'-py3-none-any.whl','source-manifest.json','verification.json','release-notes.md'}
+          files={x['file']:x for x in b['files']};assert set(files)==names and len(b['files'])==5
+          with zipfile.ZipFile('candidate.zip') as z:
+              assert set(z.namelist())==names and len(z.namelist())==5
+              for info in z.infolist():
+                  f=files[info.filename]
+                  assert type(f['bytes']) is int and 0<f['bytes']<=67108864 and info.file_size==f['bytes']
+                  assert not stat.S_ISLNK(info.external_attr>>16)
+                  data=z.read(info)
+                  assert hashlib.sha256(data).hexdigest()==f['sha256']
+                  (Path('candidate')/info.filename).write_bytes(data)
+          source=json.loads(Path('candidate/source-manifest.json').read_text())
+          verify=json.loads(Path('candidate/verification.json').read_text())
+          assert source['commit']==verify['commit']==b['sha'] and source['tree']==verify['tree']==b['tree']
+          Path('candidate/release-notes.md').read_text(encoding='utf-8')
+          assert verify['producer']==b['producer'] and verify['hosted']['id']==b['ciRun'] and verify['hosted']['attempt']==b['ciAttempt']
+          PY
+          guard() {
+            get /git/ref/heads/main main.json
+            jq -e --arg sha "$SOURCE_SHA" '.object.type=="commit" and .object.sha==$sha' main.json >/dev/null
+            get "/actions/runs/$GITHUB_RUN_ID" producer.json
+            jq -e --arg sha "$SOURCE_SHA" --argjson number "$GITHUB_RUN_NUMBER" \
+              '.head_sha==$sha and .head_branch=="main" and .event=="workflow_dispatch" and .path==".github/workflows/publish.yml" and .run_attempt==1 and .run_number==$number and .status=="in_progress"' producer.json >/dev/null
+            get "/actions/workflows/ci.yml/runs?head_sha=$SOURCE_SHA&event=push&per_page=1" ci.json
+            jq -e --slurpfile b binding.json '.workflow_runs[0] as $r|$r.head_sha==$b[0].sha and $r.head_branch=="main" and $r.event=="push" and $r.path==".github/workflows/ci.yml" and $r.id==$b[0].ciRun and $r.run_attempt==$b[0].ciAttempt and $r.status=="completed" and $r.conclusion=="success"' ci.json >/dev/null
+            pages '/actions/workflows/publish.yml/runs?' workflow_runs runs.json
+            python3 -I - <<'PY'
+          import json,os,re
+          from pathlib import Path
+          rows=json.loads(Path('runs.json').read_text());me=int(os.environ['GITHUB_RUN_ID']);number=int(os.environ['GITHUB_RUN_NUMBER'])
+          own=[r for r in rows if r['id']==me];assert len(own)==1
+          assert own[0]['run_number']==number and own[0]['head_sha']==os.environ['SOURCE_SHA']
+          assert len({r['id'] for r in rows})==len(rows)
+          earlier=[];numbers=[]
+          for r in rows:
+              t=re.fullmatch(r'ML beta ((?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)-beta\.(?:0|[1-9]\d*)) / dry_run=(true|false)',r['display_title']);assert t
+              assert r['workflow_id']==own[0]['workflow_id'] and r['path']=='.github/workflows/publish.yml' and r['event']=='workflow_dispatch'
+              n=r['run_number'];assert type(n) is int and n>0
+              if n<=number:numbers.append(n)
+              if n<number and t[1]==os.environ['RELEASE_VERSION'] and t[2]=='false':earlier.append(str(r['id']))
+          assert len(numbers)==number and len(set(numbers))==number
+          Path('prior-live.txt').write_text('\n'.join(earlier))
+          PY
+            while read -r prior || [[ -n "$prior" ]]; do
+              [[ -z "$prior" ]] && continue
+              pages "/actions/runs/$prior/jobs?filter=all" jobs jobs.json
+              jq -e '[.[]|select(.name=="publish")] as $p|($p|length)>0 and all($p[];.status=="completed" and .conclusion=="skipped" and (.steps|type)=="array" and (.steps|length)==0)' jobs.json >/dev/null
+            done < prior-live.txt
+          }
+          guard
+          request GET "$API/git/ref/tags/v$RELEASE_VERSION" absent-tag.json 404
+          # Push-capable token and complete authenticated listing include drafts.
+          for page in {1..10}; do
+            get "/releases?per_page=100&page=$page" releases.json
+            jq -e --arg tag "v$RELEASE_VERSION" 'type=="array" and all(.[];.tag_name!=$tag)' releases.json >/dev/null
+            if ! grep -qi 'rel="next"' releases.json.headers; then break; fi
+            [[ "$page" -lt 10 && $(jq length releases.json) == 100 ]]
+          done
+          jq -n --arg tag "v$RELEASE_VERSION" --arg sha "$SOURCE_SHA" --rawfile body candidate/release-notes.md \
+            '{tag_name:$tag,target_commitish:$sha,name:("FootPrint ML "+$tag),body:$body,draft:true,prerelease:true,make_latest:"false"}' > create.json
+          guard
+          request POST "$API/releases" created.json 201 --header 'Content-Type: application/json' --data-binary @create.json
+          jq -e --arg tag "v$RELEASE_VERSION" --arg sha "$SOURCE_SHA" '.tag_name==$tag and .target_commitish==$sha and .draft==true and .prerelease==true and (.assets|length)==0' created.json >/dev/null
+          ID=$(jq -er '.id|select(type=="number" and floor==. and .>0)' created.json)
+          jq -c '.files[]|select(.file!="release-notes.md")' binding.json > assets.ndjson
+          printf '[]' > uploaded.json
+          while read -r file; do
+            name=$(jq -r .file <<<"$file"); digest=$(jq -r .sha256 <<<"$file"); bytes=$(jq -r .bytes <<<"$file")
+            guard
+            request POST "https://uploads.github.com/repos/footprintjs/footprintjs-ml/releases/$ID/assets?name=$name" uploaded-one.json 201 \
+              --header 'Content-Type: application/octet-stream' --data-binary "@candidate/$name"
+            jq -e --arg name "$name" --arg digest "sha256:$digest" --argjson bytes "$bytes" '.name==$name and .digest==$digest and .size==$bytes and .state=="uploaded" and (.id|type)=="number" and (.id|floor)==.id and .id>0 and .id<=9007199254740991' uploaded-one.json >/dev/null
+            asset=$(jq -r .id uploaded-one.json)
+            get "/releases/assets/$asset" readback.json
+            jq -e --arg name "$name" --arg digest "sha256:$digest" --argjson bytes "$bytes" --argjson id "$asset" '.id==$id and .name==$name and .digest==$digest and .size==$bytes and .state=="uploaded"' readback.json >/dev/null
+            jq --slurpfile a uploaded-one.json '.+[$a[0]]' uploaded.json > next.json; mv next.json uploaded.json
+          done < assets.ndjson
+          guard
+          get "/releases/$ID/assets?per_page=100" final-assets.json
+          ! grep -qi 'rel="next"' final-assets.json.headers
+          jq -e --slurpfile ours uploaded.json 'length==4 and (map({id,name,size,digest,state})|sort_by(.id))==($ours[0]|map({id,name,size,digest,state})|sort_by(.id))' final-assets.json >/dev/null
+          request GET "$API/git/ref/tags/v$RELEASE_VERSION" pre-undraft-tag.json 200-or-404
+          if jq -e 'has("object")' pre-undraft-tag.json >/dev/null; then
+            jq -e --arg sha "$SOURCE_SHA" '.object.type=="commit" and .object.sha==$sha' pre-undraft-tag.json >/dev/null
+          else
+            # A newly created draft may not have materialized its tag yet.
+            grep -q ' 404 ' pre-undraft-tag.json.headers
+          fi
+          printf '{"draft":false,"prerelease":true,"make_latest":"false"}' > undraft.json
+          guard
+          request PATCH "$API/releases/$ID" published.json 200 --header 'Content-Type: application/json' --data-binary @undraft.json
+          jq -e --argjson id "$ID" --arg tag "v$RELEASE_VERSION" --arg sha "$SOURCE_SHA" '.id==$id and .tag_name==$tag and .target_commitish==$sha and .draft==false and .prerelease==true' published.json >/dev/null
+          # END PUBLISH GLUE
+  verify:
+    name: verify
+    needs: [admit, build, publish]
+    if: always() && !inputs.dry_run && needs.build.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          artifact-ids: ${{ needs.build.outputs.artifact }}
+          merge-multiple: true
+          path: .artifacts/published-candidate
+      - name: Compare actual public package bytes
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BINDING: ${{ needs.build.outputs.binding }}
+          PUBLISHER_SUCCESS: ${{ needs.publish.result == 'success' }}
+        run: python3 -I scripts/beta-release/verify.py .artifacts/published-candidate .artifacts/public-verification
+      - name: Retain actual public verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: beta-public-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .artifacts/public-verification
+          if-no-files-found: error
+          retention-days: 30
+  observe:
+    name: verify-only hold
+    needs: admit
+    if: always() && needs.admit.outputs.mode == 'verify-only'
+    runs-on: ubuntu-24.04
+    permissions: {}
+    steps:
+      - run: echo 'Refused, unknown, existing version or rerun: observed-state admission record retained; no write, retry or package-origin claim. A person must inspect the hold.' >> "$GITHUB_STEP_SUMMARY"

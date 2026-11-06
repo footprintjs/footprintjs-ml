@@ -51,6 +51,7 @@
     "RELEASE.md",
     "QUICKSTART.md",
     "COMPATIBILITY.md",
+    "BETA-RELEASING.md",
     "examples/quickstart/*.mjs",
     "examples/quickstart/*.py",
     "examples/quickstart/*.json",
