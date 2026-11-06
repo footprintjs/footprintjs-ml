@@ -117,3 +117,5 @@ GitHub Pages serves the presentation in `docs/`. Its historical experiments and 
 MIT licensed. The presentation includes the [StoryDeck MIT notice](https://footprintjs.github.io/footprintjs-ml/STORYDECK-LICENSE.txt).
 
 For an existing Python workflow, the [optional MLflow integration](MLFLOW.md) keeps orchestration in Python and records explicit reference reads and writes through the native foottrace writer. The Python helper uses only the standard library and accepts an application-supplied MLflow client. The Node recording helper is started explicitly.
+
+Maintainers: the [reviewed beta release procedure](BETA-RELEASING.md) describes the automated GitHub archive route and its human approval boundary.

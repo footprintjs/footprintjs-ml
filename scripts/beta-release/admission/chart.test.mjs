@@ -1,0 +1,20 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {facts} from './stages/gate/fixture.mjs';
+import {runAdmission} from './run.mjs';
+for(const kind of ['positive','wrong-version','missing-name','existing-release','rerun','unknown-read'])test('native chart '+kind,async()=>{
+ const f=facts();
+ if(kind==='wrong-version')f.version='0.6.0-beta.15';
+ if(kind==='missing-name')f.ci.jobs.pop();
+ if(kind==='existing-release')f.releaseStatus=200;
+ if(kind==='rerun')f.attempt=2;
+ if(kind==='unknown-read')f.collectionError=true;
+ const r=await runAdmission(f),s=r.snapshot.sharedState;
+ assert.equal(s.outcome.allowed,kind==='positive'||kind==='rerun');
+ assert.equal(s.results.length,7);
+ assert.equal(r.decisions.length,7);
+ assert.ok(r.snapshot.commitLog.length>0);
+ if(kind==='wrong-version')assert.ok(s.outcome.refused.includes('versions'));
+ if(kind==='missing-name')assert.ok(s.outcome.refused.includes('checks'));
+ if(kind==='existing-release'||kind==='rerun')assert.equal(s.outcome.mode,'verify-only');
+});

@@ -53,6 +53,8 @@ jobs:
           npm pack --pack-destination .artifacts/npm
       - name: Verify Python installation outside the checkout
         run: python scripts/python-install-smoke.py --wheel python-dist/*.whl --archive .artifacts/npm/*.tgz
+      - name: Inspect complete real release packages without release admission
+        run: python3 -I scripts/beta-release/candidate/inspect_release.py "$PWD" .artifacts/npm/*.tgz python-dist/*.whl "$(git rev-parse HEAD)" .artifacts/release-package-inspection.json
 
   optional-mlflow:
     name: Optional Python MLflow integration
