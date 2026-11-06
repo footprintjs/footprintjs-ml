@@ -15,6 +15,7 @@ class PublisherTests(unittest.TestCase):
   files=[{'file':n,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in payloads.items()]
   if case=='unsafe-member':payloads['../escape.py']=b'bad'
   if case=='changed-bytes':payloads['release-notes.md']=b'changed'
+  if case=='changed-bytes-same-size':payloads['release-notes.md']=b'x'*len(payloads['release-notes.md'])
   zpath=base/'candidate.zip'
   with zipfile.ZipFile(zpath,'w') as z:
    for n,b in payloads.items():z.writestr(n,b)
@@ -45,7 +46,7 @@ class PublisherTests(unittest.TestCase):
  def test_prior_dry_is_not_consumed(self):
   result,state=self.run_case('earlier-dry');self.assertEqual(result.returncode,0,result.stderr);self.assertTrue(state['published'])
  def test_zero_writes_for_refused_inputs(self):
-  for case in ['rebound-artifact','moved-main','ci-changed','unsafe-member','changed-bytes','history-cap','history-incomplete','same-tag-draft',
+  for case in ['rebound-artifact','moved-main','ci-changed','unsafe-member','changed-bytes','changed-bytes-same-size','history-cap','history-incomplete','same-tag-draft',
    'prior-failure','prior-unknown','prior-rerun-skipped','bad-title','history-gap']:
    with self.subTest(case=case):
     result,state=self.run_case(case);self.assertNotEqual(result.returncode,0)
