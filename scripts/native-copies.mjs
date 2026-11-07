@@ -43,10 +43,13 @@ export async function inspectNativeCopies(root,expected) {
   assert(visited.size<=100000,'Native census directory limit exceeded');
   // Search payload directories for nested installations too. A payload manifest
   // alone is data; a package-position manifest is an installed identity.
-  for(const entry of await readdir(actual,{withFileTypes:true})) {
+  const entries=await readdir(actual,{withFileTypes:true});
+  let modules;try {modules=await lstat(join(actual,'node_modules'));}
+  catch(error) {if(error.code!=='ENOENT')throw error;}
+  assert(!modules||entries.some(entry=>entry.name==='node_modules'),
+   'Native census encountered an ambiguous module-container spelling');
+  for(const entry of entries) {
    if(!entry.isDirectory()&&!entry.isSymbolicLink())continue;
-   assert(entry.name==='node_modules'||entry.name.toLowerCase()!=='node_modules',
-    'Native census encountered an ambiguous module-container spelling');
    const childKind=entry.name==='node_modules'?'modules':
     kind==='modules'&&entry.name.startsWith('@')?'scope':
     kind==='modules'||kind==='scope'||(kind==='candidate'&&!hasManifest)?'candidate':'payload';
