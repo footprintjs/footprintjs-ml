@@ -45,6 +45,8 @@ export async function inspectNativeCopies(root,expected) {
   // alone is data; a package-position manifest is an installed identity.
   for(const entry of await readdir(actual,{withFileTypes:true})) {
    if(!entry.isDirectory()&&!entry.isSymbolicLink())continue;
+   assert(entry.name==='node_modules'||entry.name.toLowerCase()!=='node_modules',
+    'Native census encountered an ambiguous module-container spelling');
    const childKind=entry.name==='node_modules'?'modules':
     kind==='modules'&&entry.name.startsWith('@')?'scope':
     kind==='modules'||kind==='scope'||(kind==='candidate'&&!hasManifest)?'candidate':'payload';

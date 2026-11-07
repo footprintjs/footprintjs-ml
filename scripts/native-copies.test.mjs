@@ -1,8 +1,9 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,mkdir,writeFile,symlink,rm,rename} from 'node:fs/promises';
+import {mkdtemp,mkdir,writeFile,symlink,rm,rename,realpath} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,dirname} from 'node:path';
+import {createRequire} from 'node:module';
 import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {inspectNativeCopies} from './native-copies.mjs';
@@ -64,15 +65,18 @@ test('missing identity and wrong version refuse',async t=>{
  await assert.rejects(()=>inspectNativeCopies(f.root,pins),/one physical foottrace/);
  await f.pkg('foottrace','foottrace','1.8.0');await assert.rejects(()=>inspectNativeCopies(f.root,pins),/version differs/);
 });
-test('CLI adapter uses the same inspector on actual inert aliases',async t=>{
+for(const duplicate of ['second-record','parent/NODE_MODULES/foottrace'])
+test('CLI adapter refuses duplicate '+duplicate,async t=>{
  const f=await fixture(t),cli=new URL('./native-copies-cli.mjs',import.meta.url);
  const args=[cli.pathname,f.root,JSON.stringify(pins)];
  assert.deepEqual(JSON.parse(execFileSync(process.execPath,args,{encoding:'utf8'})),pins);
- await f.pkg('second-record','foottrace');
+ await f.pkg('parent','unrelated','1.0.0');
+ await f.pkg(duplicate,'foottrace');
  assert.throws(()=>execFileSync(process.execPath,args,{encoding:'utf8',stdio:'pipe'}));
 });
 
-test('actual Python smoke guard rejects the same inert aliased copy',async t=>{
+for(const duplicate of ['second-record','parent/Node_Modules/foottrace'])
+test('actual Python smoke guard refuses duplicate '+duplicate,async t=>{
  const f=await fixture(t),path=new URL('./python-install-smoke.py',import.meta.url).pathname;
  const source=readFileSync(path,'utf8'),start=source.indexOf('        node = shutil.which');
  const stop=source.indexOf('        for name, expected in guidance_bytes.items():',start);
@@ -89,7 +93,8 @@ print(json.dumps(observed_native))
 `;
  const options={encoding:'utf8',stdio:'pipe',env:{...process.env,PATH:dirname(process.execPath)+':'+process.env.PATH}};
  assert.deepEqual(JSON.parse(execFileSync(process.env.PYTHON||'python3',['-I','-c',code],options)),pins);
- await f.pkg('second-record','foottrace');
+ await f.pkg('parent','unrelated','1.0.0');
+ await f.pkg(duplicate,'foottrace');
  assert.throws(()=>execFileSync(process.env.PYTHON||'python3',['-I','-c',code],options));
 });
 
@@ -117,3 +122,24 @@ test('a singleton scoped alias remains an installed package',async t=>{
  await f.pkg('@scope/second-record','foottrace');
  assert.deepEqual(await inspectNativeCopies(f.root,pins),pins);
 });
+
+for(const spelling of ['NODE_MODULES','Node_Modules','nOdE_mOdUlEs'])
+ test('refuse a folded module container '+spelling,async t=>{
+  const f=await fixture(t);await f.pkg('parent','unrelated','1.0.0');
+  const nested=await f.pkg('parent/'+spelling+'/foottrace','foottrace');
+  // Resolve only a JSON path; fixture package code is never loaded.
+  const require=createRequire(join(f.mods,'parent/probe.cjs'));
+  const resolved=await realpath(require.resolve('foottrace/package.json'));
+  let folded=false;
+  try {folded=(await realpath(join(f.mods,'parent/node_modules')))===await realpath(join(f.mods,'parent',spelling));}
+  catch(error) {if(error.code!=='ENOENT')throw error;}
+  assert.equal(resolved,await realpath(join(folded?nested:join(f.mods,'foottrace'),'package.json')));
+  t.diagnostic('actual Node lowercase lookup reaches folded container: '+folded);
+  await assert.rejects(()=>inspectNativeCopies(f.root,pins));
+ });
+for(const path of ['parent/vendor/NODE_MODULES/@scope/alias','.cache/Node_Modules/alias'])
+ test('refuse folded module containers in nested payloads '+path,async t=>{
+  const f=await fixture(t);await f.pkg('parent','unrelated','1.0.0');
+  await f.pkg(path,'foottrace');
+  await assert.rejects(()=>inspectNativeCopies(f.root,pins));
+ });
