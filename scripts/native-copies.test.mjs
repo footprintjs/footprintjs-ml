@@ -92,3 +92,28 @@ print(json.dumps(observed_native))
  await f.pkg('second-record','foottrace');
  assert.throws(()=>execFileSync(process.env.PYTHON||'python3',['-I','-c',code],options));
 });
+
+for(const path of ['', '@scope', 'parent/node_modules'])
+ for(const content of ['{"name":"unrelated","version":"1.0.0"}', 'null'])
+ test('container-role manifest refuses '+path+' '+content,async t=>{
+  const f=await fixture(t);
+  if(path.startsWith('parent/'))await f.pkg('parent','unrelated','1.0.0');
+  const dir=join(f.mods,path);await mkdir(dir,{recursive:true});
+  await writeFile(join(dir,'package.json'),content);
+  if(path==='@scope')await f.pkg('@scope/second-record','foottrace');
+  await assert.rejects(()=>inspectNativeCopies(f.root,pins));
+ });
+test('reserved node_modules identity refuses instead of disappearing',async t=>{
+ const f=await fixture(t);await f.pkg('node_modules','foottrace');
+ await assert.rejects(()=>inspectNativeCopies(f.root,pins));
+});
+test('broken manifest links on scope containers refuse',async t=>{
+ const f=await fixture(t);await mkdir(join(f.mods,'@scope'));
+ await symlink('missing.json',join(f.mods,'@scope/package.json'));
+ await assert.rejects(()=>inspectNativeCopies(f.root,pins));
+});
+test('a singleton scoped alias remains an installed package',async t=>{
+ const f=await fixture(t);await rm(join(f.mods,'foottrace'),{recursive:true});
+ await f.pkg('@scope/second-record','foottrace');
+ assert.deepEqual(await inspectNativeCopies(f.root,pins),pins);
+});

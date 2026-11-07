@@ -14,6 +14,11 @@ export async function inspectNativeCopies(root,expected) {
   const local=relative(base,actual);
   assert(!isAbsolute(local)&&local!=='..'&&!local.startsWith('../')&&!local.startsWith('..\\'),
    'Native census encountered an external directory link');
+  if(kind==='modules'||kind==='scope') {
+   let entry;try {entry=await lstat(join(actual,'package.json'));}
+   catch(error) {if(error.code!=='ENOENT')throw error;}
+   assert(!entry,'Native census encountered an ambiguous container manifest');
+  }
   let manifest,hasManifest=false;
   if(kind==='candidate') {
    const file=join(actual,'package.json');
@@ -41,7 +46,8 @@ export async function inspectNativeCopies(root,expected) {
   for(const entry of await readdir(actual,{withFileTypes:true})) {
    if(!entry.isDirectory()&&!entry.isSymbolicLink())continue;
    const childKind=entry.name==='node_modules'?'modules':
-    kind==='modules'||(kind==='candidate'&&!hasManifest)?'candidate':'payload';
+    kind==='modules'&&entry.name.startsWith('@')?'scope':
+    kind==='modules'||kind==='scope'||(kind==='candidate'&&!hasManifest)?'candidate':'payload';
    await visit(join(actual,entry.name),childKind);
   }
  }
