@@ -114,15 +114,15 @@ except Exception as error:
             if package["version"] != expected:
                 raise ValueError("Installed native dependency version differs: " + name)
             versions[name] = package["version"]
-        npm = shutil.which("npm")
-        if not npm:
-            raise ValueError("npm is needed to inspect the explicitly installed helper")
+        node = shutil.which("node")
+        if not node:
+            raise ValueError("Node is needed to inspect the explicitly installed helper")
         native_names = ("footprintjs", "agentfootprint", "foottrace")
-        installed_paths = run(npm, ["ls", *native_names, "--all", "--parseable"], runtime).splitlines()
-        for name in native_names:
-            copies = {Path(path).resolve(strict=True) for path in installed_paths if Path(path).name == name}
-            if len(copies) != 1:
-                raise ValueError("Expected one physical native package: " + name)
+        expected_native = {name: imported["nativePins"][name] for name in native_names}
+        observed_native = json.loads(run(node, [Path(__file__).with_name("native-copies-cli.mjs").resolve(),
+                                               runtime, json.dumps(expected_native)], runtime))
+        if observed_native != expected_native:
+            raise ValueError("Installed native identities differ from the pinned cohort")
         for name, expected in guidance_bytes.items():
             if (runtime / "node_modules" / "footprintjs-ml" / name).read_bytes() != expected:
                 raise ValueError("npm and Python guidance copies disagree: " + name)
